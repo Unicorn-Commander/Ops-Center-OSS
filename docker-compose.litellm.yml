@@ -1,0 +1,162 @@
+version: '3.8'
+
+# LiteLLM + WilmerAI Multi-Provider LLM Routing
+# Part of UC-Cloud Ops-Center ecosystem
+# Provides unified LLM inference API with intelligent routing
+
+services:
+  # LiteLLM Proxy - Multi-Provider LLM Router
+  litellm-proxy:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: unicorn-litellm-wilmer
+    restart: unless-stopped
+    ports:
+      - "4000:4000"  # LiteLLM proxy API (OpenAI-compatible)
+    environment:
+      # Master API Key (for admin operations)
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+
+      # Database for request logging and analytics
+      - DATABASE_URL=postgresql://unicorn:${POSTGRES_PASSWORD}@unicorn-postgresql:5432/unicorn_db
+
+      # Provider API Keys (9 providers)
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - TOGETHER_API_KEY=${TOGETHER_API_KEY}
+      - DEEPINFRA_API_KEY=${DEEPINFRA_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - FIREWORKS_API_KEY=${FIREWORKS_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+
+      # Local models (no API key needed)
+      - OLLAMA_HOST=http://unicorn-ollama:11434
+      - VLLM_HOST=http://unicorn-vllm:8000
+
+      # LiteLLM Configuration
+      - LITELLM_CONFIG_PATH=/app/config.yaml
+      - LITELLM_MODE=PRODUCTION
+      - LITELLM_LOG=INFO
+
+      # Performance tuning
+      - NUM_WORKERS=4
+      - TIMEOUT=120
+
+      # Redis for caching and rate limiting
+      - REDIS_HOST=unicorn-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+
+      # Enable features
+      - STORE_MODEL_IN_DB=True
+      - ENABLE_DETAILED_LOGGING=True
+      - ENABLE_FALLBACKS=True
+      - ENABLE_LOADBALANCING=True
+
+    volumes:
+      # Mount configuration file
+      - ./litellm_config.yaml:/app/config.yaml:ro
+
+      # Logs (optional, for debugging)
+      - ./logs/litellm:/app/logs
+
+    networks:
+      - unicorn-network
+      - web
+
+    depends_on:
+      - unicorn-postgresql
+      - unicorn-redis
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    labels:
+      # Traefik routing (if using Traefik)
+      - "traefik.enable=true"
+      - "traefik.http.routers.litellm.rule=Host(`ai.your-domain.com`)"
+      - "traefik.http.routers.litellm.entrypoints=websecure"
+      - "traefik.http.routers.litellm.tls.certresolver=letsencrypt"
+      - "traefik.http.services.litellm.loadbalancer.server.port=4000"
+
+      # Metadata
+      - "com.unicorncommander.service=litellm-proxy"
+      - "com.unicorncommander.ecosystem=uc-cloud"
+      - "com.unicorncommander.tier=core-infrastructure"
+
+  # WilmerAI Router Service (Custom intelligent routing layer)
+  wilmer-router:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.wilmer
+    container_name: unicorn-wilmer-router
+    restart: unless-stopped
+    ports:
+      - "4001:4001"  # WilmerAI router API (internal use)
+    environment:
+      # Database connection
+      - DATABASE_URL=postgresql://unicorn:${POSTGRES_PASSWORD}@unicorn-postgresql:5432/unicorn_db
+
+      # LiteLLM proxy URL
+      - LITELLM_PROXY_URL=http://unicorn-litellm-wilmer:4000
+      - LITELLM_API_KEY=${LITELLM_MASTER_KEY}
+
+      # Redis for caching routing decisions
+      - REDIS_HOST=unicorn-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+
+      # Routing configuration
+      - WILMER_MODE=production
+      - WILMER_LOG_LEVEL=INFO
+      - ENABLE_QUALITY_FEEDBACK=true
+      - ENABLE_COST_TRACKING=true
+
+      # Default power levels
+      - ECO_MAX_COST=0.001
+      - BALANCED_MAX_COST=0.01
+      - PRECISION_MAX_COST=0.1
+
+    volumes:
+      # Mount router configuration
+      - ./wilmer_config.yaml:/app/config.yaml:ro
+
+      # Logs
+      - ./logs/wilmer:/app/logs
+
+    networks:
+      - unicorn-network
+
+    depends_on:
+      - litellm-proxy
+      - unicorn-postgresql
+      - unicorn-redis
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+    labels:
+      - "com.unicorncommander.service=wilmer-router"
+      - "com.unicorncommander.ecosystem=uc-cloud"
+      - "com.unicorncommander.tier=business-logic"
+
+networks:
+  unicorn-network:
+    external: true
+  web:
+    external: true
+
+# Volume for persistent logs (optional)
+volumes:
+  litellm-logs:
+    driver: local
+  wilmer-logs:
+    driver: local

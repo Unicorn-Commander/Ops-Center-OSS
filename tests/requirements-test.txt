@@ -1,0 +1,63 @@
+# Testing Dependencies for UC-1 Pro Billing System
+# Install with: pip install -r requirements-test.txt
+
+# Core Testing Framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-html>=3.2.0
+pytest-xdist>=3.3.0
+
+# HTTP Testing
+httpx>=0.24.0
+requests>=2.31.0
+
+# End-to-End Testing
+playwright>=1.37.0
+selenium>=4.11.0
+
+# Stripe Integration
+stripe>=5.5.0
+
+# Keycloak Integration
+python-keycloak>=3.3.0
+
+# Data Validation
+pydantic>=2.0.0
+
+# Encryption
+cryptography>=41.0.0
+
+# Environment Management
+python-dotenv>=1.0.0
+
+# Utilities
+faker>=19.2.0  # Generate test data
+freezegun>=1.2.0  # Time mocking
+responses>=0.23.0  # Mock HTTP responses
+
+# Code Quality
+black>=23.7.0
+flake8>=6.1.0
+mypy>=1.4.0
+pylint>=2.17.0
+
+# Coverage Reporting
+coverage[toml]>=7.2.0
+
+# Documentation
+sphinx>=7.1.0
+sphinx-rtd-theme>=1.3.0
+
+# Performance Testing
+locust>=2.15.0  # Load testing
+
+# Firewall Management Testing (Epic 1.2 Phase 1)
+pytest-timeout>=2.1.0  # Timeout for long-running tests
+pytest-mock>=3.11.1  # Enhanced mocking capabilities
+ipaddress>=1.0.23  # IP address validation and testing
+
+# Traefik Configuration Testing (Epic 1.3)
+PyYAML>=6.0  # YAML parsing for Traefik config
+aiofiles>=23.1.0  # Async file operations
+jsonschema>=4.17.0  # JSON schema validation

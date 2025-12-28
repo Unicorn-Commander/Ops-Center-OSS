@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure the app takes full height */
+#root {
+  min-height: 100vh;
+}
+
+/* Light mode background */
+body {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+/* Dark mode background */
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* Tour highlight effect */
+.tour-highlight {
+  position: relative;
+  z-index: 103 !important;
+  animation: pulse-highlight 2s infinite;
+}
+
+@keyframes pulse-highlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Animated gradient for Unicorn Commander Pro title */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Fade-in animation for tab transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Sparkle effect for Pro text */
+@keyframes sparkle {
+  0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(147, 51, 234, 0.8), 0 0 40px rgba(147, 51, 234, 0.6); }
+  50% { opacity: 0.8; text-shadow: 0 0 30px rgba(236, 72, 153, 0.8), 0 0 60px rgba(236, 72, 153, 0.6); }
+}
+
+.sparkle-text {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading and progress bars */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}

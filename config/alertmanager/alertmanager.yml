@@ -1,0 +1,137 @@
+global:
+  resolve_timeout: 5m
+  # Slack webhook (configure in environment or secrets)
+  slack_api_url: '${SLACK_WEBHOOK_URL}'
+
+# Route tree
+route:
+  # Default receiver
+  receiver: 'default-receiver'
+
+  # How long to wait before sending a notification about new alerts
+  group_wait: 10s
+
+  # How long to wait before sending notification about new alerts added to group
+  group_interval: 10s
+
+  # How long to wait before sending the same notification again
+  repeat_interval: 1h
+
+  # Group by alertname and severity
+  group_by: ['alertname', 'severity', 'component']
+
+  # Sub-routes
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      continue: true
+      group_wait: 0s
+      repeat_interval: 5m
+
+    # Deployment alerts
+    - match:
+        component: deployment
+      receiver: 'deployment-alerts'
+      continue: true
+
+    # Database alerts
+    - match:
+        component: database
+      receiver: 'database-alerts'
+      continue: true
+
+    # API alerts
+    - match:
+        component: api
+      receiver: 'api-alerts'
+      continue: true
+
+# Alert receivers
+receivers:
+  # Default receiver (catch-all)
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://ops-center-direct:8084/api/v1/webhooks/alertmanager'
+        send_resolved: true
+
+  # Critical alerts - multiple channels
+  - name: 'critical-alerts'
+    slack_configs:
+      - channel: '#ops-critical'
+        title: '🚨 CRITICAL ALERT'
+        text: |
+          *Alert:* {{ .GroupLabels.alertname }}
+          *Severity:* {{ .CommonLabels.severity }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+        send_resolved: true
+
+    webhook_configs:
+      - url: 'http://ops-center-direct:8084/api/v1/webhooks/alertmanager'
+        send_resolved: true
+
+    # Email notifications (configure SMTP)
+    # email_configs:
+    #   - to: 'ops-team@your-domain.com'
+    #     from: 'alertmanager@your-domain.com'
+    #     smarthost: 'smtp.gmail.com:587'
+    #     auth_username: 'alertmanager@your-domain.com'
+    #     auth_password: '${SMTP_PASSWORD}'
+
+  # Deployment alerts
+  - name: 'deployment-alerts'
+    slack_configs:
+      - channel: '#deployments'
+        title: '🚀 Deployment Alert'
+        text: |
+          *Alert:* {{ .GroupLabels.alertname }}
+          *Service:* {{ .CommonLabels.service }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+        send_resolved: true
+
+  # Database alerts
+  - name: 'database-alerts'
+    slack_configs:
+      - channel: '#database-alerts'
+        title: '🗄️ Database Alert'
+        text: |
+          *Alert:* {{ .GroupLabels.alertname }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+        send_resolved: true
+
+  # API alerts
+  - name: 'api-alerts'
+    slack_configs:
+      - channel: '#api-alerts'
+        title: '⚠️ API Alert'
+        text: |
+          *Alert:* {{ .GroupLabels.alertname }}
+          *Summary:* {{ .CommonAnnotations.summary }}
+          *Description:* {{ .CommonAnnotations.description }}
+        send_resolved: true
+
+# Inhibit rules - prevent notification spam
+inhibit_rules:
+  # Inhibit warning if critical already firing
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'component']
+
+  # Inhibit database warnings if database is down
+  - source_match:
+      alertname: 'DatabaseDown'
+    target_match:
+      component: 'database'
+    equal: ['instance']
+
+  # Inhibit API warnings if health check is failing
+  - source_match:
+      alertname: 'HealthCheckFailing'
+    target_match:
+      component: 'api'
+    equal: ['instance']

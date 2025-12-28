@@ -1,0 +1,624 @@
+# LiteLLM Configuration for UC-Cloud Ops-Center
+# Multi-Provider LLM Routing with WilmerAI Intelligence
+# Version: 1.0.0
+# Last Updated: 2025-10-20
+
+model_list:
+  # ============================================================================
+  # TIER 0: FREE / LOCAL MODELS (No cost)
+  # ============================================================================
+
+  # --- Local vLLM (RTX 5090) ---
+  - model_name: qwen-32b-local
+    litellm_params:
+      model: openai/Qwen2.5-32B-Instruct-AWQ
+      api_base: http://unicorn-vllm:8000/v1
+      api_key: dummy  # vLLM doesn't require API key
+      rpm: 1000  # Requests per minute
+      tpm: 100000  # Tokens per minute
+    model_info:
+      mode: local
+      tier: free
+      cost_per_1k_tokens: 0.0
+      max_tokens: 16384
+      use_cases: ["code", "analysis", "rag"]
+      latency: medium
+      privacy: high
+
+  - model_name: llama3-8b-local
+    litellm_params:
+      model: ollama/llama3
+      api_base: http://unicorn-ollama:11434
+      api_key: dummy
+      rpm: 2000
+      tpm: 50000
+    model_info:
+      mode: local
+      tier: free
+      cost_per_1k_tokens: 0.0
+      max_tokens: 8192
+      use_cases: ["chat", "basic"]
+      latency: fast
+      privacy: high
+
+  # --- Groq (Free Tier - Ultra Fast) ---
+  - model_name: llama3-70b-groq
+    litellm_params:
+      model: groq/llama3-70b-8192
+      api_key: os.environ/GROQ_API_KEY
+      rpm: 30  # Free tier limit
+      tpm: 14400
+    model_info:
+      mode: cloud
+      tier: free
+      cost_per_1k_tokens: 0.0
+      max_tokens: 8192
+      use_cases: ["chat", "qa", "instant"]
+      latency: ultrafast
+      privacy: low
+
+  - model_name: mixtral-8x7b-groq
+    litellm_params:
+      model: groq/mixtral-8x7b-32768
+      api_key: os.environ/GROQ_API_KEY
+      rpm: 30
+      tpm: 5000
+    model_info:
+      mode: cloud
+      tier: free
+      cost_per_1k_tokens: 0.0
+      max_tokens: 32768
+      use_cases: ["long-context", "rag"]
+      latency: ultrafast
+      privacy: low
+
+  # --- HuggingFace (Free Tier) ---
+  - model_name: mixtral-8x7b-hf
+    litellm_params:
+      model: huggingface/mistralai/Mixtral-8x7B-Instruct-v0.1
+      api_key: os.environ/HUGGINGFACE_API_KEY
+      rpm: 10  # Free tier
+      tpm: 30000
+    model_info:
+      mode: cloud
+      tier: free
+      cost_per_1k_tokens: 0.0
+      max_tokens: 32768
+      use_cases: ["experimentation", "testing"]
+      latency: slow
+      privacy: low
+
+  # ============================================================================
+  # TIER 1: STARTER ($0.001 - $0.003 per 1K tokens)
+  # ============================================================================
+
+  # --- Together AI (Cost-effective, fast inference) ---
+  - model_name: mixtral-8x22b-together
+    litellm_params:
+      model: together_ai/mistralai/Mixtral-8x22B-Instruct-v0.1
+      api_key: os.environ/TOGETHER_API_KEY
+      rpm: 600
+      tpm: 1000000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0012
+      max_tokens: 65536
+      use_cases: ["long-context", "rag", "analysis"]
+      latency: fast
+      privacy: low
+
+  - model_name: llama3-70b-together
+    litellm_params:
+      model: together_ai/meta-llama/Meta-Llama-3-70B-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+      rpm: 600
+      tpm: 1000000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0009
+      max_tokens: 8192
+      use_cases: ["general", "balanced"]
+      latency: fast
+      privacy: low
+
+  - model_name: qwen-72b-together
+    litellm_params:
+      model: together_ai/Qwen/Qwen2-72B-Instruct
+      api_key: os.environ/TOGETHER_API_KEY
+      rpm: 600
+      tpm: 1000000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0009
+      max_tokens: 32768
+      use_cases: ["code", "technical"]
+      latency: fast
+      privacy: low
+
+  # --- Fireworks AI (Fast inference, competitive pricing) ---
+  - model_name: qwen-72b-fireworks
+    litellm_params:
+      model: fireworks_ai/accounts/fireworks/models/qwen2-72b-instruct
+      api_key: os.environ/FIREWORKS_API_KEY
+      rpm: 600
+      tpm: 1000000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0009
+      max_tokens: 32768
+      use_cases: ["code", "technical"]
+      latency: fast
+      privacy: low
+
+  - model_name: llama3-70b-fireworks
+    litellm_params:
+      model: fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
+      api_key: os.environ/FIREWORKS_API_KEY
+      rpm: 600
+      tpm: 1000000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0008
+      max_tokens: 8192
+      use_cases: ["general", "balanced"]
+      latency: fast
+      privacy: low
+
+  # --- DeepInfra (Budget-friendly, good variety) ---
+  - model_name: llama3-70b-deepinfra
+    litellm_params:
+      model: deepinfra/meta-llama/Meta-Llama-3-70B-Instruct
+      api_key: os.environ/DEEPINFRA_API_KEY
+      rpm: 300
+      tpm: 500000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0007
+      max_tokens: 8192
+      use_cases: ["general", "budget"]
+      latency: medium
+      privacy: low
+
+  - model_name: mixtral-8x7b-deepinfra
+    litellm_params:
+      model: deepinfra/mistralai/Mixtral-8x7B-Instruct-v0.1
+      api_key: os.environ/DEEPINFRA_API_KEY
+      rpm: 300
+      tpm: 500000
+    model_info:
+      mode: cloud
+      tier: starter
+      cost_per_1k_tokens: 0.0006
+      max_tokens: 32768
+      use_cases: ["budget", "general"]
+      latency: medium
+      privacy: low
+
+  # ============================================================================
+  # TIER 2: PROFESSIONAL (via OpenRouter gateway)
+  # ============================================================================
+
+  # --- OpenRouter: Claude Models ---
+  - model_name: claude-3.5-sonnet-openrouter
+    litellm_params:
+      model: openrouter/anthropic/claude-3.5-sonnet
+      api_key: os.environ/OPENROUTER_API_KEY
+      rpm: 500
+      tpm: 400000
+    model_info:
+      mode: cloud
+      tier: professional
+      cost_per_1k_tokens: 0.003  # OpenRouter markup included
+      max_tokens: 8192
+      use_cases: ["premium", "analysis", "creative"]
+      latency: medium
+      privacy: low
+
+  - model_name: claude-3-opus-openrouter
+    litellm_params:
+      model: openrouter/anthropic/claude-3-opus
+      api_key: os.environ/OPENROUTER_API_KEY
+      rpm: 100
+      tpm: 100000
+    model_info:
+      mode: cloud
+      tier: professional
+      cost_per_1k_tokens: 0.015
+      max_tokens: 4096
+      use_cases: ["best-quality", "complex"]
+      latency: medium
+      privacy: low
+
+  # --- OpenRouter: GPT Models ---
+  - model_name: gpt-4o-openrouter
+    litellm_params:
+      model: openrouter/openai/gpt-4o
+      api_key: os.environ/OPENROUTER_API_KEY
+      rpm: 500
+      tpm: 300000
+    model_info:
+      mode: cloud
+      tier: professional
+      cost_per_1k_tokens: 0.005
+      max_tokens: 4096
+      use_cases: ["premium", "general"]
+      latency: medium
+      privacy: low
+
+  - model_name: gpt-4-turbo-openrouter
+    litellm_params:
+      model: openrouter/openai/gpt-4-turbo
+      api_key: os.environ/OPENROUTER_API_KEY
+      rpm: 500
+      tpm: 300000
+    model_info:
+      mode: cloud
+      tier: professional
+      cost_per_1k_tokens: 0.010
+      max_tokens: 128000
+      use_cases: ["long-context", "premium"]
+      latency: medium
+      privacy: low
+
+  # --- OpenRouter: Gemini Models ---
+  - model_name: gemini-pro-openrouter
+    litellm_params:
+      model: openrouter/google/gemini-pro
+      api_key: os.environ/OPENROUTER_API_KEY
+      rpm: 500
+      tpm: 500000
+    model_info:
+      mode: cloud
+      tier: professional
+      cost_per_1k_tokens: 0.000125  # Very cost-effective
+      max_tokens: 32768
+      use_cases: ["budget-premium", "long-context"]
+      latency: medium
+      privacy: low
+
+  # ============================================================================
+  # TIER 3: ENTERPRISE (Direct API access)
+  # ============================================================================
+
+  # --- Anthropic Direct ---
+  - model_name: claude-3.5-sonnet
+    litellm_params:
+      model: anthropic/claude-3-5-sonnet-20241022
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm: 1000
+      tpm: 800000
+    model_info:
+      mode: cloud
+      tier: enterprise
+      cost_per_1k_tokens: 0.003
+      max_tokens: 8192
+      use_cases: ["premium", "direct", "reliable"]
+      latency: fast
+      privacy: low
+      sla: true
+
+  - model_name: claude-3-opus
+    litellm_params:
+      model: anthropic/claude-3-opus-20240229
+      api_key: os.environ/ANTHROPIC_API_KEY
+      rpm: 1000
+      tpm: 400000
+    model_info:
+      mode: cloud
+      tier: enterprise
+      cost_per_1k_tokens: 0.015
+      max_tokens: 4096
+      use_cases: ["best-quality", "critical"]
+      latency: fast
+      privacy: low
+      sla: true
+
+  # --- OpenAI Direct ---
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+      rpm: 5000
+      tpm: 800000
+    model_info:
+      mode: cloud
+      tier: enterprise
+      cost_per_1k_tokens: 0.005
+      max_tokens: 4096
+      use_cases: ["premium", "direct", "reliable"]
+      latency: fast
+      privacy: low
+      sla: true
+
+  - model_name: gpt-4-turbo
+    litellm_params:
+      model: openai/gpt-4-turbo-2024-04-09
+      api_key: os.environ/OPENAI_API_KEY
+      rpm: 5000
+      tpm: 600000
+    model_info:
+      mode: cloud
+      tier: enterprise
+      cost_per_1k_tokens: 0.010
+      max_tokens: 128000
+      use_cases: ["long-context", "premium"]
+      latency: fast
+      privacy: low
+      sla: true
+
+  - model_name: gpt-3.5-turbo
+    litellm_params:
+      model: openai/gpt-3.5-turbo
+      api_key: os.environ/OPENAI_API_KEY
+      rpm: 10000
+      tpm: 2000000
+    model_info:
+      mode: cloud
+      tier: enterprise
+      cost_per_1k_tokens: 0.0015
+      max_tokens: 16384
+      use_cases: ["fast", "budget-premium"]
+      latency: ultrafast
+      privacy: low
+      sla: true
+
+
+# ============================================================================
+# LITELLM GENERAL SETTINGS
+# ============================================================================
+
+general_settings:
+  # Master API key for admin operations
+  master_key: os.environ/LITELLM_MASTER_KEY
+
+  # Database for request logging
+  database_url: os.environ/DATABASE_URL
+
+  # Redis for caching and rate limiting
+  cache:
+    type: redis
+    host: os.environ/REDIS_HOST
+    port: os.environ/REDIS_PORT
+    password: os.environ/REDIS_PASSWORD
+    ttl: 3600  # 1 hour cache
+
+  # Enable callbacks for analytics
+  success_callback: ["postgres", "langfuse"]  # Track successful requests
+  failure_callback: ["postgres", "langfuse"]  # Track failures
+
+  # Langfuse integration (optional - for advanced analytics)
+  langfuse_public_key: os.environ/LANGFUSE_PUBLIC_KEY
+  langfuse_secret_key: os.environ/LANGFUSE_SECRET_KEY
+
+  # Default settings
+  default_team_settings:
+    - team_id: default
+      max_budget: 1000  # $1000 monthly budget
+      budget_duration: 30d
+      tpm_limit: 1000000
+      rpm_limit: 10000
+
+# ============================================================================
+# LITELLM SPECIFIC SETTINGS
+# ============================================================================
+
+litellm_settings:
+  # Retry logic for failed requests
+  num_retries: 2
+  timeout: 120  # 2 minutes
+  retry_after: 5  # Wait 5 seconds before retry
+
+  # Enable fallback routing
+  fallbacks: true
+
+  # Loadbalancing strategy (for multiple instances of same model)
+  router_settings:
+    routing_strategy: latency-based-routing  # Options: simple-shuffle, least-busy, latency-based-routing
+    model_group_alias:
+      gpt-4:
+        - gpt-4o
+        - gpt-4-turbo
+      claude-3.5:
+        - claude-3.5-sonnet
+        - claude-3.5-sonnet-openrouter
+
+  # Request sanitization
+  drop_params: true  # Drop unsupported params instead of erroring
+  add_function_to_prompt: false
+
+  # Cost tracking
+  track_cost_callback: true
+
+  # Set context window fallbacks
+  set_verbose: false
+
+
+# ============================================================================
+# ROUTER SETTINGS (Fallback Chains)
+# ============================================================================
+
+# Fallback chains for different use cases
+router_settings:
+  model_group_fallbacks:
+    # Code generation fallbacks
+    code:
+      - qwen-72b-fireworks
+      - qwen-32b-local
+      - claude-3.5-sonnet-openrouter
+      - gpt-4o-openrouter
+
+    # Fast chat fallbacks
+    chat:
+      - llama3-70b-groq
+      - llama3-70b-together
+      - gpt-3.5-turbo
+
+    # Long context fallbacks
+    long-context:
+      - mixtral-8x22b-together
+      - gpt-4-turbo-openrouter
+      - claude-3-opus-openrouter
+
+    # Premium quality fallbacks
+    premium:
+      - claude-3.5-sonnet
+      - gpt-4o
+      - claude-3-opus
+
+    # Budget-friendly fallbacks
+    budget:
+      - llama3-70b-deepinfra
+      - mixtral-8x7b-deepinfra
+      - llama3-8b-local
+
+    # Privacy-first (local only)
+    privacy:
+      - qwen-32b-local
+      - llama3-8b-local
+
+  # Allowed failures before giving up
+  allowed_fails: 2
+
+  # Cooldown for failing providers (seconds)
+  cooldown_time: 60
+
+
+# ============================================================================
+# RATE LIMITING (Per User Tier)
+# ============================================================================
+
+# Rate limits based on subscription tier
+litellm_rate_limits:
+  free:
+    tpm: 10000  # Tokens per minute
+    rpm: 10     # Requests per minute
+    max_parallel_requests: 1
+    budget: 0   # No cost allowed (free models only)
+
+  starter:
+    tpm: 100000
+    rpm: 100
+    max_parallel_requests: 5
+    budget: 50  # $50/month
+
+  professional:
+    tpm: 500000
+    rpm: 500
+    max_parallel_requests: 20
+    budget: 200  # $200/month
+
+  enterprise:
+    tpm: 2000000
+    rpm: 2000
+    max_parallel_requests: 100
+    budget: 1000  # $1000/month
+
+
+# ============================================================================
+# MONITORING & ALERTING
+# ============================================================================
+
+# Prometheus metrics
+prometheus_settings:
+  enabled: true
+  port: 9090
+  path: /metrics
+
+# Alert rules
+alerts:
+  # Alert if error rate exceeds threshold
+  error_rate:
+    threshold: 0.05  # 5%
+    window: 300  # 5 minutes
+    action: email
+
+  # Alert if latency exceeds threshold
+  latency_p95:
+    threshold: 10000  # 10 seconds
+    window: 300
+    action: slack
+
+  # Alert if budget exceeds threshold
+  budget_usage:
+    threshold: 0.9  # 90% of budget
+    action: email
+
+
+# ============================================================================
+# LOGGING
+# ============================================================================
+
+logging_settings:
+  level: INFO
+  format: json
+
+  # What to log
+  log_requests: true
+  log_responses: false  # Set to true for debugging (careful with PII)
+  log_errors: true
+
+  # Where to log
+  destinations:
+    - console
+    - file: /app/logs/litellm.log
+    - postgres  # Log to database for analytics
+
+
+# ============================================================================
+# COST TRACKING
+# ============================================================================
+
+# Pricing per provider (for cost calculations)
+# These are the actual provider costs - markup is handled by Ops-Center
+provider_pricing:
+  together_ai: 0.0012  # per 1K tokens (average)
+  fireworks_ai: 0.0009
+  deepinfra: 0.0007
+  groq: 0.0
+  huggingface: 0.0
+  openrouter: 0.005  # average across models
+  anthropic: 0.008  # average (input + output)
+  openai: 0.0075  # average
+  local: 0.0
+
+
+# ============================================================================
+# SECURITY
+# ============================================================================
+
+security_settings:
+  # Allowed origins for CORS
+  allowed_origins:
+    - "https://your-domain.com"
+    - "https://brigade.your-domain.com"
+    - "http://localhost:*"
+
+  # API key rotation
+  rotate_keys: true
+  rotation_interval: 90d  # Rotate every 90 days
+
+  # Request validation
+  validate_requests: true
+  max_request_size: 10485760  # 10MB
+
+
+# ============================================================================
+# EXPERIMENTAL FEATURES
+# ============================================================================
+
+experimental:
+  # Enable semantic caching (cache similar prompts)
+  semantic_cache: true
+  semantic_cache_threshold: 0.95  # 95% similarity
+
+  # Enable streaming for all models
+  force_streaming: false
+
+  # Enable parallel tool calling
+  parallel_tool_calls: true

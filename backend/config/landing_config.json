@@ -1,0 +1,135 @@
+{
+  "theme": {
+    "preset": "dashboard",
+    "custom_colors": {
+      "primary": "#3B82F6",
+      "secondary": "#8B5CF6",
+      "accent": "#F59E0B",
+      "background_gradient": "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
+    }
+  },
+  "branding": {
+    "logo_url": "/the-colonel-logo.png",
+    "company_name": "UC-1 Pro Operations Center",
+    "company_subtitle": "Enterprise AI Infrastructure Platform",
+    "show_emoji": false,
+    "emoji": "🚀"
+  },
+  "welcome": {
+    "title": "Welcome to UC-1 Pro Operations Center",
+    "description": "Your enterprise AI infrastructure is ready. Experience the power of unified AI services with single sign-on authentication and advanced model management.",
+    "show_emoji": true
+  },
+  "services": [
+    {
+      "id": "chat",
+      "name": "Open-WebUI Chat",
+      "icon": "💬",
+      "logo_url": "/magic-unicorn-logo.png",
+      "description": "Advanced AI chat interface powered by state-of-the-art language models",
+      "url": "auto",
+      "port": 8080,
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "id": "search",
+      "name": "Center-Deep Search",
+      "icon": "🔍",
+      "logo_url": "/center-deep-logo.png",
+      "description": "AI-powered intelligent search platform with advanced tool servers",
+      "url": "auto",
+      "port": 8888,
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "id": "vllm",
+      "name": "vLLM Engine",
+      "icon": "🚀",
+      "description": "High-performance LLM inference optimized for RTX 5090",
+      "url": null,
+      "port": 8000,
+      "enabled": true,
+      "apiOnly": true,
+      "order": 3
+    },
+    {
+      "id": "amanuensis",
+      "name": "Unicorn Amanuensis",
+      "icon": "🎙️",
+      "logo_url": "/amanuensis-logo.png",
+      "description": "Advanced speech-to-text with speaker diarization and 100+ languages",
+      "url": "http://192.168.1.135:8887/web",
+      "port": 8887,
+      "enabled": true,
+      "apiOnly": false,
+      "order": 4,
+      "subdomain": "stt",
+      "path": "/web"
+    },
+    {
+      "id": "orator",
+      "name": "Unicorn Orator",
+      "icon": "🔊",
+      "logo_url": "/Unicorn_Orator.png",
+      "description": "Professional AI voice synthesis with multiple voices and emotions",
+      "url": "auto",
+      "port": 8885,
+      "enabled": true,
+      "apiOnly": false,
+      "order": 5
+    },
+    {
+      "id": "qdrant",
+      "name": "Qdrant Vector DB",
+      "icon": "📊",
+      "description": "High-performance vector database for RAG applications",
+      "url": null,
+      "port": 6333,
+      "enabled": true,
+      "apiOnly": true,
+      "order": 6
+    },
+    {
+      "id": "magicdeck",
+      "name": "MagicDeck",
+      "icon": "🎨",
+      "logo_url": "/logos/magicdeck-logo.png",
+      "description": "AI-powered presentation generator with 200+ templates and multi-agent collaboration",
+      "url": "auto",
+      "port": 8110,
+      "enabled": true,
+      "apiOnly": false,
+      "order": 7,
+      "subdomain": "magicdeck"
+    },
+    {
+      "id": "forgejo",
+      "name": "Forgejo Git",
+      "icon": "🦊",
+      "logo_url": null,
+      "description": "Self-hosted Git server with GitHub-like features - repositories, issues, pull requests, and wikis",
+      "url": "https://git.your-domain.com",
+      "port": 3003,
+      "enabled": true,
+      "apiOnly": false,
+      "order": 8,
+      "subdomain": "git"
+    }
+  ],
+  "custom_links": [],
+  "admin_section": {
+    "enabled": true,
+    "title": "Administrative Control Center",
+    "description": "Access full system management, model configuration, and monitoring dashboards",
+    "button_text": "Enter Admin Dashboard",
+    "button_emoji": "🛡️"
+  },
+  "animations": {
+    "enabled": true,
+    "gradient_animation": true,
+    "hover_effects": true,
+    "loading_spinner": true
+  }
+}

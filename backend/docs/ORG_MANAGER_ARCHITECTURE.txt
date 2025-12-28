@@ -1,0 +1,319 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    ORGANIZATION MANAGER ARCHITECTURE                          ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              APPLICATION LAYER                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │
+│  │   FastAPI    │  │ Keycloak/    │  │    Lago      │  │   Stripe     │   │
+│  │  Endpoints   │  │  Authentik   │  │   Billing    │  │   Billing    │   │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘   │
+│         │                 │                 │                 │             │
+└─────────┼─────────────────┼─────────────────┼─────────────────┼─────────────┘
+          │                 │                 │                 │
+          └─────────────────┴─────────────────┴─────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          ORG MANAGER MODULE (org_manager.py)                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         OrgManager Class                            │    │
+│  ├────────────────────────────────────────────────────────────────────┤    │
+│  │                                                                     │    │
+│  │  Organization Operations:                                          │    │
+│  │    • create_organization(name, plan_tier)                          │    │
+│  │    • get_org(org_id)                                               │    │
+│  │    • update_org_plan(org_id, plan_tier)                           │    │
+│  │    • update_org_status(org_id, status)                            │    │
+│  │    • update_org_billing_ids(org_id, lago_id, stripe_id)          │    │
+│  │    • list_all_organizations()                                      │    │
+│  │    • search_organizations(query)                                   │    │
+│  │    • get_organizations_by_plan(plan_tier)                         │    │
+│  │                                                                     │    │
+│  │  User-Organization Operations:                                     │    │
+│  │    • add_user_to_org(org_id, user_id, role)                      │    │
+│  │    • remove_user_from_org(org_id, user_id)                       │    │
+│  │    • update_user_role(org_id, user_id, new_role)                 │    │
+│  │    • get_user_orgs(user_id)                                       │    │
+│  │    • get_org_users(org_id)                                        │    │
+│  │    • get_user_role_in_org(org_id, user_id)                       │    │
+│  │                                                                     │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                         Data Models (Pydantic)                      │    │
+│  ├────────────────────────────────────────────────────────────────────┤    │
+│  │                                                                     │    │
+│  │  Organization:                      OrgUser:                       │    │
+│  │    • id: str                          • org_id: str                │    │
+│  │    • name: str                        • user_id: str               │    │
+│  │    • created_at: datetime             • role: str                  │    │
+│  │    • plan_tier: str                   • joined_at: datetime        │    │
+│  │    • lago_customer_id: str?                                        │    │
+│  │    • stripe_customer_id: str?                                      │    │
+│  │    • status: str                                                   │    │
+│  │                                                                     │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────┐    │
+│  │                    Thread Safety (fcntl)                            │    │
+│  ├────────────────────────────────────────────────────────────────────┤    │
+│  │                                                                     │    │
+│  │  locked_file() context manager:                                    │    │
+│  │    • Exclusive file locking (LOCK_EX)                             │    │
+│  │    • Automatic lock release                                        │    │
+│  │    • Blocks until lock available                                   │    │
+│  │    • Thread-safe & process-safe                                    │    │
+│  │                                                                     │    │
+│  └────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+└──────────────────────────────────┬───────────────────────────────────────────┘
+                                   │
+                                   ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            STORAGE LAYER                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  File System: /backend/data/                                                │
+│  ┌──────────────────────────────────┐  ┌──────────────────────────────────┐│
+│  │     organizations.json            │  │      org_users.json              ││
+│  ├──────────────────────────────────┤  ├──────────────────────────────────┤│
+│  │ {                                │  │ {                                ││
+│  │   "org_abc123": {                │  │   "org_abc123": [                ││
+│  │     "id": "org_abc123",          │  │     {                            ││
+│  │     "name": "Acme Corp",         │  │       "org_id": "org_abc123",   ││
+│  │     "created_at": "...",         │  │       "user_id": "user_alice",  ││
+│  │     "plan_tier": "professional", │  │       "role": "owner",          ││
+│  │     "lago_customer_id": "...",   │  │       "joined_at": "..."        ││
+│  │     "stripe_customer_id": "...", │  │     },                           ││
+│  │     "status": "active"           │  │     { ... }                      ││
+│  │   },                             │  │   ],                             ││
+│  │   ...                            │  │   ...                            ││
+│  │ }                                │  │ }                                ││
+│  └──────────────────────────────────┘  └──────────────────────────────────┘│
+│                                                                              │
+│  Features:                                                                   │
+│    ✓ JSON format (human-readable)                                          │
+│    ✓ File locking (thread-safe)                                            │
+│    ✓ Atomic operations                                                      │
+│    ✓ Easy backup (copy files)                                              │
+│    ✓ Version control friendly                                              │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          TYPICAL OPERATION FLOW                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      1. USER REGISTRATION FLOW                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+User Signs Up
+      │
+      ▼
+Keycloak/Authentik creates user
+      │
+      ▼
+org_manager.create_organization("User's Org")
+      │
+      ├──► Acquire file lock
+      ├──► Generate org_id: "org_abc123..."
+      ├──► Create Organization object
+      ├──► Save to organizations.json
+      └──► Release lock
+      │
+      ▼
+org_manager.add_user_to_org(org_id, user_id, "owner")
+      │
+      ├──► Acquire file lock
+      ├──► Create OrgUser object
+      ├──► Save to org_users.json
+      └──► Release lock
+      │
+      ▼
+Setup billing (Lago + Stripe)
+      │
+      ├──► Create Lago customer
+      ├──► Create Stripe customer
+      └──► org_manager.update_org_billing_ids(org_id, lago_id, stripe_id)
+      │
+      ▼
+Redirect to dashboard
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      2. PLAN UPGRADE FLOW                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+User requests upgrade
+      │
+      ▼
+Verify user role (owner/billing_admin)
+      │
+      ▼
+Update Lago subscription
+      │
+      ▼
+Update Stripe subscription
+      │
+      ▼
+org_manager.update_org_plan(org_id, "enterprise")
+      │
+      ├──► Acquire file lock
+      ├──► Load organizations.json
+      ├──► Update plan_tier field
+      ├──► Save organizations.json
+      └──► Release lock
+      │
+      ▼
+Notify team members
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      3. TEAM INVITATION FLOW                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+Owner invites user
+      │
+      ▼
+Verify inviter role
+      │
+      ▼
+Send invitation email
+      │
+      ▼
+User accepts invitation
+      │
+      ▼
+org_manager.add_user_to_org(org_id, new_user_id, "member")
+      │
+      ├──► Acquire file lock
+      ├──► Check for duplicates
+      ├──► Create OrgUser object
+      ├──► Append to org_users.json
+      └──► Release lock
+      │
+      ▼
+User can now access organization
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          CONCURRENT OPERATIONS                                ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+Thread 1: create_organization("Corp A")    Thread 2: create_organization("Corp B")
+    │                                           │
+    ├──► Acquire lock                          ├──► Wait for lock...
+    ├──► Read file                             │
+    ├──► Add organization                      │
+    ├──► Write file                            │
+    └──► Release lock                          │
+                                                ├──► Acquire lock (now available)
+                                                ├──► Read file (includes Corp A)
+                                                ├──► Add organization
+                                                ├──► Write file
+                                                └──► Release lock
+
+Result: Both organizations created safely, no data loss
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          INTEGRATION POINTS                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌────────────────┐
+│   Keycloak/    │  User Authentication & SSO
+│   Authentik    │  ─────────────────────────────────►  org_manager.add_user_to_org()
+└────────────────┘                                       org_manager.get_user_orgs()
+
+┌────────────────┐
+│   Lago         │  Usage-based Billing
+│   Billing      │  ◄────────────────────────────────  org.lago_customer_id
+└────────────────┘                                     update_org_billing_ids()
+
+┌────────────────┐
+│   Stripe       │  Payment Processing
+│   Billing      │  ◄────────────────────────────────  org.stripe_customer_id
+└────────────────┘                                     update_org_billing_ids()
+
+┌────────────────┐
+│   FastAPI      │  REST API Endpoints
+│   Server       │  ◄────────────────────────────────  All org_manager methods
+└────────────────┘                                     via API routes
+
+┌────────────────┐
+│   Frontend     │  User Dashboard & Management
+│   Dashboard    │  ◄────────────────────────────────  GET /api/users/{id}/organizations
+└────────────────┘                                     POST /api/organizations
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          SCALABILITY PATH                                     ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+Phase 1: Current (File-based)
+    ├─ Organizations: 0 - 10,000
+    ├─ Users: 0 - 100,000
+    └─ Performance: Good for most use cases
+
+Phase 2: Add Redis Cache
+    ├─ Cache frequently accessed orgs
+    ├─ TTL-based invalidation
+    └─ 10x read performance boost
+
+Phase 3: Migrate to PostgreSQL
+    ├─ Same API interface (no code changes)
+    ├─ Organizations: 10,000+
+    ├─ Users: 100,000+
+    └─ Advanced queries and indexing
+
+Phase 4: Add Read Replicas
+    ├─ Master for writes
+    ├─ Replicas for reads
+    └─ High availability
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          FILE STRUCTURE                                       ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+backend/
+├── org_manager.py                  651 lines  │  Core module
+│                                               │
+├── data/                                       │  Storage (auto-created)
+│   ├── organizations.json                      │  Organization records
+│   └── org_users.json                          │  User relationships
+│                                               │
+├── docs/                                       │  Documentation (62 KB)
+│   ├── ORG_MANAGER_README.md                  │  Overview
+│   ├── ORG_MANAGER_API.md                     │  API reference
+│   ├── ORG_MANAGER_INTEGRATION.md             │  Integration guide
+│   ├── ORG_MANAGER_QUICK_REFERENCE.md         │  Cheat sheet
+│   ├── ORG_MANAGER_SUMMARY.md                 │  Implementation summary
+│   ├── ORG_MANAGER_ARCHITECTURE.txt           │  This file
+│   └── org_manager_examples.py                │  10 usage examples
+│                                               │
+└── tests/                                      │  Test suite
+    └── test_org_manager.py        356 lines   │  50+ tests
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          QUICK START                                          ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+1. Import:
+   from org_manager import org_manager
+
+2. Create organization:
+   org_id = org_manager.create_organization("My Company")
+
+3. Add user:
+   org_manager.add_user_to_org(org_id, "user_123", role="owner")
+
+4. Done! ✓
+

@@ -1,0 +1,186 @@
+version: '3.8'
+
+services:
+  # Prometheus - Metrics Collection
+  ops-center-prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: ops-center-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - unicorn-network
+      - web
+      - uchub-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ops-prometheus.rule=Host(`${PROMETHEUS_HOST:-metrics.your-domain.com}`)"
+      - "traefik.http.routers.ops-prometheus.entrypoints=https"
+      - "traefik.http.routers.ops-prometheus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ops-prometheus.loadbalancer.server.port=9090"
+      # Basic auth middleware (optional)
+      - "traefik.http.routers.ops-prometheus.middlewares=ops-prometheus-auth"
+      - "traefik.http.middlewares.ops-prometheus-auth.basicauth.users=admin:$$apr1$$8dJIE0XX$$Q6WmVPZ5qMqQqQQqQQqQQ"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Grafana - Visualization Dashboards
+  ops-center-grafana:
+    image: grafana/grafana:10.2.2
+    container_name: ops-center-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-change-me-in-production}
+      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-https://monitoring.your-domain.com}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/system-health-overview.json
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - unicorn-network
+      - web
+    depends_on:
+      - ops-center-prometheus
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ops-grafana.rule=Host(`${GRAFANA_HOST:-monitoring.your-domain.com}`)"
+      - "traefik.http.routers.ops-grafana.entrypoints=https"
+      - "traefik.http.routers.ops-grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ops-grafana.loadbalancer.server.port=3000"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Alertmanager - Alert Routing & Notifications
+  ops-center-alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: ops-center-alertmanager
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=${ALERTMANAGER_EXTERNAL_URL:-https://alerts.your-domain.com}'
+    volumes:
+      - ./alerting/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./alerting/templates:/etc/alertmanager/templates:ro
+      - alertmanager-data:/alertmanager
+    networks:
+      - unicorn-network
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ops-alertmanager.rule=Host(`${ALERTMANAGER_HOST:-alerts.your-domain.com}`)"
+      - "traefik.http.routers.ops-alertmanager.entrypoints=https"
+      - "traefik.http.routers.ops-alertmanager.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ops-alertmanager.loadbalancer.server.port=9093"
+      # Basic auth middleware
+      - "traefik.http.routers.ops-alertmanager.middlewares=ops-alertmanager-auth"
+      - "traefik.http.middlewares.ops-alertmanager-auth.basicauth.users=admin:$$apr1$$8dJIE0XX$$Q6WmVPZ5qMqQqQQqQQqQQ"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9093/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Node Exporter - Host System Metrics
+  ops-center-node-exporter:
+    image: prom/node-exporter:v1.7.0
+    container_name: ops-center-node-exporter
+    restart: unless-stopped
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - unicorn-network
+    ports:
+      - "9100:9100"
+
+  # cAdvisor - Container Metrics
+  ops-center-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    container_name: ops-center-cadvisor
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    networks:
+      - unicorn-network
+    ports:
+      - "8080:8080"
+
+  # Redis Exporter - Redis Metrics
+  ops-center-redis-exporter:
+    image: oliver006/redis_exporter:v1.55.0
+    container_name: ops-center-redis-exporter
+    restart: unless-stopped
+    environment:
+      - REDIS_ADDR=redis://unicorn-redis:6379
+      - REDIS_EXPORTER_LOG_FORMAT=json
+    networks:
+      - unicorn-network
+    ports:
+      - "9121:9121"
+
+  # PostgreSQL Exporter - Database Metrics
+  ops-center-postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    container_name: ops-center-postgres-exporter
+    restart: unless-stopped
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-change-me}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ops_center_db}?sslmode=disable
+      - PG_EXPORTER_EXTEND_QUERY_PATH=/etc/postgres_exporter/queries.yaml
+    volumes:
+      - ./prometheus/postgres-queries.yaml:/etc/postgres_exporter/queries.yaml:ro
+    networks:
+      - unicorn-network
+    ports:
+      - "9187:9187"
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  alertmanager-data:
+    driver: local
+
+networks:
+  web:
+    external: true
+  unicorn-network:
+    external: true
+  uchub-network:
+    external: true

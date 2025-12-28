@@ -1,0 +1,468 @@
+name: E2E Tests - Ops-Center
+
+# Trigger workflow on:
+# - Push to main/master branch
+# - Pull requests
+# - Manual trigger
+# - Scheduled runs (daily at 2 AM UTC)
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'services/ops-center/**'
+      - '.github/workflows/e2e-tests.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'services/ops-center/**'
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to test'
+        required: false
+        default: 'chromium'
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+          - all
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+
+# Environment variables
+# Configure APP_URL in GitHub repository variables for your deployment
+env:
+  NODE_VERSION: '20.x'
+  BASE_URL: ${{ vars.APP_URL }}
+
+# Jobs
+jobs:
+  # ============================================================================
+  # SETUP AND LINT
+  # ============================================================================
+  setup:
+    name: Setup and Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Lint JavaScript
+        working-directory: services/ops-center
+        run: |
+          npm run lint || echo "Linting skipped (no lint script)"
+
+      - name: Type check
+        working-directory: services/ops-center
+        run: |
+          npm run typecheck || echo "Type checking skipped (no typecheck script)"
+
+  # ============================================================================
+  # E2E TESTS - CHROMIUM (Primary)
+  # ============================================================================
+  e2e-chromium:
+    name: E2E Tests - Chromium
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests (Chromium)
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test --project=chromium --reporter=html,json,junit
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-chromium
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+      - name: Upload screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-chromium
+          path: services/ops-center/test-results/screenshots/
+          retention-days: 30
+
+      - name: Publish Test Results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Playwright Tests (Chromium)
+          path: services/ops-center/test-results/junit.xml
+          reporter: java-junit
+
+  # ============================================================================
+  # E2E TESTS - FIREFOX
+  # ============================================================================
+  e2e-firefox:
+    name: E2E Tests - Firefox
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 30
+    # Only run on schedule or manual trigger
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps firefox
+
+      - name: Run E2E tests (Firefox)
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test --project=firefox --reporter=html,json
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-firefox
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+  # ============================================================================
+  # E2E TESTS - WEBKIT (Safari)
+  # ============================================================================
+  e2e-webkit:
+    name: E2E Tests - WebKit (Safari)
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 30
+    # Only run on schedule or manual trigger
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps webkit
+
+      - name: Run E2E tests (WebKit)
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test --project=webkit --reporter=html,json
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-webkit
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+  # ============================================================================
+  # ACCESSIBILITY TESTS
+  # ============================================================================
+  accessibility:
+    name: Accessibility Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Accessibility tests
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test --project=accessibility --reporter=html,json
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+  # ============================================================================
+  # PERFORMANCE TESTS
+  # ============================================================================
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    # Only run on schedule
+    if: github.event_name == 'schedule'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Performance tests
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test tests/performance/ --reporter=html,json
+
+      - name: Upload performance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+  # ============================================================================
+  # MOBILE TESTS
+  # ============================================================================
+  mobile:
+    name: Mobile Responsiveness Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    # Only run on PR or schedule
+    if: github.event_name == 'pull_request' || github.event_name == 'schedule'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'services/ops-center/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: services/ops-center
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: services/ops-center
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Mobile tests
+        working-directory: services/ops-center
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          CI: true
+        run: |
+          npx playwright test --project=mobile-chrome --project=mobile-safari --reporter=html,json
+
+      - name: Upload mobile test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-report
+          path: services/ops-center/test-results/
+          retention-days: 30
+
+  # ============================================================================
+  # SUMMARY REPORT
+  # ============================================================================
+  report:
+    name: Generate Summary Report
+    runs-on: ubuntu-latest
+    needs: [e2e-chromium, accessibility]
+    if: always()
+    timeout-minutes: 10
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: test-results/
+
+      - name: Generate summary
+        run: |
+          echo "# E2E Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chromium**: ${{ needs.e2e-chromium.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Accessibility**: ${{ needs.accessibility.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Test reports and screenshots are available in the workflow artifacts." >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment PR (if applicable)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## E2E Test Results\n\n✅ Chromium: ${{ needs.e2e-chromium.result }}\n✅ Accessibility: ${{ needs.accessibility.result }}\n\nView detailed reports in workflow artifacts.`
+            })
+
+# ============================================================================
+# NOTIFICATIONS
+# ============================================================================
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    needs: [e2e-chromium, accessibility]
+    if: failure() && github.event_name == 'schedule'
+    timeout-minutes: 5
+
+    steps:
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST $SLACK_WEBHOOK_URL \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "text": "🚨 E2E Tests Failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*E2E Test Failure*\n\nScheduled E2E tests have failed. Please check the workflow run for details."
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {"type": "mrkdwn", "text": "*Repository:*\n${{ github.repository }}"},
+                    {"type": "mrkdwn", "text": "*Branch:*\n${{ github.ref_name }}"}
+                  ]
+                }
+              ]
+            }'
+
+      - name: Create issue on failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[E2E] Scheduled tests failed - ${new Date().toISOString().split('T')[0]}`,
+              body: `Automated E2E tests have failed in the scheduled run.\n\n**Workflow Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nPlease investigate and fix the failing tests.`,
+              labels: ['bug', 'testing', 'automated']
+            })

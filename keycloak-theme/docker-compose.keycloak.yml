@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  keycloak-db:
+    image: postgres:16-alpine
+    container_name: keycloak-postgresql
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak_secure_password_2025}
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    networks:
+      - unicorn-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: unicorn-keycloak
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    environment:
+      # Database configuration
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-keycloak_secure_password_2025}
+
+      # Admin credentials
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-your-test-password}
+
+      # Hostname configuration
+      KC_HOSTNAME: auth.your-domain.com
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      # Proxy configuration (for Traefik)
+      KC_PROXY: edge
+      KC_PROXY_HEADERS: xforwarded
+
+      # HTTP configuration
+      KC_HTTP_ENABLED: true
+      KC_HTTP_PORT: 8080
+
+      # Health endpoints
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+
+      # Logging
+      KC_LOG_LEVEL: info
+
+      # Features
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
+    volumes:
+      # Mount custom UC-1 Pro theme
+      - ./uc1-pro:/opt/keycloak/themes/uc1-pro:ro
+    networks:
+      - unicorn-network
+      - web
+    restart: unless-stopped
+    command:
+      - start
+    labels:
+      # Traefik configuration
+      - "traefik.enable=true"
+
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.keycloak-http.rule=Host(`auth.your-domain.com`)"
+      - "traefik.http.routers.keycloak-http.entrypoints=web"
+      - "traefik.http.routers.keycloak-http.middlewares=keycloak-https-redirect"
+      - "traefik.http.middlewares.keycloak-https-redirect.redirectscheme.scheme=https"
+
+      # HTTPS configuration
+      - "traefik.http.routers.keycloak.rule=Host(`auth.your-domain.com`)"
+      - "traefik.http.routers.keycloak.entrypoints=websecure"
+      - "traefik.http.routers.keycloak.tls=true"
+      - "traefik.http.routers.keycloak.tls.certresolver=letsencrypt"
+
+      # Service configuration
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+      # Security headers
+      - "traefik.http.routers.keycloak.middlewares=keycloak-headers"
+      - "traefik.http.middlewares.keycloak-headers.headers.sslredirect=true"
+      - "traefik.http.middlewares.keycloak-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.keycloak-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.keycloak-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.keycloak-headers.headers.forceSTSHeader=true"
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  keycloak-db-data:
+    driver: local
+    name: keycloak-db-data
+
+networks:
+  unicorn-network:
+    external: true
+  web:
+    external: true

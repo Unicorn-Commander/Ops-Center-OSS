@@ -1,0 +1,9 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "UC-Cloud Ops-Center API",
+    "version": "2.1.0",
+    "description": "Comprehensive API documentation"
+  },
+  "paths": {}
+}

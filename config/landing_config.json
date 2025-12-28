@@ -1,0 +1,74 @@
+{
+  "theme": {
+    "preset": "dashboard",
+    "custom_colors": {
+      "primary": "#3B82F6",
+      "secondary": "#8B5CF6",
+      "accent": "#F59E0B",
+      "background_gradient": "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
+    }
+  },
+  "branding": {
+    "logo_url": "/Center-Deep.png",
+    "company_name": "Center-Deep",
+    "company_subtitle": "AI-Powered Deep Web Exploration Platform",
+    "show_emoji": false,
+    "emoji": "\ud83c\udf0a"
+  },
+  "welcome": {
+    "title": "Welcome to Center-Deep",
+    "description": "Dive deep into the web with AI-powered search and exploration tools. Access Center-Deep Pro and future spinoff applications from one central hub.",
+    "show_emoji": true
+  },
+  "services": [
+    {
+      "id": "search",
+      "name": "Center-Deep Pro",
+      "icon": "\ud83c\udf0a",
+      "logo_url": "/Center-Deep.png",
+      "description": "AI-powered metasearch engine - Query 70+ search engines simultaneously with intelligent result ranking",
+      "url": "https://search.centerdeep.online",
+      "port": 8890,
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "id": "placeholder1",
+      "name": "Center-Deep Analytics",
+      "icon": "\ud83d\udcca",
+      "logo_url": "/Center-Deep.png",
+      "description": "Coming Soon - Advanced analytics and insights for your search patterns",
+      "url": null,
+      "port": null,
+      "enabled": false,
+      "comingSoon": true,
+      "order": 2
+    },
+    {
+      "id": "placeholder2",
+      "name": "Center-Deep API",
+      "icon": "\ud83d\udd0c",
+      "logo_url": "/Center-Deep.png",
+      "description": "Coming Soon - Developer API access for integration with your applications",
+      "url": null,
+      "port": null,
+      "enabled": false,
+      "comingSoon": true,
+      "order": 3
+    }
+  ],
+  "custom_links": [],
+  "admin_section": {
+    "enabled": true,
+    "title": "Administrative Control Center",
+    "description": "Access full system management, model configuration, and monitoring dashboards",
+    "button_text": "Enter Admin Dashboard",
+    "button_emoji": "\ud83d\udee1\ufe0f"
+  },
+  "animations": {
+    "enabled": true,
+    "gradient_animation": true,
+    "hover_effects": true,
+    "loading_spinner": true
+  }
+}

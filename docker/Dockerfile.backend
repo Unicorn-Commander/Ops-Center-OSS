@@ -1,0 +1,86 @@
+# Multi-stage build for Ops-Center Backend
+# Target size: <500MB (currently >1GB)
+
+# Build stage - install all dependencies
+FROM python:3.10-slim AS builder
+
+WORKDIR /build
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    make \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install to a virtual environment
+COPY backend/requirements.txt .
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Production stage - minimal runtime
+FROM python:3.10-slim
+
+LABEL maintainer="Magic Unicorn <admin@example.com>"
+LABEL org.opencontainers.image.source="https://github.com/Unicorn-Commander/Ops-Center"
+LABEL org.opencontainers.image.description="Ops-Center Backend API"
+
+# Install only runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    libpq5 \
+    pciutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Docker CLI (needed for service management)
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && \
+    sh get-docker.sh --dry-run && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends docker.io && \
+    rm -rf /var/lib/apt/lists/* get-docker.sh
+
+# Create non-root user
+RUN useradd -m -u 1000 opscenter && \
+    mkdir -p /app && \
+    chown -R opscenter:opscenter /app
+
+WORKDIR /app
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy backend code (only what's needed)
+COPY --chown=opscenter:opscenter backend/*.py ./
+COPY --chown=opscenter:opscenter backend/models ./models/
+COPY --chown=opscenter:opscenter backend/scripts ./scripts/
+COPY --chown=opscenter:opscenter backend/auth ./auth/
+COPY --chown=opscenter:opscenter backend/billing ./billing/
+COPY --chown=opscenter:opscenter backend/config ./config/
+COPY --chown=opscenter:opscenter backend/templates ./templates/
+COPY --chown=opscenter:opscenter backend/email_templates ./email_templates/
+
+# Switch to non-root user
+USER opscenter
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8084/api/v1/health || exit 1
+
+# Expose port
+EXPOSE 8084
+
+# Build arguments for metadata
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
+LABEL org.opencontainers.image.created=$BUILD_DATE
+LABEL org.opencontainers.image.revision=$VCS_REF
+LABEL org.opencontainers.image.version=$VERSION
+
+# Run the server
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8084", "--workers", "4"]

@@ -1,0 +1,346 @@
+{
+  "version": "1.0",
+  "description": "UC-1 Pro App Access Configuration - Role and Tier-Based Access Control",
+  "lastModified": "2025-10-09T00:00:00Z",
+
+  "roleHierarchy": {
+    "description": "Role hierarchy from highest to lowest privilege",
+    "roles": ["admin", "power_user", "user", "viewer"]
+  },
+
+  "tierHierarchy": {
+    "description": "Subscription tier hierarchy from lowest to highest",
+    "tiers": ["trial", "byok", "professional", "enterprise"]
+  },
+
+  "accessModes": {
+    "any_role": "User must have ANY of the specified roles",
+    "all_roles": "User must have ALL of the specified roles (rare)",
+    "any_tier": "User must have ANY of the specified tiers",
+    "all_tiers": "User must have ALL of the specified tiers (rare)",
+    "role_and_tier": "User must have required role AND required tier"
+  },
+
+  "apps": [
+    {
+      "id": "open-webui",
+      "name": "Open-WebUI Chat",
+      "description": "Advanced AI chat interface powered by state-of-the-art language models",
+      "icon": "ChatBubbleLeftRightIcon",
+      "iconImage": null,
+      "color": "from-blue-500 to-blue-700",
+      "textColor": "text-blue-100",
+      "url": "auto",
+      "port": 8080,
+      "enabled": true,
+      "order": 1,
+      "access": {
+        "roles": ["admin", "power_user", "user", "viewer"],
+        "tiers": ["trial", "byok", "professional", "enterprise"],
+        "mode": "any_role"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": false,
+        "requiredFor": "Available to all users"
+      },
+      "metadata": {
+        "category": "ai-tools",
+        "tags": ["chat", "ai", "llm"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "center-deep",
+      "name": "Center-Deep Search",
+      "description": "Advanced AI-powered search platform with tool servers",
+      "icon": "MagnifyingGlassIcon",
+      "iconImage": "/Center-Deep.png",
+      "color": "from-green-500 to-green-700",
+      "textColor": "text-green-100",
+      "url": "auto",
+      "port": 8888,
+      "enabled": true,
+      "order": 2,
+      "access": {
+        "roles": ["admin", "power_user", "user", "viewer"],
+        "tiers": ["trial", "byok", "professional", "enterprise"],
+        "mode": "any_role"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": false,
+        "requiredFor": "Available to all users"
+      },
+      "metadata": {
+        "category": "ai-tools",
+        "tags": ["search", "ai", "web"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "bolt-diy",
+      "name": "Bolt.diy",
+      "description": "AI-powered development environment for rapid prototyping",
+      "icon": "CodeBracketIcon",
+      "iconImage": null,
+      "color": "from-purple-500 to-purple-700",
+      "textColor": "text-purple-100",
+      "url": "auto",
+      "port": 5173,
+      "enabled": true,
+      "order": 3,
+      "access": {
+        "roles": ["admin", "power_user", "user"],
+        "tiers": ["professional", "enterprise"],
+        "mode": "role_and_tier"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": true,
+        "requiredFor": "Professional tier + User role required"
+      },
+      "metadata": {
+        "category": "development",
+        "tags": ["code", "ai", "development", "ide"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "presenton",
+      "name": "Presenton",
+      "description": "AI-powered presentation creation and editing",
+      "icon": "DocumentTextIcon",
+      "iconImage": null,
+      "color": "from-indigo-500 to-indigo-700",
+      "textColor": "text-indigo-100",
+      "url": "auto",
+      "port": 8091,
+      "enabled": true,
+      "order": 4,
+      "access": {
+        "roles": ["admin", "power_user", "user", "viewer"],
+        "tiers": ["trial", "byok", "professional", "enterprise"],
+        "mode": "any_role"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": false,
+        "requiredFor": "Available to all users"
+      },
+      "metadata": {
+        "category": "productivity",
+        "tags": ["presentations", "ai", "slides"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "user-docs",
+      "name": "User Documentation",
+      "description": "End-user guides and application documentation",
+      "icon": "DocumentTextIcon",
+      "iconImage": null,
+      "color": "from-orange-500 to-orange-700",
+      "textColor": "text-orange-100",
+      "url": "auto",
+      "port": 8081,
+      "enabled": true,
+      "order": 5,
+      "access": {
+        "roles": ["admin", "power_user", "user", "viewer"],
+        "tiers": ["trial", "byok", "professional", "enterprise"],
+        "mode": "any_role"
+      },
+      "visibility": {
+        "showWhenLocked": false,
+        "upgradePrompt": false,
+        "requiredFor": "Available to all users"
+      },
+      "metadata": {
+        "category": "documentation",
+        "tags": ["docs", "help", "guides"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana Monitoring",
+      "description": "System performance dashboards and real-time metrics",
+      "icon": "ChartBarIcon",
+      "iconImage": null,
+      "color": "from-red-500 to-red-700",
+      "textColor": "text-red-100",
+      "url": "auto",
+      "port": 3000,
+      "enabled": true,
+      "order": 6,
+      "access": {
+        "roles": ["admin", "power_user"],
+        "tiers": ["professional", "enterprise"],
+        "mode": "role_and_tier"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": true,
+        "requiredFor": "Professional tier + Power User role required"
+      },
+      "metadata": {
+        "category": "monitoring",
+        "tags": ["monitoring", "metrics", "dashboards"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "portainer",
+      "name": "Portainer",
+      "description": "Docker container management and orchestration",
+      "icon": "ServerIcon",
+      "iconImage": null,
+      "color": "from-cyan-500 to-cyan-700",
+      "textColor": "text-cyan-100",
+      "url": "auto",
+      "port": 9444,
+      "enabled": true,
+      "order": 7,
+      "access": {
+        "roles": ["admin", "power_user"],
+        "tiers": ["professional", "enterprise"],
+        "mode": "role_and_tier"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": true,
+        "requiredFor": "Professional tier + Power User role required"
+      },
+      "metadata": {
+        "category": "infrastructure",
+        "tags": ["docker", "containers", "management"],
+        "apiOnly": false
+      }
+    },
+    {
+      "id": "unicorn-orator",
+      "name": "Unicorn Orator",
+      "description": "Professional AI voice synthesis platform with 50+ voice options",
+      "icon": null,
+      "iconImage": "/Unicorn_Orator.png",
+      "color": "from-pink-500 to-pink-700",
+      "textColor": "text-pink-100",
+      "url": "auto",
+      "port": 8880,
+      "enabled": true,
+      "order": 8,
+      "access": {
+        "roles": ["admin", "power_user", "user"],
+        "tiers": ["enterprise"],
+        "mode": "role_and_tier"
+      },
+      "visibility": {
+        "showWhenLocked": true,
+        "upgradePrompt": true,
+        "requiredFor": "Enterprise tier + User role required"
+      },
+      "metadata": {
+        "category": "ai-tools",
+        "tags": ["tts", "voice", "ai", "audio"],
+        "apiOnly": false,
+        "path": "/web"
+      }
+    },
+    {
+      "id": "admin-dashboard",
+      "name": "Admin Dashboard",
+      "description": "Full system management, model configuration, and monitoring dashboards",
+      "icon": "CpuChipIcon",
+      "iconImage": null,
+      "color": "from-gray-600 to-gray-800",
+      "textColor": "text-gray-100",
+      "url": "/admin",
+      "port": null,
+      "enabled": true,
+      "order": 100,
+      "access": {
+        "roles": ["admin"],
+        "tiers": null,
+        "mode": "any_role"
+      },
+      "visibility": {
+        "showWhenLocked": false,
+        "upgradePrompt": false,
+        "requiredFor": "Administrators only"
+      },
+      "metadata": {
+        "category": "admin",
+        "tags": ["admin", "system", "management"],
+        "apiOnly": false,
+        "internal": true
+      }
+    }
+  ],
+
+  "categories": {
+    "ai-tools": {
+      "name": "AI Tools",
+      "description": "AI-powered services for chat, search, and generation",
+      "icon": "CpuChipIcon",
+      "order": 1
+    },
+    "development": {
+      "name": "Development",
+      "description": "Development tools and environments",
+      "icon": "CodeBracketIcon",
+      "order": 2
+    },
+    "productivity": {
+      "name": "Productivity",
+      "description": "Productivity and collaboration tools",
+      "icon": "DocumentTextIcon",
+      "order": 3
+    },
+    "monitoring": {
+      "name": "Monitoring",
+      "description": "System monitoring and metrics",
+      "icon": "ChartBarIcon",
+      "order": 4
+    },
+    "infrastructure": {
+      "name": "Infrastructure",
+      "description": "Infrastructure management tools",
+      "icon": "ServerIcon",
+      "order": 5
+    },
+    "admin": {
+      "name": "Administration",
+      "description": "Administrative tools and dashboards",
+      "icon": "CogIcon",
+      "order": 6
+    },
+    "documentation": {
+      "name": "Documentation",
+      "description": "User guides and documentation",
+      "icon": "BookOpenIcon",
+      "order": 7
+    }
+  },
+
+  "settings": {
+    "cacheEnabled": true,
+    "cacheTTL": 300,
+    "enableAuditLog": true,
+    "showLockedApps": true,
+    "defaultAccessMode": "any_role",
+    "autoDiscovery": false
+  },
+
+  "notes": [
+    "Access modes determine how roles and tiers are combined",
+    "any_role: User needs ANY of the listed roles (OR logic)",
+    "role_and_tier: User needs BOTH a valid role AND tier (AND logic)",
+    "showWhenLocked: false will hide the app completely from unauthorized users",
+    "showWhenLocked: true will show the app with a lock overlay",
+    "order: Lower numbers appear first (admin-dashboard has order 100 to appear last)",
+    "url: 'auto' will construct URL using hostname:port",
+    "url: Internal routes like '/admin' don't need auto resolution",
+    "enabled: false will hide the app from all users regardless of access"
+  ]
+}

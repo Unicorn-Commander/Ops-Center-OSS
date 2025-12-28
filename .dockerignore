@@ -1,0 +1,111 @@
+# Git
+.git
+.gitignore
+.gitattributes
+.github
+
+# Node modules (will be installed during build)
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+.npm
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Build artifacts
+dist
+build
+*.egg-info
+.dist
+.build
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Testing
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.pytest_cache/
+test-results/
+
+# Documentation (not needed in container)
+*.md
+docs/
+screenshots/
+admin-docs/
+
+# Backup files
+*.tar.gz
+*.zip
+*.bak
+backup-*
+REMOVED_PAGES_*
+
+# Environment files (should be mounted or set externally)
+.env
+.env.*
+*.env
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Scripts (except deployment scripts)
+scripts/test_*.sh
+scripts/verify_*.sh
+check-dependencies.sh
+deploy-*.sh
+setup-*.sh
+start-dev.sh
+run-dev*.sh
+test-*.sh
+test_*.py
+
+# Public directory (handled separately)
+public.backup-*
+
+# Config files not needed in container
+# (Removed tailwind.config.js, postcss.config.js, vite.config.js - needed for frontend build)
+vitest.config.js
+.eslintrc*
+.prettierrc*
+
+# Archives and backups
+*.tar
+*.tar.gz
+*.zip
+backups/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

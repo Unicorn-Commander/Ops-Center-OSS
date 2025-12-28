@@ -1,0 +1,81 @@
+{
+  "theme": {
+    "preset": "magic-unicorn",
+    "custom_colors": {
+      "primary": "#8B5CF6",
+      "secondary": "#EC4899",
+      "accent": "#F59E0B",
+      "background_gradient": "linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)"
+    }
+  },
+  "branding": {
+    "logo_url": "/the-colonel-logo.png",
+    "company_name": "Unicorn Commander",
+    "company_subtitle": "Enterprise AI Infrastructure Platform",
+    "show_emoji": true,
+    "emoji": "🦄"
+  },
+  "welcome": {
+    "title": "Welcome to Unicorn Commander",
+    "description": "Your complete AI infrastructure platform. Manage LLMs, AI agents, organizations, and billing from a single dashboard.",
+    "show_emoji": true
+  },
+  "services": [
+    {
+      "id": "chat",
+      "name": "Open-WebUI Chat",
+      "icon": "💬",
+      "logo_url": "/magic-unicorn-logo.png",
+      "description": "Advanced AI chat interface powered by 100+ language models",
+      "url": "auto",
+      "port": 8080,
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "id": "brigade",
+      "name": "Unicorn Brigade",
+      "icon": "🎖️",
+      "logo_url": "/brigade-logo.png",
+      "description": "AI agent factory with The General orchestrator and 47+ pre-built agents",
+      "url": "https://brigade.your-domain.com",
+      "port": 8102,
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "id": "search",
+      "name": "Center-Deep Search",
+      "icon": "🔍",
+      "logo_url": "/center-deep-logo.png",
+      "description": "Privacy-focused metasearch platform with 70+ search engines",
+      "url": "auto",
+      "port": 8888,
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "id": "llmhub",
+      "name": "LLM Hub",
+      "icon": "🤖",
+      "description": "Manage 100+ AI models with unified API and billing",
+      "url": "/admin/llm",
+      "enabled": true,
+      "order": 4
+    }
+  ],
+  "custom_links": [],
+  "admin_section": {
+    "enabled": true,
+    "title": "Administrative Dashboard",
+    "description": "Manage organizations, users, billing, and infrastructure",
+    "button_text": "Enter Admin Dashboard",
+    "button_emoji": "🛡️"
+  },
+  "animations": {
+    "enabled": true,
+    "gradient_animation": true,
+    "hover_effects": true,
+    "loading_spinner": true
+  }
+}

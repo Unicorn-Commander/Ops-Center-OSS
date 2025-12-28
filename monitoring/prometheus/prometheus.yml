@@ -1,0 +1,166 @@
+# Prometheus Configuration for Ops-Center Monitoring
+# Version: 1.0.0
+# Last Updated: 2025-10-22
+
+global:
+  scrape_interval: 15s          # Default scrape frequency
+  evaluation_interval: 15s       # Rule evaluation frequency
+  scrape_timeout: 10s            # Timeout for scrapes
+  external_labels:
+    cluster: 'ops-center-production'
+    environment: 'production'
+
+# Alertmanager Configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - ops-center-alertmanager:9093
+      timeout: 10s
+
+# Alert Rules
+rule_files:
+  - '/etc/prometheus/alert-rules.yml'
+
+# Scrape Configurations
+scrape_configs:
+  # ======================
+  # Ops-Center Services
+  # ======================
+
+  # Ops-Center FastAPI Backend
+  - job_name: 'ops-center-api'
+    static_configs:
+      - targets: ['ops-center-direct:8084']
+        labels:
+          service: 'ops-center'
+          component: 'api'
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Keycloak SSO
+  - job_name: 'keycloak'
+    static_configs:
+      - targets: ['uchub-keycloak:8080']
+        labels:
+          service: 'keycloak'
+          component: 'sso'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Lago Billing API
+  - job_name: 'lago-billing'
+    static_configs:
+      - targets: ['unicorn-lago-api:3000']
+        labels:
+          service: 'lago'
+          component: 'billing'
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # ======================
+  # Infrastructure Services
+  # ======================
+
+  # PostgreSQL Database
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['ops-center-postgres-exporter:9187']
+        labels:
+          service: 'postgresql'
+          component: 'database'
+    scrape_interval: 30s
+
+  # Redis Cache
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['ops-center-redis-exporter:9121']
+        labels:
+          service: 'redis'
+          component: 'cache'
+    scrape_interval: 30s
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+          component: 'monitoring'
+    scrape_interval: 30s
+
+  # Alertmanager
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: ['ops-center-alertmanager:9093']
+        labels:
+          service: 'alertmanager'
+          component: 'alerting'
+    scrape_interval: 30s
+
+  # ======================
+  # System Metrics
+  # ======================
+
+  # Node Exporter - Host System Metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['ops-center-node-exporter:9100']
+        labels:
+          service: 'node-exporter'
+          component: 'system'
+          instance: 'ops-center-host'
+    scrape_interval: 15s
+
+  # cAdvisor - Container Metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['ops-center-cadvisor:8080']
+        labels:
+          service: 'cadvisor'
+          component: 'containers'
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # ======================
+  # Docker Service Discovery
+  # ======================
+
+  # Auto-discover all Docker containers
+  - job_name: 'docker-containers'
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 30s
+    relabel_configs:
+      # Only monitor containers with label monitoring=true
+      - source_labels: [__meta_docker_container_label_monitoring]
+        regex: "true"
+        action: keep
+
+      # Use container name as instance
+      - source_labels: [__meta_docker_container_name]
+        target_label: container_name
+        regex: '/(.*)'
+        replacement: '$1'
+
+      # Add container labels as metrics labels
+      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+        target_label: compose_service
+
+      # Set metrics path
+      - source_labels: [__meta_docker_container_label_metrics_path]
+        target_label: __metrics_path__
+        regex: (.+)
+        replacement: '$1'
+
+# Relabeling for cleaner metrics
+metric_relabel_configs:
+  # Drop high-cardinality metrics
+  - source_labels: [__name__]
+    regex: 'go_gc_.*'
+    action: drop
+
+  - source_labels: [__name__]
+    regex: 'promhttp_metric_handler_.*'
+    action: drop

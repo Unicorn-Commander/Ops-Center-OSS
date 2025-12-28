@@ -1,0 +1,39 @@
+WEEKLY USAGE SUMMARY
+====================
+
+Period: {{ period_start }} - {{ period_end }}
+
+Hello {{ username }},
+
+Here's your weekly usage summary for the {{ tier }} tier.
+
+USAGE STATISTICS:
+- Credits Used: ${{ total_spent }}
+- API Calls: {{ api_calls }}
+- Credits Remaining: ${{ credits_remaining }}
+- Monthly Usage: {{ usage_percentage }}%
+
+CREDIT USAGE PROGRESS:
+[{{ usage_percentage }}% of monthly allocation used]
+
+TOP SERVICES THIS WEEK:
+{% for service in top_services %}
+- {{ service.name }}: ${{ service.cost }}
+{% endfor %}
+
+USAGE INSIGHTS:
+- Most active day: {{ most_active_day }}
+- Average daily spend: ${{ avg_daily_spend }}
+- Estimated monthly spend: ${{ estimated_monthly }}
+
+View detailed analytics: {{ dashboard_url }}/admin/subscription/usage
+
+Your credits will reset on {{ reset_date }}.
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Credits Dashboard: {{ dashboard_url }}/admin/credits
+Support: {{ dashboard_url }}/support
+Unsubscribe from notifications: {{ unsubscribe_url }}

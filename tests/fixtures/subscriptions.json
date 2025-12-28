@@ -1,0 +1,63 @@
+[
+  {
+    "tier": "trial",
+    "name": "Trial",
+    "price": 1.00,
+    "billing_period": "weekly",
+    "features": {
+      "api_calls_limit": 100,
+      "storage_limit": "1GB",
+      "support_level": "community",
+      "byok_enabled": false,
+      "team_seats": 1,
+      "services": ["chat"],
+      "duration_days": 7
+    }
+  },
+  {
+    "tier": "starter",
+    "name": "Starter",
+    "price": 19.00,
+    "billing_period": "monthly",
+    "features": {
+      "api_calls_limit": 1000,
+      "storage_limit": "10GB",
+      "support_level": "email",
+      "byok_enabled": true,
+      "team_seats": 1,
+      "services": ["chat", "search"]
+    }
+  },
+  {
+    "tier": "professional",
+    "name": "Professional",
+    "price": 49.00,
+    "billing_period": "monthly",
+    "popular": true,
+    "features": {
+      "api_calls_limit": 10000,
+      "storage_limit": "100GB",
+      "support_level": "priority",
+      "byok_enabled": true,
+      "team_seats": 5,
+      "services": ["chat", "search", "tts", "stt", "billing"]
+    }
+  },
+  {
+    "tier": "enterprise",
+    "name": "Enterprise",
+    "price": 99.00,
+    "billing_period": "monthly",
+    "features": {
+      "api_calls_limit": 999999,
+      "storage_limit": "unlimited",
+      "support_level": "dedicated",
+      "byok_enabled": true,
+      "team_seats": 999,
+      "services": ["chat", "search", "tts", "stt", "billing", "brigade", "custom"],
+      "custom_integrations": true,
+      "white_label": true,
+      "sla": "99.9%"
+    }
+  }
+]

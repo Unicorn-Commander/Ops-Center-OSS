@@ -1,0 +1,278 @@
+# Alert Configuration for Ops-Center
+# Can be integrated with PagerDuty, Slack, email, etc.
+#
+# Severity levels:
+#   - critical: Immediate notification required
+#   - warning: Attention needed, not urgent
+#   - info: Monitoring/tracking only
+#
+# Notification channels:
+#   - slack: Slack webhook
+#   - email: Email notification
+#   - pagerduty: PagerDuty incident
+#   - webhook: Custom webhook
+
+# Alert definitions
+alerts:
+  # ========================================
+  # CRITICAL ALERTS (Immediate notification)
+  # ========================================
+
+  - name: database_down
+    description: PostgreSQL database is unreachable
+    condition: health.checks.database.status == "unhealthy"
+    severity: critical
+    notification:
+      - slack
+      - email
+      - pagerduty
+    message: "🚨 PostgreSQL database is unreachable. All services depending on database will fail."
+    actions:
+      - Check database container status
+      - Verify network connectivity
+      - Check database logs
+      - Restart database if necessary
+
+  - name: redis_down
+    description: Redis cache is unreachable
+    condition: health.checks.redis.status == "unhealthy"
+    severity: critical
+    notification:
+      - slack
+      - email
+    message: "🚨 Redis cache is unreachable. Sessions and caching will fail."
+    actions:
+      - Check Redis container status
+      - Verify network connectivity
+      - Check Redis logs
+      - Restart Redis if necessary
+
+  - name: disk_full
+    description: Disk usage above 90%
+    condition: metrics.system.disk_percent > 90
+    severity: critical
+    notification:
+      - slack
+      - email
+    message: "🚨 Disk usage above 90%. System may become unstable."
+    actions:
+      - Clean up old logs
+      - Remove unused Docker images/volumes
+      - Archive old backups
+      - Expand disk if needed
+    thresholds:
+      warning: 80
+      critical: 90
+      emergency: 95
+
+  - name: disk_critical
+    description: Disk usage above 95% - emergency
+    condition: metrics.system.disk_percent > 95
+    severity: critical
+    notification:
+      - slack
+      - email
+      - pagerduty
+    message: "⚠️ EMERGENCY: Disk usage above 95%. System failure imminent!"
+    actions:
+      - Immediate cleanup required
+      - Stop non-essential services
+      - Contact administrator immediately
+
+  # ========================================
+  # WARNING ALERTS (Notify but not urgent)
+  # ========================================
+
+  - name: high_cpu
+    description: CPU usage above 80%
+    condition: metrics.system.cpu_percent > 80
+    severity: warning
+    notification:
+      - slack
+    message: "⚠️ CPU usage above 80%. Performance may be degraded."
+    actions:
+      - Identify high CPU processes
+      - Consider scaling resources
+      - Review recent changes
+    thresholds:
+      warning: 80
+      critical: 95
+
+  - name: high_memory
+    description: Memory usage above 85%
+    condition: metrics.system.memory_percent > 85
+    severity: warning
+    notification:
+      - slack
+    message: "⚠️ Memory usage above 85%. System may start swapping."
+    actions:
+      - Identify memory-heavy processes
+      - Consider increasing memory
+      - Check for memory leaks
+    thresholds:
+      warning: 85
+      critical: 95
+
+  - name: keycloak_degraded
+    description: Keycloak SSO experiencing issues
+    condition: health.checks.keycloak.status == "degraded"
+    severity: warning
+    notification:
+      - slack
+    message: "⚠️ Keycloak SSO is degraded. Authentication may be affected."
+    actions:
+      - Check Keycloak container logs
+      - Verify network connectivity
+      - Test authentication flow
+      - Restart Keycloak if needed
+
+  - name: lago_degraded
+    description: Lago billing API experiencing issues
+    condition: health.checks.lago.status == "degraded"
+    severity: warning
+    notification:
+      - slack
+    message: "⚠️ Lago billing API is degraded. Billing operations may be affected."
+    actions:
+      - Check Lago container logs
+      - Verify Stripe connectivity
+      - Test billing API
+      - Contact Lago support if needed
+
+  - name: high_session_count
+    description: Unusually high number of active sessions
+    condition: metrics.application.active_sessions > 1000
+    severity: warning
+    notification:
+      - slack
+    message: "⚠️ Unusually high session count (>1000). Possible attack or traffic spike."
+    actions:
+      - Review access logs
+      - Check for suspicious activity
+      - Consider rate limiting
+      - Monitor Redis memory
+    thresholds:
+      warning: 1000
+      critical: 5000
+
+  # ========================================
+  # INFO ALERTS (Monitoring only)
+  # ========================================
+
+  - name: backup_old
+    description: Database backup is older than 26 hours
+    condition: backup_age_hours > 26
+    severity: info
+    notification:
+      - slack
+    message: "ℹ️ Database backup is older than 26 hours. Consider running backup."
+    actions:
+      - Check backup schedule
+      - Verify backup process is running
+      - Run manual backup if needed
+    thresholds:
+      warning: 26
+      critical: 48
+
+  - name: low_signup_rate
+    description: No new signups in 24 hours
+    condition: metrics.business.signups_24h == 0
+    severity: info
+    notification:
+      - slack
+    message: "ℹ️ No new user signups in the last 24 hours."
+    actions:
+      - Check signup flow functionality
+      - Review marketing campaigns
+      - Verify email notifications
+
+  - name: redis_high_memory
+    description: Redis memory usage above 80%
+    condition: metrics.application.redis_memory_mb > 512
+    severity: info
+    notification:
+      - slack
+    message: "ℹ️ Redis memory usage high. Consider increasing memory or clearing old keys."
+    actions:
+      - Review Redis key expiration policies
+      - Identify large keys
+      - Consider Redis optimization
+
+# Notification channel configuration
+notification_channels:
+  slack:
+    enabled: false  # Set to true when configured
+    webhook_url: "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+    channel: "#ops-alerts"
+    username: "Ops-Center Monitor"
+    icon_emoji: ":robot_face:"
+
+  email:
+    enabled: false  # Set to true when configured
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    smtp_user: "alerts@your-domain.com"
+    smtp_password: "YOUR_PASSWORD"
+    from_address: "alerts@your-domain.com"
+    to_addresses:
+      - "admin@your-domain.com"
+      - "ops@your-domain.com"
+
+  pagerduty:
+    enabled: false  # Set to true when configured
+    integration_key: "YOUR_PAGERDUTY_INTEGRATION_KEY"
+    service_name: "Ops-Center"
+
+  webhook:
+    enabled: false  # Set to true when configured
+    url: "https://your-webhook-endpoint.com/alerts"
+    method: "POST"
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer YOUR_TOKEN"
+
+# Alert settings
+settings:
+  # How often to evaluate alerts (seconds)
+  evaluation_interval: 60
+
+  # Cooldown period before re-alerting (seconds)
+  cooldown_period: 300  # 5 minutes
+
+  # Enable alert aggregation (group similar alerts)
+  enable_aggregation: true
+
+  # Maximum alerts to send per hour (rate limiting)
+  max_alerts_per_hour: 50
+
+  # Enable alert history tracking
+  enable_history: true
+
+  # Alert history retention (days)
+  history_retention_days: 30
+
+# Alert groups (for organizing alerts in dashboard)
+alert_groups:
+  - name: infrastructure
+    alerts:
+      - database_down
+      - redis_down
+      - disk_full
+      - disk_critical
+
+  - name: performance
+    alerts:
+      - high_cpu
+      - high_memory
+      - high_session_count
+
+  - name: services
+    alerts:
+      - keycloak_degraded
+      - lago_degraded
+
+  - name: operations
+    alerts:
+      - backup_old
+      - low_signup_rate
+      - redis_high_memory

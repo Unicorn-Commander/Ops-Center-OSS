@@ -1,0 +1,252 @@
+# Alertmanager Configuration for Ops-Center
+# Version: 1.0.0
+# Last Updated: 2025-10-22
+
+global:
+  resolve_timeout: 5m
+  smtp_from: 'alerts@your-domain.com'
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_auth_username: 'alerts@your-domain.com'
+  smtp_auth_password: 'YOUR_EMAIL_APP_PASSWORD_HERE'  # Replace with actual password
+  smtp_require_tls: true
+
+  # Slack webhook (replace with actual webhook URL)
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+  # PagerDuty integration key (replace with actual key)
+  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+# Templates for notification formatting
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Route Configuration
+route:
+  # Default receiver for all alerts
+  receiver: 'default'
+
+  # Group alerts by these labels
+  group_by: ['alertname', 'severity', 'service']
+
+  # How long to wait before sending initial notification
+  group_wait: 10s
+
+  # How long to wait before sending notification about new alerts in group
+  group_interval: 5m
+
+  # How long to wait before resending notification for unresolved alerts
+  repeat_interval: 3h
+
+  # Child routes for different severity levels
+  routes:
+    # CRITICAL: PagerDuty + Slack + Email
+    - match:
+        severity: critical
+      receiver: 'pagerduty-critical'
+      continue: true
+      routes:
+        - receiver: 'slack-critical'
+          continue: true
+        - receiver: 'email-critical'
+
+    # HIGH: Slack + Email
+    - match:
+        severity: high
+      receiver: 'slack-high'
+      continue: true
+      routes:
+        - receiver: 'email-high'
+
+    # MEDIUM: Slack only
+    - match:
+        severity: medium
+      receiver: 'slack-medium'
+
+    # Security alerts: All channels
+    - match:
+        component: security
+      receiver: 'security-all'
+      group_wait: 5s
+      group_interval: 1m
+      repeat_interval: 30m
+
+    # Business alerts: Email + Slack (business hours only)
+    - match:
+        component: business
+      receiver: 'business-alerts'
+      active_time_intervals:
+        - business_hours
+
+# Inhibition Rules
+# Suppress lower severity alerts when higher severity is active
+inhibit_rules:
+  # Suppress high/medium disk alerts if critical is firing
+  - source_match:
+      severity: 'critical'
+      component: 'disk'
+    target_match:
+      severity: 'high'
+      component: 'disk'
+    equal: ['instance']
+
+  - source_match:
+      severity: 'high'
+      component: 'disk'
+    target_match:
+      severity: 'medium'
+      component: 'disk'
+    equal: ['instance']
+
+  # Suppress service-specific alerts if service is down
+  - source_match_re:
+      alertname: '.*(Down)'
+    target_match_re:
+      alertname: '.*'
+    equal: ['service']
+
+  # Suppress API performance alerts if API is down
+  - source_match:
+      alertname: 'OpsCenterDown'
+    target_match_re:
+      alertname: '(HighErrorRate|HighAPILatency)'
+    equal: ['instance']
+
+# Time Intervals
+time_intervals:
+  - name: business_hours
+    time_intervals:
+      - times:
+          - start_time: '09:00'
+            end_time: '17:00'
+        weekdays: ['monday:friday']
+        location: 'America/Los_Angeles'
+
+# Receivers (Notification Channels)
+receivers:
+  # Default receiver (catches all unmatched alerts)
+  - name: 'default'
+    slack_configs:
+      - channel: '#ops-center-alerts'
+        username: 'Alertmanager'
+        icon_emoji: ':fire:'
+        title: '{{ .GroupLabels.alertname }}'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}'
+
+  # Critical Alerts - PagerDuty
+  - name: 'pagerduty-critical'
+    pagerduty_configs:
+      - service_key: 'YOUR_PAGERDUTY_INTEGRATION_KEY'  # Replace with actual key
+        description: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        severity: 'critical'
+        details:
+          firing: '{{ .Alerts.Firing | len }}'
+          resolved: '{{ .Alerts.Resolved | len }}'
+          service: '{{ .GroupLabels.service }}'
+          component: '{{ .GroupLabels.component }}'
+
+  # Critical Alerts - Slack
+  - name: 'slack-critical'
+    slack_configs:
+      - channel: '#ops-center-critical'
+        username: 'Alertmanager'
+        icon_emoji: ':rotating_light:'
+        color: '#E01E5A'
+        title: ':rotating_light: CRITICAL: {{ .GroupLabels.alertname }}'
+        title_link: 'https://monitoring.your-domain.com'
+        text: '{{ template "slack.critical.text" . }}'
+        actions:
+          - type: button
+            text: 'View Runbook'
+            url: '{{ (index .Alerts 0).Annotations.runbook }}'
+          - type: button
+            text: 'View Logs'
+            url: 'https://your-domain.com/admin/logs'
+        fields:
+          - title: 'Severity'
+            value: '{{ .GroupLabels.severity | toUpper }}'
+            short: true
+          - title: 'Service'
+            value: '{{ .GroupLabels.service }}'
+            short: true
+          - title: 'Alerts Firing'
+            value: '{{ .Alerts.Firing | len }}'
+            short: true
+          - title: 'Time'
+            value: '{{ .Alerts.Firing | len | ne 0 | ternary (index .Alerts.Firing 0).StartsAt.Format "15:04 MST" "N/A" }}'
+            short: true
+
+  # Critical Alerts - Email
+  - name: 'email-critical'
+    email_configs:
+      - to: 'ops@magicunicorn.tech'
+        subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        html: '{{ template "email.critical.html" . }}'
+        headers:
+          Priority: 'urgent'
+
+  # High Priority - Slack
+  - name: 'slack-high'
+    slack_configs:
+      - channel: '#ops-center-alerts'
+        username: 'Alertmanager'
+        icon_emoji: ':warning:'
+        color: '#FFB02E'
+        title: ':warning: HIGH: {{ .GroupLabels.alertname }}'
+        title_link: 'https://monitoring.your-domain.com'
+        text: '{{ template "slack.high.text" . }}'
+        fields:
+          - title: 'Severity'
+            value: '{{ .GroupLabels.severity | toUpper }}'
+            short: true
+          - title: 'Service'
+            value: '{{ .GroupLabels.service }}'
+            short: true
+
+  # High Priority - Email
+  - name: 'email-high'
+    email_configs:
+      - to: 'ops@magicunicorn.tech'
+        subject: '⚠️ HIGH: {{ .GroupLabels.alertname }}'
+        html: '{{ template "email.high.html" . }}'
+
+  # Medium Priority - Slack
+  - name: 'slack-medium'
+    slack_configs:
+      - channel: '#ops-center-alerts'
+        username: 'Alertmanager'
+        icon_emoji: ':information_source:'
+        color: '#36A64F'
+        title: 'ℹ️ MEDIUM: {{ .GroupLabels.alertname }}'
+        text: '{{ template "slack.medium.text" . }}'
+
+  # Security Alerts - All Channels
+  - name: 'security-all'
+    pagerduty_configs:
+      - service_key: 'YOUR_PAGERDUTY_INTEGRATION_KEY'
+        severity: 'critical'
+        description: '🔒 SECURITY: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+    slack_configs:
+      - channel: '#security-alerts'
+        username: 'Security Alertmanager'
+        icon_emoji: ':lock:'
+        color: '#E01E5A'
+        title: '🔒 SECURITY: {{ .GroupLabels.alertname }}'
+        text: '{{ template "slack.security.text" . }}'
+    email_configs:
+      - to: 'security@magicunicorn.tech'
+        subject: '🔒 SECURITY ALERT: {{ .GroupLabels.alertname }}'
+        html: '{{ template "email.security.html" . }}'
+
+  # Business Alerts
+  - name: 'business-alerts'
+    slack_configs:
+      - channel: '#business-metrics'
+        username: 'Business Metrics'
+        icon_emoji: ':chart_with_upwards_trend:'
+        color: '#4A90E2'
+        title: '📊 Business Alert: {{ .GroupLabels.alertname }}'
+        text: '{{ template "slack.business.text" . }}'
+    email_configs:
+      - to: 'business@magicunicorn.tech'
+        subject: '📊 Business Alert: {{ .GroupLabels.alertname }}'
+        html: '{{ template "email.business.html" . }}'

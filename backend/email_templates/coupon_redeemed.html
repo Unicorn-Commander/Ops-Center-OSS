@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Redeemed Successfully</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(168, 85, 247, 0) 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #a855f7;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #fbbf24;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 30px 0;
+        }
+        p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+        .coupon-box {
+            background: rgba(168, 85, 247, 0.1);
+            border: 2px solid #a855f7;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 30px 0;
+        }
+        .coupon-code {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fbbf24;
+            text-align: center;
+            padding: 15px;
+            background: rgba(251, 191, 36, 0.1);
+            border-radius: 8px;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+        .credit-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #10b981;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #a855f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎉</div>
+        </div>
+
+        <div class="card">
+            <h1>Coupon Redeemed!</h1>
+            <p class="subtitle">Credits Added to Your Account</p>
+
+            <p>Hello <strong>{{ username }}</strong>,</p>
+
+            <p>Great news! You've successfully redeemed a coupon code and credits have been added to your account.</p>
+
+            <div class="coupon-box">
+                <p style="text-align: center; margin: 0 0 10px 0; color: #9ca3af; font-size: 14px; text-transform: uppercase;">Coupon Code</p>
+                <div class="coupon-code">{{ coupon_code }}</div>
+            </div>
+
+            <div class="credit-amount">+${{ credits_added }} Credits</div>
+
+            <p style="text-align: center; color: #9ca3af;">
+                Your new balance: <strong style="color: #10b981;">${{ new_balance }}</strong>
+            </p>
+
+            <p><strong>Coupon Details:</strong></p>
+            <ul style="margin: 10px 0 0 20px; padding: 0; color: #e0e0e0;">
+                <li>Type: <strong>{{ coupon_type }}</strong></li>
+                <li>Expires: <strong>{{ expires_at }}</strong></li>
+                <li>Redeemed: <strong>{{ redeemed_at }}</strong></li>
+            </ul>
+
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}/admin/credits" class="button">View Credit Balance</a>
+            </div>
+
+            <p style="font-size: 14px; color: #9ca3af;">
+                Have more coupon codes? Redeem them anytime from your dashboard.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ year }} UC-1 Pro Operations Center. All rights reserved.</p>
+            <p>
+                <a href="{{ dashboard_url }}/admin/credits">Credits Dashboard</a> |
+                <a href="{{ dashboard_url }}/support">Support</a> |
+                <a href="{{ unsubscribe_url }}">Unsubscribe from notifications</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

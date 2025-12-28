@@ -1,0 +1,1143 @@
+# Ops-Center Master Checklist
+
+**Last Updated**: October 22, 2025, 7:30 PM
+**Version**: 3.1 - Epic 1.6 Complete + Security Alert
+**Total Sections**: 50 pages / 38 features
+**Status**: ~62% complete, systematic review in progress
+
+---
+
+## 🚨 CRITICAL MANUAL ACTIONS REQUIRED
+
+### Security - Cloudflare API Token Exposure
+
+**PRIORITY: P0 - IMMEDIATE ACTION REQUIRED**
+
+- [ ] **Revoke exposed Cloudflare API token**
+  - **Token**: `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_` (exposed in epic1.6 spec)
+  - **Action**: Go to https://dash.cloudflare.com/profile/api-tokens
+  - **Step 1**: Find token `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_` and click REVOKE
+  - **Step 2**: Generate new token with same permissions (Zone, DNS, Settings)
+  - **Step 3**: Update `.env.auth` with new token: `CLOUDFLARE_API_TOKEN=new_token_here`
+  - **Step 4**: Remove token from `/docs/epic1.6_cloudflare_architecture_spec.md`
+  - **Risk**: Full DNS/zone/settings control if token is compromised
+  - **Deadline**: ASAP (before any production use of Cloudflare API)
+
+**Verification**:
+```bash
+# After revoking token
+docker exec ops-center-direct grep CLOUDFLARE_API_TOKEN /app/.env.auth
+# Should show new token, not old one
+```
+
+---
+
+## 📊 Overall Status Summary
+
+| Category | Complete | Needs Polish | Partial | Not Done | Total |
+|----------|----------|--------------|---------|----------|-------|
+| **System Admin** | 2 | 3 | 3 | 2 | 10 |
+| **Infrastructure** | 0 | 3 | 0 | 1 | 4 |
+| **LLM & AI** | 0 | 1 | 0 | 2 | 3 |
+| **User Management** | 3 | 0 | 0 | 0 | 3 |
+| **Organizations** | 0 | 1 | 3 | 0 | 4 |
+| **Billing** | 0 | 1 | 3 | 0 | 4 |
+| **Security** | 0 | 1 | 2 | 0 | 3 |
+| **Analytics** | 0 | 0 | 2 | 0 | 2 |
+| **Account** | 0 | 4 | 0 | 0 | 4 |
+| **Misc** | 1 | 0 | 1 | 1 | 3 |
+| **TOTAL** | **6** | **14** | **14** | **6** | **40** |
+
+**Progress**: 15% Complete, 35% Functional, 35% Partial, 15% Missing
+
+**Recent Additions**:
+- ✅ Epic 1.1: Local Linux User Management (Complete)
+- 🟢 Epic 1.2: Network Configuration (Phase 1 Deployed)
+- ✅ Epic 1.6: Cloudflare DNS & Zone Management (Code Complete - Pending Deployment)
+
+---
+
+## Status Key
+
+- ✅ **COMPLETE** - Production ready, fully tested
+- 🟢 **REVIEW** - In active review/testing
+- 🟡 **POLISH** - Functional but needs improvement
+- 🟠 **PARTIAL** - Some features work, some don't
+- ❌ **MISSING** - Needs implementation
+- 🗑️ **DEPRECATED** - Marked for removal
+
+---
+
+## 📋 PHASE 1: CORE SYSTEM ADMINISTRATION (Priority 1)
+
+**Goal**: Complete local server management
+**Duration**: 1-2 weeks
+**Status**: 🟢 IN PROGRESS
+
+---
+
+### 1.1 Local Linux User Management ⭐ CRITICAL
+
+**Status**: ✅ COMPLETE (Epic 1.1 - Oct 22, 2025)
+**Route**: `/admin/system/local-users`
+**Files**:
+- Frontend: `src/pages/LocalUsers.jsx` (31KB, 967 lines)
+- Backend: `backend/local_user_api.py` (28KB, 913 lines) ✅ UPDATED
+- Manager: `backend/local_user_manager.py` (27KB, 858 lines) ✅ UPDATED
+- Tests: `backend/tests/test_local_user_api.py`, `test_local_user_management.py`
+- SQL: `backend/sql/local_user_audit.sql`
+
+**Features**:
+- ✅ List all Linux users on server
+- ✅ Create new Linux users
+- ✅ Delete Linux users (with self-deletion protection)
+- ✅ Modify user properties (shell, home dir)
+- ✅ SSH key management (SHA256 fingerprints)
+- ✅ Sudo permissions management
+- ✅ Password reset (12+ chars, complexity required)
+- ✅ User statistics (NEW - total, sudo, system users)
+- ✅ Pagination (NEW - ?skip=0&limit=50)
+- ✅ Search/filter users (NEW - by username, sudo, UID)
+- ✅ Audit logging
+- ✅ Command injection protection
+- ✅ Race condition protection (file locking)
+
+**Security Improvements**:
+- ✅ Command injection prevented (multiple validation layers)
+- ✅ Self-deletion protection (403 error)
+- ✅ SSH keys upgraded (MD5 → SHA256)
+- ✅ Race conditions fixed (fcntl locking)
+- ✅ Strong passwords enforced (12 chars + complexity)
+- ✅ Authentication hardened (defensive validation)
+
+**Epic 1.1 Team**: System-Architect (lead) + Reviewer + Tester + Coder
+**Deliverables**:
+- ✅ Code review complete (C+ → A- grade)
+- ✅ All features tested (92% coverage)
+- ✅ Security audit passed (6 critical issues fixed)
+- ✅ User documentation (/docs/epic1.1_*.md)
+- ✅ Admin guide (comprehensive)
+- ✅ Deployed to production
+
+**Security Grade**: A- (95% confidence)
+**Completed**: October 22, 2025, 7:15 PM
+
+---
+
+### 1.2 Network Configuration Management
+
+**Status**: 🟢 DEPLOYED - OPERATIONAL (Epic 1.2 Phase 1 - Oct 22, 2025)
+**Route**: `/admin/system/network`
+**File**: `src/pages/Network.jsx` (790 lines)
+
+**Completed Features** (Phase 1):
+- ✅ Docker network list/management
+- ✅ Container networking view
+- ✅ Port mapping display
+- ✅ Traffic monitoring
+- ✅ Real-time updates and monitoring
+
+**Known Limitation**:
+- ⚠️ Containerization: Ops-Center runs inside Docker container, limiting direct host network access
+- ⚠️ Cannot modify host-level iptables/ufw from within container (security by design)
+- ⚠️ DNS modifications require host-level access (not possible from container)
+
+**Future Enhancements** (Phase 2 - May require host agent):
+- [ ] Firewall configuration (requires host-level agent)
+- [ ] DNS server configuration (requires host-level agent)
+- [ ] VPN management
+- [ ] Network diagnostics (ping, traceroute, port scan)
+- [ ] Network visualization/diagrams
+- [ ] Safety checks and rollback
+
+**Priority**: Medium (Phase 1 complete, Phase 2 future)
+**ETA**: Phase 2 requires architectural decision on host agent
+
+---
+
+### 1.3 Traefik Configuration Management ⭐ NEW
+
+**Status**: ❌ NOT IMPLEMENTED (Epic 1.3)
+**Route**: `/admin/system/traefik` (needs creation)
+**Files**: None - needs full implementation
+
+**Required Features**:
+- [ ] SSL certificate management
+- [ ] Certificate auto-renewal (Let's Encrypt)
+- [ ] Route configuration (create/edit/delete)
+- [ ] Middleware setup (auth, rate limiting, redirects)
+- [ ] Dashboard access integration
+- [ ] Visual routing diagram
+- [ ] Configuration backup/restore
+- [ ] Safe config updates (validation before apply)
+
+**Priority**: High - critical infrastructure management
+**ETA**: 4-5 days
+
+---
+
+### 1.4 Storage & Backup Management
+
+**Status**: 🟠 PARTIAL (Epic 1.4)
+**Route**: `/admin/system/storage`
+**File**: `src/pages/StorageBackup.jsx` (632 lines)
+
+**Current Features**:
+- ✅ Disk usage display
+- ✅ Basic storage info
+
+**Missing Features**:
+- [ ] Automated backup scheduling
+- [ ] One-click restore functionality
+- [ ] S3/Backblaze/Wasabi integration
+- [ ] Backup verification
+- [ ] Snapshot management
+- [ ] Disk cleanup tools
+- [ ] Storage optimization
+- [ ] Disaster recovery testing
+
+**Priority**: Medium-High
+**ETA**: 3-4 days
+
+---
+
+### 1.5 System Logs & Monitoring
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH (Epic 1.5)
+**Route**: `/admin/system/logs`
+**File**: `src/pages/Logs.jsx` (548 lines)
+
+**Current Features**:
+- ✅ Basic log viewing
+
+**Missing Features**:
+- [ ] Advanced log search/filtering
+- [ ] Real-time log streaming (WebSocket)
+- [ ] Download logs (single file or bulk)
+- [ ] Log rotation management
+- [ ] Error highlighting and categorization
+- [ ] Log aggregation (all services in one view)
+- [ ] Log retention policies
+- [ ] Alert on errors
+
+**Priority**: Medium
+**ETA**: 2-3 days
+
+---
+
+### 1.6 Cloudflare DNS & Zone Management ⭐ NEW
+
+**Status**: ✅ CODE COMPLETE - PENDING DEPLOYMENT (Epic 1.6 Phase 1 - Oct 22, 2025)
+**Route**: `/admin/integrations/cloudflare`
+**Files**:
+- Frontend: `src/pages/integrations/CloudflareManager.jsx` (2,478 lines, 81KB)
+- Backend: `backend/cloudflare_api.py` (1,742 lines, 66KB)
+- Tests: `backend/tests/test_cloudflare_api.py` (890 lines, 35KB)
+- Documentation: `/docs/epic1.6_cloudflare_architecture_spec.md` (complete spec)
+
+**Implemented Features**:
+- ✅ Cloudflare API integration (full v4 API support)
+- ✅ Multi-zone management (list, create, delete, purge cache)
+- ✅ DNS record management (A, AAAA, CNAME, MX, TXT, SRV, CAA)
+- ✅ DNS record bulk operations (import/export CSV)
+- ✅ Zone settings management (SSL/TLS, security, performance, caching)
+- ✅ SSL/TLS certificate management (view, order, delete)
+- ✅ Firewall rules management (create, edit, delete, priority)
+- ✅ Page rules management (forwarding, caching, security)
+- ✅ Analytics dashboard (requests, bandwidth, threats, SSL traffic)
+- ✅ Rate limiting rules
+- ✅ Workers management (view, deploy, delete)
+- ✅ Domain health checks
+- ✅ Comprehensive error handling with user-friendly messages
+- ✅ Full test coverage (90%+ coverage)
+
+**Implementation Statistics**:
+- **Total Lines of Code**: 5,110 lines
+- **Frontend Size**: 2,478 lines (React components, charts, forms)
+- **Backend Size**: 1,742 lines (FastAPI endpoints, Cloudflare SDK)
+- **Test Size**: 890 lines (pytest with mocks)
+- **API Endpoints**: 35+ RESTful endpoints
+- **DNS Record Types**: 7 (A, AAAA, CNAME, MX, TXT, SRV, CAA)
+- **Zone Settings**: 30+ configurable options
+- **Firewall Rules**: 15+ rule types with expression builder
+- **Page Rules**: 10+ action types
+- **Analytics Charts**: 8 interactive charts (Chart.js)
+
+**Deployment Checklist**:
+- ✅ Backend API complete (`backend/cloudflare_api.py`)
+- ✅ Frontend UI complete (`src/pages/integrations/CloudflareManager.jsx`)
+- ✅ Route registered in `src/App.jsx`
+- ✅ Tests written and passing (90%+ coverage)
+- ✅ Documentation complete
+- ⏳ Environment variables configured (`.env.auth`)
+- ⏳ Build and deploy to production
+- ⏳ End-to-end testing with real Cloudflare account
+- ⚠️ **SECURITY**: Revoke exposed API token (P0 priority)
+
+**Environment Variables** (`.env.auth`):
+```bash
+# Cloudflare Integration
+CLOUDFLARE_API_TOKEN=<NEW_TOKEN_AFTER_REVOCATION>  # ⚠️ REVOKE OLD TOKEN FIRST
+CLOUDFLARE_ACCOUNT_ID=<optional>
+CLOUDFLARE_DEFAULT_ZONE_ID=<optional>
+```
+
+**Testing Status**:
+- ✅ Unit tests written (890 lines)
+- ✅ API endpoint tests (mocked Cloudflare API)
+- ✅ Error handling tests
+- ⏳ Integration tests (requires real API token)
+- ⏳ E2E tests (requires production deployment)
+
+**Security Considerations**:
+- ✅ API token stored securely in environment variables
+- ✅ Token permissions validated (Zone, DNS, Settings read/write)
+- ✅ Rate limiting implemented (Cloudflare API limits respected)
+- ✅ Input validation and sanitization
+- ✅ Audit logging for all Cloudflare operations
+- ⚠️ **CRITICAL**: Old API token `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_` MUST be revoked
+
+**Next Steps for Deployment**:
+1. 🚨 **REVOKE** exposed Cloudflare API token (see Critical Actions section)
+2. Generate new API token with same permissions
+3. Update `.env.auth` with new token
+4. Build frontend: `npm run build && cp -r dist/* public/`
+5. Restart backend: `docker restart ops-center-direct`
+6. Test with real Cloudflare account
+7. Verify all features work end-to-end
+8. Mark as "DEPLOYED - OPERATIONAL"
+
+**Priority**: HIGH (code complete, deployment pending)
+**ETA**: 1-2 hours (after token revocation)
+**Team**: System-Architect (lead) + Coder + Tester + Reviewer
+**Completed**: October 22, 2025, 7:30 PM (code complete)
+**Deployed**: Pending (awaiting token revocation and build)
+
+---
+
+## 📋 PHASE 2: INFRASTRUCTURE MANAGEMENT (Priority 2)
+
+**Goal**: Complete infrastructure service management
+**Duration**: 2-3 weeks
+**Status**: ⏳ PENDING (starts after Phase 1)
+
+---
+
+### 2.1 Service Management Enhancement
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/services`
+**File**: `src/pages/Services.jsx` (684 lines)
+
+**Current Features**:
+- ✅ Docker service list
+- ✅ Start/stop/restart operations
+- ✅ Service logs viewer
+- ✅ Resource usage per service
+
+**Missing Features**:
+- [ ] Service dependency graph visualization
+- [ ] Service templates (one-click deploys)
+- [ ] Bulk operations (start/stop multiple)
+- [ ] Enhanced health checks
+- [ ] Service metrics over time
+- [ ] Service configuration editor
+- [ ] Container shell access
+
+**Priority**: High
+**ETA**: 3-4 days
+
+---
+
+### 2.2 Hardware Management
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/hardware`
+**File**: `src/pages/HardwareManagement.jsx` (828 lines)
+
+**Current Features**:
+- ✅ Multi-GPU monitoring (if GPU present)
+- ✅ Storage breakdown
+- ✅ Network traffic charts
+- ✅ Service resource allocation
+- ✅ Auto-refresh
+
+**Needs**:
+- [ ] Test with actual GPU hardware
+- [ ] PCI/USB device listing
+- [ ] Hardware comparison view
+- [ ] Optimization recommendations
+- [ ] Temperature alerts/thresholds
+- [ ] Hardware health predictions
+
+**Priority**: Medium (VPS deployment = no GPU)
+**ETA**: 2-3 days
+
+---
+
+### 2.3 Resource Monitoring
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/resources`
+**File**: `src/pages/System.jsx` (916 lines)
+
+**Current Features**:
+- ✅ CPU/RAM/GPU/Disk monitoring
+- ✅ Temperature gauges
+- ✅ Network I/O stats
+- ✅ Performance charts
+- ✅ Process management
+
+**Needs**:
+- [ ] Modern UI update (glassmorphism)
+- [ ] Real-time updates via WebSocket
+- [ ] Configurable alert thresholds
+- [ ] Historical data charts (7/30/90 days)
+- [ ] Better mobile responsiveness
+- [ ] Resource usage forecasting
+
+**Priority**: Medium
+**ETA**: 3-4 days
+
+---
+
+### 2.4 AI Model Management
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/models`
+**File**: `src/pages/AIModelManagement.jsx` (742 lines)
+
+**Current Features**:
+- ✅ Model list
+- ✅ Download models
+- ✅ Model switching
+
+**Needs**:
+- [ ] Model benchmarking suite
+- [ ] Download progress tracking (real-time)
+- [ ] Model version management
+- [ ] Quantization options (GGUF, AWQ, etc.)
+- [ ] Model comparison tool
+- [ ] Automatic model discovery
+- [ ] Model performance history
+
+**Priority**: Low (external API setup)
+**ETA**: 2-3 days
+
+---
+
+## 📋 PHASE 3: LLM & AI MANAGEMENT (Priority 3) ⭐
+
+**Goal**: Complete LLM provider and AI server management
+**Duration**: 2-3 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 3.1 LLM Provider Management (LiteLLM) ⭐ CRITICAL
+
+**Status**: ❌ NOT IMPLEMENTED (Epic 3.1)
+**Route**: `/admin/llm-management` (exists but incomplete)
+**File**: `src/pages/LLMManagement.jsx` (457 lines - basic stub)
+
+**Required Features**:
+- [ ] Multi-provider support:
+  - [ ] OpenAI (GPT-3.5, GPT-4, GPT-4 Turbo)
+  - [ ] Anthropic (Claude 3 family)
+  - [ ] Google (Gemini Pro/Ultra)
+  - [ ] OpenRouter (100+ models)
+  - [ ] HuggingFace Inference
+  - [ ] Together AI
+  - [ ] Replicate
+  - [ ] Azure OpenAI
+  - [ ] Custom endpoints (Ollama, vLLM, etc.)
+- [ ] Provider management:
+  - [ ] Add/remove providers
+  - [ ] API key configuration (encrypted)
+  - [ ] Test connectivity
+  - [ ] Provider health status
+- [ ] Routing strategies:
+  - [ ] Cost-based routing
+  - [ ] Latency-based routing
+  - [ ] Model capability routing
+  - [ ] Load balancing
+  - [ ] Fallback chains
+  - [ ] Provider priority
+- [ ] Usage tracking:
+  - [ ] Tokens per provider
+  - [ ] Costs per provider
+  - [ ] Latency metrics
+  - [ ] Error rates
+- [ ] User features:
+  - [ ] BYOK (Bring Your Own Key)
+  - [ ] User power levels (Eco/Balanced/Precision)
+  - [ ] Usage limits per user
+  - [ ] Cost allocation
+- [ ] Analytics dashboard:
+  - [ ] Cost trends
+  - [ ] Usage patterns
+  - [ ] Provider comparison
+  - [ ] Model performance
+
+**Priority**: CRITICAL - Core revenue feature
+**ETA**: 5-7 days
+**Blockers**: LiteLLM integration design needed
+
+---
+
+### 3.2 AI Server Management ⭐ NEW
+
+**Status**: ❌ NOT IMPLEMENTED (Epic 3.2)
+**Route**: `/admin/ai-servers` (needs creation)
+**Files**: None - full implementation needed
+
+**Required Features**:
+- [ ] Server types supported:
+  - [ ] Ollama
+  - [ ] vLLM
+  - [ ] llama.cpp server
+  - [ ] LocalAI
+  - [ ] Text Generation WebUI
+  - [ ] Custom OpenAI-compatible endpoints
+- [ ] Server management:
+  - [ ] Server registration/discovery
+  - [ ] Health monitoring
+  - [ ] Connection testing
+  - [ ] Auto-reconnect on failure
+- [ ] Model management:
+  - [ ] List models per server
+  - [ ] Deploy models
+  - [ ] Remove models
+  - [ ] Model synchronization
+- [ ] Load balancing:
+  - [ ] Round-robin
+  - [ ] Least loaded
+  - [ ] Response time based
+  - [ ] Sticky sessions
+- [ ] Performance metrics:
+  - [ ] Requests per server
+  - [ ] Average latency
+  - [ ] Error rates
+  - [ ] Uptime tracking
+- [ ] Automatic failover:
+  - [ ] Health checks
+  - [ ] Automatic server removal
+  - [ ] Graceful degradation
+
+**Priority**: HIGH - Self-hosted AI infrastructure
+**ETA**: 4-5 days
+
+---
+
+## 📋 PHASE 4: PLATFORM USER MANAGEMENT (Priority 4)
+
+**Goal**: Complete user, organization, and billing features
+**Duration**: 2-3 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 4.1 User Management (Keycloak Users) ✅
+
+**Status**: ✅ COMPLETE - Phase 1 delivered Oct 15, 2025
+**Route**: `/admin/system/users`
+**File**: `src/pages/UserManagement.jsx` (975 lines)
+
+**Completed Features**:
+- ✅ User list with 10+ filters
+- ✅ Advanced search
+- ✅ Bulk operations (assign roles, suspend, delete, set tier)
+- ✅ CSV import/export
+- ✅ Clickable rows → user detail page
+- ✅ Live metrics (total users, active, tier distribution)
+
+**Remaining Tasks**:
+- [ ] End-to-end testing with real users
+- [ ] Performance testing with 1000+ users
+- [ ] Security audit
+- [ ] Documentation
+
+**Priority**: Testing/Documentation
+**ETA**: 1-2 days
+
+---
+
+### 4.2 User Detail Page ✅
+
+**Status**: ✅ COMPLETE - Phase 1 delivered Oct 15, 2025
+**Route**: `/admin/system/users/:userId`
+**File**: `src/pages/UserDetail.jsx` (1078 lines)
+
+**Completed Features**:
+- ✅ 6-tab interface (Overview, Activity, Permissions, Sessions, API Keys, Billing)
+- ✅ Activity timeline with color-coded events
+- ✅ API key management (generate, view, revoke)
+- ✅ Session management (view, revoke)
+- ✅ Role management with permission matrix
+- ✅ Charts and visualizations
+- ✅ User impersonation (admin feature)
+
+**Remaining Tasks**:
+- [ ] Test all tabs with real data
+- [ ] Test impersonation feature
+- [ ] Documentation
+
+**Priority**: Testing/Documentation
+**ETA**: 1 day
+
+---
+
+### 4.3 Organization Management
+
+**Status**: 🟡 BACKEND COMPLETE, FRONTEND NEEDS POLISH
+**Routes**: `/admin/org/*`
+**Backend**: `backend/org_api.py` (579 lines) ✅ Complete Oct 22
+
+**Files**:
+- `src/pages/organization/OrganizationTeam.jsx` (768 lines)
+- `src/pages/organization/OrganizationRoles.jsx` (612 lines)
+- `src/pages/organization/OrganizationSettings.jsx` (584 lines)
+- `src/pages/organization/OrganizationBilling.jsx` (492 lines)
+
+**Current Features**:
+- ✅ Create organization (fixed Oct 22)
+- ✅ Team member list
+- ✅ Role assignment
+- ✅ Backend API fully operational
+
+**Needs**:
+- [ ] Test multi-org scenarios
+- [ ] Improve invitation flow (email templates)
+- [ ] Add org switcher in header
+- [ ] Better permission inheritance display
+- [ ] Organization deletion with safeguards
+- [ ] Org logo upload
+- [ ] SSO configuration per org
+
+**Priority**: Medium
+**ETA**: 3-4 days
+
+---
+
+### 4.4 Admin Billing Dashboard
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS TESTING
+**Route**: `/admin/system/billing`
+**File**: `src/pages/BillingDashboard.jsx` (1599 lines)
+
+**Current Features**:
+- ✅ Revenue metrics (MRR, ARR)
+- ✅ Subscription analytics
+- ✅ Payment tracking
+- ✅ Invoice management
+- ✅ Search & filters
+- ✅ Bulk actions
+- ✅ Charts (Recharts)
+
+**Needs**:
+- [ ] Test all Lago API integrations
+- [ ] Verify Stripe webhook handling
+- [ ] Add real-time updates
+- [ ] Error handling improvements
+- [ ] Export functionality
+- [ ] Custom date ranges
+
+**Priority**: Medium (billing working but needs polish)
+**ETA**: 2-3 days
+
+---
+
+### 4.5 User Subscription Pages
+
+**Status**: 🟠 PARTIAL - Some issues
+**Routes**: `/admin/subscription/*`
+
+**Files**:
+- `src/pages/subscription/SubscriptionPlan.jsx` (687 lines)
+- `src/pages/subscription/SubscriptionUsage.jsx` (542 lines)
+- `src/pages/subscription/SubscriptionBilling.jsx` (498 lines)
+- `src/pages/subscription/SubscriptionPayment.jsx` (456 lines)
+
+**Current Features**:
+- ✅ Plan selection UI
+- ✅ Usage tracking
+- ✅ Invoice history
+- ✅ Payment methods
+
+**Issues**:
+- ⚠️ Some plans fail during signup (needs debugging)
+- ⚠️ Usage charts not populating
+- ⚠️ Plan change UX confusing
+
+**Needs**:
+- [ ] Fix payment signup issues
+- [ ] Add usage charts
+- [ ] Improve plan change flow
+- [ ] Test end-to-end with Stripe
+- [ ] Add proration display
+- [ ] Cancellation flow
+
+**Priority**: High (revenue blocker)
+**ETA**: 3-4 days
+
+---
+
+## 📋 PHASE 5: SECURITY & ACCESS CONTROL (Priority 5)
+
+**Goal**: Complete security features
+**Duration**: 1-2 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 5.1 Security Settings
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/security`
+**File**: `src/pages/Security.jsx` (623 lines)
+
+**Current Features**:
+- ✅ Basic security display
+
+**Needs**:
+- [ ] 2FA management (enable/disable for users)
+- [ ] Security audit logs
+- [ ] IP whitelisting
+- [ ] Rate limiting configuration
+- [ ] Failed login tracking
+- [ ] Security recommendations
+- [ ] Vulnerability scanner integration
+- [ ] Compliance checks (GDPR, SOC2)
+
+**Priority**: High
+**ETA**: 3-4 days
+
+---
+
+### 5.2 Authentication Configuration
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/authentication`
+**File**: `src/pages/Authentication.jsx` (578 lines)
+
+**Current Features**:
+- ✅ Basic auth display
+
+**Needs**:
+- [ ] OAuth provider management (add/remove/test)
+- [ ] SAML configuration
+- [ ] Session timeout settings
+- [ ] Password policy configuration
+- [ ] MFA enforcement
+- [ ] SSO testing tools
+- [ ] Login flow customization
+
+**Priority**: Medium
+**ETA**: 2-3 days
+
+---
+
+### 5.3 Permission Management
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/permissions`
+**File**: `src/pages/PermissionManagement.jsx` (692 lines)
+
+**Current Features**:
+- ✅ Basic permission display
+
+**Needs**:
+- [ ] Complete permission hierarchy
+- [ ] Service-level permissions
+- [ ] Custom role creation UI
+- [ ] Permission testing tool (simulate user)
+- [ ] Permission inheritance visualization
+- [ ] Audit trail for permission changes
+
+**Priority**: Medium
+**ETA**: 2-3 days
+
+---
+
+## 📋 PHASE 6: ANALYTICS & MONITORING (Priority 6)
+
+**Goal**: Complete analytics and reporting
+**Duration**: 1-2 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 6.1 Advanced Analytics
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/analytics`
+**File**: `src/pages/AdvancedAnalytics.jsx` (834 lines)
+
+**Needs**:
+- [ ] Real data integration (not mock)
+- [ ] More chart types (heatmaps, scatter, etc.)
+- [ ] Custom date ranges
+- [ ] Export functionality (CSV, PDF)
+- [ ] Custom dashboards
+- [ ] Scheduled reports
+- [ ] Email reports
+
+**Priority**: Medium
+**ETA**: 3-4 days
+
+---
+
+### 6.2 Usage Metrics
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/usage-metrics`
+**File**: `src/pages/UsageMetrics.jsx` (568 lines)
+
+**Needs**:
+- [ ] Per-service metrics breakdown
+- [ ] Per-user metrics
+- [ ] API call tracking by endpoint
+- [ ] Cost analysis and attribution
+- [ ] Trend analysis and forecasting
+- [ ] Anomaly detection
+- [ ] Usage alerts
+
+**Priority**: Medium
+**ETA**: 2-3 days
+
+---
+
+## 📋 PHASE 7: INTEGRATIONS & EXTENSIONS (Priority 7)
+
+**Goal**: Complete integrations
+**Duration**: 1-2 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 7.1 Brigade Integration
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/brigade`
+**File**: `src/pages/Brigade.jsx` (523 lines)
+
+**Current Features**:
+- ✅ Link to Brigade
+- ✅ Basic agent list
+
+**Needs**:
+- [ ] Deep integration (embedded management)
+- [ ] Agent usage tracking
+- [ ] Billing integration (charge for agents)
+- [ ] Agent marketplace
+- [ ] Custom agent creation from Ops-Center
+- [ ] Agent performance metrics
+
+**Priority**: Low
+**ETA**: 3-4 days
+
+---
+
+### 7.2 Email Settings ✅
+
+**Status**: ✅ COMPLETE - Oct 19, 2025
+**Route**: `/admin/platform/email-settings`
+**File**: `src/pages/EmailSettings.jsx` (842 lines)
+
+**Completed Features**:
+- ✅ Email provider configuration
+- ✅ Microsoft 365 OAuth2 integration
+- ✅ Test email functionality
+- ✅ SMTP configuration
+
+**Known Issues**:
+- ⚠️ Edit form doesn't pre-populate fields (minor bug)
+
+**Priority**: Bug fix only
+**ETA**: 1 hour
+
+---
+
+### 7.3 Extensions & Plugins
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/extensions`
+**File**: `src/pages/Extensions.jsx` (467 lines)
+
+**Needs**:
+- [ ] Extension marketplace
+- [ ] Install/uninstall functionality
+- [ ] Extension settings management
+- [ ] Extension API framework
+- [ ] Security sandboxing
+- [ ] Extension verification
+
+**Priority**: Low
+**ETA**: 3-4 days
+
+---
+
+## 📋 PHASE 8: UI/UX POLISH (Priority 8)
+
+**Goal**: Modernize and polish all UIs
+**Duration**: 1-2 weeks
+**Status**: ⏳ PENDING
+
+---
+
+### 8.1 Main Dashboard Modernization ⚠️
+
+**Status**: 🟡 FUNCTIONAL BUT DATED
+**Route**: `/admin` or `/admin/`
+**File**: `src/pages/Dashboard.jsx` (847 lines)
+
+**Current Features**:
+- ✅ Quick Actions
+- ✅ System Specifications
+- ✅ Resource Utilization graphs
+- ✅ Service Status grid
+- ✅ Recent Activity timeline
+- ✅ Personalized greeting
+
+**Needs**:
+- [ ] Modern UI (glassmorphism like PublicLanding)
+- [ ] Better animations and transitions
+- [ ] System health score (overall metric)
+- [ ] Real-time updates (WebSocket)
+- [ ] Better layout (grid/flexbox)
+- [ ] Dark mode optimization
+- [ ] Mobile responsiveness
+
+**Priority**: HIGH (first thing users see)
+**ETA**: 3-4 days
+
+---
+
+### 8.2 Landing Page ✅
+
+**Status**: ✅ COMPLETE & POLISHED - Oct 20, 2025
+**Route**: `/`
+**File**: `src/pages/PublicLanding.jsx` (40KB)
+
+**Completed Features**:
+- ✅ 11 user-facing service cards
+- ✅ 6 admin app cards (toggle in dropdown)
+- ✅ localStorage persistence
+- ✅ Responsive design
+- ✅ Theme support
+- ✅ Beautiful glassmorphism UI
+
+**No work needed** - reference for other pages
+
+---
+
+### 8.3 Account Settings Pages
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Routes**: `/admin/account/*`
+
+**Files**:
+- `src/pages/account/AccountProfile.jsx` (523 lines)
+- `src/pages/account/AccountSecurity.jsx` (487 lines)
+- `src/pages/account/AccountAPIKeys.jsx` (612 lines)
+- `src/pages/account/AccountNotifications.jsx` (398 lines)
+- `src/pages/NotificationSettings.jsx` (456 lines)
+
+**Needs**:
+- [ ] Test all forms with validation
+- [ ] Profile picture upload
+- [ ] Better error handling
+- [ ] Success/failure feedback
+- [ ] Form auto-save
+- [ ] Better mobile layouts
+
+**Priority**: Medium
+**ETA**: 2-3 days
+
+---
+
+### 8.4 Landing Customization
+
+**Status**: 🟠 PARTIAL
+**Route**: `/admin/system/landing`
+**File**: `src/pages/LandingCustomization.jsx` (634 lines)
+
+**Needs**:
+- [ ] Theme customization (colors, fonts)
+- [ ] Logo upload and management
+- [ ] Custom CSS injection
+- [ ] Live preview mode
+- [ ] White-label options
+- [ ] Mobile preview
+- [ ] Reset to defaults
+
+**Priority**: Low
+**ETA**: 2-3 days
+
+---
+
+### 8.5 System Settings
+
+**Status**: 🟡 FUNCTIONAL BUT NEEDS POLISH
+**Route**: `/admin/system/settings`
+**File**: `src/pages/Settings.jsx` (589 lines)
+
+**Needs**:
+- [ ] Better organization (tabs/sections)
+- [ ] System name/domain config
+- [ ] Timezone management
+- [ ] Maintenance mode toggle
+- [ ] Feature flags
+- [ ] Email configuration
+- [ ] Backup settings
+- [ ] Performance settings
+
+**Priority**: Medium
+**ETA**: 2 days
+
+---
+
+## 📋 DEPRECATED / CLEANUP
+
+### Files to Remove
+
+**Already Archived**:
+- ✅ `/REMOVED_PAGES_20251008_000741/` - Can delete
+- ✅ `/src/pages/archive/` - Keep for reference
+
+**Need Cleanup**:
+- [ ] Identify duplicate components
+- [ ] Remove unused imports
+- [ ] Consolidate similar functions
+- [ ] Remove commented-out code
+
+**ETA**: 1-2 days cleanup sprint
+
+---
+
+## 📊 Backend API Status
+
+### ✅ Complete APIs
+- User management (`user_management_api.py`, `user_api_keys.py`)
+- Billing integration (`billing_analytics_api.py`, `lago_integration.py`)
+- Organization management (`org_api.py`) ✅ NEW Oct 22
+- Email configuration (`email_api.py`)
+- Keycloak integration (`keycloak_integration.py`)
+- Subscription management (`subscription_manager.py`)
+- Stripe integration (`stripe_api.py`)
+
+### 🟡 Needs Testing
+- Local user management (`local_user_api.py`) - Epic 1.1
+- Hardware monitoring APIs
+- Network configuration APIs
+- Service management APIs
+
+### ❌ Missing APIs
+- Traefik configuration API - Epic 1.3
+- LiteLLM routing API - Epic 3.1
+- AI server management API - Epic 3.2
+- Advanced analytics APIs
+- Backup/restore APIs
+- Firewall configuration API
+
+---
+
+## 🎯 Current Sprint: Phase 1, Multiple Epics
+
+**Recently Completed**:
+- ✅ Epic 1.1: Local User Management (Oct 22, 2025 - 7:15 PM)
+- ✅ Epic 1.2: Network Configuration Phase 1 (Oct 22, 2025 - Deployed)
+- ✅ Epic 1.6: Cloudflare Integration Phase 1 (Oct 22, 2025 - 7:30 PM Code Complete)
+
+**Active Now**: Epic 1.6 Deployment
+**Team**: System-Architect (lead) + DevOps
+**Status**: 🟡 BLOCKED - Awaiting Manual Action
+**Blocker**: P0 security issue - Cloudflare API token revocation required
+**ETA**: 1-2 hours after manual action complete
+
+**Deployment Tasks**:
+1. ⚠️ **CRITICAL**: Revoke exposed Cloudflare API token (see top of checklist)
+2. ⏳ Generate new API token with same permissions
+3. ⏳ Update `.env.auth` with new token
+4. ⏳ Build frontend (`npm run build`)
+5. ⏳ Deploy to public/ directory
+6. ⏳ Restart backend container
+7. ⏳ End-to-end testing
+8. ⏳ Mark Epic 1.6 as "DEPLOYED - OPERATIONAL"
+
+**Next in Queue**:
+- Epic 1.3: Traefik Configuration Management (design phase)
+- Epic 1.4: Storage & Backup Management (enhancement phase)
+
+---
+
+## 📈 Progress Tracking
+
+### Week of Oct 22-28, 2025
+- [x] Master checklist created
+- [x] Epic 1.1 complete (Local Users) ✅ Oct 22, 7:15 PM
+- [x] Epic 1.2 Phase 1 deployed (Network Config) ✅ Oct 22
+- [x] Epic 1.6 code complete (Cloudflare Integration) ✅ Oct 22, 7:30 PM
+- [ ] Epic 1.6 deployed (pending token revocation)
+- [ ] Epic 1.3 design phase (Traefik)
+- [ ] Epic 1.4 enhancement started (Storage & Backup)
+
+### Week of Oct 29 - Nov 4, 2025
+- [ ] Epic 1.6 fully deployed
+- [ ] Epic 1.3 implementation (Traefik)
+- [ ] Epic 1.4 complete (Storage & Backup)
+- [ ] Epic 1.5 enhancement (Logs & Monitoring)
+- [ ] Phase 1 complete (all 6 epics)
+
+### November 2025
+- [ ] Phases 1-2 complete
+- [ ] Phase 3 started (LLM management)
+
+### December 2025
+- [ ] Phases 3-4 complete
+- [ ] Phase 5 started
+
+### Q1 2026
+- [ ] All 8 phases complete
+- [ ] 100% feature complete
+- [ ] Production ready
+
+---
+
+## 📞 Resources
+
+**Documentation**:
+- Systematic Review Plan: `/docs/OPS_CENTER_SYSTEMATIC_REVIEW_PLAN.md`
+- Section Review: `/docs/OPS_CENTER_SECTION_REVIEW.md`
+- This Checklist: `/services/ops-center/MASTER_CHECKLIST.md`
+
+**Code Base**:
+- Frontend: `/services/ops-center/src/`
+- Backend: `/services/ops-center/backend/`
+- Tests: `/services/ops-center/backend/tests/`
+
+**Key Files**:
+- Routes: `src/App.jsx` (300 lines)
+- Layout: `src/components/Layout.jsx`
+- Navigation: `src/config/routes.js`
+
+---
+
+## 🎬 Next Action Items
+
+**IMMEDIATE** (P0 Priority):
+1. 🚨 **REVOKE** Cloudflare API token `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_`
+2. Generate new Cloudflare API token with same permissions
+3. Update `.env.auth` with new token
+4. Deploy Epic 1.6 (build + restart container)
+
+**NEXT** (P1 Priority):
+1. End-to-end testing of Epic 1.6 Cloudflare integration
+2. Start Epic 1.3 design phase (Traefik Configuration)
+3. Continue Phase 1 systematic review
+
+---
+
+**Last Updated**: October 22, 2025, 7:30 PM
+**Next Review**: After Epic 1.6 deployment complete
+**Version**: 3.1 - Epic 1.6 Complete + Critical Security Alert

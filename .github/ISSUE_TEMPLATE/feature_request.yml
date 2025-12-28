@@ -1,0 +1,125 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for Ops-Center
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Your ideas help make Ops-Center better.
+
+        Please fill out this form to help us understand your request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: Is your feature request related to a problem? Please describe it clearly.
+      placeholder: |
+        A clear and concise description of what the problem is.
+        Example: "I'm always frustrated when..." or "Currently there's no way to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented.
+      placeholder: |
+        A clear and concise description of what you want to happen.
+        Be as specific as possible about the expected behavior.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      description: Which part of Ops-Center would this feature affect?
+      options:
+        - Frontend (React UI)
+        - Backend API (FastAPI)
+        - Authentication (SSO/Keycloak)
+        - Billing (Lago/Stripe)
+        - LLM Proxy (LiteLLM)
+        - User Management
+        - Organization Management
+        - Database/Migrations
+        - Docker/Infrastructure
+        - CLI/Tooling
+        - Documentation
+        - Multiple Components
+        - New Component
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Important
+        - Critical for my use case
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered.
+      placeholder: |
+        Have you tried any workarounds? Are there similar features in other tools that you like?
+    validations:
+      required: false
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe your specific use case for this feature.
+      placeholder: |
+        How would you use this feature? What problem would it solve for you or your team?
+    validations:
+      required: false
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Ideas
+      description: If you have technical suggestions for how this could be implemented, please share them.
+      placeholder: |
+        Optional: Share any technical details, API designs, or implementation approaches you've considered.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, screenshots, or examples about the feature request.
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I would be willing to submit a PR to implement this feature
+          required: false
+        - label: I would be willing to help test this feature
+          required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues and discussions to ensure this feature has not already been requested
+          required: true
+        - label: This feature aligns with the project's goals and scope
+          required: true

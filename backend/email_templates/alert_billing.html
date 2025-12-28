@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }} - Billing Alert</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%); padding: 20px; color: #ffffff; }
+        .container { max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 2px solid #fbbf24; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); padding: 30px; text-align: center; }
+        .logo { font-size: 64px; margin-bottom: 10px; }
+        .brand { font-size: 24px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
+        .content { padding: 40px 30px; }
+        .alert-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; margin-bottom: 20px; background: #fbbf24; color: #78350f; }
+        h1 { font-size: 28px; margin-bottom: 20px; color: #fde68a; font-weight: 700; }
+        .message { font-size: 16px; line-height: 1.6; color: #e0d4f7; margin-bottom: 30px; }
+        .details-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid #fbbf24; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .details-box h3 { color: #fde68a; margin-bottom: 10px; font-size: 18px; }
+        .metric { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { font-weight: 600; color: #fde68a; }
+        .metric-value { color: #ffffff; font-weight: 700; }
+        .cta-button { display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: #78350f; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 20px; }
+        .footer { padding: 30px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 14px; color: #a78bfa; }
+        .footer a { color: #ec4899; text-decoration: none; }
+        .timestamp { font-size: 12px; color: #a78bfa; margin-top: 20px; }
+        @media only screen and (max-width: 600px) { .content { padding: 30px 20px; } h1 { font-size: 24px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">💰</div>
+            <div class="brand">BILLING ALERT</div>
+        </div>
+        <div class="content">
+            <span class="alert-badge">⚠️ BILLING</span>
+            <h1>{{ subject }}</h1>
+            <div class="message">{{ message }}</div>
+            {% if amount or subscription_tier %}
+            <div class="details-box">
+                <h3>Billing Information</h3>
+                {% if amount %}<div class="metric"><span class="metric-label">Amount:</span><span class="metric-value">${{ amount }}</span></div>{% endif %}
+                {% if subscription_tier %}<div class="metric"><span class="metric-label">Plan:</span><span class="metric-value">{{ subscription_tier }}</span></div>{% endif %}
+                {% if next_billing_date %}<div class="metric"><span class="metric-label">Next Billing:</span><span class="metric-value">{{ next_billing_date }}</span></div>{% endif %}
+            </div>
+            {% endif %}
+            <a href="{{ dashboard_url }}/admin/subscription/billing" class="cta-button">Update Payment Method</a>
+            <div class="timestamp">{{ timestamp }}</div>
+        </div>
+        <div class="footer">
+            Questions about billing? Contact <a href="mailto:billing@your-domain.com">billing@your-domain.com</a>
+            <br><br><small>Unicorn Commander Ops Center - Automated Billing Alert</small>
+        </div>
+    </div>
+</body>
+</html>

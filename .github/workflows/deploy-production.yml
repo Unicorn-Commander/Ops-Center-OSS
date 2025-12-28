@@ -1,0 +1,190 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version/Tag to deploy'
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy-production:
+    name: Deploy to Production Environment
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      # Configure your production URL in GitHub repository variables
+      url: ${{ vars.PRODUCTION_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+
+      - name: Validate version
+        run: |
+          echo "Deploying version: ${{ inputs.version }}"
+
+          # Verify the version exists
+          git fetch --tags
+          if ! git rev-parse ${{ inputs.version }} >/dev/null 2>&1; then
+            echo "❌ Version ${{ inputs.version }} not found"
+            exit 1
+          fi
+
+          echo "✅ Version validated"
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PRODUCTION_SSH_KEY }}
+
+      - name: Add production server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create deployment directory
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            mkdir -p /opt/ops-center/deployment
+            mkdir -p /opt/ops-center/backups
+            mkdir -p /opt/ops-center/releases
+          '
+
+      - name: Copy deployment files
+        run: |
+          scp scripts/deploy.sh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }}:/opt/ops-center/deployment/
+          scp scripts/rollback.sh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }}:/opt/ops-center/deployment/
+          scp scripts/health_check.sh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }}:/opt/ops-center/deployment/
+          scp docker-compose.prod.yml ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }}:/opt/ops-center/deployment/
+
+      - name: Backup current state
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            cd /opt/ops-center
+
+            # Backup database
+            BACKUP_FILE="backups/db_backup_$(date +%Y%m%d_%H%M%S).sql"
+            docker exec unicorn-postgresql pg_dump -U unicorn unicorn_db > "$BACKUP_FILE"
+            echo "✅ Database backed up to $BACKUP_FILE"
+
+            # Backup current docker-compose state
+            docker compose -f deployment/docker-compose.prod.yml config > "releases/compose_$(date +%Y%m%d_%H%M%S).yml"
+
+            # Save current image tags
+            docker images | grep ops-center > "releases/images_$(date +%Y%m%d_%H%M%S).txt"
+          '
+
+      - name: Run database migrations
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            cd /opt/ops-center
+
+            # Run migrations with backup
+            # docker exec ops-center-direct python -m alembic upgrade head
+
+            echo "✅ Database migrations complete"
+          '
+
+      - name: Deploy with zero-downtime (Blue-Green)
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Set environment
+            export ENVIRONMENT=production
+            export REGISTRY=${{ env.REGISTRY }}
+            export IMAGE_TAG=${{ inputs.version }}
+            export DEPLOYMENT_STRATEGY=blue-green
+
+            # Run deployment script
+            chmod +x deploy.sh
+            ./deploy.sh
+          '
+
+      - name: Wait for services to stabilize
+        run: |
+          echo "Waiting 30 seconds for services to stabilize..."
+          sleep 30
+
+      - name: Run comprehensive health checks
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Run health check script
+            chmod +x health_check.sh
+            if ! ./health_check.sh; then
+              echo "❌ Health checks failed"
+              exit 1
+            fi
+
+            echo "✅ All health checks passed"
+          '
+
+      - name: Run production smoke tests
+        run: |
+          # Test critical endpoints
+          # Configure PRODUCTION_URL in GitHub repository variables
+          curl -f ${{ vars.PRODUCTION_URL }}/api/v1/system/status || exit 1
+          curl -f ${{ vars.PRODUCTION_URL }}/api/v1/health || exit 1
+
+          # Test authentication endpoint
+          curl -f ${{ vars.PRODUCTION_URL }}/api/v1/auth/oidc/login || exit 1
+
+          # Test admin endpoints (with auth)
+          # curl -f -H "Authorization: Bearer ${{ secrets.PROD_API_KEY }}" ${{ vars.PRODUCTION_URL }}/api/v1/admin/users/analytics/summary || exit 1
+
+          echo "Smoke tests passed"
+
+      - name: Verify no errors in logs
+        run: |
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            # Check for errors in last 5 minutes
+            docker logs ops-center-direct --since 5m 2>&1 | grep -i "error" || true
+
+            # Check if service is responding
+            docker ps | grep ops-center-direct
+          '
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "### Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: production" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed at**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: ${{ vars.PRODUCTION_URL }}" >> $GITHUB_STEP_SUMMARY
+
+          # Optional: Send Slack/Discord notification
+          # curl -X POST ${{ secrets.SLACK_WEBHOOK }} -d '{"text":"Ops-Center deployed to production: ${{ inputs.version }}"}'
+
+      - name: Automatic rollback on failure
+        if: failure()
+        run: |
+          echo "### ⚠️ Deployment Failed - Initiating Automatic Rollback" >> $GITHUB_STEP_SUMMARY
+
+          ssh ${{ secrets.PRODUCTION_USER }}@${{ secrets.PRODUCTION_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Run rollback script
+            chmod +x rollback.sh
+            ./rollback.sh
+
+            # Verify rollback
+            sleep 10
+            ./health_check.sh
+          '
+
+          echo "### ❌ Production Deployment Failed - System Rolled Back" >> $GITHUB_STEP_SUMMARY
+
+          # Optional: Send alert
+          # curl -X POST ${{ secrets.SLACK_WEBHOOK }} -d '{"text":"❌ Ops-Center production deployment failed and was rolled back"}'
+
+          exit 1

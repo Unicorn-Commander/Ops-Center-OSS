@@ -1,0 +1,1500 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  CreditCardIcon,
+  BanknotesIcon,
+  UsersIcon,
+  ChartBarIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ClockIcon,
+  DocumentArrowDownIcon,
+  PlusCircleIcon,
+  TrashIcon,
+  MagnifyingGlassIcon,
+  ExclamationTriangleIcon,
+  SparklesIcon,
+  ArrowPathIcon,
+  FunnelIcon,
+  EllipsisVerticalIcon,
+  PauseIcon,
+  PlayIcon,
+  PencilIcon,
+  EnvelopeIcon,
+  ArrowUpTrayIcon,
+  CalendarIcon,
+  ReceiptRefundIcon,
+  CheckIcon,
+  XMarkIcon,
+  TagIcon
+} from '@heroicons/react/24/outline';
+import { useTheme } from '../contexts/ThemeContext';
+import {
+  PieChart,
+  Pie,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.3 }
+  }
+};
+
+// Format currency
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(amount);
+};
+
+// Format date
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+// Tier badge component
+const TierBadge = ({ tier }) => {
+  const colors = {
+    trial: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    starter: 'bg-green-500/20 text-green-400 border-green-500/30',
+    professional: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+    enterprise: 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+  };
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${colors[tier] || colors.trial}`}>
+      {tier.charAt(0).toUpperCase() + tier.slice(1)}
+    </span>
+  );
+};
+
+// Status badge component
+const StatusBadge = ({ status }) => {
+  const colors = {
+    active: 'bg-green-500/20 text-green-400 border-green-500/30',
+    trialing: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    canceled: 'bg-red-500/20 text-red-400 border-red-500/30',
+    past_due: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    paid: 'bg-green-500/20 text-green-400 border-green-500/30',
+    pending: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    failed: 'bg-red-500/20 text-red-400 border-red-500/30'
+  };
+
+  return (
+    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${colors[status] || colors.pending}`}>
+      {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
+    </span>
+  );
+};
+
+// Loading skeleton
+const LoadingSkeleton = ({ theme }) => (
+  <div className="space-y-6">
+    {[1, 2, 3].map((i) => (
+      <div key={i} className={`${theme.card} rounded-xl p-6 animate-pulse`}>
+        <div className="h-4 bg-slate-700 rounded w-1/4 mb-4"></div>
+        <div className="h-8 bg-slate-700 rounded w-1/2"></div>
+      </div>
+    ))}
+  </div>
+);
+
+// Empty state component
+const EmptyState = ({ icon: Icon, title, description, action, theme }) => (
+  <div className={`${theme.card} rounded-xl p-12 text-center`}>
+    <Icon className="w-16 h-16 mx-auto mb-4 text-slate-500" />
+    <h3 className={`text-xl font-semibold mb-2 ${theme.text.primary}`}>{title}</h3>
+    <p className={`${theme.text.secondary} mb-6`}>{description}</p>
+    {action && action}
+  </div>
+);
+
+// Confirmation Dialog Component
+const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, description, confirmText, confirmColor = 'red', theme }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.95, opacity: 0 }}
+          className={`${theme.card} rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-700`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className={`text-xl font-bold mb-3 ${theme.text.primary}`}>{title}</h3>
+          <p className={`${theme.text.secondary} mb-6`}>{description}</p>
+          <div className="flex gap-3">
+            <button
+              onClick={onClose}
+              className="flex-1 px-4 py-2 border border-slate-600 text-slate-300 hover:bg-slate-700 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={onConfirm}
+              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
+                confirmColor === 'red'
+                  ? 'bg-red-600 hover:bg-red-700 text-white'
+                  : 'bg-purple-600 hover:bg-purple-700 text-white'
+              }`}
+            >
+              {confirmText}
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+// Toast Notification Component
+const Toast = ({ message, type = 'success', onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  const bgColor = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600';
+  const Icon = type === 'success' ? CheckCircleIcon : type === 'error' ? XCircleIcon : ExclamationTriangleIcon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className={`fixed top-4 right-4 z-50 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 max-w-md`}
+    >
+      <Icon className="w-6 h-6 flex-shrink-0" />
+      <p className="flex-1">{message}</p>
+      <button onClick={onClose} className="hover:bg-white/20 rounded p-1 transition-colors">
+        <XMarkIcon className="w-5 h-5" />
+      </button>
+    </motion.div>
+  );
+};
+
+// Action Menu Component
+const ActionMenu = ({ isOpen, onClose, actions, theme }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className={`absolute right-0 top-8 ${theme.card} rounded-lg shadow-xl border border-slate-700 py-2 min-w-48 z-10`}
+      >
+        {actions.map((action, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              action.onClick();
+              onClose();
+            }}
+            disabled={action.disabled}
+            className={`w-full px-4 py-2 text-left text-sm flex items-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              action.danger
+                ? 'text-red-400 hover:bg-red-500/10'
+                : `${theme.text.primary} hover:bg-slate-700/50`
+            }`}
+          >
+            {action.icon && <action.icon className="w-4 h-4" />}
+            {action.label}
+          </button>
+        ))}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+// User View Component
+const UserView = ({ theme }) => {
+  const [loading, setLoading] = useState(true);
+  const [subscription, setSubscription] = useState(null);
+  const [invoices, setInvoices] = useState([]);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [usage, setUsage] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    loadUserBillingData();
+  }, []);
+
+  const loadUserBillingData = async () => {
+    setLoading(true);
+    try {
+      const [subRes, invRes, pmRes, usageRes] = await Promise.all([
+        fetch('/api/v1/billing/subscription', { credentials: 'include' }),
+        fetch('/api/v1/billing/invoices?limit=10', { credentials: 'include' }),
+        fetch('/api/v1/billing/payment-methods', { credentials: 'include' }),
+        fetch('/api/v1/billing/usage', { credentials: 'include' })
+      ]);
+
+      if (subRes.ok) setSubscription(await subRes.json());
+      if (invRes.ok) setInvoices(await invRes.json());
+      if (pmRes.ok) setPaymentMethods(await pmRes.json());
+      if (usageRes.ok) setUsage(await usageRes.json());
+    } catch (error) {
+      console.error('Error loading billing data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await loadUserBillingData();
+    setRefreshing(false);
+  };
+
+  if (loading) {
+    return <LoadingSkeleton theme={theme} />;
+  }
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="space-y-6"
+    >
+      {/* Header with Refresh */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className={`text-2xl font-bold ${theme.text.primary}`}>Billing & Subscription</h2>
+          <p className={`${theme.text.secondary} text-sm mt-1`}>Manage your subscription and billing information</p>
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className={`flex items-center gap-2 px-4 py-2 ${theme.button} rounded-lg transition-all disabled:opacity-50`}
+        >
+          <ArrowPathIcon className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
+      </div>
+
+      {/* Current Subscription */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className={`text-lg font-semibold ${theme.text.primary} flex items-center gap-2`}>
+            <SparklesIcon className="w-5 h-5 text-purple-400" />
+            Current Subscription
+          </h3>
+          {subscription && <TierBadge tier={subscription.tier} />}
+        </div>
+
+        {subscription ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className={`text-sm ${theme.text.secondary}`}>Plan</p>
+                <p className={`text-xl font-bold ${theme.text.primary}`}>
+                  {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)}
+                </p>
+              </div>
+              <div>
+                <p className={`text-sm ${theme.text.secondary}`}>Price</p>
+                <p className={`text-xl font-bold ${theme.text.primary}`}>
+                  {formatCurrency(subscription.price)}/mo
+                </p>
+              </div>
+              <div>
+                <p className={`text-sm ${theme.text.secondary}`}>Status</p>
+                <div className="mt-1">
+                  <StatusBadge status={subscription.status} />
+                </div>
+              </div>
+              <div>
+                <p className={`text-sm ${theme.text.secondary}`}>Next Billing Date</p>
+                <p className={`text-sm font-medium ${theme.text.primary} mt-1`}>
+                  {formatDate(subscription.next_billing_date)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4 border-t border-slate-700">
+              <button className={`flex-1 ${theme.button} rounded-lg py-2 px-4 text-sm font-medium`}>
+                <ArrowUpIcon className="w-4 h-4 inline mr-2" />
+                Upgrade Plan
+              </button>
+              <button className="flex-1 border border-slate-600 text-slate-300 hover:bg-slate-700 rounded-lg py-2 px-4 text-sm font-medium transition-colors">
+                Change Plan
+              </button>
+            </div>
+          </div>
+        ) : (
+          <EmptyState
+            icon={CreditCardIcon}
+            title="No Active Subscription"
+            description="Start your subscription to access premium features"
+            action={
+              <button className={`${theme.button} rounded-lg py-2 px-6 text-sm font-medium`}>
+                View Plans
+              </button>
+            }
+            theme={theme}
+          />
+        )}
+      </motion.div>
+
+      {/* Usage Statistics */}
+      {usage && (
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <h3 className={`text-lg font-semibold ${theme.text.primary} mb-4 flex items-center gap-2`}>
+            <ChartBarIcon className="w-5 h-5 text-cyan-400" />
+            Usage Statistics
+          </h3>
+
+          <div className="space-y-4">
+            {/* API Calls */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-sm ${theme.text.secondary}`}>API Calls</span>
+                <span className={`text-sm font-medium ${theme.text.primary}`}>
+                  {usage.api_calls_used.toLocaleString()} / {usage.api_calls_limit === -1 ? '∞' : usage.api_calls_limit.toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-2">
+                <div
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
+                  style={{
+                    width: `${usage.api_calls_limit === -1 ? 0 : Math.min((usage.api_calls_used / usage.api_calls_limit) * 100, 100)}%`
+                  }}
+                />
+              </div>
+              <p className={`text-xs ${theme.text.secondary} mt-1`}>
+                {usage.api_calls_limit === -1 ? 'Unlimited' : `${Math.round((usage.api_calls_used / usage.api_calls_limit) * 100)}% used`}
+              </p>
+            </div>
+
+            {/* Credits */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className={`text-sm ${theme.text.secondary}`}>Credits</span>
+                <span className={`text-sm font-medium ${theme.text.primary}`}>
+                  {usage.credits_remaining.toLocaleString()} remaining
+                </span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-2">
+                <div
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min((usage.credits_remaining / (usage.credits_used + usage.credits_remaining)) * 100, 100)}%`
+                  }}
+                />
+              </div>
+              <p className={`text-xs ${theme.text.secondary} mt-1`}>
+                {usage.credits_used.toLocaleString()} credits used this month
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Invoice History */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <h3 className={`text-lg font-semibold ${theme.text.primary} mb-4 flex items-center gap-2`}>
+          <DocumentArrowDownIcon className="w-5 h-5 text-blue-400" />
+          Invoice History
+        </h3>
+
+        {invoices.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Date</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Amount</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Status</th>
+                  <th className={`text-right py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoices.map((invoice) => (
+                  <tr key={invoice.id} className="border-b border-slate-800 hover:bg-slate-700/30 transition-colors">
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {formatDate(invoice.date)}
+                    </td>
+                    <td className={`py-3 px-4 text-sm font-medium ${theme.text.primary}`}>
+                      {formatCurrency(invoice.amount)}
+                    </td>
+                    <td className="py-3 px-4">
+                      <StatusBadge status={invoice.status} />
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <button className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors">
+                        <DocumentArrowDownIcon className="w-4 h-4 inline mr-1" />
+                        Download PDF
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <EmptyState
+            icon={DocumentArrowDownIcon}
+            title="No Invoices Yet"
+            description="Your invoice history will appear here once you have active charges"
+            theme={theme}
+          />
+        )}
+      </motion.div>
+
+      {/* Payment Methods */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className={`text-lg font-semibold ${theme.text.primary} flex items-center gap-2`}>
+            <CreditCardIcon className="w-5 h-5 text-green-400" />
+            Payment Methods
+          </h3>
+          <button className="flex items-center gap-2 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors">
+            <PlusCircleIcon className="w-5 h-5" />
+            Add Payment Method
+          </button>
+        </div>
+
+        {paymentMethods.length > 0 ? (
+          <div className="space-y-3">
+            {paymentMethods.map((method) => (
+              <div
+                key={method.id}
+                className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600 hover:border-slate-500 transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  <CreditCardIcon className="w-8 h-8 text-slate-400" />
+                  <div>
+                    <p className={`font-medium ${theme.text.primary}`}>
+                      {method.brand} •••• {method.last4}
+                    </p>
+                    <p className={`text-sm ${theme.text.secondary}`}>
+                      Expires {method.exp_month}/{method.exp_year}
+                    </p>
+                  </div>
+                  {method.is_default && (
+                    <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs font-medium rounded">
+                      Default
+                    </span>
+                  )}
+                </div>
+                <button className="text-red-400 hover:text-red-300 transition-colors">
+                  <TrashIcon className="w-5 h-5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            icon={CreditCardIcon}
+            title="No Payment Methods"
+            description="Add a payment method to manage your subscription"
+            action={
+              <button className={`${theme.button} rounded-lg py-2 px-6 text-sm font-medium`}>
+                <PlusCircleIcon className="w-4 h-4 inline mr-2" />
+                Add Card
+              </button>
+            }
+            theme={theme}
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// Admin View Component
+const AdminView = ({ theme }) => {
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(null);
+  const [revenueChartData, setRevenueChartData] = useState([]);
+  const [userGrowthData, setUserGrowthData] = useState([]);
+  const [tierDistribution, setTierDistribution] = useState([]);
+  const [recentPayments, setRecentPayments] = useState([]);
+  const [failedPayments, setFailedPayments] = useState([]);
+  const [upcomingRenewals, setUpcomingRenewals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterTier, setFilterTier] = useState('all');
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const [chartPeriod, setChartPeriod] = useState('monthly');
+  const [error, setError] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [toast, setToast] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+  const [activeMenu, setActiveMenu] = useState(null);
+
+  useEffect(() => {
+    loadAdminData();
+  }, []);
+
+  useEffect(() => {
+    loadChartData();
+  }, [chartPeriod]);
+
+  const loadAdminData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [summaryRes, tierRes, paymentsRes, failedRes, renewalsRes] = await Promise.all([
+        fetch('/api/v1/billing/dashboard/summary', { credentials: 'include' }),
+        fetch('/api/v1/billing/analytics/tier-distribution', { credentials: 'include' }),
+        fetch('/api/v1/billing/payments/recent?limit=20', { credentials: 'include' }),
+        fetch('/api/v1/billing/payments/failed?limit=20', { credentials: 'include' }),
+        fetch('/api/v1/billing/invoices/upcoming?days=30', { credentials: 'include' })
+      ]);
+
+      if (summaryRes.ok) {
+        const data = await summaryRes.json();
+        setStats(data);
+      }
+
+      if (tierRes.ok) {
+        const data = await tierRes.json();
+        const distribution = data.distribution;
+        setTierDistribution([
+          { name: 'Trial', value: distribution.trial, color: '#3b82f6' },
+          { name: 'Starter', value: distribution.starter, color: '#10b981' },
+          { name: 'Professional', value: distribution.professional, color: '#8b5cf6' },
+          { name: 'Enterprise', value: distribution.enterprise, color: '#f59e0b' }
+        ]);
+      }
+
+      if (paymentsRes.ok) {
+        const data = await paymentsRes.json();
+        setRecentPayments(data.payments);
+      }
+
+      if (failedRes.ok) {
+        const data = await failedRes.json();
+        setFailedPayments(data.payments);
+      }
+
+      if (renewalsRes.ok) {
+        const data = await renewalsRes.json();
+        setUpcomingRenewals(data.renewals);
+      }
+    } catch (error) {
+      console.error('Error loading admin data:', error);
+      setError('Failed to load billing data. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadChartData = async () => {
+    try {
+      const [revenueRes, growthRes] = await Promise.all([
+        fetch(`/api/v1/billing/analytics/revenue-chart?period=${chartPeriod}`, { credentials: 'include' }),
+        fetch(`/api/v1/billing/analytics/user-growth?period=${chartPeriod}`, { credentials: 'include' })
+      ]);
+
+      if (revenueRes.ok) {
+        const data = await revenueRes.json();
+        setRevenueChartData(data.data.map((item, index) => ({
+          name: data.labels[index],
+          revenue: item
+        })));
+      }
+
+      if (growthRes.ok) {
+        const data = await growthRes.json();
+        setUserGrowthData(data.labels.map((label, index) => ({
+          name: label,
+          signups: data.signups[index],
+          cancellations: data.cancellations[index]
+        })));
+      }
+    } catch (error) {
+      console.error('Error loading chart data:', error);
+    }
+  };
+
+  // ============================================
+  // Management Action Handlers
+  // ============================================
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
+
+  const handleUpgradeSubscription = async (subscriptionId, newTier) => {
+    try {
+      const res = await fetch(`/api/v1/subscriptions/${subscriptionId}/upgrade`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ new_tier: newTier })
+      });
+
+      if (res.ok) {
+        showToast('Subscription upgraded successfully', 'success');
+        loadAdminData();
+      } else {
+        const error = await res.json();
+        showToast(error.detail || 'Failed to upgrade subscription', 'error');
+      }
+    } catch (error) {
+      showToast('Network error upgrading subscription', 'error');
+    }
+  };
+
+  const handleCancelSubscription = (subscriptionId, userEmail) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Cancel Subscription',
+      description: `Are you sure you want to cancel the subscription for ${userEmail}? This action cannot be undone.`,
+      confirmText: 'Cancel Subscription',
+      confirmColor: 'red',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/subscriptions/${subscriptionId}/cancel`, {
+            method: 'POST',
+            credentials: 'include'
+          });
+
+          if (res.ok) {
+            showToast('Subscription cancelled successfully', 'success');
+            loadAdminData();
+          } else {
+            const error = await res.json();
+            showToast(error.detail || 'Failed to cancel subscription', 'error');
+          }
+        } catch (error) {
+          showToast('Network error cancelling subscription', 'error');
+        }
+        setConfirmDialog({ isOpen: false });
+      }
+    });
+  };
+
+  const handlePauseSubscription = async (subscriptionId) => {
+    try {
+      const res = await fetch(`/api/v1/subscriptions/${subscriptionId}/pause`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        showToast('Subscription paused successfully', 'success');
+        loadAdminData();
+      } else {
+        const error = await res.json();
+        showToast(error.detail || 'Failed to pause subscription', 'error');
+      }
+    } catch (error) {
+      showToast('Network error pausing subscription', 'error');
+    }
+  };
+
+  const handleResumeSubscription = async (subscriptionId) => {
+    try {
+      const res = await fetch(`/api/v1/subscriptions/${subscriptionId}/resume`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        showToast('Subscription resumed successfully', 'success');
+        loadAdminData();
+      } else {
+        const error = await res.json();
+        showToast(error.detail || 'Failed to resume subscription', 'error');
+      }
+    } catch (error) {
+      showToast('Network error resuming subscription', 'error');
+    }
+  };
+
+  const handleDownloadInvoice = async (invoiceId) => {
+    try {
+      const res = await fetch(`/api/v1/billing/invoices/${invoiceId}/pdf`, {
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `invoice-${invoiceId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        showToast('Invoice downloaded successfully', 'success');
+      } else {
+        showToast('Failed to download invoice', 'error');
+      }
+    } catch (error) {
+      showToast('Network error downloading invoice', 'error');
+    }
+  };
+
+  const handleResendInvoice = async (invoiceId, userEmail) => {
+    try {
+      const res = await fetch(`/api/v1/billing/invoices/${invoiceId}/resend`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        showToast(`Invoice resent to ${userEmail}`, 'success');
+      } else {
+        showToast('Failed to resend invoice', 'error');
+      }
+    } catch (error) {
+      showToast('Network error resending invoice', 'error');
+    }
+  };
+
+  const handleVoidInvoice = (invoiceId) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Void Invoice',
+      description: 'Are you sure you want to void this invoice? This action cannot be undone.',
+      confirmText: 'Void Invoice',
+      confirmColor: 'red',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/billing/invoices/${invoiceId}/void`, {
+            method: 'POST',
+            credentials: 'include'
+          });
+
+          if (res.ok) {
+            showToast('Invoice voided successfully', 'success');
+            loadAdminData();
+          } else {
+            showToast('Failed to void invoice', 'error');
+          }
+        } catch (error) {
+          showToast('Network error voiding invoice', 'error');
+        }
+        setConfirmDialog({ isOpen: false });
+      }
+    });
+  };
+
+  const handleRetryPayment = async (paymentId) => {
+    try {
+      const res = await fetch(`/api/v1/billing/payments/${paymentId}/retry`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        showToast('Payment retry initiated', 'success');
+        loadAdminData();
+      } else {
+        const error = await res.json();
+        showToast(error.detail || 'Failed to retry payment', 'error');
+      }
+    } catch (error) {
+      showToast('Network error retrying payment', 'error');
+    }
+  };
+
+  const handleRefundPayment = (paymentId, amount) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Refund Payment',
+      description: `Are you sure you want to refund ${formatCurrency(amount)}? This action cannot be undone.`,
+      confirmText: 'Issue Refund',
+      confirmColor: 'red',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/v1/billing/payments/${paymentId}/refund`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ reason: 'Customer request' })
+          });
+
+          if (res.ok) {
+            showToast('Refund processed successfully', 'success');
+            loadAdminData();
+          } else {
+            const error = await res.json();
+            showToast(error.detail || 'Failed to process refund', 'error');
+          }
+        } catch (error) {
+          showToast('Network error processing refund', 'error');
+        }
+        setConfirmDialog({ isOpen: false });
+      }
+    });
+  };
+
+  const handleBulkExport = () => {
+    const csvData = filteredPayments.map(payment => ({
+      Date: formatDate(payment.date),
+      Customer: payment.user_email,
+      Plan: payment.plan_name,
+      Amount: payment.amount,
+      Status: payment.status,
+      Invoice: payment.invoice_id || 'N/A'
+    }));
+
+    const headers = Object.keys(csvData[0]).join(',');
+    const rows = csvData.map(obj => Object.values(obj).join(','));
+    const csv = [headers, ...rows].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `billing-export-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    showToast('Data exported successfully', 'success');
+  };
+
+  const handleSelectAll = () => {
+    if (selectedItems.length === filteredPayments.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(filteredPayments.map(p => p.invoice_id));
+    }
+  };
+
+  const toggleSelectItem = (invoiceId) => {
+    if (selectedItems.includes(invoiceId)) {
+      setSelectedItems(selectedItems.filter(id => id !== invoiceId));
+    } else {
+      setSelectedItems([...selectedItems, invoiceId]);
+    }
+  };
+
+  if (loading) {
+    return <LoadingSkeleton theme={theme} />;
+  }
+
+  // Chart colors
+  const COLORS = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b'];
+
+  // Filter recent payments with advanced filters
+  const filteredPayments = recentPayments.filter((payment) => {
+    // Search filter
+    const matchesSearch = searchTerm === '' ||
+      payment.user_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payment.invoice_id?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    // Status filter
+    const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
+
+    // Tier filter
+    const matchesTier = filterTier === 'all' || payment.plan_name?.toLowerCase().includes(filterTier);
+
+    // Date range filter
+    let matchesDateRange = true;
+    if (dateRange.start && dateRange.end) {
+      const paymentDate = new Date(payment.date);
+      const startDate = new Date(dateRange.start);
+      const endDate = new Date(dateRange.end);
+      matchesDateRange = paymentDate >= startDate && paymentDate <= endDate;
+    }
+
+    return matchesSearch && matchesStatus && matchesTier && matchesDateRange;
+  });
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="space-y-6"
+    >
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex items-center gap-3">
+          <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />
+          <p className="text-red-400 text-sm">{error}</p>
+          <button
+            onClick={loadAdminData}
+            className="ml-auto text-red-400 hover:text-red-300 text-sm font-medium"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {/* Toast Notifications */}
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ isOpen: false })}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        confirmText={confirmDialog.confirmText}
+        confirmColor={confirmDialog.confirmColor}
+        theme={theme}
+      />
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className={`text-2xl font-bold ${theme.text.primary}`}>Admin Billing Dashboard</h2>
+          <p className={`${theme.text.secondary} text-sm mt-1`}>Monitor revenue, subscriptions, and customer activity</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <select
+            value={chartPeriod}
+            onChange={(e) => setChartPeriod(e.target.value)}
+            className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500 text-sm"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <button
+            onClick={loadAdminData}
+            className={`flex items-center gap-2 px-4 py-2 ${theme.button} rounded-lg transition-all`}
+          >
+            <ArrowPathIcon className="w-5 h-5" />
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      {/* Advanced Filters */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <div className="flex items-center gap-2 mb-4">
+          <FunnelIcon className="w-5 h-5 text-purple-400" />
+          <h3 className={`text-lg font-semibold ${theme.text.primary}`}>Filters & Search</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Search */}
+          <div>
+            <label className={`block text-sm ${theme.text.secondary} mb-2`}>Search</label>
+            <div className="relative">
+              <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Email or invoice ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:border-purple-500"
+              />
+            </div>
+          </div>
+
+          {/* Status Filter */}
+          <div>
+            <label className={`block text-sm ${theme.text.secondary} mb-2`}>Status</label>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+            >
+              <option value="all">All Statuses</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+              <option value="refunded">Refunded</option>
+            </select>
+          </div>
+
+          {/* Tier Filter */}
+          <div>
+            <label className={`block text-sm ${theme.text.secondary} mb-2`}>Subscription Tier</label>
+            <select
+              value={filterTier}
+              onChange={(e) => setFilterTier(e.target.value)}
+              className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+            >
+              <option value="all">All Tiers</option>
+              <option value="trial">Trial</option>
+              <option value="starter">Starter</option>
+              <option value="professional">Professional</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+
+          {/* Date Range */}
+          <div>
+            <label className={`block text-sm ${theme.text.secondary} mb-2`}>Date Range</label>
+            <div className="flex gap-2">
+              <input
+                type="date"
+                value={dateRange.start}
+                onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
+                className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+              />
+              <input
+                type="date"
+                value={dateRange.end}
+                onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
+                className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-purple-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Active Filters Display */}
+        {(searchTerm || filterStatus !== 'all' || filterTier !== 'all' || dateRange.start) && (
+          <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-700">
+            <p className={`text-sm ${theme.text.secondary}`}>Active filters:</p>
+            {searchTerm && (
+              <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs flex items-center gap-1">
+                Search: {searchTerm}
+                <button onClick={() => setSearchTerm('')} className="hover:bg-purple-500/30 rounded-full">
+                  <XMarkIcon className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {filterStatus !== 'all' && (
+              <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs flex items-center gap-1">
+                Status: {filterStatus}
+                <button onClick={() => setFilterStatus('all')} className="hover:bg-blue-500/30 rounded-full">
+                  <XMarkIcon className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            {filterTier !== 'all' && (
+              <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs flex items-center gap-1">
+                Tier: {filterTier}
+                <button onClick={() => setFilterTier('all')} className="hover:bg-green-500/30 rounded-full">
+                  <XMarkIcon className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+            <button
+              onClick={() => {
+                setSearchTerm('');
+                setFilterStatus('all');
+                setFilterTier('all');
+                setDateRange({ start: '', end: '' });
+              }}
+              className="ml-auto text-sm text-red-400 hover:text-red-300 transition-colors"
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Revenue Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-sm ${theme.text.secondary}`}>Total Revenue</p>
+              <p className={`text-3xl font-bold ${theme.text.primary} mt-2`}>
+                {formatCurrency(stats?.total_revenue || 0)}
+              </p>
+              <div className="flex items-center gap-1 mt-2 text-sm">
+                <p className={`text-xs ${theme.text.secondary}`}>
+                  MRR: {formatCurrency(stats?.mrr || 0)} | ARR: {formatCurrency(stats?.arr || 0)}
+                </p>
+              </div>
+            </div>
+            <BanknotesIcon className="w-12 h-12 text-purple-400 opacity-20" />
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-sm ${theme.text.secondary}`}>Active Subscriptions</p>
+              <p className={`text-3xl font-bold ${theme.text.primary} mt-2`}>
+                {stats?.active_subscriptions || 0}
+              </p>
+              <div className="flex items-center gap-1 mt-2 text-sm">
+                {stats?.revenue_growth >= 0 ? (
+                  <span className="text-green-400 flex items-center gap-1">
+                    <ArrowUpIcon className="w-4 h-4" />
+                    +{stats?.revenue_growth?.toFixed(1) || 0}% growth
+                  </span>
+                ) : (
+                  <span className="text-red-400 flex items-center gap-1">
+                    <ArrowDownIcon className="w-4 h-4" />
+                    {stats?.revenue_growth?.toFixed(1) || 0}% growth
+                  </span>
+                )}
+              </div>
+            </div>
+            <CheckCircleIcon className="w-12 h-12 text-green-400 opacity-20" />
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-sm ${theme.text.secondary}`}>Trial Users</p>
+              <p className={`text-3xl font-bold ${theme.text.primary} mt-2`}>
+                {stats?.trial_users || 0}
+              </p>
+              <div className="flex items-center gap-1 mt-2 text-sm">
+                {stats?.user_growth >= 0 ? (
+                  <span className="text-blue-400 flex items-center gap-1">
+                    <ArrowUpIcon className="w-4 h-4" />
+                    +{stats?.user_growth?.toFixed(1) || 0}% growth
+                  </span>
+                ) : (
+                  <span className="text-red-400 flex items-center gap-1">
+                    <ArrowDownIcon className="w-4 h-4" />
+                    {stats?.user_growth?.toFixed(1) || 0}% growth
+                  </span>
+                )}
+              </div>
+            </div>
+            <ClockIcon className="w-12 h-12 text-yellow-400 opacity-20" />
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-sm ${theme.text.secondary}`}>Churn Rate</p>
+              <p className={`text-3xl font-bold ${theme.text.primary} mt-2`}>
+                {stats?.churn_rate?.toFixed(1) || 0}%
+              </p>
+              <div className="flex items-center gap-1 mt-2 text-sm">
+                {stats?.churn_rate <= 5 ? (
+                  <span className="text-green-400 flex items-center gap-1">
+                    <CheckCircleIcon className="w-4 h-4" />
+                    Healthy
+                  </span>
+                ) : (
+                  <span className="text-yellow-400 flex items-center gap-1">
+                    <ExclamationTriangleIcon className="w-4 h-4" />
+                    Monitor
+                  </span>
+                )}
+              </div>
+            </div>
+            <UsersIcon className="w-12 h-12 text-blue-400 opacity-20" />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Subscription Breakdown Pie Chart */}
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <h3 className={`text-lg font-semibold ${theme.text.primary} mb-4`}>Subscription Tier Distribution</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={tierDistribution}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {tierDistribution.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '0.5rem'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </motion.div>
+
+        {/* Revenue Chart */}
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+          <h3 className={`text-lg font-semibold ${theme.text.primary} mb-4`}>Revenue Over Time</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={revenueChartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="name" stroke="#9ca3af" />
+              <YAxis stroke="#9ca3af" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '0.5rem'
+                }}
+                formatter={(value) => formatCurrency(value)}
+              />
+              <Legend />
+              <Line type="monotone" dataKey="revenue" stroke="#8b5cf6" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </motion.div>
+      </div>
+
+      {/* User Growth Chart */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <h3 className={`text-lg font-semibold ${theme.text.primary} mb-4`}>User Growth & Churn</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={userGrowthData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+            <XAxis dataKey="name" stroke="#9ca3af" />
+            <YAxis stroke="#9ca3af" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1e293b',
+                border: '1px solid #334155',
+                borderRadius: '0.5rem'
+              }}
+            />
+            <Legend />
+            <Bar dataKey="signups" fill="#10b981" name="New Signups" />
+            <Bar dataKey="cancellations" fill="#ef4444" name="Cancellations" />
+          </BarChart>
+        </ResponsiveContainer>
+      </motion.div>
+
+      {/* Recent Payments */}
+      <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className={`text-lg font-semibold ${theme.text.primary}`}>Recent Payments</h3>
+          <div className="relative">
+            <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search by email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 focus:outline-none focus:border-purple-500"
+            />
+          </div>
+        </div>
+        {filteredPayments.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Date</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Customer</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Plan</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Amount</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Status</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Invoice</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPayments.map((payment, index) => (
+                  <tr key={payment.invoice_id || index} className="border-b border-slate-800 hover:bg-slate-700/30 transition-colors">
+                    <td className={`py-3 px-4 text-sm ${theme.text.secondary}`}>
+                      {formatDate(payment.date)}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {payment.user_email}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {payment.plan_name}
+                    </td>
+                    <td className={`py-3 px-4 text-sm font-medium ${theme.text.primary}`}>
+                      {formatCurrency(payment.amount)}
+                    </td>
+                    <td className="py-3 px-4">
+                      <StatusBadge status={payment.status} />
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.secondary}`}>
+                      {payment.invoice_id || 'N/A'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <EmptyState
+            icon={BanknotesIcon}
+            title={searchTerm ? "No Matching Payments" : "No Recent Payments"}
+            description={searchTerm ? "No payments match your search" : "Recent payment activity will appear here"}
+            theme={theme}
+          />
+        )}
+      </motion.div>
+
+      {/* Failed Payments */}
+      {failedPayments.length > 0 && (
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6 border-l-4 border-red-500`}>
+          <div className="flex items-center gap-2 mb-4">
+            <ExclamationTriangleIcon className="w-6 h-6 text-red-400" />
+            <h3 className={`text-lg font-semibold ${theme.text.primary}`}>Failed Payments</h3>
+            <span className="px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded">
+              {failedPayments.length} requiring attention
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Date</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Customer</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Plan</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Amount</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {failedPayments.map((payment, index) => (
+                  <tr key={payment.invoice_id || index} className="border-b border-slate-800 hover:bg-slate-700/30 transition-colors">
+                    <td className={`py-3 px-4 text-sm ${theme.text.secondary}`}>
+                      {formatDate(payment.date)}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {payment.user_email}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {payment.plan_name}
+                    </td>
+                    <td className={`py-3 px-4 text-sm font-medium ${theme.text.primary}`}>
+                      {formatCurrency(payment.amount)}
+                    </td>
+                    <td className="py-3 px-4">
+                      <StatusBadge status={payment.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Upcoming Renewals */}
+      {upcomingRenewals.length > 0 && (
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6 border-l-4 border-blue-500`}>
+          <div className="flex items-center gap-2 mb-4">
+            <ClockIcon className="w-6 h-6 text-blue-400" />
+            <h3 className={`text-lg font-semibold ${theme.text.primary}`}>Upcoming Renewals</h3>
+            <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs font-medium rounded">
+              Next 30 days
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Renewal Date</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Customer</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Plan</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Amount</th>
+                  <th className={`text-left py-3 px-4 text-sm font-medium ${theme.text.secondary}`}>Days Until</th>
+                </tr>
+              </thead>
+              <tbody>
+                {upcomingRenewals.map((renewal, index) => (
+                  <tr key={renewal.subscription_id || index} className="border-b border-slate-800 hover:bg-slate-700/30 transition-colors">
+                    <td className={`py-3 px-4 text-sm ${theme.text.secondary}`}>
+                      {formatDate(renewal.renewal_date)}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {renewal.user_email}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.primary}`}>
+                      {renewal.plan_name}
+                    </td>
+                    <td className={`py-3 px-4 text-sm font-medium ${theme.text.primary}`}>
+                      {formatCurrency(renewal.amount)}
+                    </td>
+                    <td className={`py-3 px-4 text-sm ${theme.text.secondary}`}>
+                      {renewal.days_until} days
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
+    </motion.div>
+  );
+};
+
+// Main Component
+export default function BillingDashboard() {
+  const { theme } = useTheme();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    checkUserRole();
+  }, []);
+
+  const checkUserRole = async () => {
+    try {
+      const res = await fetch('/api/v1/auth/me', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setIsAdmin(data.is_admin || data.role === 'admin');
+      }
+    } catch (error) {
+      console.error('Error checking user role:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+      {isAdmin ? <AdminView theme={theme} /> : <UserView theme={theme} />}
+    </div>
+  );
+}

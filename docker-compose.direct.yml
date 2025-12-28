@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # Direct routing to ops-center backend
+  ops-center-direct:
+    image: uc-1-pro-ops-center
+    container_name: ops-center-direct
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./backend:/app
+      - ./public:/app/public
+      # Mount host user/group files as read-only for Local Users feature
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      # Avatar storage (November 2025 - CORS fix)
+      - ./avatars:/app/avatars
+    env_file:
+      - .env.auth
+    environment:
+      - EXTERNAL_HOST=${APP_DOMAIN:-localhost}
+      - EXTERNAL_PROTOCOL=https
+      - OAUTH_CLIENT_ID=ops-center
+      - OPS_CENTER_OAUTH_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET:-your-client-secret-here}
+      - KEYCLOAK_URL=http://uchub-keycloak:8080
+      - KEYCLOAK_REALM=uchub
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-change-me}
+      - SESSION_SECRET_KEY=${SESSION_SECRET_KEY:-generate-with-openssl-rand-hex-32}
+      # Stripe Configuration
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_API_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - STRIPE_SUCCESS_URL=https://${APP_DOMAIN:-localhost}/signup-flow.html?success=true
+      - STRIPE_CANCEL_URL=https://${APP_DOMAIN:-localhost}/signup-flow.html?canceled=true
+      # Lago Configuration
+      - LAGO_API_URL=http://unicorn-lago-api:3000
+      - LAGO_PUBLIC_URL=https://billing-api.${APP_DOMAIN:-localhost}
+      - LAGO_API_KEY=${LAGO_API_KEY}
+      # Redis for sessions
+      - REDIS_URL=redis://unicorn-lago-redis:6379/0
+      # PostgreSQL Database
+      - POSTGRES_HOST=postgresql
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=unicorn
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-change-me}
+      - POSTGRES_DB=unicorn_db
+      # Credential Encryption Key (Fernet)
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-generate-your-own}
+      # BYOK Encryption Key (for user API keys)
+      - BYOK_ENCRYPTION_KEY=${BYOK_ENCRYPTION_KEY:-generate-your-own}
+    networks:
+      - web
+      - unicorn-network
+      - uchub-network
+    labels:
+      - "traefik.enable=true"
+      # Service definition (all routers use this)
+      - "traefik.http.services.ops-center-svc.loadbalancer.server.port=8084"
+
+      # Admin routes (highest priority for authenticated routes)
+      - "traefik.http.routers.ops-center-admin.rule=Host(`${APP_DOMAIN:-localhost}`) && PathPrefix(`/admin`)"
+      - "traefik.http.routers.ops-center-admin.priority=100"
+      - "traefik.http.routers.ops-center-admin.entrypoints=http,https"
+      - "traefik.http.routers.ops-center-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-admin.service=ops-center-svc"
+
+      # API routes
+      - "traefik.http.routers.ops-center-api-path.rule=Host(`${APP_DOMAIN:-localhost}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.ops-center-api-path.priority=90"
+      - "traefik.http.routers.ops-center-api-path.entrypoints=http,https"
+      - "traefik.http.routers.ops-center-api-path.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-api-path.service=ops-center-svc"
+
+      # Auth routes
+      - "traefik.http.routers.ops-center-auth.rule=Host(`${APP_DOMAIN:-localhost}`) && PathPrefix(`/auth`)"
+      - "traefik.http.routers.ops-center-auth.priority=80"
+      - "traefik.http.routers.ops-center-auth.entrypoints=http,https"
+      - "traefik.http.routers.ops-center-auth.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-auth.service=ops-center-svc"
+
+      # Root route (lowest priority, catches landing page)
+      - "traefik.http.routers.ops-center-root.rule=Host(`${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.ops-center-root.priority=1"
+      - "traefik.http.routers.ops-center-root.entrypoints=http,https"
+      - "traefik.http.routers.ops-center-root.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-root.service=ops-center-svc"
+
+      # API subdomain HTTPS route
+      - "traefik.http.routers.ops-center-api-subdomain.rule=Host(`api.${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.ops-center-api-subdomain.entrypoints=https"
+      - "traefik.http.routers.ops-center-api-subdomain.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-api-subdomain.service=ops-center-svc"
+
+      # API subdomain HTTP route
+      - "traefik.http.routers.ops-center-api-http.rule=Host(`api.${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.ops-center-api-http.entrypoints=http"
+      - "traefik.http.routers.ops-center-api-http.service=ops-center-svc"
+      # Note: No redirect middleware - Cloudflare handles HTTP→HTTPS redirect
+
+networks:
+  web:
+    external: true
+  unicorn-network:
+    external: true
+  uchub-network:
+    external: true

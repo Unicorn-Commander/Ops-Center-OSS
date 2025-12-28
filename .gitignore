@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+venv/
+
+# Build outputs
+dist/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables (keep .example files)
+.env
+.env.local
+.env.auth
+.env.development.local
+.env.test.local
+.env.production.local
+.env.keycloak
+tests/.env.test
+keycloak-theme/.env.keycloak
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+.swarm/memory.db
+
+# Swarm/agent state (regenerated at runtime)
+.swarm/
+.claude-flow/
+
+# Data files (may contain sensitive info)
+data/
+# But allow source code data files (service configs are not sensitive)
+!src/data/
+!src/data/*.js
+backend.log
+dev.log
+vite.logNVIDIA-Linux-x86_64-*.run
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Build artifacts
+dist/
+build/
+
+# Environment
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

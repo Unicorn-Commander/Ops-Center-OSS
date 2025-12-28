@@ -1,0 +1,180 @@
+groups:
+  # ==============================================================================
+  # DEPLOYMENT ALERTS
+  # ==============================================================================
+  - name: deployment_alerts
+    interval: 30s
+    rules:
+      - alert: DeploymentFailed
+        expr: deployment_status{status="failed"} == 1
+        for: 1m
+        labels:
+          severity: critical
+          component: deployment
+        annotations:
+          summary: "Deployment failed for {{ $labels.service }}"
+          description: "Deployment of {{ $labels.service }} version {{ $labels.version }} failed"
+
+      - alert: RollbackTriggered
+        expr: deployment_rollback_total > 0
+        for: 1m
+        labels:
+          severity: warning
+          component: deployment
+        annotations:
+          summary: "Deployment rollback triggered"
+          description: "Automatic rollback triggered for {{ $labels.service }}"
+
+      - alert: DeploymentDurationHigh
+        expr: deployment_duration_seconds > 300
+        for: 1m
+        labels:
+          severity: warning
+          component: deployment
+        annotations:
+          summary: "Deployment taking too long"
+          description: "Deployment of {{ $labels.service }} taking {{ $value }}s (threshold: 300s)"
+
+  # ==============================================================================
+  # APPLICATION ALERTS
+  # ==============================================================================
+  - name: application_alerts
+    interval: 30s
+    rules:
+      - alert: APIHighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "High API error rate detected"
+          description: "API error rate is {{ $value | humanizePercentage }}"
+
+      - alert: APISlowResponse
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "API responses are slow"
+          description: "95th percentile response time is {{ $value }}s"
+
+      - alert: HealthCheckFailing
+        expr: up{job="ops-center-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: health
+        annotations:
+          summary: "Health check failing"
+          description: "Ops-Center API health check has been failing for 2 minutes"
+
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes / 1024 / 1024 / 1024 > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: resources
+        annotations:
+          summary: "High memory usage"
+          description: "Application using {{ $value }}GB of memory (threshold: 2GB)"
+
+  # ==============================================================================
+  # DATABASE ALERTS
+  # ==============================================================================
+  - name: database_alerts
+    interval: 30s
+    rules:
+      - alert: DatabaseConnectionPoolExhausted
+        expr: pg_stat_database_numbackends / pg_settings_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Database connection pool nearly exhausted"
+          description: "{{ $value | humanizePercentage }} of connections in use"
+
+      - alert: DatabaseSlowQueries
+        expr: rate(pg_stat_statements_mean_time_seconds[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "Average query time is {{ $value }}s"
+
+      - alert: DatabaseDown
+        expr: up{job="postgresql"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: database
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "Database has been unreachable for 2 minutes"
+
+  # ==============================================================================
+  # REDIS ALERTS
+  # ==============================================================================
+  - name: redis_alerts
+    interval: 30s
+    rules:
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: cache
+        annotations:
+          summary: "Redis cache is down"
+          description: "Redis has been unreachable for 2 minutes"
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          component: cache
+        annotations:
+          summary: "Redis memory usage high"
+          description: "Redis using {{ $value | humanizePercentage }} of available memory"
+
+  # ==============================================================================
+  # SYSTEM ALERTS
+  # ==============================================================================
+  - name: system_alerts
+    interval: 30s
+    rules:
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "Disk space running low"
+          description: "Only {{ $value | humanizePercentage }} disk space remaining"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: ContainerRestarting
+        expr: rate(docker_container_restart_count[5m]) > 0
+        for: 2m
+        labels:
+          severity: warning
+          component: docker
+        annotations:
+          summary: "Container restarting frequently"
+          description: "Container {{ $labels.name }} is restarting"

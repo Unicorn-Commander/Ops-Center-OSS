@@ -1,0 +1,346 @@
+{
+  "theme": {
+    "preset": "professional",
+    "custom_colors": {
+      "primary": "#3B82F6",
+      "secondary": "#1E40AF",
+      "accent": "#10B981",
+      "background_gradient": "linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%)"
+    }
+  },
+  "branding": {
+    "logo_url": "/center-deep-logo.png",
+    "company_name": "Center Deep Online",
+    "company_subtitle": "Privacy-First AI Metasearch & B2B Lead Intelligence",
+    "show_emoji": true,
+    "emoji": "🔍"
+  },
+  "welcome": {
+    "title": "Welcome to Center Deep Online",
+    "description": "Your privacy-focused AI platform for search intelligence and B2B lead enrichment. Search 70+ engines privately, discover verified business contacts, and close deals faster.",
+    "show_emoji": true
+  },
+  "services": [
+    {
+      "id": "center-deep-search",
+      "name": "Center Deep Pro Search",
+      "icon": "🔍",
+      "logo_url": "/center-deep-logo.png",
+      "description": "Privacy-first AI metasearch platform querying 70+ search engines simultaneously. Included in all subscription tiers.",
+      "url": "https://search.centerdeep.online",
+      "port": 8888,
+      "enabled": true,
+      "order": 1,
+      "subdomain": "search",
+      "badge": "INCLUDED",
+      "badge_color": "#10B981",
+      "features": [
+        "70+ search engines aggregated",
+        "AI-powered result ranking",
+        "Privacy-focused (no tracking)",
+        "Second-Order Search™ (cache-first)",
+        "PageRank-style authority scoring"
+      ]
+    },
+    {
+      "id": "loopnet-leads",
+      "name": "LoopNet Leads",
+      "icon": "🏢",
+      "logo_url": "/loopnet-leads-logo.png",
+      "description": "Transform LoopNet property viewers into verified leads. AI-powered contact discovery for commercial real estate professionals.",
+      "url": "https://loopnet.centerdeep.online",
+      "port": 5173,
+      "enabled": true,
+      "order": 2,
+      "subdomain": "loopnet",
+      "badge": "POPULAR",
+      "badge_color": "#F59E0B",
+      "features": [
+        "Excel upload & Fortune 1000 filtering",
+        "Multi-source contact discovery",
+        "AI-powered email extraction (49+ models)",
+        "MX + SMTP verification (100% accurate)",
+        "16 enrichment workers, 48 verification workers"
+      ],
+      "pricing": {
+        "starter": {
+          "included_leads": 50,
+          "overage_price": 3.00,
+          "note": "Perfect for testing the platform"
+        },
+        "professional": {
+          "included_leads": 200,
+          "overage_price": 2.00,
+          "note": "Most popular - best value"
+        },
+        "business": {
+          "included_leads": 500,
+          "overage_price": 1.50,
+          "note": "High-volume CRE brokers"
+        },
+        "enterprise": {
+          "included_leads": "unlimited",
+          "overage_price": 0,
+          "note": "Custom pricing, white-label options"
+        }
+      }
+    },
+    {
+      "id": "center-deep-intelligence",
+      "name": "Center Deep Intelligence",
+      "icon": "🎯",
+      "logo_url": "/center-deep-intelligence-logo.png",
+      "description": "B2B lead intelligence platform with AI-powered contact enrichment, email verification, and relationship mapping.",
+      "url": "https://intelligence.centerdeep.online",
+      "port": 5174,
+      "enabled": true,
+      "order": 3,
+      "subdomain": "intelligence",
+      "badge": "NEW",
+      "badge_color": "#8B5CF6",
+      "features": [
+        "Google-scale search indexing",
+        "Entity relationship mapping",
+        "Competitor analysis automation",
+        "Market intelligence tracking",
+        "GraphRAG with Neo4j (coming soon)"
+      ],
+      "pricing": {
+        "starter": {
+          "included_leads": 50,
+          "overage_price": 3.00,
+          "note": "Try B2B intelligence features"
+        },
+        "professional": {
+          "included_leads": 200,
+          "overage_price": 2.00,
+          "note": "Recommended for B2B sales teams"
+        },
+        "business": {
+          "included_leads": 500,
+          "overage_price": 1.50,
+          "note": "Enterprise sales organizations"
+        },
+        "enterprise": {
+          "included_leads": "unlimited",
+          "overage_price": 0,
+          "note": "Custom pricing, dedicated support"
+        }
+      }
+    }
+  ],
+  "pricing_tiers": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "price_monthly": 99,
+      "price_annual": 950,
+      "annual_discount": 20,
+      "included_leads": 50,
+      "included_users": 1,
+      "features": [
+        "Center Deep Pro Search (unlimited)",
+        "50 enriched leads/month",
+        "1 user account",
+        "Email support (48hr response)",
+        "Basic analytics",
+        "CSV export",
+        "Overage: $3 per lead"
+      ],
+      "overage_pricing": {
+        "per_lead": 3.00,
+        "billing_frequency": "monthly"
+      },
+      "best_for": "Solo CRE agents and small B2B teams testing the platform"
+    },
+    {
+      "id": "professional",
+      "name": "Professional",
+      "price_monthly": 299,
+      "price_annual": 2870,
+      "annual_discount": 20,
+      "included_leads": 200,
+      "included_users": 3,
+      "features": [
+        "Everything in Starter, plus:",
+        "200 enriched leads/month",
+        "3 user accounts",
+        "Priority email support (24hr response)",
+        "Advanced analytics & reporting",
+        "API access",
+        "Overage: $2 per lead"
+      ],
+      "overage_pricing": {
+        "per_lead": 2.00,
+        "billing_frequency": "monthly"
+      },
+      "best_for": "Growing CRE firms and B2B sales teams",
+      "badge": "MOST POPULAR",
+      "badge_color": "#F59E0B"
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "price_monthly": 599,
+      "price_annual": 5750,
+      "annual_discount": 20,
+      "included_leads": 500,
+      "included_users": 10,
+      "features": [
+        "Everything in Professional, plus:",
+        "500 enriched leads/month",
+        "10 user accounts",
+        "Phone + email support (12hr response)",
+        "Custom integrations (Salesforce, HubSpot)",
+        "Dedicated account manager",
+        "Overage: $1.50 per lead"
+      ],
+      "overage_pricing": {
+        "per_lead": 1.50,
+        "billing_frequency": "monthly"
+      },
+      "best_for": "Large CRE brokerages and enterprise B2B organizations"
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "price_monthly": "Custom",
+      "price_annual": "Custom",
+      "starting_at": 1200,
+      "included_leads": "unlimited",
+      "included_users": "unlimited",
+      "features": [
+        "Everything in Business, plus:",
+        "Unlimited enriched leads",
+        "Unlimited users",
+        "24/7 priority support (4hr SLA)",
+        "White-label options",
+        "Custom deployment (on-premise/VPS)",
+        "Dedicated infrastructure",
+        "Custom contract terms",
+        "No overage charges"
+      ],
+      "overage_pricing": {
+        "per_lead": 0,
+        "billing_frequency": "none"
+      },
+      "best_for": "Enterprise organizations needing custom solutions and maximum scale"
+    }
+  ],
+  "competitive_positioning": {
+    "vs_costar": {
+      "costar_price": 3333,
+      "centerdeep_price": 299,
+      "savings_percent": 91,
+      "note": "CoStar Suite costs $40,000/year. Our Professional plan costs $3,588/year (91% savings)."
+    },
+    "vs_zoominfo": {
+      "zoominfo_price": 14995,
+      "centerdeep_price": 3588,
+      "savings_percent": 76,
+      "note": "ZoomInfo Professional costs $14,995/year. Our Professional plan costs $3,588/year (76% savings)."
+    },
+    "vs_apollo": {
+      "apollo_price_per_user": 79,
+      "centerdeep_price_per_user": 100,
+      "note": "Apollo.io Professional costs $79/user/month ($948/year). Our Professional plan includes 3 users for $2,870/year ($956/user/year)."
+    }
+  },
+  "value_proposition": {
+    "headline": "Search Included. Apps Deliver Value.",
+    "subheadline": "Don't compete on search. Focus on verified leads that close deals.",
+    "key_benefits": [
+      {
+        "title": "Search Is Infrastructure",
+        "description": "Center Deep Pro Search included with all tiers. No per-search billing.",
+        "icon": "🔍"
+      },
+      {
+        "title": "Apps Are The Product",
+        "description": "LoopNet Leads and Center Deep Intelligence deliver verified, ready-to-call contacts.",
+        "icon": "🎯"
+      },
+      {
+        "title": "Value-Based Pricing",
+        "description": "Pay per enriched lead, not per search. Clear ROI on every dollar spent.",
+        "icon": "💰"
+      },
+      {
+        "title": "Proven Results",
+        "description": "214 companies → 192 filtered → 687 contacts discovered (average 3.6 contacts/company).",
+        "icon": "📊"
+      }
+    ]
+  },
+  "custom_links": [],
+  "admin_section": {
+    "enabled": true,
+    "title": "Administrative Dashboard",
+    "description": "Manage subscriptions, usage, billing, and team members",
+    "button_text": "Go to Admin Dashboard",
+    "button_emoji": "⚙️"
+  },
+  "animations": {
+    "enabled": true,
+    "gradient_animation": true,
+    "hover_effects": true,
+    "loading_spinner": true
+  },
+  "call_to_action": {
+    "primary": {
+      "text": "Start 7-Day Free Trial",
+      "url": "/signup?plan=trial",
+      "style": "primary"
+    },
+    "secondary": {
+      "text": "See Pricing",
+      "url": "/pricing",
+      "style": "secondary"
+    },
+    "tertiary": {
+      "text": "Book Demo",
+      "url": "/demo",
+      "style": "outline"
+    }
+  },
+  "testimonials": [
+    {
+      "quote": "Center Deep Online helped us turn LoopNet viewers into 687 verified contacts in under a week. Game-changer for CRE lead generation.",
+      "author": "Tom Richards",
+      "company": "Commercial Real Estate Broker",
+      "avatar_url": "/testimonials/tom.jpg"
+    },
+    {
+      "quote": "The search infrastructure is included, so we focus on what matters: verified leads. 91% cheaper than CoStar with better contact data.",
+      "author": "Sarah Johnson",
+      "company": "B2B Sales Manager",
+      "avatar_url": "/testimonials/sarah.jpg"
+    }
+  ],
+  "trust_signals": {
+    "total_searches": "10M+",
+    "search_engines": "70+",
+    "verified_contacts": "50K+",
+    "customer_satisfaction": "4.9/5"
+  },
+  "deployment_info": {
+    "environment": "production",
+    "domain": "centerdeep.online",
+    "cdn_enabled": true,
+    "ssl_enabled": true,
+    "session_cookie_domain": ".centerdeep.online",
+    "keycloak_realm": "uchub",
+    "keycloak_url": "https://auth.centerdeep.online",
+    "federation": {
+      "enabled": true,
+      "primary_realm": "uchub",
+      "federated_realms": [
+        {
+          "name": "Unicorn Commander",
+          "url": "https://auth.your-domain.com",
+          "note": "Users can login with UC credentials"
+        }
+      ]
+    }
+  }
+}

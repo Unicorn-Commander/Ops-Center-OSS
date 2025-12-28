@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }} - Security Alert</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%); padding: 20px; color: #ffffff; }
+        .container { max-width: 600px; margin: 0 auto; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 2px solid #e74c3c; }
+        .header { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); padding: 30px; text-align: center; }
+        .logo { font-size: 64px; margin-bottom: 10px; }
+        .brand { font-size: 24px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
+        .content { padding: 40px 30px; }
+        .alert-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; margin-bottom: 20px; background: #e74c3c; color: #ffffff; box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+        h1 { font-size: 28px; margin-bottom: 20px; color: #ffcccb; font-weight: 700; }
+        .message { font-size: 16px; line-height: 1.6; color: #e0d4f7; margin-bottom: 30px; }
+        .details-box { background: rgba(231, 76, 60, 0.1); border-left: 4px solid #e74c3c; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .details-box h3 { color: #ffcccb; margin-bottom: 10px; font-size: 18px; }
+        .metric { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { font-weight: 600; color: #ffcccb; }
+        .metric-value { color: #ffffff; font-weight: 700; font-family: monospace; }
+        .cta-button { display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 20px; }
+        .footer { padding: 30px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 14px; color: #a78bfa; }
+        .footer a { color: #ec4899; text-decoration: none; }
+        .timestamp { font-size: 12px; color: #a78bfa; margin-top: 20px; }
+        @media only screen and (max-width: 600px) { .content { padding: 30px 20px; } h1 { font-size: 24px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🔒</div>
+            <div class="brand">SECURITY ALERT</div>
+        </div>
+        <div class="content">
+            <span class="alert-badge">🚨 SECURITY</span>
+            <h1>{{ subject }}</h1>
+            <div class="message">{{ message }}</div>
+            {% if ip_address or user_agent or attempt_count %}
+            <div class="details-box">
+                <h3>Incident Details</h3>
+                {% if ip_address %}<div class="metric"><span class="metric-label">IP Address:</span><span class="metric-value">{{ ip_address }}</span></div>{% endif %}
+                {% if user_agent %}<div class="metric"><span class="metric-label">User Agent:</span><span class="metric-value">{{ user_agent }}</span></div>{% endif %}
+                {% if attempt_count %}<div class="metric"><span class="metric-label">Attempts:</span><span class="metric-value">{{ attempt_count }}</span></div>{% endif %}
+                {% if location %}<div class="metric"><span class="metric-label">Location:</span><span class="metric-value">{{ location }}</span></div>{% endif %}
+            </div>
+            {% endif %}
+            <a href="{{ dashboard_url }}/admin/account/security" class="cta-button">Review Security Settings</a>
+            <div class="timestamp">Security event at {{ timestamp }}</div>
+        </div>
+        <div class="footer">
+            <strong>If you did not authorize this activity, change your password immediately!</strong>
+            <br><br>
+            Contact security team: <a href="mailto:security@your-domain.com">security@your-domain.com</a>
+            <br><br><small>Unicorn Commander Ops Center - Security Monitoring</small>
+        </div>
+    </div>
+</body>
+</html>

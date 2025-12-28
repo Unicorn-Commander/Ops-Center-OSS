@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Unicorn Commander</title>
+    <link rel="icon" type="image/png" href="/the-colonel-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #220044 25%, #0a1929 50%, #3a0e5a 75%, #1a0033 100%);
+            background-size: 400% 400%;
+            animation: galaxyShift 20s ease infinite;
+            min-height: 100vh;
+            color: #e5e7eb;
+        }
+
+        @keyframes galaxyShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .colonel-logo {
+            width: 50px;
+            height: 50px;
+            background: url('/the-colonel-logo.png') center/cover no-repeat;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 28px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-plan {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 8px;
+            color: #ef4444;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 20px;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+
+        /* API Keys Section */
+        .api-keys-section {
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .api-key-form {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #b4b4b4;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Monaco', monospace;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .save-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .api-key-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-card {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: #e5e7eb;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .action-description {
+            font-size: 12px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div class="header-left">
+                <div class="colonel-logo"></div>
+                <h1>Unicorn Commander Dashboard</h1>
+            </div>
+            <div class="user-info">
+                <span id="user-email"></span>
+                <span class="user-plan" id="user-plan">BYOK</span>
+                <a href="/auth/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <!-- Usage Statistics -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h2 class="card-title">API Usage Today</h2>
+                <div class="stat-value" id="api-usage">0</div>
+                <div class="stat-label">of <span id="api-limit">Unlimited</span> calls</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="usage-progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h2 class="card-title">Active Models</h2>
+                <div class="stat-value" id="active-models">0</div>
+                <div class="stat-label">AI models configured</div>
+            </div>
+
+            <div class="dashboard-card">
+                <h2 class="card-title">Monthly Cost</h2>
+                <div class="stat-value">$<span id="monthly-cost">19</span></div>
+                <div class="stat-label">Current billing period</div>
+            </div>
+        </div>
+
+        <!-- API Keys Section (BYOK Users) -->
+        <div class="api-keys-section" id="api-keys-section">
+            <h2 class="card-title">API Key Management</h2>
+            <p style="color: #999; margin-bottom: 20px;">Configure your API keys for various AI providers. Keys are encrypted and stored securely.</p>
+
+            <div class="api-key-form">
+                <div class="form-group">
+                    <label for="openai-key">OpenAI API Key</label>
+                    <input type="password" id="openai-key" placeholder="sk-..." autocomplete="off">
+                    <div class="api-key-status" id="openai-status" style="display: none;">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="anthropic-key">Anthropic API Key</label>
+                    <input type="password" id="anthropic-key" placeholder="sk-ant-..." autocomplete="off">
+                    <div class="api-key-status" id="anthropic-status" style="display: none;">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="openrouter-key">OpenRouter API Key</label>
+                    <input type="password" id="openrouter-key" placeholder="sk-or-..." autocomplete="off">
+                    <div class="api-key-status" id="openrouter-status" style="display: none;">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="huggingface-key">HuggingFace Token</label>
+                    <input type="password" id="huggingface-key" placeholder="hf_..." autocomplete="off">
+                    <div class="api-key-status" id="huggingface-status" style="display: none;">
+                        <span class="status-dot"></span>
+                        <span>Connected</span>
+                    </div>
+                </div>
+
+                <button class="save-btn" onclick="saveApiKeys()">Save API Keys</button>
+            </div>
+        </div>
+
+        <!-- Professional Users Message -->
+        <div class="api-keys-section" id="professional-section" style="display: none;">
+            <h2 class="card-title">Managed AI Infrastructure</h2>
+            <p style="color: #999; margin-bottom: 20px;">Your Professional plan includes managed API access. No key management required!</p>
+
+            <div style="background: rgba(102, 126, 234, 0.1); padding: 20px; border-radius: 16px; border: 1px solid rgba(102, 126, 234, 0.3);">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Included Services:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">✓ OpenAI GPT-4 & GPT-3.5</li>
+                    <li style="margin-bottom: 10px;">✓ Anthropic Claude 3</li>
+                    <li style="margin-bottom: 10px;">✓ Google Gemini Pro</li>
+                    <li style="margin-bottom: 10px;">✓ Meta Llama 3</li>
+                    <li style="margin-bottom: 10px;">✓ 10,000 API calls/day included</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="https://chat.your-domain.com" class="action-card" target="_blank">
+                <div class="action-icon">💬</div>
+                <div class="action-title">Open WebUI</div>
+                <div class="action-description">Chat interface</div>
+            </a>
+
+            <a href="https://search.your-domain.com" class="action-card" target="_blank">
+                <div class="action-icon">🔍</div>
+                <div class="action-title">Center Deep</div>
+                <div class="action-description">AI-powered search</div>
+            </a>
+
+            <a href="https://billing.your-domain.com" class="action-card" target="_blank">
+                <div class="action-icon">📊</div>
+                <div class="action-title">Billing Portal</div>
+                <div class="action-description">Usage & invoices</div>
+            </a>
+
+            <a href="/api/docs" class="action-card">
+                <div class="action-icon">📚</div>
+                <div class="action-title">API Docs</div>
+                <div class="action-description">Integration guide</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load user data
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/v1/user/profile');
+                const data = await response.json();
+
+                document.getElementById('user-email').textContent = data.email || 'User';
+                document.getElementById('user-plan').textContent = data.plan?.toUpperCase() || 'BYOK';
+
+                // Show sections based on plan - Professional now also gets API keys
+                if (data.plan === 'professional') {
+                    // Professional users get BOTH managed and BYOK
+                    document.getElementById('api-keys-section').style.display = 'block';
+                    document.getElementById('professional-section').style.display = 'block';
+                    document.getElementById('api-limit').textContent = '10,000 + BYOK';
+                    document.getElementById('monthly-cost').textContent = '49';
+                    loadApiKeys();
+                } else if (data.plan === 'trial') {
+                    document.getElementById('api-limit').textContent = '1,000';
+                    document.getElementById('monthly-cost').textContent = '1';
+                } else {
+                    // BYOK plan
+                    document.getElementById('api-limit').textContent = 'Unlimited';
+                    document.getElementById('monthly-cost').textContent = '19';
+                    loadApiKeys();
+                }
+
+                // Load usage stats
+                loadUsageStats();
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // Load API keys for BYOK users
+        async function loadApiKeys() {
+            try {
+                const response = await fetch('/api/v1/user/api-keys');
+                const keys = await response.json();
+
+                if (keys.openai) {
+                    document.getElementById('openai-key').value = '••••••' + keys.openai.substring(keys.openai.length - 4);
+                    document.getElementById('openai-status').style.display = 'flex';
+                }
+
+                if (keys.anthropic) {
+                    document.getElementById('anthropic-key').value = '••••••' + keys.anthropic.substring(keys.anthropic.length - 4);
+                    document.getElementById('anthropic-status').style.display = 'flex';
+                }
+
+                if (keys.openrouter) {
+                    document.getElementById('openrouter-key').value = '••••••' + keys.openrouter.substring(keys.openrouter.length - 4);
+                    document.getElementById('openrouter-status').style.display = 'flex';
+                }
+
+                if (keys.huggingface) {
+                    document.getElementById('huggingface-key').value = '••••••' + keys.huggingface.substring(keys.huggingface.length - 4);
+                    document.getElementById('huggingface-status').style.display = 'flex';
+                }
+
+                // Count active models
+                const activeModels = Object.keys(keys).filter(k => keys[k]).length;
+                document.getElementById('active-models').textContent = activeModels;
+            } catch (error) {
+                console.error('Error loading API keys:', error);
+            }
+        }
+
+        // Save API keys
+        async function saveApiKeys() {
+            const keys = {
+                openai: document.getElementById('openai-key').value,
+                anthropic: document.getElementById('anthropic-key').value,
+                openrouter: document.getElementById('openrouter-key').value,
+                huggingface: document.getElementById('huggingface-key').value
+            };
+
+            // Don't send masked values
+            Object.keys(keys).forEach(key => {
+                if (keys[key].startsWith('••••••')) {
+                    delete keys[key];
+                }
+            });
+
+            try {
+                const response = await fetch('/api/v1/user/api-keys', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(keys)
+                });
+
+                if (response.ok) {
+                    alert('API keys saved successfully!');
+                    loadApiKeys();
+                } else {
+                    alert('Error saving API keys');
+                }
+            } catch (error) {
+                console.error('Error saving API keys:', error);
+                alert('Error saving API keys');
+            }
+        }
+
+        // Load usage statistics
+        async function loadUsageStats() {
+            try {
+                const response = await fetch('/api/v1/user/usage');
+                const usage = await response.json();
+
+                document.getElementById('api-usage').textContent = usage.daily_calls || 0;
+
+                // Update progress bar
+                const limit = parseInt(document.getElementById('api-limit').textContent.replace(/,/g, ''));
+                if (limit !== 'Unlimited') {
+                    const percentage = (usage.daily_calls / limit) * 100;
+                    document.getElementById('usage-progress').style.width = percentage + '%';
+                }
+            } catch (error) {
+                console.error('Error loading usage stats:', error);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadUserData);
+
+        // Refresh usage stats every 30 seconds
+        setInterval(loadUsageStats, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/your-org/ops-center/discussions
+    about: Have a question? Start a discussion instead of opening an issue.
+  - name: Documentation
+    url: https://github.com/your-org/ops-center#readme
+    about: Check our documentation for setup guides and API reference.
+  - name: Security Vulnerabilities
+    url: https://github.com/your-org/ops-center/security/advisories/new
+    about: Report security vulnerabilities privately through GitHub Security Advisories.

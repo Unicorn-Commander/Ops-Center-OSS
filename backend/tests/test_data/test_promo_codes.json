@@ -1,0 +1,62 @@
+[
+  {
+    "code": "SAVE15",
+    "discount_type": "percentage",
+    "discount_value": 15.0,
+    "description": "Save 15% on all add-ons",
+    "is_active": true,
+    "max_uses": null,
+    "times_used": 42,
+    "expires_at": "2025-12-31T23:59:59",
+    "applicable_to": ["all"],
+    "minimum_purchase": 0
+  },
+  {
+    "code": "WELCOME10",
+    "discount_type": "fixed_amount",
+    "discount_value": 10.0,
+    "description": "Welcome bonus - $10 off first purchase",
+    "is_active": true,
+    "max_uses": 1,
+    "times_used": 0,
+    "expires_at": "2025-12-31T23:59:59",
+    "applicable_to": ["all"],
+    "minimum_purchase": 15.0
+  },
+  {
+    "code": "EXPIRED",
+    "discount_type": "percentage",
+    "discount_value": 20.0,
+    "description": "Expired promo code for testing",
+    "is_active": false,
+    "max_uses": 100,
+    "times_used": 87,
+    "expires_at": "2024-01-01T00:00:00",
+    "applicable_to": ["all"],
+    "minimum_purchase": 0
+  },
+  {
+    "code": "MAXEDOUT",
+    "discount_type": "percentage",
+    "discount_value": 25.0,
+    "description": "Max uses reached",
+    "is_active": true,
+    "max_uses": 50,
+    "times_used": 50,
+    "expires_at": "2025-12-31T23:59:59",
+    "applicable_to": ["all"],
+    "minimum_purchase": 0
+  },
+  {
+    "code": "AI50",
+    "discount_type": "percentage",
+    "discount_value": 50.0,
+    "description": "50% off AI services only",
+    "is_active": true,
+    "max_uses": null,
+    "times_used": 15,
+    "expires_at": "2025-12-31T23:59:59",
+    "applicable_to": ["ai-services"],
+    "minimum_purchase": 0
+  }
+]

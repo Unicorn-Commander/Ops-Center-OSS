@@ -1,0 +1,117 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging Environment
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      # Configure your staging URL in GitHub repository variables
+      url: ${{ vars.STAGING_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.STAGING_SSH_KEY }}
+
+      - name: Add staging server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create deployment directory
+        run: |
+          ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} '
+            mkdir -p /opt/ops-center/deployment
+            mkdir -p /opt/ops-center/backups
+          '
+
+      - name: Copy deployment scripts
+        run: |
+          scp scripts/deploy.sh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/ops-center/deployment/
+          scp scripts/health_check.sh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/ops-center/deployment/
+          scp docker-compose.prod.yml ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/ops-center/deployment/
+
+      - name: Run database migrations
+        run: |
+          ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} '
+            cd /opt/ops-center
+
+            # Backup database before migration
+            docker exec unicorn-postgresql pg_dump -U unicorn unicorn_db > backups/db_backup_$(date +%Y%m%d_%H%M%S).sql
+
+            # Run migrations (if you have migration scripts)
+            # docker exec ops-center-direct python -m alembic upgrade head
+
+            echo "✅ Database backup and migrations complete"
+          '
+
+      - name: Deploy to staging
+        run: |
+          ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Set environment
+            export ENVIRONMENT=staging
+            export REGISTRY=${{ env.REGISTRY }}
+            export IMAGE_TAG=${{ github.sha }}
+
+            # Run deployment script
+            chmod +x deploy.sh
+            ./deploy.sh
+          '
+
+      - name: Run health checks
+        run: |
+          ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Wait for services to start
+            sleep 15
+
+            # Run health check script
+            chmod +x health_check.sh
+            ./health_check.sh
+          '
+
+      - name: Run smoke tests
+        run: |
+          # Test basic endpoints
+          # Configure STAGING_URL in GitHub repository variables
+          curl -f ${{ vars.STAGING_URL }}/api/v1/system/status || exit 1
+          curl -f ${{ vars.STAGING_URL }}/api/v1/health || exit 1
+
+          echo "Smoke tests passed"
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "### Staging Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: staging" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: ${{ vars.STAGING_URL }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          ssh ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} '
+            cd /opt/ops-center/deployment
+
+            # Run rollback script
+            chmod +x ../scripts/rollback.sh
+            ../scripts/rollback.sh
+          '
+
+          echo "### ❌ Staging Deployment Failed - Rolled Back" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,29 @@
+SUBSCRIPTION TIER UPGRADED!
+===========================
+
+Hello {{ username }},
+
+Congratulations! Your subscription has been upgraded to {{ new_tier }} tier. You now have access to enhanced features and increased credit allocations.
+
+TIER COMPARISON:
+{{ old_tier }}: ${{ old_allocation }}/month → {{ new_tier }}: ${{ new_allocation }}/month
+
+NEW FEATURES UNLOCKED:
+{% for feature in new_features %}
+- {{ feature }}
+{% endfor %}
+
+CURRENT BALANCE: ${{ current_balance }}
+NEXT RESET: {{ next_reset_date }}
+
+View subscription details: {{ dashboard_url }}/admin/subscription/plan
+
+Thank you for upgrading! We're excited to help you achieve more with UC-1 Pro.
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Usage Analytics: {{ dashboard_url }}/admin/subscription/usage
+Support: {{ dashboard_url }}/support
+Unsubscribe from notifications: {{ unsubscribe_url }}

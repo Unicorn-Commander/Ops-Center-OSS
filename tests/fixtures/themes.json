@@ -1,0 +1,58 @@
+[
+  {
+    "id": "dark",
+    "name": "Professional Dark",
+    "type": "system",
+    "colors": {
+      "primary": "#1976d2",
+      "secondary": "#dc004e",
+      "background": "#121212",
+      "surface": "#1e1e1e",
+      "text": "#ffffff"
+    }
+  },
+  {
+    "id": "light",
+    "name": "Professional Light",
+    "type": "system",
+    "colors": {
+      "primary": "#1976d2",
+      "secondary": "#dc004e",
+      "background": "#ffffff",
+      "surface": "#f5f5f5",
+      "text": "#000000"
+    }
+  },
+  {
+    "id": "unicorn",
+    "name": "Magic Unicorn",
+    "type": "branded",
+    "colors": {
+      "primary": "#9c27b0",
+      "secondary": "#ffd700",
+      "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      "surface": "rgba(255, 255, 255, 0.1)",
+      "text": "#ffffff"
+    }
+  },
+  {
+    "id": "galaxy",
+    "name": "Unicorn Galaxy",
+    "type": "animated",
+    "colors": {
+      "primary": "#9c27b0",
+      "secondary": "#ffd700",
+      "background": "radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)",
+      "surface": "rgba(255, 255, 255, 0.05)",
+      "text": "#ffffff",
+      "accent": "#e0c3fc",
+      "glow": "#8ec5fc"
+    },
+    "features": {
+      "animated_background": true,
+      "stars": true,
+      "neural_nodes": true,
+      "glassmorphic_cards": true
+    }
+  }
+]

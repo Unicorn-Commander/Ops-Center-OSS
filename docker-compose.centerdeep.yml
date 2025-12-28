@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Ops-Center Backend for ops.centerdeep.online
+  ops-center-centerdeep:
+    image: uc-1-pro-ops-center
+    container_name: ops-center-centerdeep
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./backend:/app
+      - ./public:/app/public
+      # Mount host user/group files for Local Users feature
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+    env_file:
+      - .env.centerdeep
+    networks:
+      - web
+      - unicorn-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+
+      # HTTPS route for centerdeep.online (landing page)
+      - "traefik.http.routers.centerdeep-landing.rule=Host(`centerdeep.online`) || Host(`www.centerdeep.online`)"
+      - "traefik.http.routers.centerdeep-landing.entrypoints=websecure"
+      - "traefik.http.routers.centerdeep-landing.tls=true"
+      - "traefik.http.routers.centerdeep-landing.tls.certresolver=cloudflare"
+      - "traefik.http.routers.centerdeep-landing.service=ops-center-centerdeep-svc"
+
+      # HTTPS route for ops.centerdeep.online (admin dashboard)
+      - "traefik.http.routers.ops-center-centerdeep.rule=Host(`ops.centerdeep.online`)"
+      - "traefik.http.routers.ops-center-centerdeep.entrypoints=websecure"
+      - "traefik.http.routers.ops-center-centerdeep.tls=true"
+      - "traefik.http.routers.ops-center-centerdeep.tls.certresolver=cloudflare"
+      - "traefik.http.routers.ops-center-centerdeep.service=ops-center-centerdeep-svc"
+
+      # Service configuration (shared by both routers)
+      - "traefik.http.services.ops-center-centerdeep-svc.loadbalancer.server.port=8084"
+
+      # HTTP to HTTPS redirect for centerdeep.online
+      - "traefik.http.routers.centerdeep-landing-http.rule=Host(`centerdeep.online`) || Host(`www.centerdeep.online`)"
+      - "traefik.http.routers.centerdeep-landing-http.entrypoints=web"
+      - "traefik.http.routers.centerdeep-landing-http.middlewares=https-redirect"
+
+      # HTTP to HTTPS redirect for ops.centerdeep.online
+      - "traefik.http.routers.ops-center-centerdeep-http.rule=Host(`ops.centerdeep.online`)"
+      - "traefik.http.routers.ops-center-centerdeep-http.entrypoints=web"
+      - "traefik.http.routers.ops-center-centerdeep-http.middlewares=https-redirect"
+
+      # HTTPS redirect middleware
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+networks:
+  web:
+    external: true
+  unicorn-network:
+    external: true

@@ -1,0 +1,113 @@
+================================================================================
+KEYCLOAK AUTHENTICATION ARCHITECTURE
+================================================================================
+
+CORRECT FLOW (After Fix):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  ops-center-direct                                                          │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │  keycloak_integration.py                                            │   │
+│  │                                                                      │   │
+│  │  1. get_admin_token()                                               │   │
+│  │     POST /realms/MASTER/protocol/openid-connect/token  ◄────┐      │   │
+│  │     Body: username=admin&password=your-admin-password         │      │   │
+│  │                                                              │      │   │
+│  │  2. Receive JWT token from MASTER realm                     │      │   │
+│  │     Token grants admin access to ALL realms                 │      │   │
+│  │                                                              │      │   │
+│  │  3. Use token to manage UCHUB realm                         │      │   │
+│  │     GET /admin/realms/UCHUB/users                           │      │   │
+│  │     Header: Authorization: Bearer <master-token>            │      │   │
+│  └──────────────────────────────────────────────────────────────┬──────┘   │
+│                                                                  │          │
+└──────────────────────────────────────────────────────────────────┼──────────┘
+                                                                   │
+                                                                   ▼
+         ┌─────────────────────────────────────────────────────────────────┐
+         │  uchub-keycloak:8080                                            │
+         │                                                                  │
+         │  ┌─────────────────┐          ┌──────────────────┐             │
+         │  │  master Realm   │          │  uchub Realm     │             │
+         │  │                 │          │                  │             │
+         │  │  Users:         │          │  Users:          │             │
+         │  │  - admin ✅     │          │  - aaron         │             │
+         │  │    (password:   │          │  - test user     │             │
+         │  │     Magic...!)  │          │  - ... (9 users) │             │
+         │  │                 │          │                  │             │
+         │  │  Purpose:       │          │  Purpose:        │             │
+         │  │  - Keycloak     │          │  - App users     │             │
+         │  │    admin        │          │  - SSO           │             │
+         │  │  - Manage ALL   │          │  - OAuth         │             │
+         │  │    realms       │          │                  │             │
+         │  └─────────────────┘          └──────────────────┘             │
+         │                                                                  │
+         └──────────────────────────────────────────────────────────────────┘
+
+INCORRECT FLOW (Before Fix):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  ops-center-direct                                                          │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │  keycloak_integration.py (BROKEN)                                   │   │
+│  │                                                                      │   │
+│  │  1. get_admin_token()                                               │   │
+│  │     POST /realms/UCHUB/protocol/openid-connect/token  ◄─────┐      │   │
+│  │     Body: username=admin&password=your-admin-password  ❌      │      │   │
+│  │                                                               │      │   │
+│  │  2. Response: 401 Unauthorized                                │      │   │
+│  │     Error: "Invalid user credentials"                         │      │   │
+│  │     Reason: No 'admin' user in uchub realm                    │      │   │
+│  └───────────────────────────────────────────────────────────────┬──────┘   │
+└──────────────────────────────────────────────────────────────────┼──────────┘
+                                                                   │
+                                                                   ▼
+         ┌──────────────────────────────────────────────────────────────┐
+         │  uchub-keycloak:8080                                         │
+         │  ┌──────────────────┐                                        │
+         │  │  uchub Realm     │                                        │
+         │  │                  │                                        │
+         │  │  Users:          │                                        │
+         │  │  - aaron         │  ◄─── Looking for 'admin' here ❌     │
+         │  │  - test user     │       But admin doesn't exist!         │
+         │  │  - ... (9 users) │                                        │
+         │  │                  │                                        │
+         │  │  ❌ NO 'admin'   │                                        │
+         │  │     user here!   │                                        │
+         │  └──────────────────┘                                        │
+         └──────────────────────────────────────────────────────────────┘
+
+THE FIX:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File: backend/keycloak_integration.py
+Line: 43
+
+BEFORE (BROKEN):
+    f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token"
+                             └─────────────┘
+                                   uchub → 401 Error
+
+AFTER (FIXED):
+    f"{KEYCLOAK_URL}/realms/master/protocol/openid-connect/token"
+                             └────┘
+                              Always use master → 200 OK
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+KEY CONCEPTS:
+1. MASTER realm = Keycloak admin realm (where 'admin' user lives)
+2. UCHUB realm = Application user realm (where app users live)
+3. Master admin token = Works for managing ALL realms
+4. Hardcoding 'master' = Correct Keycloak architecture pattern
+
+ENVIRONMENT VARIABLES:
+KEYCLOAK_URL=http://uchub-keycloak:8080
+KEYCLOAK_REALM=uchub                    ← For Admin API calls (CORRECT)
+KEYCLOAK_ADMIN_USER=admin               ← Exists in master realm only
+KEYCLOAK_ADMIN_PASSWORD=your-admin-password
+
+CODE USAGE:
+- Token endpoint: /realms/master/...     ← HARDCODED (admin auth)
+- Admin API: /admin/realms/uchub/...     ← USES KEYCLOAK_REALM (user ops)
+
+================================================================================

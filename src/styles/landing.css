@@ -1,0 +1,318 @@
+/**
+ * Galaxy Theme - Landing Page Styles
+ *
+ * This CSS file contains all custom styles for the Galaxy theme,
+ * including animations, glassmorphic effects, and custom utilities.
+ */
+
+/* ========================================
+   FONT IMPORTS
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ========================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ======================================== */
+
+:root {
+  /* Galaxy Theme Colors */
+  --uc-deep-purple: #1a0033;
+  --uc-dark-purple: #220044;
+  --uc-blue-black: #0a1929;
+  --uc-purple-magenta: #3a0e5a;
+  --uc-gold: #ffd700;
+  --uc-yellow-gold: #ffed4e;
+  --uc-orange-gold: #ffb700;
+
+  /* Font Families */
+  --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-space: 'Space Grotesk', monospace;
+}
+
+/* ========================================
+   KEYFRAME ANIMATIONS
+   ======================================== */
+
+/* Galaxy background shift animation (20s cycle) */
+@keyframes galaxyShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Star twinkle animation */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Star float across screen */
+@keyframes floatStar {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(calc(100vw + 100px));
+  }
+}
+
+/* Neural network node pulse */
+@keyframes neuralPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+/* Neural connection flow */
+@keyframes connectionFlow {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Status indicator pulse */
+@keyframes statusPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Galaxy background gradient */
+.galaxy-bg {
+  background: linear-gradient(135deg, #1a0033 0%, #220044 25%, #0a1929 50%, #3a0e5a 75%, #1a0033 100%);
+  background-size: 400% 400%;
+  animation: galaxyShift 20s ease infinite;
+}
+
+/* Glassmorphic card effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Gold gradient text */
+.gold-text {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Card hover glow effect */
+.card-glow {
+  position: relative;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* Status pulse animation */
+.status-pulse {
+  animation: statusPulse 2s infinite;
+}
+
+/* ========================================
+   SERVICE CARD VARIANTS
+   ======================================== */
+
+/* Open-WebUI Card (Blue) */
+.card-openwebui {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+}
+
+.card-openwebui:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(59, 130, 246, 0.3);
+}
+
+/* Center-Deep Card (Green) */
+.card-centerdeep {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+}
+
+.card-centerdeep:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(16, 185, 129, 0.3);
+}
+
+/* Unicorn Orator Card (Pink) */
+.card-orator {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(236, 72, 153, 0.2);
+}
+
+.card-orator:hover {
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(219, 39, 119, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(236, 72, 153, 0.3);
+}
+
+/* Unicorn Amanuensis Card (Light Blue) */
+.card-amanuensis {
+  background: linear-gradient(135deg, rgba(147, 197, 253, 0.15) 0%, rgba(96, 165, 250, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(147, 197, 253, 0.2);
+}
+
+.card-amanuensis:hover {
+  background: linear-gradient(135deg, rgba(147, 197, 253, 0.25) 0%, rgba(96, 165, 250, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(147, 197, 253, 0.3);
+}
+
+/* Bolt.DIY Card (Purple) */
+.card-bolt {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+}
+
+.card-bolt:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(124, 58, 237, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(139, 92, 246, 0.3);
+}
+
+/* Documentation Card (Orange) */
+.card-docs {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(249, 115, 22, 0.15) 100%);
+  box-shadow: 0 20px 40px rgba(251, 146, 60, 0.2);
+}
+
+.card-docs:hover {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.25) 0%, rgba(249, 115, 22, 0.25) 100%);
+  box-shadow: 0 30px 60px rgba(251, 146, 60, 0.3);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .galaxy-bg,
+  .status-pulse,
+  .card-glow::before {
+    animation: none !important;
+  }
+
+  .glass-card,
+  button {
+    transition: none !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  /* Reduce star count via CSS (hide some) */
+  .star:nth-child(n+16) {
+    display: none;
+  }
+
+  /* Simplify neural network on mobile */
+  .neural-network {
+    opacity: 0.05 !important;
+  }
+
+  /* Reduce blur intensity for better mobile performance */
+  .glass-card {
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-card {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .gold-text {
+    /* Fallback for high contrast */
+    color: #ffd700;
+    -webkit-text-fill-color: #ffd700;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--uc-gold);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Use GPU acceleration for animations */
+.galaxy-bg,
+.glass-card,
+.card-glow::before {
+  will-change: auto;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Prevent layout shifts */
+.fixed {
+  contain: layout style paint;
+}

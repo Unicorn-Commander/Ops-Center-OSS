@@ -1,0 +1,310 @@
+# Prometheus Alert Rules for Ops-Center
+# Version: 1.0.0
+# Last Updated: 2025-10-22
+
+groups:
+  # ======================
+  # CRITICAL ALERTS
+  # ======================
+  - name: critical_alerts
+    interval: 30s
+    rules:
+      - alert: OpsCenterDown
+        expr: up{job="ops-center-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: ops-center
+          component: api
+        annotations:
+          summary: "Ops-Center API is down"
+          description: "Ops-Center API ({{ $labels.instance }}) has been unreachable for more than 2 minutes. All administrative functions are unavailable."
+          runbook: "https://monitoring.your-domain.com/runbooks/ops-center-down"
+
+      - alert: DatabaseDown
+        expr: up{job="postgresql"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgresql
+          component: database
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database ({{ $labels.instance }}) has been unreachable for more than 1 minute. All services dependent on the database will fail."
+          runbook: "https://monitoring.your-domain.com/runbooks/database-down"
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+          component: cache
+        annotations:
+          summary: "Redis cache is down"
+          description: "Redis cache ({{ $labels.instance }}) has been unreachable for more than 1 minute. Session management and caching unavailable."
+          runbook: "https://monitoring.your-domain.com/runbooks/redis-down"
+
+      - alert: KeycloakDown
+        expr: up{job="keycloak"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: keycloak
+          component: sso
+        annotations:
+          summary: "Keycloak SSO is down"
+          description: "Keycloak SSO service ({{ $labels.instance }}) has been unreachable for more than 2 minutes. User authentication unavailable."
+          runbook: "https://monitoring.your-domain.com/runbooks/keycloak-down"
+
+      - alert: DiskSpaceOver90Percent
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 10
+        for: 5m
+        labels:
+          severity: critical
+          service: system
+          component: disk
+        annotations:
+          summary: "Disk space critically low"
+          description: "Disk usage on {{ $labels.instance }} is above 90% ({{ $value | humanize }}% free). Immediate action required."
+          runbook: "https://monitoring.your-domain.com/runbooks/disk-space-critical"
+
+      - alert: MemoryOver90Percent
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
+        for: 5m
+        labels:
+          severity: critical
+          service: system
+          component: memory
+        annotations:
+          summary: "Memory usage critically high"
+          description: "Memory usage on {{ $labels.instance }} is above 90% ({{ $value | humanize }}% free). System may become unstable."
+          runbook: "https://monitoring.your-domain.com/runbooks/memory-critical"
+
+  # ======================
+  # HIGH PRIORITY ALERTS
+  # ======================
+  - name: high_priority_alerts
+    interval: 60s
+    rules:
+      - alert: HighErrorRate
+        expr: (sum(rate(ops_center_api_errors_total[5m])) / sum(rate(ops_center_api_requests_total[5m]))) * 100 > 5
+        for: 5m
+        labels:
+          severity: high
+          service: ops-center
+          component: api
+        annotations:
+          summary: "High API error rate detected"
+          description: "API error rate is {{ $value | humanize }}% over the last 5 minutes (threshold: 5%). Check application logs."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-error-rate"
+
+      - alert: HighAPILatency
+        expr: histogram_quantile(0.95, sum(rate(ops_center_api_request_duration_seconds_bucket[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: high
+          service: ops-center
+          component: api
+        annotations:
+          summary: "High API latency detected"
+          description: "95th percentile API latency is {{ $value | humanize }}s over the last 5 minutes (threshold: 1s). Performance degradation."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-latency"
+
+      - alert: HighAuthFailureRate
+        expr: sum(rate(ops_center_keycloak_logins_total{status="failed"}[1m])) > 10
+        for: 3m
+        labels:
+          severity: high
+          service: keycloak
+          component: authentication
+        annotations:
+          summary: "High authentication failure rate"
+          description: "More than 10 failed login attempts per minute detected for 3 minutes. Possible brute force attack."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-auth-failures"
+
+      - alert: DiskSpaceOver80Percent
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 20
+        for: 10m
+        labels:
+          severity: high
+          service: system
+          component: disk
+        annotations:
+          summary: "Disk space running low"
+          description: "Disk usage on {{ $labels.instance }} is above 80% ({{ $value | humanize }}% free). Plan cleanup or expansion."
+          runbook: "https://monitoring.your-domain.com/runbooks/disk-space-high"
+
+      - alert: CPUOver80Percent
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: high
+          service: system
+          component: cpu
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage on {{ $labels.instance }} has been above 80% for 10 minutes (current: {{ $value | humanize }}%)."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-cpu"
+
+      - alert: DatabaseSlowQueries
+        expr: rate(pg_stat_database_tup_fetched{datname="unicorn_db"}[5m]) / rate(pg_stat_database_tup_returned{datname="unicorn_db"}[5m]) < 0.1
+        for: 5m
+        labels:
+          severity: high
+          service: postgresql
+          component: performance
+        annotations:
+          summary: "High number of slow database queries"
+          description: "Database query performance is degraded. Fetch/return ratio: {{ $value | humanize }}"
+          runbook: "https://monitoring.your-domain.com/runbooks/slow-queries"
+
+  # ======================
+  # MEDIUM PRIORITY ALERTS
+  # ======================
+  - name: medium_priority_alerts
+    interval: 120s
+    rules:
+      - alert: ModerateDiskUsage
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 30
+        for: 15m
+        labels:
+          severity: medium
+          service: system
+          component: disk
+        annotations:
+          summary: "Disk space usage elevated"
+          description: "Disk usage on {{ $labels.instance }} is above 70% ({{ $value | humanize }}% free). Monitor and plan cleanup."
+          runbook: "https://monitoring.your-domain.com/runbooks/disk-space-medium"
+
+      - alert: ModerateMemoryUsage
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 30
+        for: 15m
+        labels:
+          severity: medium
+          service: system
+          component: memory
+        annotations:
+          summary: "Memory usage elevated"
+          description: "Memory usage on {{ $labels.instance }} is above 70% ({{ $value | humanize }}% free)."
+          runbook: "https://monitoring.your-domain.com/runbooks/memory-medium"
+
+      - alert: HighCacheMissRate
+        expr: (sum(rate(redis_keyspace_misses_total[10m])) / (sum(rate(redis_keyspace_hits_total[10m])) + sum(rate(redis_keyspace_misses_total[10m])))) * 100 > 50
+        for: 10m
+        labels:
+          severity: medium
+          service: redis
+          component: cache
+        annotations:
+          summary: "High Redis cache miss rate"
+          description: "Redis cache miss rate is {{ $value | humanize }}% over the last 10 minutes. Cache may need optimization."
+          runbook: "https://monitoring.your-domain.com/runbooks/cache-miss-rate"
+
+      - alert: ContainerRestartLoop
+        expr: rate(container_restart_count[15m]) > 0
+        for: 5m
+        labels:
+          severity: medium
+          service: docker
+          component: containers
+        annotations:
+          summary: "Container restart loop detected"
+          description: "Container {{ $labels.container_name }} has restarted {{ $value | humanize }} times in the last 15 minutes."
+          runbook: "https://monitoring.your-domain.com/runbooks/container-restarts"
+
+      - alert: HighNetworkUsage
+        expr: rate(node_network_transmit_bytes_total[5m]) > 100000000
+        for: 10m
+        labels:
+          severity: medium
+          service: system
+          component: network
+        annotations:
+          summary: "High network transmission rate"
+          description: "Network transmission on {{ $labels.instance }} is {{ $value | humanize }} bytes/sec. Possible DDoS or data exfiltration."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-network"
+
+  # ======================
+  # BUSINESS METRICS ALERTS
+  # ======================
+  - name: business_alerts
+    interval: 300s
+    rules:
+      - alert: LowActiveUsers
+        expr: ops_center_active_users < 1
+        for: 30m
+        labels:
+          severity: medium
+          service: ops-center
+          component: business
+        annotations:
+          summary: "Very low active user count"
+          description: "Active user count has been below 1 for 30 minutes. Possible service issue or unusual downtime."
+          runbook: "https://monitoring.your-domain.com/runbooks/low-active-users"
+
+      - alert: HighSubscriptionCancellationRate
+        expr: rate(ops_center_lago_invoices_total{status="canceled"}[24h]) > 0.1
+        for: 1h
+        labels:
+          severity: medium
+          service: lago
+          component: business
+        annotations:
+          summary: "High subscription cancellation rate"
+          description: "Subscription cancellation rate is {{ $value | humanize }}% over the last 24 hours. Review customer feedback."
+          runbook: "https://monitoring.your-domain.com/runbooks/high-churn"
+
+      - alert: CloudflareRateLimitApproaching
+        expr: ops_center_cloudflare_api_calls_total{status="success"} / 1000 > 0.8
+        for: 5m
+        labels:
+          severity: medium
+          service: cloudflare
+          component: api
+        annotations:
+          summary: "Approaching Cloudflare API rate limit"
+          description: "Cloudflare API usage is at {{ $value | humanize }}% of rate limit. Requests may start failing."
+          runbook: "https://monitoring.your-domain.com/runbooks/cloudflare-rate-limit"
+
+  # ======================
+  # SECURITY ALERTS
+  # ======================
+  - name: security_alerts
+    interval: 60s
+    rules:
+      - alert: SuspiciousAPIUsage
+        expr: rate(ops_center_api_requests_total{endpoint=~"/admin/.*"}[5m]) > 100
+        for: 5m
+        labels:
+          severity: high
+          service: ops-center
+          component: security
+        annotations:
+          summary: "Suspicious admin API usage detected"
+          description: "Abnormally high rate of admin API requests: {{ $value | humanize }} req/sec. Possible attack."
+          runbook: "https://monitoring.your-domain.com/runbooks/suspicious-api-usage"
+
+      - alert: UnauthorizedAccessAttempts
+        expr: rate(ops_center_api_errors_total{status_code="403"}[5m]) > 10
+        for: 3m
+        labels:
+          severity: high
+          service: ops-center
+          component: security
+        annotations:
+          summary: "High rate of unauthorized access attempts"
+          description: "More than 10 403 errors per second for 3 minutes. Possible privilege escalation attempt."
+          runbook: "https://monitoring.your-domain.com/runbooks/unauthorized-access"
+
+      - alert: AnomalousDataTransfer
+        expr: rate(container_network_transmit_bytes_total{container_name="ops-center-direct"}[5m]) > 50000000
+        for: 10m
+        labels:
+          severity: high
+          service: ops-center
+          component: security
+        annotations:
+          summary: "Anomalous data transfer from Ops-Center"
+          description: "Ops-Center container is transmitting {{ $value | humanize }} bytes/sec. Possible data exfiltration."
+          runbook: "https://monitoring.your-domain.com/runbooks/data-exfiltration"
