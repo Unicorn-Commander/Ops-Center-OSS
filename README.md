@@ -146,11 +146,13 @@ Building an AI SaaS typically requires stitching together a dozen services. Ops-
 | No per-seat fees | $0 |
 | No API markup | $0 |
 | No vendor lock-in | $0 |
-| **Total** | **$0 /mo** |
+| **Total** | **$0 platform fees*** |
 
 </td>
 </tr>
 </table>
+
+<sub>*You pay only for your own infrastructure and any LLM provider API costs (OpenAI, Anthropic, etc.)</sub>
 
 ### What Makes It Different
 
@@ -202,11 +204,13 @@ DNS, users, billing, LLMs, services. One dashboard instead of 10 browser tabs.
 - Invoice history and payment method management
 
 ### LLM Management
-- 1500+ models via LiteLLM (OpenAI, Anthropic, Google, Meta, and more)
+- 1500+ models via LiteLLM (OpenAI, Anthropic, Google, Meta, and more)*
 - BYOK support: bring your own API keys with no platform markup
 - Credit system with automatic usage tracking
 - Image generation with DALL-E and Stable Diffusion
 - Smart routing to cheapest or fastest provider
+
+<sub>*Model availability depends on configured providers (OpenRouter, direct API keys, self-hosted models, etc.)</sub>
 
 ### Billing and Subscriptions
 - Lago + Stripe integration
@@ -340,6 +344,132 @@ docker compose -f docker-compose.direct.yml up -d
 ### 🎉 Access your dashboard at `http://localhost:8084`
 
 </div>
+
+---
+
+## Keycloak Setup
+
+Ops-Center requires Keycloak for authentication. You can use an existing Keycloak instance or deploy one alongside.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### Manual Setup
+
+| Step | Action |
+|------|--------|
+| 1 | Create Realm: `ops-center` |
+| 2 | Create Client: `ops-center` (confidential, OIDC) |
+| 3 | Set Valid Redirect URIs: `http://localhost:8084/*` |
+| 4 | Set Web Origins: `http://localhost:8084` |
+| 5 | Enable identity providers (Google, GitHub, Microsoft) |
+| 6 | Create realm roles: `admin`, `user`, `org-admin` |
+| 7 | Copy Client Secret → `KEYCLOAK_CLIENT_SECRET` in `.env.auth` |
+
+</td>
+<td width="50%" valign="top">
+
+### Quick Import (Recommended)
+
+```bash
+# Import pre-configured realm
+docker exec -it keycloak \
+  /opt/keycloak/bin/kc.sh import \
+  --file /tmp/realm-export.json
+```
+
+The included `keycloak/realm-export.json` provides:
+- ✅ Pre-configured `ops-center` client
+- ✅ Google, GitHub, Microsoft providers (add your keys)
+- ✅ Default roles and permissions
+- ✅ Recommended session settings
+
+</td>
+</tr>
+</table>
+
+> **Tip:** For local development, you can run Keycloak in Docker:
+> ```bash
+> docker run -d --name keycloak -p 8080:8080 \
+>   -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin \
+>   quay.io/keycloak/keycloak:latest start-dev
+> ```
+
+---
+
+## Deployment Options
+
+Choose the right configuration for your use case:
+
+| Goal | Command | Description |
+|------|---------|-------------|
+| **Local Development** | `docker compose -f docker-compose.direct.yml up -d` | Fastest setup, direct port access |
+| **Behind Traefik** | `docker compose -f docker-compose.traefik.yml up -d` | Reverse proxy with automatic TLS |
+| **With Monitoring** | `docker compose -f docker-compose.monitoring.yml up -d` | Adds Prometheus + Grafana |
+| **With LiteLLM** | `docker compose -f docker-compose.litellm.yml up -d` | Includes LiteLLM proxy container |
+| **Production** | `docker compose -f docker-compose.prod.yml up -d` | Optimized for production |
+| **CenterDeep** | `docker compose -f docker-compose.centerdeep.yml up -d` | Specialized search configuration |
+
+You can combine configurations:
+```bash
+docker compose -f docker-compose.direct.yml -f docker-compose.monitoring.yml up -d
+```
+
+---
+
+## Ports & URLs
+
+| Service | Port | Default URL | Notes |
+|---------|------|-------------|-------|
+| **Dashboard** | 8084 | http://localhost:8084 | Main Ops-Center UI |
+| **Frontend Dev** | 5173 | http://localhost:5173 | Vite dev server (npm run dev) |
+| **API Docs** | 8084 | http://localhost:8084/docs | FastAPI OpenAPI docs |
+| **Keycloak** | 8080 | http://localhost:8080 | Your Keycloak instance |
+| **PostgreSQL** | 5432 | - | Internal, not exposed by default |
+| **Redis** | 6379 | - | Internal, not exposed by default |
+| **Prometheus** | 9090 | http://localhost:9090 | With monitoring compose |
+| **Grafana** | 3000 | http://localhost:3000 | With monitoring compose |
+
+---
+
+## Security Notes
+
+<table>
+<tr>
+<td width="50%">
+
+### ⚠️ Production Checklist
+
+- [ ] Run behind TLS/HTTPS (use Traefik or nginx)
+- [ ] Never expose PostgreSQL/Redis to public internet
+- [ ] Use strong, unique values for all secrets
+- [ ] Configure Keycloak on a private network
+- [ ] Enable rate limiting on public endpoints
+- [ ] Review [SECURITY.md](SECURITY.md) before deploying
+
+</td>
+<td width="50%">
+
+### 🔐 Secret Management
+
+```bash
+# Generate secure secrets
+openssl rand -hex 32  # SESSION_SECRET_KEY
+openssl rand -hex 32  # ENCRYPTION_KEY
+
+# Never commit .env files
+echo ".env*" >> .gitignore
+```
+
+Store production secrets in:
+- Environment variables
+- Docker secrets
+- Vault/AWS Secrets Manager
+
+</td>
+</tr>
+</table>
 
 ---
 
