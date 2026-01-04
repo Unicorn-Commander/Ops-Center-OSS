@@ -1,12 +1,14 @@
 name: Complete CI/CD Pipeline
 
+# Disabled automatic triggers - run manually when needed
 on:
-  push:
-    branches: [main, develop, staging]
-  pull_request:
-    branches: [main, develop]
-  release:
-    types: [published]
+  workflow_dispatch:
+  # push:
+  #   branches: [main, develop, staging]
+  # pull_request:
+  #   branches: [main, develop]
+  # release:
+  #   types: [published]
 
 env:
   REGISTRY: ghcr.io

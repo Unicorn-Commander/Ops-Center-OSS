@@ -1,25 +1,7 @@
 name: E2E Tests - Ops-Center
 
-# Trigger workflow on:
-# - Push to main/master branch
-# - Pull requests
-# - Manual trigger
-# - Scheduled runs (daily at 2 AM UTC)
+# Disabled automatic triggers - run manually when needed
 on:
-  push:
-    branches:
-      - main
-      - master
-      - develop
-    paths:
-      - 'services/ops-center/**'
-      - '.github/workflows/e2e-tests.yml'
-  pull_request:
-    branches:
-      - main
-      - master
-    paths:
-      - 'services/ops-center/**'
   workflow_dispatch:
     inputs:
       browser:
@@ -32,8 +14,12 @@ on:
           - firefox
           - webkit
           - all
-  schedule:
-    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  # push:
+  #   branches: [main, master, develop]
+  # pull_request:
+  #   branches: [main, master]
+  # schedule:
+  #   - cron: '0 2 * * *'
 
 # Environment variables
 # Configure APP_URL in GitHub repository variables for your deployment

@@ -1,9 +1,10 @@
 name: Build & Push Docker Images
 
+# Disabled automatic triggers - run manually when needed
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  # push:
+  #   branches: [main]
 
 env:
   REGISTRY: ghcr.io
