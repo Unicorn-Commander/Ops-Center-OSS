@@ -950,6 +950,17 @@ Production AI applications and services managed through Ops-Center.
 
 ---
 
+## Support the Project
+
+<div align="center">
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/Unicorn-Commander)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/aaronyo)
+
+</div>
+
+---
+
 ## License
 
 <div align="center">
