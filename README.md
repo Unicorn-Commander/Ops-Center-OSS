@@ -16,7 +16,7 @@
 [![React 18](https://img.shields.io/badge/react-18-61dafb.svg)](https://reactjs.org)
 [![FastAPI](https://img.shields.io/badge/fastapi-modern-009688.svg)](https://fastapi.tiangolo.com)
 
-[Quick Start](#quick-start) · [Features](#features) · [Screenshots](#screenshots) · [Documentation](#documentation) · [Star History](#star-history)
+[Quick Start](#quick-start) · [Features](#features) · [Screenshots](#screenshots) · [Roadmap](#roadmap) · [Documentation](#documentation)
 
 </div>
 
@@ -789,6 +789,69 @@ ops-center/
 </td>
 </tr>
 </table>
+
+---
+
+## Roadmap
+
+<div align="center">
+
+**🎖️ Coming Soon: The Colonel Agent**
+
+*An AI-powered server management assistant that responds to natural language commands.*
+
+</div>
+
+<table>
+<tr>
+<td width="25%" align="center">
+
+**Phase 1**
+<br/>Foundation
+
+- CLI tool
+- Webhooks
+- Docker Hub images
+
+</td>
+<td width="25%" align="center">
+
+**Phase 2**
+<br/>Intelligence
+
+- 🎖️ **The Colonel v1**
+- Smart alerts
+- Cost optimization
+
+</td>
+<td width="25%" align="center">
+
+**Phase 3**
+<br/>Scale
+
+- Multi-server mgmt
+- Kubernetes
+- Terraform/IaC
+
+</td>
+<td width="25%" align="center">
+
+**Phase 4**
+<br/>Enterprise
+
+- Mobile app
+- Advanced RBAC
+- HA deployment
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+📍 **[View Full Roadmap →](ROADMAP.md)**
+
+</div>
 
 ---
 
