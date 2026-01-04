@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="public/logos/unicorn-commander-logo.svg" alt="Ops-Center" width="120" />
+<img src="public/logos/The_Colonel.png" alt="Ops-Center" width="120" />
 
 ### The AI Infrastructure Command Center
 
