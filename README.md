@@ -16,7 +16,7 @@
 [![React 18](https://img.shields.io/badge/react-18-61dafb.svg)](https://reactjs.org)
 [![FastAPI](https://img.shields.io/badge/fastapi-modern-009688.svg)](https://fastapi.tiangolo.com)
 
-[Quick Start](#quick-start) · [Features](#features) · [Screenshots](#screenshots) · [Roadmap](#roadmap) · [Documentation](#documentation)
+[Quick Start](#quick-start) · [Features](#features) · [Roadmap](#roadmap) · [Used in Production](#used-in-production) · [Documentation](#documentation)
 
 </div>
 
@@ -798,7 +798,9 @@ ops-center/
 
 **🎖️ Coming Soon: The Colonel Agent**
 
-*An AI-powered server management assistant that responds to natural language commands.*
+*An AI Platform Engineer that integrates apps, configures billing, and manages organizations—via conversation.*
+
+> "Colonel, set up a new client with org-admin, manager, and user tiers."
 
 </div>
 
@@ -911,6 +913,43 @@ git push origin feature/your-feature    # Push
 
 ---
 
+## Used in Production
+
+<div align="center">
+
+**Ops-Center powers real infrastructure serving real users.**
+
+</div>
+
+<table>
+<tr>
+<td align="center" width="50%">
+
+<a href="https://centerdeep.online">
+<img src="https://img.shields.io/badge/Center_Deep-Hosted_Search_&_Analytics-667eea?style=for-the-badge" alt="Center Deep"/>
+</a>
+
+**[centerdeep.online](https://centerdeep.online)**
+
+Hosted AI-powered search and data analytics platform running on Ops-Center infrastructure.
+
+</td>
+<td align="center" width="50%">
+
+<a href="https://unicorncommander.ai">
+<img src="https://img.shields.io/badge/Unicorn_Commander-Production_Apps-8b5cf6?style=for-the-badge" alt="Unicorn Commander"/>
+</a>
+
+**[unicorncommander.ai](https://unicorncommander.ai)**
+
+Production AI applications and services managed through Ops-Center.
+
+</td>
+</tr>
+</table>
+
+---
+
 ## License
 
 <div align="center">
@@ -921,12 +960,30 @@ git push origin feature/your-feature    # Push
 
 Copyright 2025 **Magic Unicorn Unconventional Technology & Stuff Inc**
 
+</div>
+
 ---
+
+<div align="center">
 
 <br/>
 
-<a href="https://magicunicorn.tech">
-<img src="https://img.shields.io/badge/Built_by-Magic_Unicorn_Tech-8b5cf6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHoiLz48L3N2Zz4=" alt="Magic Unicorn Tech"/>
+<a href="https://unicorncommander.com">
+<img src="https://img.shields.io/badge/🦄_Product_Page-unicorncommander.com-8b5cf6?style=for-the-badge" alt="Product Page"/>
 </a>
+&nbsp;&nbsp;
+<a href="https://centerdeep.ai">
+<img src="https://img.shields.io/badge/🔍_Center_Deep-centerdeep.ai-667eea?style=for-the-badge" alt="Center Deep"/>
+</a>
+&nbsp;&nbsp;
+<a href="https://magicunicorn.tech">
+<img src="https://img.shields.io/badge/🏢_Company-Magic_Unicorn_Tech-ff6b6b?style=for-the-badge" alt="Magic Unicorn Tech"/>
+</a>
+
+<br/><br/>
+
+<img src="public/logos/magic_unicorn_logo.png" alt="Magic Unicorn" width="60" />
+
+**Built with 🦄 by Magic Unicorn Unconventional Technology & Stuff Inc**
 
 </div>
