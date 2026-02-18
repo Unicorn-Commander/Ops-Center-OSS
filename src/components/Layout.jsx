@@ -53,23 +53,27 @@ import {
   EnvelopeIcon,
   GlobeAltIcon,
   CodeBracketIcon,
+  LinkIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
   LockClosedIcon,
   CpuChipIcon,
   ShoppingBagIcon,
-  TicketIcon
+  TicketIcon,
+  ChartBarSquareIcon
 } from '@heroicons/react/24/outline';
 import { useTheme } from '../contexts/ThemeContext';
 import { ColonelLogo, MagicUnicornLogo, CenterDeepLogo } from './Logos';
 import NavigationSection from './NavigationSection';
 import NavigationItem from './NavigationItem';
-import { routes } from '../config/routes';
+import { getNavigationStructure, getRouteByPath, hasRouteAccess } from '../config/routes';
 import NotificationBell from './NotificationBell';
 import OrganizationSelector from './OrganizationSelectorSimple';
 import MobileNavigation from './MobileNavigation';
 import MobileBreadcrumbs from './MobileBreadcrumbs';
 import BottomNavBar from './BottomNavBar';
+import { lazy, Suspense } from 'react';
+const ColonelChatBubble = lazy(() => import('./colonel/ColonelChatBubble'));
 
 // Icon mapping for dynamic icon resolution from route configuration
 const iconMap = {
@@ -100,10 +104,12 @@ const iconMap = {
   EnvelopeIcon,
   GlobeAltIcon,
   CodeBracketIcon,
+  LinkIcon,
   LockClosedIcon,
   CpuChipIcon,
   ShoppingBagIcon,
-  TicketIcon
+  TicketIcon,
+  ChartBarSquareIcon
 };
 
 export default function Layout({ children }) {
@@ -142,11 +148,12 @@ export default function Layout({ children }) {
       account: true,
       subscription: true,
       organization: true,
+      peopleAccess: true,
+      billingPlans: true,
+      aiModels: true,
       infrastructure: true,
-      usersOrgs: true,
-      billingUsage: true,
-      analytics: true,
-      llmHub: true,
+      monitoring: true,
+      integrations: true,
       platform: true
     };
   };
@@ -230,6 +237,92 @@ export default function Layout({ children }) {
     themeLabel: theme.text.secondary
   };
 
+  const navStructure = getNavigationStructure();
+
+  const resolveIcon = (iconName) => {
+    if (!iconName) return null;
+    return iconMap[iconName] || null;
+  };
+
+  // Section header renderer with color differentiation for user vs admin sections
+  const renderSectionHeader = (label, isAdminSection = false) => {
+    if (sidebarCollapsed) return null;
+
+    // User sections: Blue/Teal tones - accessible to all users
+    // Admin sections: Amber/Gold tones - system admin only
+    const getUserSectionColor = () => {
+      if (currentTheme === 'unicorn') return 'text-cyan-300/80';
+      if (currentTheme === 'light') return 'text-blue-600';
+      return 'text-cyan-400';
+    };
+
+    const getAdminSectionColor = () => {
+      if (currentTheme === 'unicorn') return 'text-amber-300/80';
+      if (currentTheme === 'light') return 'text-amber-600';
+      return 'text-amber-400';
+    };
+
+    const sectionColor = isAdminSection ? getAdminSectionColor() : getUserSectionColor();
+
+    return (
+      <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${sectionColor}`}>
+        <div className="flex-1 h-px bg-current opacity-20"></div>
+        <span className="text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+          {isAdminSection && (
+            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+          )}
+          {label}
+        </span>
+        <div className="flex-1 h-px bg-current opacity-20"></div>
+      </div>
+    );
+  };
+
+  const renderNavItem = (route, indent = false) => {
+    if (!route || route.nav === false) return null;
+    if (!hasRouteAccess(route, userRole, userOrgRole)) return null;
+
+    const Icon = resolveIcon(route.icon);
+    return (
+      <NavigationItem
+        key={route.path}
+        collapsed={sidebarCollapsed}
+        name={route.name}
+        href={route.path}
+        icon={Icon}
+        indent={indent}
+        external={route.external}
+      />
+    );
+  };
+
+  const renderNavSection = (sectionKey, sectionConfig) => {
+    if (!sectionConfig || !sectionConfig.children) return null;
+    const Icon = resolveIcon(sectionConfig.icon);
+    const children = Object.values(sectionConfig.children)
+      .map(child => renderNavItem(child, true))
+      .filter(Boolean);
+
+    if (children.length === 0) return null;
+
+    return (
+      <NavigationSection
+        collapsed={sidebarCollapsed}
+        title={sectionConfig.section}
+        icon={Icon}
+        defaultOpen={sectionState[sectionKey]}
+        onToggle={() => toggleSection(sectionKey)}
+      >
+        {children}
+      </NavigationSection>
+    );
+  };
+
+  const currentRoute = getRouteByPath(location.pathname);
+  const currentTitle = currentRoute?.name || 'Ops-Center';
+
   return (
     <div className={themeClasses.background}>
       {/* Mobile Navigation - Hamburger menu and drawer */}
@@ -255,32 +348,32 @@ export default function Layout({ children }) {
                     ? 'hover:bg-gray-100'
                     : 'hover:bg-slate-700/50'
                 }`}
-                title={sidebarCollapsed ? "Ops Center - UC-1 Pro Control" : ""}
+                title={sidebarCollapsed ? "Ops-Center - Operations Console" : ""}
               >
-                {/* The Colonel Logo */}
-                <ColonelLogo className={`drop-shadow-xl ${sidebarCollapsed ? 'w-10 h-10' : 'w-14 h-14'}`} />
+                {/* Magic Unicorn Logo */}
+                <MagicUnicornLogo className={`drop-shadow-xl ${sidebarCollapsed ? 'w-10 h-10' : 'w-14 h-14'}`} />
                 {!sidebarCollapsed && (
                   <div className="text-center">
                     <h1 className={`text-2xl font-bold ${themeClasses.logo} leading-tight`}>
-                      Ops Center
+                      Ops-Center
                     </h1>
                     <div className={`text-lg ${currentTheme === 'unicorn' ? 'text-purple-200/80' : currentTheme === 'light' ? 'text-gray-600' : 'text-gray-400'} font-medium`}>
-                      UC-1 Pro Control
+                      Operations Console
                     </div>
                   </div>
                 )}
               </Link>
 
-              {/* System Management - subtitle (hidden when collapsed) */}
+              {/* Powered By - subtitle (hidden when collapsed) */}
               {!sidebarCollapsed && (
                 <>
                   <div className={`text-sm ${currentTheme === 'unicorn' ? 'text-purple-200/70' : currentTheme === 'light' ? 'text-gray-500' : 'text-gray-400'} mb-2 font-medium`}>
-                    System Management Console
+                    Powered by <a href="https://unicorncommander.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-purple-300">Unicorn Commander</a>
                   </div>
 
                   {/* Version */}
                   <div className={`text-xs ${currentTheme === 'unicorn' ? 'text-purple-300/60' : currentTheme === 'light' ? 'text-gray-500' : 'text-gray-500'} font-mono`}>
-                    v2.1.0
+                    v2.4.0
                   </div>
                 </>
               )}
@@ -321,580 +414,45 @@ export default function Layout({ children }) {
                 {/* ============================ */}
                 {/* DASHBOARD - Top Level */}
                 {/* ============================ */}
-                <NavigationItem collapsed={sidebarCollapsed}
-                  name="Dashboard"
-                  href="/admin/"
-                  icon={iconMap.HomeIcon}
-                />
+                {renderNavItem(navStructure.personal.dashboard)}
+                {renderNavItem(navStructure.personal.myDashboard)}
+                {renderNavItem(navStructure.personal.marketplace)}
 
-                {/* ============================ */}
-                {/* MARKETPLACE - Browse & Purchase Apps */}
-                {/* ============================ */}
-                <NavigationItem collapsed={sidebarCollapsed}
-                  name="Marketplace"
-                  href="/admin/apps/marketplace"
-                  icon={iconMap.ShoppingBagIcon}
-                  badge="New"
-                />
+                {renderSectionHeader('Account')}
+                {renderNavSection('account', navStructure.personal.account)}
 
-                {/* ============================ */}
-                {/* ACCOUNT SECTION - ALL USERS */}
-                {/* ============================ */}
-                {/* Section Header (hidden when collapsed) */}
-                {!sidebarCollapsed && (
-                  <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                    currentTheme === 'unicorn'
-                      ? 'text-purple-300/70'
-                      : currentTheme === 'light'
-                      ? 'text-gray-500'
-                      : 'text-gray-400'
-                  }`}>
-                    <div className="flex-1 h-px bg-current opacity-20"></div>
-                    <span className="text-xs font-bold uppercase tracking-wider">Account</span>
-                    <div className="flex-1 h-px bg-current opacity-20"></div>
-                  </div>
-                )}
+                {renderSectionHeader('Subscription & Credits')}
+                {renderNavSection('subscription', navStructure.personal.subscription)}
 
-                <NavigationSection collapsed={sidebarCollapsed}
-                  title="Account"
-                  icon={iconMap.UserCircleIcon}
-                  defaultOpen={sectionState.account}
-                  onToggle={() => toggleSection('account')}
-                >
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Profile & Preferences"
-                    href="/admin/account/profile"
-                    icon={iconMap.UserCircleIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Security & Sessions"
-                    href="/admin/account/security"
-                    icon={iconMap.LockClosedIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="API Keys (BYOK)"
-                    href="/admin/account/api-keys"
-                    icon={iconMap.KeyIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Notification Preferences"
-                    href="/admin/account/notification-settings"
-                    icon={iconMap.EnvelopeIcon}
-                    indent={true}
-                  />
-                </NavigationSection>
-
-                {/* ============================ */}
-                {/* MY SUBSCRIPTION SECTION - ALL USERS */}
-                {/* ============================ */}
-                {/* Section Header (hidden when collapsed) */}
-                {!sidebarCollapsed && (
-                  <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                    currentTheme === 'unicorn'
-                      ? 'text-purple-300/70'
-                      : currentTheme === 'light'
-                      ? 'text-gray-500'
-                      : 'text-gray-400'
-                  }`}>
-                    <div className="flex-1 h-px bg-current opacity-20"></div>
-                    <span className="text-xs font-bold uppercase tracking-wider">My Subscription</span>
-                    <div className="flex-1 h-px bg-current opacity-20"></div>
-                  </div>
-                )}
-
-                <NavigationSection collapsed={sidebarCollapsed}
-                  title="My Subscription"
-                  icon={iconMap.CreditCardIcon}
-                  defaultOpen={sectionState.subscription}
-                  onToggle={() => toggleSection('subscription')}
-                >
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Current Plan"
-                    href="/admin/subscription/plan"
-                    icon={iconMap.RectangleStackIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Usage & Limits"
-                    href="/admin/subscription/usage"
-                    icon={iconMap.ChartBarIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Billing History"
-                    href="/admin/subscription/billing"
-                    icon={iconMap.DocumentDuplicateIcon}
-                    indent={true}
-                  />
-                  <NavigationItem collapsed={sidebarCollapsed}
-                    name="Payment Methods"
-                    href="/admin/subscription/payment"
-                    icon={iconMap.CreditCardIcon}
-                    indent={true}
-                  />
-                </NavigationSection>
-
-                {/* ============================ */}
-                {/* MY ORGANIZATION SECTION - ORG ADMINS/OWNERS */}
-                {/* ============================ */}
                 {(userOrgRole === 'admin' || userOrgRole === 'owner') && (
                   <>
-                    {/* Section Header (hidden when collapsed) */}
-                    {!sidebarCollapsed && (
-                      <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                        currentTheme === 'unicorn'
-                          ? 'text-purple-300/70'
-                          : currentTheme === 'light'
-                          ? 'text-gray-500'
-                          : 'text-gray-400'
-                      }`}>
-                        <div className="flex-1 h-px bg-current opacity-20"></div>
-                        <span className="text-xs font-bold uppercase tracking-wider">My Organization</span>
-                        <div className="flex-1 h-px bg-current opacity-20"></div>
-                      </div>
-                    )}
-
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="My Organization"
-                      icon={iconMap.BuildingOfficeIcon}
-                      defaultOpen={sectionState.organization}
-                      onToggle={() => toggleSection('organization')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Team Members"
-                        href="/admin/org/team"
-                        icon={iconMap.UsersIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Roles & Permissions"
-                        href="/admin/org/roles"
-                        icon={iconMap.ShieldCheckIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Organization Settings"
-                        href="/admin/org/settings"
-                        icon={iconMap.CogIcon}
-                        indent={true}
-                      />
-                      {userOrgRole === 'owner' && (
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Organization Billing"
-                          href="/admin/org/billing"
-                          icon={iconMap.CurrencyDollarIcon}
-                          indent={true}
-                        />
-                      )}
-                    </NavigationSection>
+                    {renderSectionHeader('My Organization')}
+                    {renderNavSection('organization', navStructure.organization)}
                   </>
                 )}
 
-                {/* ============================ */}
-                {/* INFRASTRUCTURE SECTION */}
-                {/* ============================ */}
                 {userRole === 'admin' && (
                   <>
-                    {/* Section Header (hidden when collapsed) */}
-                    {!sidebarCollapsed && (
-                      <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                        currentTheme === 'unicorn'
-                          ? 'text-purple-300/70'
-                          : currentTheme === 'light'
-                          ? 'text-gray-500'
-                          : 'text-gray-400'
-                      }`}>
-                        <div className="flex-1 h-px bg-current opacity-20"></div>
-                        <span className="text-xs font-bold uppercase tracking-wider">Infrastructure</span>
-                        <div className="flex-1 h-px bg-current opacity-20"></div>
-                      </div>
-                    )}
+                    {renderSectionHeader('People & Access', true)}
+                    {renderNavSection('peopleAccess', navStructure.system.children.peopleAccess)}
 
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="Infrastructure"
-                      icon={iconMap.ComputerDesktopIcon}
-                      defaultOpen={sectionState.infrastructure}
-                      onToggle={() => toggleSection('infrastructure')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Services"
-                        href="/admin/services"
-                        icon={iconMap.ServerIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Forgejo (Git)"
-                        href="/admin/system/forgejo"
-                        icon={iconMap.CodeBracketIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Hardware Management"
-                        href="/admin/infrastructure/hardware"
-                        icon={iconMap.WrenchIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Local Users"
-                        href="/admin/system/local-users"
-                        icon={iconMap.UsersIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Monitoring"
-                        href="/admin/system"
-                        icon={iconMap.ChartBarIcon}
-                        indent={true}
-                      />
-                      <NavigationSection collapsed={sidebarCollapsed}
-                        title="LLM Hub"
-                        icon={iconMap.CpuChipIcon}
-                        defaultOpen={sectionState.llmHub}
-                        onToggle={() => toggleSection('llmHub')}
-                      >
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Hub Overview"
-                          href="/admin/llm-hub"
-                          icon={iconMap.HomeIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="LLM Management"
-                          href="/admin/llm-management"
-                          icon={iconMap.CogIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="LLM Providers"
-                          href="/admin/litellm-providers"
-                          icon={iconMap.ServerIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="LLM Usage"
-                          href="/admin/llm/usage"
-                          icon={iconMap.ChartBarIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Model Lists"
-                          href="/admin/system/model-lists"
-                          icon={iconMap.RectangleStackIcon}
-                          indent={true}
-                        />
-                      </NavigationSection>
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Cloudflare DNS"
-                        href="/admin/infrastructure/cloudflare"
-                        icon={iconMap.GlobeAltIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Traefik"
-                        href="/admin/traefik/dashboard"
-                        icon={iconMap.ServerIcon}
-                        indent={true}
-                      >
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Dashboard"
-                          href="/admin/traefik/dashboard"
-                          icon={iconMap.ChartBarIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Routes"
-                          href="/admin/traefik/routes"
-                          icon={iconMap.GlobeAltIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Services"
-                          href="/admin/traefik/services"
-                          icon={iconMap.ServerIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="SSL Certificates"
-                          href="/admin/traefik/ssl"
-                          icon={iconMap.LockClosedIcon}
-                          indent={true}
-                        />
-                        <NavigationItem collapsed={sidebarCollapsed}
-                          name="Metrics"
-                          href="/admin/traefik/metrics"
-                          icon={iconMap.ChartBarIcon}
-                          indent={true}
-                        />
-                      </NavigationItem>
-                    </NavigationSection>
-                  </>
-                )}
+                    {renderSectionHeader('Billing & Plans', true)}
+                    {renderNavSection('billingPlans', navStructure.system.children.billingPlans)}
 
-                {/* ============================ */}
-                {/* USERS & ORGANIZATIONS SECTION */}
-                {/* ============================ */}
-                {userRole === 'admin' && (
-                  <>
-                    {/* Section Header */}
-                    {!sidebarCollapsed && (
-                    <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                      currentTheme === 'unicorn'
-                        ? 'text-purple-300/70'
-                        : currentTheme === 'light'
-                        ? 'text-gray-500'
-                        : 'text-gray-400'
-                    }`}>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                      <span className="text-xs font-bold uppercase tracking-wider">Users & Organizations</span>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                    </div>
-                    )}
+                    {renderSectionHeader('AI & Models', true)}
+                    {renderNavSection('aiModels', navStructure.system.children.aiModels)}
 
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="Users & Organizations"
-                      icon={iconMap.UsersIcon}
-                      defaultOpen={sectionState.usersOrgs}
-                      onToggle={() => toggleSection('usersOrgs')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="User Management"
-                        href="/admin/system/users"
-                        icon={iconMap.UsersIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Organizations"
-                        href="/admin/organization/list"
-                        icon={iconMap.BuildingOfficeIcon}
-                        indent={true}
-                      />
-                    </NavigationSection>
-                  </>
-                )}
+                    {renderSectionHeader('Infrastructure', true)}
+                    {renderNavSection('infrastructure', navStructure.system.children.infrastructure)}
 
-                {/* ============================ */}
-                {/* BILLING & USAGE SECTION */}
-                {/* ============================ */}
-                {userRole === 'admin' && (
-                  <>
-                    {/* Section Header */}
-                    {!sidebarCollapsed && (
-                    <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                      currentTheme === 'unicorn'
-                        ? 'text-purple-300/70'
-                        : currentTheme === 'light'
-                        ? 'text-gray-500'
-                        : 'text-gray-400'
-                    }`}>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                      <span className="text-xs font-bold uppercase tracking-wider">Billing & Usage</span>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                    </div>
-                    )}
+                    {renderSectionHeader('Monitoring', true)}
+                    {renderNavSection('monitoring', navStructure.system.children.monitoring)}
 
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="Billing & Usage"
-                      icon={iconMap.CurrencyDollarIcon}
-                      defaultOpen={sectionState.billingUsage}
-                      onToggle={() => toggleSection('billingUsage')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Subscription Management"
-                        href="/admin/system/subscription-management"
-                        icon={iconMap.CreditCardIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="App Management"
-                        href="/admin/system/app-management"
-                        icon={iconMap.CubeIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Pricing Management"
-                        href="/admin/system/pricing-management"
-                        icon={iconMap.CurrencyDollarIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Billing Dashboard"
-                        href="/admin/system/billing"
-                        icon={iconMap.CurrencyDollarIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="User Billing"
-                        href="/admin/billing/dashboard"
-                        icon={iconMap.UserCircleIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="System Billing Overview"
-                        href="/admin/billing/overview"
-                        icon={iconMap.ChartBarIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Invite Codes"
-                        href="/admin/system/invite-codes"
-                        icon={iconMap.TicketIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Buy Credits"
-                        href="/admin/credits/purchase"
-                        icon={iconMap.ShoppingBagIcon}
-                        indent={true}
-                      />
-                    </NavigationSection>
-                  </>
-                )}
+                    {renderSectionHeader('Integrations', true)}
+                    {renderNavSection('integrations', navStructure.system.children.integrations)}
 
-                {/* ============================ */}
-                {/* ANALYTICS SECTION */}
-                {/* ============================ */}
-                {userRole === 'admin' && (
-                  <>
-                    {/* Section Header */}
-                    {!sidebarCollapsed && (
-                    <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                      currentTheme === 'unicorn'
-                        ? 'text-purple-300/70'
-                        : currentTheme === 'light'
-                        ? 'text-gray-500'
-                        : 'text-gray-400'
-                    }`}>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                      <span className="text-xs font-bold uppercase tracking-wider">Analytics & Insights</span>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                    </div>
-                    )}
-
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="Analytics & Insights"
-                      icon={iconMap.ChartBarIcon}
-                      defaultOpen={sectionState.analytics}
-                      onToggle={() => toggleSection('analytics')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Analytics Dashboard"
-                        href="/admin/analytics"
-                        icon={iconMap.ChartBarIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="LLM Analytics"
-                        href="/admin/llm/usage"
-                        icon={iconMap.CpuChipIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="User Analytics"
-                        href="/admin/system/analytics"
-                        icon={iconMap.UsersIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Billing Analytics"
-                        href="/admin/system/billing"
-                        icon={iconMap.CurrencyDollarIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Usage Metrics"
-                        href="/admin/system/usage-metrics"
-                        icon={iconMap.ChartPieIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Subscriptions"
-                        href="/admin/billing"
-                        icon={iconMap.RectangleStackIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Invoices"
-                        href="/admin/system/billing#invoices"
-                        icon={iconMap.DocumentDuplicateIcon}
-                        indent={true}
-                      />
-                    </NavigationSection>
-                  </>
-                )}
-
-                {/* ============================ */}
-                {/* PLATFORM SECTION */}
-                {/* ============================ */}
-                {userRole === 'admin' && (
-                  <>
-                    {/* Section Header */}
-                    {!sidebarCollapsed && (
-                    <div className={`mt-4 mb-2 px-3 flex items-center gap-2 ${
-                      currentTheme === 'unicorn'
-                        ? 'text-purple-300/70'
-                        : currentTheme === 'light'
-                        ? 'text-gray-500'
-                        : 'text-gray-400'
-                    }`}>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                      <span className="text-xs font-bold uppercase tracking-wider">Platform</span>
-                      <div className="flex-1 h-px bg-current opacity-20"></div>
-                    </div>
-                    )}
-
-                    <NavigationSection collapsed={sidebarCollapsed}
-                      title="Platform"
-                      icon={iconMap.SparklesIcon}
-                      defaultOpen={sectionState.platform}
-                      onToggle={() => toggleSection('platform')}
-                    >
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Unicorn Brigade"
-                        href="/admin/brigade"
-                        icon={iconMap.SparklesIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Center-Deep Search"
-                        href="https://search.your-domain.com"
-                        icon={iconMap.MagnifyingGlassIcon}
-                        indent={true}
-                        external={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Email Settings"
-                        href="/admin/platform/email-settings"
-                        icon={iconMap.EnvelopeIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="Platform Settings"
-                        href="/admin/platform/settings"
-                        icon={iconMap.CogIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="White-Label Config"
-                        href="/admin/platform/white-label"
-                        icon={iconMap.PaintBrushIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="API Documentation"
-                        href="/admin/platform/api-docs"
-                        icon={iconMap.CodeBracketIcon}
-                        indent={true}
-                      />
-                      <NavigationItem collapsed={sidebarCollapsed}
-                        name="System Settings"
-                        href="/admin/system/settings"
-                        icon={iconMap.CogIcon}
-                        indent={true}
-                      />
-                    </NavigationSection>
+                    {renderSectionHeader('Platform', true)}
+                    {renderNavSection('platform', navStructure.system.children.platform)}
                   </>
                 )}
               </nav>
@@ -998,7 +556,7 @@ export default function Layout({ children }) {
                     ? 'text-gray-900'
                     : 'text-white'
                 }`}>
-                  {/* Page title can be dynamically set here */}
+                  {currentTitle}
                 </h2>
               </div>
 
@@ -1094,6 +652,13 @@ export default function Layout({ children }) {
 
       {/* Bottom Navigation Bar - Mobile Only */}
       <BottomNavBar currentPath={location.pathname} userRole={userInfo.role} />
+
+      {/* Colonel Chat Bubble - Admin Only, hidden on Colonel page */}
+      {userRole === 'admin' && !location.pathname.startsWith('/admin/ai/colonel') && (
+        <Suspense fallback={null}>
+          <ColonelChatBubble />
+        </Suspense>
+      )}
     </div>
   );
 }

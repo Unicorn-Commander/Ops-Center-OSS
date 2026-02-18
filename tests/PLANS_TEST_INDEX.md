@@ -22,24 +22,24 @@ All tests completed successfully on October 11, 2025.
 
 ### Run Full Test Suite
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 bash tests/test_plans_page.sh
 ```
 
 ### Verify Trial Tier Only
 ```bash
-curl -s https://your-domain.com/api/v1/subscriptions/plans | \
+curl -s https://unicorncommander.ai/api/v1/subscriptions/plans | \
   jq '.plans[] | select(.name == "trial")'
 ```
 
 ### Check Plans Page Status
 ```bash
-curl -I https://your-domain.com/plans.html
+curl -I https://unicorncommander.ai/plans.html
 ```
 
 ### Get All Plans
 ```bash
-curl https://your-domain.com/api/v1/subscriptions/plans | jq
+curl https://unicorncommander.ai/api/v1/subscriptions/plans | jq
 ```
 
 ---
@@ -243,7 +243,7 @@ interface PlansResponse {
 
 ```
 User Journey:
-1. Visit https://your-domain.com/plans.html
+1. Visit https://unicorncommander.ai/plans.html
 2. Page loads and shows "Loading plans..."
 3. JavaScript fetches /api/v1/subscriptions/plans
 4. Plans render in grid layout
@@ -319,8 +319,8 @@ User Journey:
 
 ## Related Documentation
 
-- Backend API: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/`
-- Frontend: `/home/muut/Production/UC-1-Pro/services/ops-center/public/plans.html`
+- Backend API: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/`
+- Frontend: `/home/deploy/Production/UC-1-Pro/services/ops-center/public/plans.html`
 - Stripe Integration: `STRIPE_IMPLEMENTATION_REPORT.md`
 - User Signup: `USER_SIGNUP_GUIDE.md`
 
@@ -338,14 +338,14 @@ User Journey:
 ### How to Re-Test
 ```bash
 # Quick test
-curl -I https://your-domain.com/plans.html
+curl -I https://unicorncommander.ai/plans.html
 
 # Full test suite
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 bash tests/test_plans_page.sh
 
 # Trial tier specific
-curl -s https://your-domain.com/api/v1/subscriptions/plans | \
+curl -s https://unicorncommander.ai/api/v1/subscriptions/plans | \
   jq '.plans[] | select(.name == "trial")'
 ```
 
@@ -353,7 +353,7 @@ curl -s https://your-domain.com/api/v1/subscriptions/plans | \
 
 ## Contact & Support
 
-- **Test Reports:** `/home/muut/Production/UC-1-Pro/services/ops-center/tests/`
+- **Test Reports:** `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/`
 - **Test Script:** `tests/test_plans_page.sh`
 - **Issues:** GitHub Issues or internal tracking
 
@@ -372,6 +372,6 @@ curl -s https://your-domain.com/api/v1/subscriptions/plans | \
 ---
 
 **Last Updated:** October 11, 2025
-**Test Environment:** Production (https://your-domain.com)
-**Working Directory:** `/home/muut/Production/UC-1-Pro/services/ops-center`
+**Test Environment:** Production (https://unicorncommander.ai)
+**Working Directory:** `/home/deploy/Production/UC-1-Pro/services/ops-center`
 **Test Status:** ✅ ALL TESTS PASSED

@@ -384,7 +384,7 @@ const TraefikDashboard = () => {
                   size="small"
                   fullWidth
                   startIcon={<DocumentTextIcon style={{ width: 16, height: 16 }} />}
-                  onClick={() => navigate('/admin/logs')}
+                  onClick={() => navigate('/admin/monitoring/logs')}
                 >
                   View Logs
                 </Button>
@@ -430,7 +430,7 @@ const TraefikDashboard = () => {
 
               {(dashboardData?.recentActivity?.length || 0) > 5 && (
                 <Box mt={2} textAlign="center">
-                  <Button size="small" onClick={() => navigate('/admin/logs')}>
+                  <Button size="small" onClick={() => navigate('/admin/monitoring/logs')}>
                     View All Activity
                   </Button>
                 </Box>

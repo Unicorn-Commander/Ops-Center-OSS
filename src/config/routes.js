@@ -1,350 +1,628 @@
 /**
  * Centralized Route Configuration for Ops-Center
  *
- * This file defines all routes for the Ops-Center application in a hierarchical
- * structure that aligns with the multi-tenant SaaS architecture.
- *
  * Route Structure:
  * - Personal: Always visible to authenticated users
  * - Organization: Visible to org_role: admin, owner
- * - System: Visible to role: admin (platform administrators)
+ * - System/Admin: Visible to role: admin (platform administrators)
  *
  * Each route includes:
  * - path: URL path
  * - component: Component name (imported in App.jsx)
  * - roles: Required user roles ['admin', 'power_user', 'user', 'viewer']
  * - orgRoles: Required organization roles ['owner', 'admin', 'member']
- * - name: Display name for navigation
+ * - name: Display name for navigation/page title
  * - icon: Icon identifier (optional)
  * - section: Section grouping (optional)
+ * - nav: Set to false to hide from navigation
+ *
+ * Phase 1 Consolidation (February 2026):
+ * - AI & Models: 12 items → 7 nav items (5 demoted to nav:false)
+ * - Monitoring: 12 items → 6 nav items (Grafana/Prometheus/Umami → External Tools tab page)
+ * - Billing: 8 items → 5 nav items (3 billing dashboards → Revenue Dashboard)
+ * - User sections: Credits & Usage merged into Subscription & Credits
+ * - Infrastructure: Traefik → Reverse Proxy, Security promoted to visible
  */
 
 export const routes = {
-  // ============================================================================
+  // ==========================================================================
   // PERSONAL SECTION - Always visible to authenticated users
-  // ============================================================================
+  // ==========================================================================
   personal: {
     dashboard: {
       path: '/admin/',
-      component: 'DashboardPro',
+      component: 'AppsLauncher',
       roles: ['admin', 'power_user', 'user', 'viewer'],
       name: 'Dashboard',
       icon: 'HomeIcon',
       description: 'Main dashboard with quick stats and service status'
     },
+    myDashboard: {
+      path: '/admin/my-dashboard',
+      component: 'UserDashboard',
+      roles: ['admin', 'power_user', 'user', 'viewer'],
+      name: 'My Dashboard',
+      icon: 'ChartBarSquareIcon',
+      description: 'Personal credits, usage, and subscription overview'
+    },
+    login: {
+      path: '/admin/login',
+      component: 'Login',
+      roles: ['admin', 'power_user', 'user', 'viewer'],
+      name: 'Login',
+      nav: false
+    },
+    marketplace: {
+      path: '/admin/apps/marketplace',
+      component: 'AppMarketplace',
+      roles: ['admin', 'power_user', 'user', 'viewer'],
+      name: 'Marketplace',
+      icon: 'ShoppingBagIcon',
+      description: 'Browse and install apps and extensions'
+    },
 
-    // My Account submenu
+    // Account (unchanged)
     account: {
-      section: 'My Account',
+      section: 'Account',
       icon: 'UserCircleIcon',
       children: {
         profile: {
           path: '/admin/account/profile',
-          component: 'UserSettings', // Will be refactored to AccountProfile
+          component: 'AccountProfile',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Profile & Preferences',
-          description: 'Personal information and preferences'
+          name: 'Profile & Preferences'
         },
-        notifications: {
-          path: '/admin/account/notifications',
-          component: 'AccountNotifications', // TO BE CREATED
+        security: {
+          path: '/admin/account/security',
+          component: 'AccountSecurity',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Notifications',
-          description: 'Email and push notification preferences',
-          status: 'planned'
+          name: 'Security & Sessions'
+        },
+        apiKeys: {
+          path: '/admin/account/api-keys',
+          component: 'AccountAPIKeys',
+          roles: ['admin', 'power_user', 'user', 'viewer'],
+          name: 'API Keys (BYOK)'
         },
         notificationSettings: {
           path: '/admin/account/notification-settings',
           component: 'NotificationSettings',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Notification Preferences',
-          description: 'Configure alert types, thresholds, and channels',
-          status: 'active'
-        },
-        security: {
-          path: '/admin/account/security',
-          component: 'AccountSecurity', // TO BE CREATED
-          roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Security & Sessions',
-          description: 'Password, 2FA, active sessions',
-          status: 'planned'
-        },
-        apiKeys: {
-          path: '/admin/account/api-keys',
-          component: 'AccountAPIKeys', // TO BE CREATED
-          roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'API Keys (BYOK)',
-          description: 'Bring Your Own Key - Personal API keys',
-          status: 'planned'
+          name: 'Notification Preferences'
         }
       }
     },
 
-    // My Subscription submenu
+    // Subscription & Credits (merged from "My Subscription" + "Credits & Usage")
     subscription: {
-      section: 'My Subscription',
+      section: 'Subscription & Credits',
       icon: 'CreditCardIcon',
-      roles: ['admin', 'power_user', 'user', 'viewer'], // All can view their subscription
+      roles: ['admin', 'power_user', 'user', 'viewer'],
       children: {
         plan: {
           path: '/admin/subscription/plan',
-          component: 'BillingDashboard', // Will be refactored to SubscriptionPlan
+          component: 'SubscriptionPlan',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Current Plan',
-          description: 'Current subscription plan and features'
+          name: 'Current Plan'
         },
         usage: {
           path: '/admin/subscription/usage',
-          component: 'SubscriptionUsage', // TO BE CREATED
+          component: 'SubscriptionUsage',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Usage & Limits',
-          description: 'API usage tracking and limits',
-          status: 'planned'
+          name: 'Usage & Limits'
         },
         billing: {
           path: '/admin/subscription/billing',
-          component: 'SubscriptionBilling', // TO BE CREATED
+          component: 'SubscriptionBilling',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Billing History',
-          description: 'Invoices and billing history',
-          status: 'planned'
+          name: 'Billing History'
         },
         payment: {
           path: '/admin/subscription/payment',
-          component: 'SubscriptionPayment', // TO BE CREATED
+          component: 'PaymentMethods',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          orgRoles: ['owner'], // Only org owner can manage payment methods
-          name: 'Payment Methods',
-          description: 'Credit cards and payment methods',
-          status: 'planned'
-        }
-      }
-    },
-
-    // Credits & Usage submenu
-    credits: {
-      section: 'Credits & Usage',
-      icon: 'CurrencyDollarIcon',
-      roles: ['admin', 'power_user', 'user', 'viewer'], // All can view their credits
-      children: {
-        dashboard: {
-          path: '/admin/credits',
-          component: 'CreditDashboard',
-          roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Credit Dashboard',
-          description: 'View credit balance, usage metrics, and transaction history',
-          status: 'active'
+          name: 'Payment Methods'
         },
-        tiers: {
-          path: '/admin/credits/tiers',
+        creditsAndTiers: {
+          path: '/admin/billing/tiers/compare',
           component: 'TierComparison',
           roles: ['admin', 'power_user', 'user', 'viewer'],
-          name: 'Pricing Tiers',
-          description: 'Compare subscription tiers and pricing',
-          status: 'active'
+          name: 'Credits & Tiers'
         }
       }
     }
   },
 
-  // ============================================================================
+  // ==========================================================================
   // ORGANIZATION SECTION - Visible to org_role: admin, owner
-  // ============================================================================
+  // ==========================================================================
   organization: {
-    section: 'Organization',
+    section: 'My Organization',
     icon: 'BuildingOfficeIcon',
     orgRoles: ['admin', 'owner'],
     children: {
       team: {
         path: '/admin/org/team',
-        component: 'OrganizationTeam', // Organization team management
+        component: 'OrganizationTeam',
         orgRoles: ['admin', 'owner'],
-        name: 'Team Members',
-        description: 'Add/remove team members, manage roles',
-        icon: 'UsersIcon'
+        name: 'Team Members'
       },
       roles: {
         path: '/admin/org/roles',
-        component: 'OrganizationRoles', // TO BE CREATED
+        component: 'OrganizationRoles',
         orgRoles: ['admin', 'owner'],
-        name: 'Roles & Permissions',
-        description: 'Define custom roles and permission levels',
-        status: 'planned'
+        name: 'Roles & Permissions'
       },
       settings: {
         path: '/admin/org/settings',
-        component: 'OrganizationSettings', // TO BE CREATED
+        component: 'OrganizationSettings',
         orgRoles: ['admin', 'owner'],
-        name: 'Organization Settings',
-        description: 'Org name, logo, branding, shared preferences',
-        status: 'planned'
+        name: 'Organization Settings'
       },
       billing: {
         path: '/admin/org/billing',
-        component: 'OrganizationBilling', // TO BE CREATED
-        orgRoles: ['owner'], // Only org owner
-        name: 'Organization Billing',
-        description: 'Org-wide usage, team seat management',
-        status: 'planned'
+        component: 'OrganizationBilling',
+        orgRoles: ['owner'],
+        name: 'Organization Billing'
       }
     }
   },
 
-  // ============================================================================
-  // SYSTEM SECTION - Visible to role: admin (platform administrators only)
-  // ============================================================================
+  // ==========================================================================
+  // SYSTEM/ADMIN SECTION - Visible to role: admin (platform administrators only)
+  // ==========================================================================
   system: {
-    section: 'System',
+    section: 'Admin',
     icon: 'CogIcon',
     roles: ['admin'],
     children: {
-      // ========================================================================
-      // USERS & ORGANIZATIONS
-      // ========================================================================
-      usersOrgs: {
-        section: 'Users & Organizations',
+      peopleAccess: {
+        section: 'People & Access',
         icon: 'UsersIcon',
         roles: ['admin'],
         children: {
           users: {
-            path: '/admin/system/users',
+            path: '/admin/people/users',
             component: 'UserManagement',
             roles: ['admin'],
-            name: 'User Management',
-            description: 'Platform user administration, roles, permissions',
-            icon: 'UsersIcon'
+            name: 'Users'
+          },
+          userDetail: {
+            path: '/admin/people/users/:userId',
+            component: 'UserDetail',
+            roles: ['admin'],
+            name: 'User Detail',
+            nav: false
           },
           organizations: {
-            path: '/admin/organization/list',
+            path: '/admin/people/organizations',
             component: 'OrganizationsList',
             roles: ['admin'],
-            name: 'Organizations',
-            description: 'Platform organization administration, team management',
-            icon: 'BuildingOfficeIcon'
+            name: 'Organizations'
           },
-          billing: {
-            path: '/admin/system/billing',
+          orgBilling: {
+            path: '/admin/people/organizations/:orgId/billing',
+            component: 'OrganizationBillingPro',
+            roles: ['admin'],
+            name: 'Organization Billing',
+            nav: false
+          },
+          inviteCodes: {
+            path: '/admin/people/invite-codes',
+            component: 'InviteCodesManagement',
+            roles: ['admin'],
+            name: 'Invite Codes'
+          },
+          authentication: {
+            path: '/admin/people/authentication',
+            component: 'Authentication',
+            roles: ['admin'],
+            name: 'Authentication'
+          }
+        }
+      },
+
+      // Billing & Plans — consolidated from 8 nav items to 5
+      billingPlans: {
+        section: 'Billing & Plans',
+        icon: 'CreditCardIcon',
+        roles: ['admin'],
+        children: {
+          tiers: {
+            path: '/admin/billing/tiers',
+            component: 'SubscriptionManagement',
+            roles: ['admin'],
+            name: 'Subscription Tiers'
+          },
+          apps: {
+            path: '/admin/billing/apps',
+            component: 'AppManagement',
+            roles: ['admin'],
+            name: 'App Entitlements'
+          },
+          pricing: {
+            path: '/admin/billing/pricing',
+            component: 'DynamicPricingManagement',
+            roles: ['admin'],
+            name: 'Pricing Rules'
+          },
+          revenue: {
+            path: '/admin/billing/revenue',
+            component: 'RevenueDashboard',
+            roles: ['admin'],
+            name: 'Revenue Dashboard'
+          },
+          creditManagement: {
+            path: '/admin/billing/credits',
+            component: 'CreditPurchase',
+            roles: ['admin'],
+            name: 'Credit Management'
+          },
+          // Keep old paths routable but hidden from nav
+          systemBilling: {
+            path: '/admin/billing/system',
             component: 'BillingDashboard',
             roles: ['admin'],
             name: 'Billing Analytics',
-            description: 'Platform-wide billing analytics, revenue metrics, payment tracking',
-            icon: 'CreditCardIcon'
+            nav: false
           },
-          localUsers: {
-            path: '/admin/system/local-users',
-            component: 'LocalUserManagement',
+          userBilling: {
+            path: '/admin/billing/user',
+            component: 'UserBillingDashboard',
             roles: ['admin'],
-            name: 'Local Users',
-            description: 'Linux system user management, SSH keys, sudo permissions',
-            icon: 'UserCircleIcon'
+            name: 'User Billing',
+            nav: false
+          },
+          overview: {
+            path: '/admin/billing/overview',
+            component: 'SystemBillingOverview',
+            roles: ['admin'],
+            name: 'System Billing Overview',
+            nav: false
+          },
+          creditPurchase: {
+            path: '/admin/billing/credits/purchase',
+            component: 'CreditPurchase',
+            roles: ['admin'],
+            name: 'Buy Credits',
+            nav: false
+          },
+          tierComparison: {
+            path: '/admin/billing/tiers/compare',
+            component: 'TierComparison',
+            roles: ['admin'],
+            name: 'Tier Comparison',
+            nav: false
           }
         }
       },
 
-      // ========================================================================
-      // LLM & AI
-      // ========================================================================
-      llmAI: {
-        section: 'LLM & AI',
-        icon: 'SparklesIcon',
+      // AI & Models — consolidated from 12 nav items to 7
+      aiModels: {
+        section: 'AI & Models',
+        icon: 'CpuChipIcon',
         roles: ['admin'],
         children: {
-          models: {
-            path: '/admin/system/models',
-            component: 'AIModelManagement',
+          overview: {
+            path: '/admin/ai',
+            component: 'LLMHub',
             roles: ['admin'],
-            name: 'AI Models',
-            description: 'Model registry, downloads, GPU allocation',
-            icon: 'CubeIcon'
+            name: 'AI Hub'
           },
-          litellm: {
-            path: '/admin/litellm-providers',
+          unifiedModels: {
+            path: '/admin/ai/models',
+            component: 'LLMManagementUnified',
+            roles: ['admin'],
+            name: 'Model Catalog'
+          },
+          modelLists: {
+            path: '/admin/ai/model-lists',
+            component: 'ModelListManagement',
+            roles: ['admin'],
+            name: 'Model Lists'
+          },
+          colonel: {
+            path: '/admin/ai/colonel',
+            component: 'ColonelChat',
+            roles: ['admin'],
+            name: 'The Colonel',
+            icon: 'SparklesIcon'
+          },
+          localModels: {
+            path: '/admin/ai/local-models',
+            component: 'LocalModelsManagement',
+            roles: ['admin'],
+            name: 'Local Models'
+          },
+          gpuServices: {
+            path: '/admin/ai/gpu-services',
+            component: 'GPUServicesManagement',
+            roles: ['admin'],
+            name: 'GPU Services'
+          },
+          ragServices: {
+            path: '/admin/ai/rag-services',
+            component: 'RAGServicesManagement',
+            roles: ['admin'],
+            name: 'RAG Services'
+          },
+          // Demoted from nav — accessible via AI Hub tabs or direct URL
+          management: {
+            path: '/admin/ai/management',
+            component: 'LLMManagement',
+            roles: ['admin'],
+            name: 'LLM Management',
+            nav: false
+          },
+          providers: {
+            path: '/admin/ai/providers',
             component: 'LiteLLMManagement',
             roles: ['admin'],
-            name: 'LLM Providers',
-            description: 'Multi-provider LLM routing, cost optimization, BYOK',
-            icon: 'ServerIcon'
+            name: 'Providers',
+            nav: false
+          },
+          modelRegistry: {
+            path: '/admin/ai/registry',
+            component: 'AIModelManagement',
+            roles: ['admin'],
+            name: 'Model Registry',
+            nav: false
           },
           openrouter: {
-            path: '/admin/openrouter-settings',
+            path: '/admin/ai/openrouter',
             component: 'OpenRouterSettings',
             roles: ['admin'],
             name: 'OpenRouter',
-            description: 'OpenRouter API configuration and 348 model browser',
-            icon: 'GlobeAltIcon'
+            nav: false
           },
-          llmUsage: {
-            path: '/admin/llm/usage',
+          usage: {
+            path: '/admin/ai/usage',
             component: 'LLMUsage',
-            roles: ['admin', 'power_user', 'user', 'viewer'],
+            roles: ['admin'],
             name: 'Usage Analytics',
-            description: 'LLM API usage analytics and cost tracking',
-            icon: 'ChartBarIcon'
+            nav: false
+          },
+          graniteKeys: {
+            path: '/admin/ai/granite-keys',
+            component: 'GraniteApiKeysManagement',
+            roles: ['admin'],
+            name: 'Granite API Keys',
+            nav: false
+          },
+          colonelSetup: {
+            path: '/admin/ai/colonel/setup',
+            component: 'ColonelOnboarding',
+            roles: ['admin'],
+            name: 'Colonel Setup',
+            nav: false
+          },
+          colonelStatus: {
+            path: '/admin/ai/colonel/status',
+            component: 'ColonelStatus',
+            roles: ['admin'],
+            name: 'Colonel Status',
+            nav: false
           }
         }
       },
 
-      // ========================================================================
-      // INFRASTRUCTURE
-      // ========================================================================
+      // Infrastructure — minor cleanup
       infrastructure: {
         section: 'Infrastructure',
         icon: 'ServerIcon',
         roles: ['admin'],
         children: {
           services: {
-            path: '/admin/system/services',
+            path: '/admin/infra/services',
             component: 'Services',
             roles: ['admin'],
-            name: 'Services',
-            description: 'Docker service management, health monitoring',
-            icon: 'ServerIcon'
+            name: 'Services'
           },
           resources: {
-            path: '/admin/system/resources',
+            path: '/admin/infra/resources',
             component: 'System',
             roles: ['admin'],
-            name: 'Resources',
-            description: 'CPU, Memory, GPU, Disk, performance graphs',
-            icon: 'ChartBarIcon'
+            name: 'Resources'
           },
           hardware: {
-            path: '/admin/system/hardware',
+            path: '/admin/infra/hardware',
             component: 'HardwareManagement',
             roles: ['admin'],
-            name: 'Hardware Monitoring',
-            description: 'Real-time GPU, CPU, memory monitoring with historical charts',
-            icon: 'CpuChipIcon'
+            name: 'Hardware'
           },
           network: {
-            path: '/admin/system/network',
+            path: '/admin/infra/network',
             component: 'Network',
             roles: ['admin'],
-            name: 'Network',
-            description: 'Network configuration, firewall rules',
-            icon: 'WifiIcon'
+            name: 'Network'
           },
           storage: {
-            path: '/admin/system/storage',
+            path: '/admin/infra/storage',
             component: 'StorageBackup',
             roles: ['admin'],
-            name: 'Storage & Backup',
-            description: 'Volume management, backup schedules',
-            icon: 'ArchiveBoxIcon'
+            name: 'Storage & Backup'
           },
           traefik: {
-            path: '/admin/system/traefik',
+            path: '/admin/infra/traefik',
             component: 'TraefikConfig',
             roles: ['admin'],
-            name: 'Traefik',
-            description: 'Reverse proxy, SSL/TLS, routing configuration',
-            icon: 'ArrowsRightLeftIcon'
+            name: 'Reverse Proxy'
+          },
+          security: {
+            path: '/admin/system/security',
+            component: 'Security',
+            roles: ['admin'],
+            name: 'Security'
+          },
+          // Keep routable but hidden from nav
+          localUsers: {
+            path: '/admin/infra/local-users',
+            component: 'LocalUserManagement',
+            roles: ['admin'],
+            name: 'Local Users',
+            nav: false
+          },
+          traefikDashboard: {
+            path: '/admin/infra/traefik/dashboard',
+            component: 'TraefikDashboard',
+            roles: ['admin'],
+            name: 'Traefik Dashboard',
+            nav: false
+          },
+          traefikRoutes: {
+            path: '/admin/infra/traefik/routes',
+            component: 'TraefikRoutes',
+            roles: ['admin'],
+            name: 'Traefik Routes',
+            nav: false
+          },
+          traefikServices: {
+            path: '/admin/infra/traefik/services',
+            component: 'TraefikServices',
+            roles: ['admin'],
+            name: 'Traefik Services',
+            nav: false
+          },
+          traefikSSL: {
+            path: '/admin/infra/traefik/ssl',
+            component: 'TraefikSSL',
+            roles: ['admin'],
+            name: 'Traefik SSL',
+            nav: false
+          },
+          traefikMetrics: {
+            path: '/admin/infra/traefik/metrics',
+            component: 'TraefikMetrics',
+            roles: ['admin'],
+            name: 'Traefik Metrics',
+            nav: false
+          },
+          migration: {
+            path: '/admin/infra/migration',
+            component: 'MigrationWizard',
+            roles: ['admin'],
+            name: 'Migration',
+            nav: false
+          },
+          forgejo: {
+            path: '/admin/system/forgejo',
+            component: 'ForgejoManagement',
+            roles: ['admin'],
+            name: 'Forgejo Git Server',
+            nav: false
           }
         }
       },
-      // ========================================================================
-      // INTEGRATIONS
-      // ========================================================================
+
+      // Monitoring — consolidated from 12 nav items to 6
+      monitoring: {
+        section: 'Monitoring',
+        icon: 'ChartBarIcon',
+        roles: ['admin'],
+        children: {
+          analytics: {
+            path: '/admin/monitoring/analytics',
+            component: 'AnalyticsDashboard',
+            roles: ['admin'],
+            name: 'Analytics'
+          },
+          logs: {
+            path: '/admin/monitoring/logs',
+            component: 'Logs',
+            roles: ['admin'],
+            name: 'System Logs'
+          },
+          alerts: {
+            path: '/admin/monitoring/alerts',
+            component: 'AlertsManagement',
+            roles: ['admin'],
+            name: 'Alerts'
+          },
+          audit: {
+            path: '/admin/monitoring/audit',
+            component: 'SystemAuditLog',
+            roles: ['admin'],
+            name: 'Audit Log'
+          },
+          websiteMonitor: {
+            path: '/admin/monitoring/website-monitor',
+            component: 'WebsiteMonitor',
+            roles: ['admin'],
+            name: 'Uptime Monitor'
+          },
+          externalTools: {
+            path: '/admin/monitoring/tools',
+            component: 'ExternalMonitoringTools',
+            roles: ['admin'],
+            name: 'External Tools'
+          },
+          // Demoted from nav — accessible via External Tools or direct URL
+          grafana: {
+            path: '/admin/monitoring/grafana',
+            component: 'GrafanaConfig',
+            roles: ['admin'],
+            name: 'Grafana',
+            nav: false
+          },
+          grafanaDashboards: {
+            path: '/admin/monitoring/grafana/dashboards',
+            component: 'GrafanaViewer',
+            roles: ['admin'],
+            name: 'Grafana Dashboards',
+            nav: false
+          },
+          prometheus: {
+            path: '/admin/monitoring/prometheus',
+            component: 'PrometheusConfig',
+            roles: ['admin'],
+            name: 'Prometheus',
+            nav: false
+          },
+          umami: {
+            path: '/admin/monitoring/umami',
+            component: 'UmamiConfig',
+            roles: ['admin'],
+            name: 'Umami',
+            nav: false
+          },
+          umamiDashboard: {
+            path: '/admin/monitoring/umami-dashboard',
+            component: 'UmamiConfig',
+            roles: ['admin'],
+            name: 'Umami Dashboard',
+            nav: false
+          },
+          overview: {
+            path: '/admin/monitoring/overview',
+            component: 'MonitoringOverview',
+            roles: ['admin'],
+            name: 'Monitoring Overview',
+            nav: false
+          },
+          analyticsAdvanced: {
+            path: '/admin/monitoring/analytics/advanced',
+            component: 'AdvancedAnalytics',
+            roles: ['admin'],
+            name: 'Advanced Analytics',
+            nav: false
+          },
+          usageAnalytics: {
+            path: '/admin/monitoring/usage-analytics',
+            component: 'UsageAnalytics',
+            roles: ['admin'],
+            name: 'Usage Analytics',
+            nav: false
+          },
+          usageMetrics: {
+            path: '/admin/monitoring/usage-metrics',
+            component: 'UsageMetrics',
+            roles: ['admin'],
+            name: 'Usage Metrics',
+            nav: false
+          }
+        }
+      },
+
       integrations: {
         section: 'Integrations',
         icon: 'LinkIcon',
@@ -354,199 +632,171 @@ export const routes = {
             path: '/admin/integrations/credentials',
             component: 'PlatformSettings',
             roles: ['admin'],
-            name: 'API Credentials',
-            description: 'Manage API keys for Stripe, Lago, Cloudflare, NameCheap, Forgejo',
-            icon: 'KeyIcon'
+            name: 'API Credentials'
           },
           email: {
             path: '/admin/integrations/email',
             component: 'EmailSettings',
             roles: ['admin'],
-            name: 'Email Providers',
-            description: 'Configure email providers for notifications',
-            icon: 'EnvelopeIcon'
+            name: 'Email Providers'
           },
           dns: {
             path: '/admin/integrations/cloudflare',
             component: 'CloudflareDNS',
             roles: ['admin'],
-            name: 'DNS Management',
-            description: 'Cloudflare DNS zones and record management',
-            icon: 'GlobeAltIcon'
+            name: 'Cloudflare DNS'
+          },
+          webhooks: {
+            path: '/admin/integrations/webhooks',
+            component: 'WebhooksManagement',
+            roles: ['admin'],
+            name: 'Webhooks'
           }
         }
       },
 
-      // ========================================================================
-      // MONITORING & ANALYTICS
-      // ========================================================================
-      monitoring: {
-        section: 'Monitoring & Analytics',
-        icon: 'ChartBarIcon',
+      platform: {
+        section: 'Platform',
+        icon: 'SparklesIcon',
         roles: ['admin'],
         children: {
-          overview: {
-            path: '/admin/monitoring/overview',
-            component: 'MonitoringOverview',
+          centerDeep: {
+            path: 'https://search.unicorncommander.ai',
+            component: 'External',
             roles: ['admin'],
-            name: 'Overview',
-            description: 'System health, metrics, and alerts dashboard',
-            icon: 'PresentationChartBarIcon',
-            status: 'planned'
+            name: 'Center-Deep Search',
+            icon: 'MagnifyingGlassIcon',
+            external: true
           },
-          grafana: {
-            path: '/admin/monitoring/grafana',
-            component: 'GrafanaConfig',
-            roles: ['admin'],
-            name: 'Grafana',
-            description: 'Grafana dashboard configuration and data sources',
-            icon: 'ChartBarIcon',
-            status: 'planned'
-          },
-          prometheus: {
-            path: '/admin/monitoring/prometheus',
-            component: 'PrometheusConfig',
-            roles: ['admin'],
-            name: 'Prometheus',
-            description: 'Metrics collection and scrape configuration',
-            icon: 'CircleStackIcon',
-            status: 'planned'
-          },
-          umami: {
-            path: '/admin/monitoring/umami',
-            component: 'UmamiConfig',
-            roles: ['admin'],
-            name: 'Umami Analytics',
-            description: 'Web analytics tracking and configuration',
-            icon: 'ChartPieIcon',
-            status: 'planned'
-          },
-          logs: {
-            path: '/admin/monitoring/logs',
-            component: 'Logs',
-            roles: ['admin'],
-            name: 'System Logs',
-            description: 'Service logs and error tracking',
-            icon: 'DocumentTextIcon'
-          }
-        }
-      },
-
-      // ========================================================================
-      // SECURITY & COMPLIANCE
-      // ========================================================================
-      security: {
-        section: 'Security & Compliance',
-        icon: 'ShieldCheckIcon',
-        roles: ['admin'],
-        children: {
-          authentication: {
-            path: '/admin/system/authentication',
-            component: 'Authentication',
-            roles: ['admin'],
-            name: 'Authentication',
-            description: 'Keycloak/SSO configuration, identity providers',
-            icon: 'KeyIcon'
-          },
-          securityPolicies: {
-            path: '/admin/system/security',
-            component: 'Security',
-            roles: ['admin'],
-            name: 'Security Policies',
-            description: 'Security policies, audit logs, compliance',
-            icon: 'ShieldCheckIcon'
-          }
-        }
-      },
-
-      // ========================================================================
-      // CONFIGURATION
-      // ========================================================================
-      configuration: {
-        section: 'Configuration',
-        icon: 'CogIcon',
-        roles: ['admin'],
-        children: {
           landing: {
-            path: '/admin/system/landing',
+            path: '/admin/platform/landing',
             component: 'LandingCustomization',
             roles: ['admin'],
-            name: 'Landing Page',
-            description: 'Customize public landing page',
-            icon: 'PaintBrushIcon'
+            name: 'Landing Page'
+          },
+          whiteLabel: {
+            path: '/admin/platform/white-label',
+            component: 'WhiteLabelBuilder',
+            roles: ['admin'],
+            name: 'White Label'
+          },
+          systemSettings: {
+            path: '/admin/system/settings',
+            component: 'SystemSettings',
+            roles: ['admin'],
+            name: 'System Settings',
+            icon: 'CogIcon'
           },
           extensions: {
-            path: '/admin/system/extensions',
-            component: 'Extensions',
+            path: '/admin/platform/extensions',
+            component: 'ExtensionsMarketplace',
             roles: ['admin'],
-            name: 'Extensions',
-            description: 'Plugin management',
-            icon: 'PuzzlePieceIcon'
+            name: 'Extensions Marketplace'
+          },
+          purchases: {
+            path: '/admin/platform/purchases',
+            component: 'PurchaseHistory',
+            roles: ['admin'],
+            name: 'Purchase History',
+            nav: false
           }
         }
       }
     }
   },
 
-  // ============================================================================
+  // ==========================================================================
   // REDIRECTS - Backwards compatibility for old routes
-  // ============================================================================
+  // ==========================================================================
   redirects: [
-    // System admin routes moved to /admin/system/* namespace
-    { from: '/admin/models', to: '/admin/system/models', type: 'permanent' },
-    { from: '/admin/services', to: '/admin/system/services', type: 'permanent' },
-    { from: '/admin/system', to: '/admin/system/resources', type: 'permanent' },
-    { from: '/admin/network', to: '/admin/system/network', type: 'permanent' },
-    { from: '/admin/storage', to: '/admin/system/storage', type: 'permanent' },
-    { from: '/admin/logs', to: '/admin/system/logs', type: 'permanent' },
-    { from: '/admin/security', to: '/admin/system/security', type: 'permanent' },
-    { from: '/admin/authentication', to: '/admin/system/authentication', type: 'permanent' },
-    { from: '/admin/extensions', to: '/admin/system/extensions', type: 'permanent' },
-    { from: '/admin/landing', to: '/admin/system/landing', type: 'permanent' },
-    { from: '/admin/settings', to: '/admin/system/settings', type: 'permanent' },
+    // Top-level legacy paths (commonly linked from external sources)
+    { from: '/admin/models', to: '/admin/ai/registry', type: 'permanent' },
+    { from: '/admin/system', to: '/admin/infra/resources', type: 'permanent' },
+    { from: '/admin/network', to: '/admin/infra/network', type: 'permanent' },
 
-    // Personal routes moved to /admin/account/* namespace
-    { from: '/admin/user-settings', to: '/admin/account/profile', type: 'permanent' },
+    // People & Access
+    { from: '/admin/system/users', to: '/admin/people/users', type: 'permanent' },
+    { from: '/admin/system/users/:userId', to: '/admin/people/users/:userId', type: 'permanent' },
+    { from: '/admin/organization/list', to: '/admin/people/organizations', type: 'permanent' },
+    { from: '/admin/system/invite-codes', to: '/admin/people/invite-codes', type: 'permanent' },
+    { from: '/admin/system/authentication', to: '/admin/people/authentication', type: 'permanent' },
 
-    // Billing routes moved to /admin/subscription/* namespace
-    { from: '/admin/billing', to: '/admin/subscription/plan', type: 'permanent' },
+    // Billing & Plans — old paths redirect to consolidated destinations
+    { from: '/admin/system/subscription-management', to: '/admin/billing/tiers', type: 'permanent' },
+    { from: '/admin/system/app-management', to: '/admin/billing/apps', type: 'permanent' },
+    { from: '/admin/system/pricing-management', to: '/admin/billing/pricing', type: 'permanent' },
+    { from: '/admin/system/billing', to: '/admin/billing/revenue', type: 'permanent' },
+    { from: '/admin/billing/dashboard', to: '/admin/billing/revenue', type: 'permanent' },
+    { from: '/admin/credits', to: '/admin/billing/credits', type: 'permanent' },
+    { from: '/admin/credits/purchase', to: '/admin/billing/credits', type: 'permanent' },
+    { from: '/admin/credits/tiers', to: '/admin/billing/tiers/compare', type: 'permanent' },
 
-    // Platform Settings renamed to Integrations
+    // AI & Models
+    { from: '/admin/llm-hub', to: '/admin/ai', type: 'permanent' },
+    { from: '/admin/llm-management', to: '/admin/ai/management', type: 'permanent' },
+    { from: '/admin/litellm-providers', to: '/admin/ai/providers', type: 'permanent' },
+    { from: '/admin/llm-models', to: '/admin/ai/models', type: 'permanent' },
+    { from: '/admin/system/models', to: '/admin/ai/registry', type: 'permanent' },
+    { from: '/admin/openrouter-settings', to: '/admin/ai/openrouter', type: 'permanent' },
+    { from: '/admin/llm/usage', to: '/admin/ai/usage', type: 'permanent' },
+    { from: '/admin/system/model-lists', to: '/admin/ai/model-lists', type: 'permanent' },
+    { from: '/admin/system/local-models', to: '/admin/ai/local-models', type: 'permanent' },
+    { from: '/admin/system/rag-services', to: '/admin/ai/rag-services', type: 'permanent' },
+    { from: '/admin/system/gpu-services', to: '/admin/ai/gpu-services', type: 'permanent' },
+
+    // Infrastructure
+    { from: '/admin/system/services', to: '/admin/infra/services', type: 'permanent' },
+    { from: '/admin/system/resources', to: '/admin/infra/resources', type: 'permanent' },
+    { from: '/admin/system/hardware', to: '/admin/infra/hardware', type: 'permanent' },
+    { from: '/admin/infrastructure/hardware', to: '/admin/infra/hardware', type: 'permanent' },
+    { from: '/admin/system/local-users', to: '/admin/infra/local-users', type: 'permanent' },
+    { from: '/admin/system/network', to: '/admin/infra/network', type: 'permanent' },
+    { from: '/admin/system/storage', to: '/admin/infra/storage', type: 'permanent' },
+    { from: '/admin/system/traefik', to: '/admin/infra/traefik', type: 'permanent' },
+    { from: '/admin/traefik/dashboard', to: '/admin/infra/traefik/dashboard', type: 'permanent' },
+    { from: '/admin/traefik/routes', to: '/admin/infra/traefik/routes', type: 'permanent' },
+    { from: '/admin/traefik/services', to: '/admin/infra/traefik/services', type: 'permanent' },
+    { from: '/admin/traefik/ssl', to: '/admin/infra/traefik/ssl', type: 'permanent' },
+    { from: '/admin/traefik/metrics', to: '/admin/infra/traefik/metrics', type: 'permanent' },
+    { from: '/admin/infrastructure/migration', to: '/admin/infra/migration', type: 'permanent' },
+
+    // Monitoring — old paths redirect to consolidated destinations
+    { from: '/admin/analytics', to: '/admin/monitoring/analytics', type: 'permanent' },
+    { from: '/admin/system/analytics', to: '/admin/monitoring/analytics', type: 'permanent' },
+    { from: '/admin/system/usage-analytics', to: '/admin/monitoring/analytics', type: 'permanent' },
+    { from: '/admin/system/usage-metrics', to: '/admin/monitoring/analytics', type: 'permanent' },
+
+    // Integrations
     { from: '/admin/platform/settings', to: '/admin/integrations/credentials', type: 'permanent' },
     { from: '/admin/platform/email-settings', to: '/admin/integrations/email', type: 'permanent' },
-
-    // Logs moved to Monitoring section
-    { from: '/admin/system/logs', to: '/admin/monitoring/logs', type: 'permanent' },
-
-    // Cloudflare DNS moved to Integrations
     { from: '/admin/infrastructure/cloudflare', to: '/admin/integrations/cloudflare', type: 'permanent' },
-  ],
 
-  // ============================================================================
-  // LEGACY ROUTES - Currently in App.jsx, to be migrated
-  // ============================================================================
-  legacy: {
-    // These are still using old paths and will be migrated
-    dashboard: { path: '/admin/', component: 'DashboardPro' },
-    models: { path: '/admin/models', component: 'AIModelManagement' },
-    services: { path: '/admin/services', component: 'Services' },
-    system: { path: '/admin/system', component: 'System' },
-    network: { path: '/admin/network', component: 'Network' },
-    storage: { path: '/admin/storage', component: 'StorageBackup' },
-    extensions: { path: '/admin/extensions', component: 'Extensions' },
-    logs: { path: '/admin/logs', component: 'Logs' },
-    security: { path: '/admin/security', component: 'Security' },
-    authentication: { path: '/admin/authentication', component: 'Authentication' },
-    settings: { path: '/admin/settings', component: 'Settings' },
-    userSettings: { path: '/admin/user-settings', component: 'UserSettings' },
-    billing: { path: '/admin/billing', component: 'BillingDashboard' },
-    landing: { path: '/admin/landing', component: 'LandingCustomization' }
-  }
+    // Platform
+    { from: '/admin/system/landing', to: '/admin/platform/landing', type: 'permanent' },
+    { from: '/admin/system/extensions', to: '/admin/platform/extensions', type: 'permanent' },
+    { from: '/admin/extensions', to: '/admin/platform/extensions', type: 'permanent' },
+    { from: '/admin/purchases', to: '/admin/platform/purchases', type: 'permanent' },
+
+    // Legacy personal routes
+    { from: '/admin/user-settings', to: '/admin/account/profile', type: 'permanent' },
+    { from: '/admin/billing', to: '/admin/subscription/plan', type: 'permanent' }
+  ]
 };
 
-// ============================================================================
+// ==========================================================================
 // HELPER FUNCTIONS
-// ============================================================================
+// ==========================================================================
+
+function flattenRoutes(node, acc) {
+  if (!node) return acc;
+  if (node.path) {
+    acc.push(node);
+  }
+  if (node.children) {
+    Object.values(node.children).forEach(child => flattenRoutes(child, acc));
+  }
+  return acc;
+}
 
 /**
  * Get all routes as a flat array (useful for React Router)
@@ -554,24 +804,9 @@ export const routes = {
 export function getAllRoutes() {
   const allRoutes = [];
 
-  // Extract personal routes
-  Object.entries(routes.personal).forEach(([key, value]) => {
-    if (value.path) {
-      allRoutes.push(value);
-    } else if (value.children) {
-      Object.values(value.children).forEach(child => allRoutes.push(child));
-    }
-  });
-
-  // Extract organization routes
-  if (routes.organization.children) {
-    Object.values(routes.organization.children).forEach(route => allRoutes.push(route));
-  }
-
-  // Extract system routes
-  if (routes.system.children) {
-    Object.values(routes.system.children).forEach(route => allRoutes.push(route));
-  }
+  flattenRoutes(routes.personal, allRoutes);
+  flattenRoutes(routes.organization, allRoutes);
+  flattenRoutes(routes.system, allRoutes);
 
   return allRoutes;
 }
@@ -594,6 +829,31 @@ export function getRedirects() {
   return routes.redirects;
 }
 
+function normalizePath(path) {
+  if (!path) return path;
+  if (path.length > 1 && path.endsWith('/')) {
+    return path.slice(0, -1);
+  }
+  return path;
+}
+
+function pathToRegex(path) {
+  const normalized = normalizePath(path);
+  const escaped = normalized
+    .replace(/\//g, '\\/')
+    .replace(/:[^/]+/g, '[^/]+');
+  return new RegExp(`^${escaped}\\/?$`);
+}
+
+/**
+ * Find a route by pathname (supports :param matching)
+ */
+export function getRouteByPath(pathname) {
+  const allRoutes = getAllRoutes();
+  const normalized = normalizePath(pathname);
+  return allRoutes.find(route => pathToRegex(route.path).test(normalized));
+}
+
 /**
  * Find new route for a legacy path
  */
@@ -606,12 +866,10 @@ export function findRedirect(oldPath) {
  * Check if user has access to a route based on role
  */
 export function hasRouteAccess(route, userRole, userOrgRole = null) {
-  // Check platform role
   if (route.roles && !route.roles.includes(userRole)) {
     return false;
   }
 
-  // Check org role if specified
   if (route.orgRoles && (!userOrgRole || !route.orgRoles.includes(userOrgRole))) {
     return false;
   }

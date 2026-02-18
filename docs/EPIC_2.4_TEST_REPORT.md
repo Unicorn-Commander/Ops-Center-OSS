@@ -568,7 +568,7 @@ Tests API performance benchmarks.
 
 ```bash
 # Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install test dependencies
 pip install pytest pytest-asyncio httpx pytest-cov
@@ -590,7 +590,7 @@ pytest backend/tests/e2e/test_upgrade_flow.py -v
 
 ```bash
 # Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install test dependencies
 npm install --save-dev @testing-library/react @testing-library/jest-dom

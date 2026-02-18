@@ -32,20 +32,20 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
 
 | # | Tier | User ID | Email | Credits | Expected Models |
 |---|------|---------|-------|---------|-----------------|
-| 1 | Trial | `test-trial-user-00000000-0000-0000-0000-000000000001` | trial@test.your-domain.com | 5.00 | 50-80 models |
-| 2 | Starter | `test-starter-user-00000000-0000-0000-0000-000000000002` | starter@test.your-domain.com | 20.00 | 150-200 models |
-| 3 | Professional | `test-professional-user-00000000-0000-0000-0000-000000000003` | professional@test.your-domain.com | 60.00 | 250-300 models |
-| 4 | Enterprise | `test-enterprise-user-00000000-0000-0000-0000-000000000004` | enterprise@test.your-domain.com | 999999.99 | 370+ models |
+| 1 | Trial | `test-trial-user-00000000-0000-0000-0000-000000000001` | trial@test.unicorncommander.ai | 5.00 | 50-80 models |
+| 2 | Starter | `test-starter-user-00000000-0000-0000-0000-000000000002` | starter@test.unicorncommander.ai | 20.00 | 150-200 models |
+| 3 | Professional | `test-professional-user-00000000-0000-0000-0000-000000000003` | professional@test.unicorncommander.ai | 60.00 | 250-300 models |
+| 4 | Enterprise | `test-enterprise-user-00000000-0000-0000-0000-000000000004` | enterprise@test.unicorncommander.ai | 999999.99 | 370+ models |
 
 ---
 
 ## Files Created
 
-1. ✅ **Creation Script**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/create_test_users.py`
-2. ✅ **Test Script**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_tier_access.sh`
-3. ✅ **Credentials**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_users.json`
-4. ✅ **Documentation**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/TEST_USERS_GUIDE.md`
-5. ✅ **Report**: `/home/muut/Production/UC-Cloud/services/ops-center/BLOCKER3_COMPLETION_REPORT.md`
+1. ✅ **Creation Script**: `/opt/ops-center/backend/scripts/create_test_users.py`
+2. ✅ **Test Script**: `/opt/ops-center/backend/tests/test_tier_access.sh`
+3. ✅ **Credentials**: `/opt/ops-center/backend/tests/test_users.json`
+4. ✅ **Documentation**: `/opt/ops-center/backend/tests/TEST_USERS_GUIDE.md`
+5. ✅ **Report**: `/opt/ops-center/BLOCKER3_COMPLETION_REPORT.md`
 
 ---
 
@@ -67,7 +67,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
 ### View Credentials
 
 ```bash
-cat /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_users.json
+cat /opt/ops-center/backend/tests/test_users.json
 ```
 
 ---
@@ -84,7 +84,7 @@ cat /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_users.
 
 **Once implemented**, run:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 ./test_tier_access.sh
 ```
 

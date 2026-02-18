@@ -48,7 +48,7 @@ The Grafana integration enables seamless embedding and management of Grafana mon
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Ops-Center                               │
-│         (your-domain.com:8084)                           │
+│         (unicorncommander.ai:8084)                           │
 └─────────────────────────────────────────────────────────────┘
                               │
                     ┌─────────┴─────────┐
@@ -135,7 +135,7 @@ API keys are **optional** for viewing existing dashboards but **required** for:
 ### 4. Restart Ops-Center
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 docker restart ops-center-direct
 
 # Verify backend loaded Grafana config
@@ -146,8 +146,8 @@ docker logs ops-center-direct | grep -i grafana
 
 Once configured, access Grafana dashboards via:
 
-- **Grafana Config**: https://your-domain.com/admin/monitoring/grafana
-- **Dashboard Viewer**: https://your-domain.com/admin/monitoring/grafana/dashboards
+- **Grafana Config**: https://unicorncommander.ai/admin/monitoring/grafana
+- **Dashboard Viewer**: https://unicorncommander.ai/admin/monitoring/grafana/dashboards
 - **Direct Grafana**: http://localhost:3102
 
 ---
@@ -465,7 +465,7 @@ Grafana connection and data source management.
 ### Running Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run Grafana API tests
 python -m pytest tests/test_grafana_api.py -v
@@ -509,7 +509,7 @@ The test suite covers:
    ```
 
 4. **Frontend Access**:
-   - Open: https://your-domain.com/admin/monitoring/grafana/dashboards
+   - Open: https://unicorncommander.ai/admin/monitoring/grafana/dashboards
    - Select a dashboard from dropdown
    - Toggle theme, time range, refresh interval
    - Verify dashboard loads in iframe
@@ -569,7 +569,7 @@ The test suite covers:
 
 2. **Verify API key in .env.auth**:
    ```bash
-   grep GRAFANA_API_KEY /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+   grep GRAFANA_API_KEY /opt/ops-center/.env.auth
    ```
 
 3. **Restart Ops-Center** to load new key:

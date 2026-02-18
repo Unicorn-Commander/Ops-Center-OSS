@@ -490,22 +490,22 @@ Successfully coordinated and deployed Ops-Center v2.5.0 with **3 major systems**
 
 ### Main Application
 
-- **Landing Page**: https://your-domain.com
-- **Admin Dashboard**: https://your-domain.com/admin
-- **API Base**: https://api.your-domain.com
+- **Landing Page**: https://unicorncommander.ai
+- **Admin Dashboard**: https://unicorncommander.ai/admin
+- **API Base**: https://api.unicorncommander.ai
 
 ### New Features (v2.5.0)
 
-- **Log Search**: https://your-domain.com/admin/logs (Log History tab)
-- **Email Settings**: https://your-domain.com/admin/system/email
-- **Alert Triggers**: https://your-domain.com/api/v1/alert-triggers/statistics
-- **Grafana Viewer**: https://your-domain.com/admin/monitoring/grafana/dashboards
+- **Log Search**: https://unicorncommander.ai/admin/logs (Log History tab)
+- **Email Settings**: https://unicorncommander.ai/admin/system/email
+- **Alert Triggers**: https://unicorncommander.ai/api/v1/alert-triggers/statistics
+- **Grafana Viewer**: https://unicorncommander.ai/admin/monitoring/grafana/dashboards
 
 ### API Documentation
 
-- **Swagger UI**: https://your-domain.com/docs
-- **ReDoc**: https://your-domain.com/redoc
-- **OpenAPI JSON**: https://your-domain.com/openapi.json
+- **Swagger UI**: https://unicorncommander.ai/docs
+- **ReDoc**: https://unicorncommander.ai/redoc
+- **OpenAPI JSON**: https://unicorncommander.ai/openapi.json
 
 ---
 

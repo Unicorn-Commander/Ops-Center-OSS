@@ -470,7 +470,7 @@ class TraefikManager:
 
     def __init__(
         self,
-        traefik_dir: str = "/home/muut/Production/UC-Cloud/traefik",
+        traefik_dir: str = "/opt/uc-cloud/traefik",
         docker_container: str = "traefik",
         audit_logger: AuditLogger = None,
         rate_limiter: RateLimiter = None

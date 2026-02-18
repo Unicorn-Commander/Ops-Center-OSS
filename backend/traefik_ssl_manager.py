@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/traefik/ssl", tags=["Traefik SSL"])
 
 # Path to Traefik's acme.json
-ACME_JSON_PATH = Path("/home/muut/Infrastructure/traefik/letsencrypt/acme.json")
+ACME_JSON_PATH = Path("/home/deploy/Infrastructure/traefik/letsencrypt/acme.json")
 
 
 class Certificate(BaseModel):

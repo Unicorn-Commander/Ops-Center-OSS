@@ -19,7 +19,7 @@ RATE_LIMIT_READ=200/minute
 RATE_LIMIT_WRITE=50/minute
 RATE_LIMIT_ADMIN_BYPASS=true
 RATE_LIMIT_FAIL_OPEN=true
-REDIS_URL=redis://unicorn-lago-redis:6379/0
+REDIS_URL=redis://unicorn-redis:6379/0
 
 # Audit Configuration
 AUDIT_FAIL_OPEN=true
@@ -55,7 +55,7 @@ curl -H "Authorization: Bearer $TOKEN" \
   http://localhost:8084/api/v1/audit/stats
 
 # Check database
-sqlite3 /home/muut/Production/UC-1-Pro/services/ops-center/data/ops_center.db \
+sqlite3 /home/deploy/Production/UC-1-Pro/services/ops-center/data/ops_center.db \
   "SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 5;"
 ```
 
@@ -108,7 +108,7 @@ docker logs unicorn-ops-center | grep -E "CSRF|Rate|Audit|Password"
 tail -f /var/log/ops-center/audit.log
 
 # Check Redis rate limit keys
-redis-cli -u redis://unicorn-lago-redis:6379/0 KEYS "ratelimit:*"
+redis-cli -u redis://unicorn-redis:6379/0 KEYS "ratelimit:*"
 
 # Weekly security report
 curl -H "Authorization: Bearer $TOKEN" \

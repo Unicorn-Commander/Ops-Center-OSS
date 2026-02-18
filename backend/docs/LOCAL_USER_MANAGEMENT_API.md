@@ -441,7 +441,7 @@ All errors follow this format:
 
 ```bash
 # 1. Create user
-curl -X POST https://your-domain.com/api/v1/local-users \
+curl -X POST https://unicorncommander.ai/api/v1/local-users \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -452,7 +452,7 @@ curl -X POST https://your-domain.com/api/v1/local-users \
   }'
 
 # 2. Set password
-curl -X POST https://your-domain.com/api/v1/local-users/john/password \
+curl -X POST https://unicorncommander.ai/api/v1/local-users/john/password \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -460,7 +460,7 @@ curl -X POST https://your-domain.com/api/v1/local-users/john/password \
   }'
 
 # 3. Add SSH key
-curl -X POST https://your-domain.com/api/v1/local-users/john/ssh-keys \
+curl -X POST https://unicorncommander.ai/api/v1/local-users/john/ssh-keys \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -469,7 +469,7 @@ curl -X POST https://your-domain.com/api/v1/local-users/john/ssh-keys \
   }'
 
 # 4. Grant sudo (if needed)
-curl -X POST https://your-domain.com/api/v1/local-users/john/sudo \
+curl -X POST https://unicorncommander.ai/api/v1/local-users/john/sudo \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -477,15 +477,15 @@ curl -X POST https://your-domain.com/api/v1/local-users/john/sudo \
 
 ```bash
 # List all users
-curl https://your-domain.com/api/v1/local-users \
+curl https://unicorncommander.ai/api/v1/local-users \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # Get specific user
-curl https://your-domain.com/api/v1/local-users/john \
+curl https://unicorncommander.ai/api/v1/local-users/john \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # List SSH keys
-curl https://your-domain.com/api/v1/local-users/john/ssh-keys \
+curl https://unicorncommander.ai/api/v1/local-users/john/ssh-keys \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -493,11 +493,11 @@ curl https://your-domain.com/api/v1/local-users/john/ssh-keys \
 
 ```bash
 # Delete user (keep home directory)
-curl -X DELETE https://your-domain.com/api/v1/local-users/john \
+curl -X DELETE https://unicorncommander.ai/api/v1/local-users/john \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # Delete user and home directory
-curl -X DELETE "https://your-domain.com/api/v1/local-users/john?remove_home=true" \
+curl -X DELETE "https://unicorncommander.ai/api/v1/local-users/john?remove_home=true" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 

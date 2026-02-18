@@ -264,7 +264,7 @@ async def test_middleware_headers():
     logger.info("=" * 70)
     logger.info("After deployment, test with:")
     logger.info("  curl -H 'Cookie: session_token=YOUR_SESSION' \\")
-    logger.info("       https://your-domain.com/api/v1/services \\")
+    logger.info("       https://unicorncommander.ai/api/v1/services \\")
     logger.info("       -v 2>&1 | grep -E 'X-Tier|X-API-Calls'")
     logger.info("")
     logger.info("Expected headers:")

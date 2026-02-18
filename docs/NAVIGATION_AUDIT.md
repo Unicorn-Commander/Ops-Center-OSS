@@ -210,7 +210,7 @@
 
 #### 1.5.2 Center-Deep Search
 **Menu Item**: Center-Deep Search
-**Path**: `https://search.your-domain.com` (external)
+**Path**: `https://search.unicorncommander.ai` (external)
 **Component**: External link
 **RBAC**: System admin only
 **Status**: ✅ Active

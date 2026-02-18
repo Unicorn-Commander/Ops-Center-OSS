@@ -132,7 +132,7 @@ If migration caused data loss or corruption:
 ./scripts/database/rollback_migration.sh
 
 # 2. Restore from backup (before migration)
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_20251022_143025.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_20251022_143025.sql
 
 # 3. Verify data
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "SELECT COUNT(*) FROM organizations;"
@@ -147,10 +147,10 @@ If rollback won't work (e.g., downgrade() is broken):
 
 ```bash
 # 1. List backups
-ls -lht /home/muut/backups/database/
+ls -lht /opt/backups/database/
 
 # 2. Restore directly
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_TIMESTAMP.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_TIMESTAMP.sql
 
 # 3. Fix alembic version table
 docker exec ops-center-direct bash -c "cd /app && alembic stamp <previous_version>"
@@ -203,7 +203,7 @@ docker stop ops-center-direct
 ./scripts/database/backup_database.sh
 
 # 3. Restore from pre-migration backup
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_BEFORE_MIGRATION.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_BEFORE_MIGRATION.sql
 
 # 4. Verify data integrity
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "SELECT COUNT(*) FROM <affected_table>;"
@@ -249,7 +249,7 @@ vim alembic/versions/<migration_file>.py
 docker logs ops-center-direct --tail 50
 
 # 2. Restore from backup instead
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_LATEST.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_LATEST.sql
 
 # 3. Update alembic version manually
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "UPDATE alembic_version SET version_num='<correct_version>';"
@@ -391,7 +391,7 @@ docker exec ops-center-direct bash -c "cd /app && alembic downgrade -1"
 
 **Solution**: Restore from backup instead
 ```bash
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_LATEST.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_LATEST.sql
 ```
 
 ### Issue: "Alembic version table missing"
@@ -409,7 +409,7 @@ docker exec ops-center-direct bash -c "cd /app && alembic stamp head"
 
 **Solution**: Restore from backup
 ```bash
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_BEFORE_MIGRATION.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_BEFORE_MIGRATION.sql
 ```
 
 ---
@@ -425,8 +425,8 @@ docker exec ops-center-direct bash -c "cd /app && alembic stamp head"
 - Restart: `docker restart ops-center-direct`
 
 **Backup Issues**:
-- Location: `/home/muut/backups/database/`
-- List: `ls -lht /home/muut/backups/database/`
+- Location: `/opt/backups/database/`
+- List: `ls -lht /opt/backups/database/`
 
 ---
 

@@ -191,7 +191,7 @@ async def check_tier_access(
                 "message": f"This feature requires {tier_requirement.title()} tier or higher",
                 "current_tier": user_tier,
                 "required_tier": tier_requirement,
-                "upgrade_url": "https://your-domain.com/subscription"
+                "upgrade_url": "https://unicorncommander.ai/subscription"
             }
         )
 

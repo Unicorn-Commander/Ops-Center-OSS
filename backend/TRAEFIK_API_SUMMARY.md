@@ -516,7 +516,7 @@ from rate_limiter import check_rate_limit_manual
 ### Example 1: Request SSL Certificate
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/certificates \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/certificates \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -543,7 +543,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/certificates \
 ### Example 2: Create Route
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/routes \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/routes \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -578,7 +578,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/routes \
 ### Example 3: Create Rate Limit Middleware
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/middleware \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/middleware \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -612,7 +612,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/middleware \
 ### Example 4: Validate Configuration
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/validate \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/validate \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -644,7 +644,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/config/validate \
 ### Example 5: Create Backup
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/backup \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/backup \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -837,9 +837,9 @@ curl http://localhost:8084/api/v1/traefik/health
 ## Documentation
 
 **API Reference**: Auto-generated via FastAPI Swagger UI
-**Access**: https://your-domain.com/docs#/traefik
+**Access**: https://unicorncommander.ai/docs#/traefik
 
-**OpenAPI Spec**: https://your-domain.com/openapi.json
+**OpenAPI Spec**: https://unicorncommander.ai/openapi.json
 
 **Postman Collection**: Export from Swagger UI
 
@@ -858,7 +858,7 @@ curl http://localhost:8084/api/v1/traefik/health
 
 **Status**: Ready for Backend Developer to implement `traefik_manager.py`
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/traefik_api.py`
+**File**: `/opt/ops-center/backend/traefik_api.py`
 
 ---
 

@@ -161,7 +161,7 @@ const ApiDocumentation = () => {
               fontWeight={500}
               sx={{ fontFamily: 'monospace', fontSize: '13px' }}
             >
-              https://your-domain.com
+              https://unicorncommander.ai
             </Typography>
           </Paper>
 
@@ -308,7 +308,7 @@ const ApiDocumentation = () => {
         <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
             Need help?{' '}
-            <Link href="https://your-domain.com/docs" target="_blank" underline="hover">
+            <Link href="https://unicorncommander.com/docs" target="_blank" underline="hover">
               View Documentation
             </Link>
             {' | '}

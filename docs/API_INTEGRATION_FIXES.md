@@ -394,12 +394,12 @@ useEffect(() => {
 
 ```bash
 # === Cloudflare DNS Management (Epic 1.6) ===
-CLOUDFLARE_API_TOKEN=0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_
+CLOUDFLARE_API_TOKEN=your-cloudflare-api-token
 CLOUDFLARE_ACCOUNT_ID=  # Optional
 CLOUDFLARE_API_BASE_URL=https://api.cloudflare.com/client/v4
 ```
 
-**Security Note**: Current token `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_` is exposed in documentation. **MUST be revoked and replaced before production use**.
+**Security Note**: Current token `your-cloudflare-api-token` is exposed in documentation. **MUST be revoked and replaced before production use**.
 
 ---
 

@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Python
 ```python
 import openai
-openai.api_base = "https://your-domain.com/api/v1/llm"
+openai.api_base = "https://unicorncommander.ai/api/v1/llm"
 openai.api_key = "YOUR_UC_API_KEY"
 
 response = openai.Image.create(
@@ -74,7 +74,7 @@ response = openai.Image.create(
 
 #### JavaScript
 ```javascript
-const response = await fetch('https://your-domain.com/api/v1/llm/image/generations', {
+const response = await fetch('https://unicorncommander.ai/api/v1/llm/image/generations', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_UC_API_KEY',

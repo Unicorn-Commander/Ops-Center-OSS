@@ -14,7 +14,7 @@ User → Stripe Checkout → Lago Billing → Webhook → Ops Center → Keycloa
 
 1. **User subscribes/updates** via Stripe Checkout
 2. **Stripe notifies** Lago of payment events
-3. **Lago sends webhook** to `https://your-domain.com/api/v1/webhooks/lago`
+3. **Lago sends webhook** to `https://unicorncommander.ai/api/v1/webhooks/lago`
 4. **Ops Center receives** webhook and validates signature
 5. **Ops Center updates** Keycloak user attributes
 6. **User permissions** automatically reflect new tier
@@ -25,7 +25,7 @@ Add these to your `.env` file or docker-compose environment:
 
 ```bash
 # Keycloak Configuration
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
@@ -190,7 +190,7 @@ In Lago admin panel:
 1. Navigate to **Settings** → **Integrations** → **Webhooks**
 2. Set webhook endpoint URL:
    ```
-   https://your-domain.com/api/v1/webhooks/lago
+   https://unicorncommander.ai/api/v1/webhooks/lago
    ```
 3. Enable the following events:
    - `subscription.created`
@@ -217,7 +217,7 @@ The webhook handler verifies Lago signatures using HMAC SHA-256:
 Check webhook and Keycloak connectivity:
 
 ```bash
-curl https://your-domain.com/api/v1/webhooks/lago/health
+curl https://unicorncommander.ai/api/v1/webhooks/lago/health
 ```
 
 Expected response:
@@ -228,7 +228,7 @@ Expected response:
   "signature_verification": true,
   "keycloak": {
     "status": "healthy",
-    "keycloak_url": "https://auth.your-domain.com",
+    "keycloak_url": "https://auth.unicorncommander.ai",
     "realm": "uchub",
     "authenticated": true,
     "timestamp": "2025-10-10T20:00:00"
@@ -241,7 +241,7 @@ Expected response:
 Test subscription creation:
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/webhooks/lago \
+curl -X POST https://unicorncommander.ai/api/v1/webhooks/lago \
   -H "Content-Type: application/json" \
   -d '{
     "webhook_type": "subscription.created",
@@ -263,7 +263,7 @@ After webhook, check user attributes in Keycloak:
 ```bash
 # Get admin token
 TOKEN=$(curl -s -X POST \
-  "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+  "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -d "username=admin" \
   -d "password=your-admin-password" \
   -d "grant_type=password" \
@@ -271,7 +271,7 @@ TOKEN=$(curl -s -X POST \
   | jq -r '.access_token')
 
 # Get user by email
-curl -s "https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com&exact=true" \
+curl -s "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com&exact=true" \
   -H "Authorization: Bearer $TOKEN" \
   | jq '.[0].attributes'
 ```
@@ -300,7 +300,7 @@ Expected attributes:
 
 2. **Check network connectivity:**
    ```bash
-   curl -I https://your-domain.com/api/v1/webhooks/lago/health
+   curl -I https://unicorncommander.ai/api/v1/webhooks/lago/health
    ```
 
 3. **Check Ops Center logs:**
@@ -326,7 +326,7 @@ Error: `Failed to authenticate with Keycloak`
 2. Check admin user has permissions in master realm
 3. Test authentication manually:
    ```bash
-   curl -X POST "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+   curl -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
      -d "username=admin" \
      -d "password=your-admin-password" \
      -d "grant_type=password" \
@@ -346,7 +346,7 @@ Error: `Invalid Lago webhook signature`
 
 ### Keycloak Integration Module
 
-Location: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
+Location: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
 
 #### Key Functions
 
@@ -392,7 +392,7 @@ await update_user_attributes(
 
 ### Webhook Handler
 
-Location: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
+Location: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
 
 #### Endpoints
 
@@ -441,6 +441,6 @@ For issues or questions:
 
 ## Related Documentation
 
-- [Keycloak Setup Guide](/home/muut/Production/UC-1-Pro/services/ops-center/KEYCLOAK_SETUP.md)
-- [Billing Integration](/home/muut/Production/UC-1-Pro/services/ops-center/BILLING_API_IMPLEMENTATION.md)
-- [Subscription Management](/home/muut/Production/UC-1-Pro/services/ops-center/SUBSCRIPTION_FEATURE_SUMMARY.md)
+- [Keycloak Setup Guide](/home/deploy/Production/UC-1-Pro/services/ops-center/KEYCLOAK_SETUP.md)
+- [Billing Integration](/home/deploy/Production/UC-1-Pro/services/ops-center/BILLING_API_IMPLEMENTATION.md)
+- [Subscription Management](/home/deploy/Production/UC-1-Pro/services/ops-center/SUBSCRIPTION_FEATURE_SUMMARY.md)

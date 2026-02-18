@@ -600,7 +600,7 @@ INSERT INTO user_api_keys (
 - **Fernet Encryption**: https://cryptography.io/en/latest/fernet/
 - **PostgreSQL Triggers**: https://www.postgresql.org/docs/current/triggers.html
 - **LiteLLM Documentation**: https://docs.litellm.ai/
-- **UC-Cloud Main Docs**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **UC-Cloud Main Docs**: `/opt/uc-cloud/CLAUDE.md`
 
 ---
 

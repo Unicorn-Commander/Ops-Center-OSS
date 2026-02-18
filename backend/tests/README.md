@@ -28,7 +28,7 @@
 
 ### Load Test Data
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < sql/test_data_simple.sql
 ```
 
@@ -167,7 +167,7 @@ curl http://localhost:8084/api/v1/cart \
 ```
 
 ### Manual Testing
-1. Open browser: https://your-domain.com
+1. Open browser: https://unicorncommander.ai
 2. Register/Login
 3. Follow checklist in `MANUAL_TESTING_CHECKLIST.md`
 4. Document results

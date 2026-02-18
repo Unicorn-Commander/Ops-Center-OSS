@@ -15,6 +15,9 @@
  */
 
 const { chromium } = require('playwright');
+
+const runPlaywright = process.env.RUN_PLAYWRIGHT === 'true';
+const suite = runPlaywright ? describe : describe.skip;
 const AxeBuilder = require('@axe-core/playwright').default;
 
 const BASE_URL = process.env.TEST_BASE_URL || 'http://localhost:8084';
@@ -24,7 +27,7 @@ const TIMEOUT = 30000;
 const MOBILE_DEVICE = { width: 390, height: 844, name: 'iPhone 12 Pro' };
 const TABLET_DEVICE = { width: 768, height: 1024, name: 'iPad Mini' };
 
-describe('Mobile Accessibility Test Suite', () => {
+suite('Mobile Accessibility Test Suite', () => {
   let browser;
   let context;
   let page;

@@ -2,7 +2,7 @@
 
 **Version**: 2.0
 **Last Updated**: November 3, 2025
-**Base URL**: `https://api.your-domain.com`
+**Base URL**: `https://api.unicorncommander.ai`
 
 ---
 
@@ -24,11 +24,11 @@ The Unicorn Commander API provides OpenAI-compatible LLM inference with access t
 
 ### 1. Get Your API Key
 
-**Login**: https://your-domain.com/auth/login
+**Login**: https://unicorncommander.ai/auth/login
 
 **Navigate to API Keys**:
 - Dashboard → Account → API Keys
-- Or directly: https://your-domain.com/admin/account/api-keys
+- Or directly: https://unicorncommander.ai/admin/account/api-keys
 
 **Generate Key**:
 1. Click "Generate New Key"
@@ -43,7 +43,7 @@ The Unicorn Commander API provides OpenAI-compatible LLM inference with access t
 ### 2. Make Your First Request
 
 ```bash
-curl -X POST https://api.your-domain.com/v1/llm/chat/completions \
+curl -X POST https://api.unicorncommander.ai/v1/llm/chat/completions \
   -H "Authorization: Bearer uc_sk_YOUR_API_KEY_HERE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -61,7 +61,7 @@ curl -X POST https://api.your-domain.com/v1/llm/chat/completions \
 ### Base URL
 
 ```
-https://api.your-domain.com
+https://api.unicorncommander.ai
 ```
 
 All endpoints use HTTPS. HTTP requests are automatically redirected.
@@ -200,7 +200,7 @@ openrouter/meta-llama/llama-3.1-405b
 
 **List all models**:
 ```bash
-curl https://api.your-domain.com/v1/llm/models \
+curl https://api.unicorncommander.ai/v1/llm/models \
   -H "Authorization: Bearer uc_sk_YOUR_API_KEY"
 ```
 
@@ -216,7 +216,7 @@ from openai import OpenAI
 # Configure client
 client = OpenAI(
     api_key="uc_sk_YOUR_API_KEY_HERE",
-    base_url="https://api.your-domain.com/v1/llm"
+    base_url="https://api.unicorncommander.ai/v1/llm"
 )
 
 # Chat completion
@@ -240,7 +240,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: 'uc_sk_YOUR_API_KEY_HERE',
-  baseURL: 'https://api.your-domain.com/v1/llm'
+  baseURL: 'https://api.unicorncommander.ai/v1/llm'
 });
 
 async function chat() {
@@ -263,7 +263,7 @@ chat();
 ### cURL
 
 ```bash
-curl -X POST https://api.your-domain.com/v1/llm/chat/completions \
+curl -X POST https://api.unicorncommander.ai/v1/llm/chat/completions \
   -H "Authorization: Bearer uc_sk_YOUR_API_KEY_HERE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -287,7 +287,7 @@ use OpenAI\Client;
 
 $client = Client::factory()
     ->withApiKey('uc_sk_YOUR_API_KEY_HERE')
-    ->withBaseUrl('https://api.your-domain.com/v1/llm')
+    ->withBaseUrl('https://api.unicorncommander.ai/v1/llm')
     ->make();
 
 $response = $client->chat()->create([
@@ -315,7 +315,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="uc_sk_YOUR_API_KEY_HERE",
-    base_url="https://api.your-domain.com/v1/llm"
+    base_url="https://api.unicorncommander.ai/v1/llm"
 )
 
 stream = client.chat.completions.create(
@@ -410,7 +410,7 @@ from openai import OpenAI, APIError, RateLimitError, AuthenticationError
 
 client = OpenAI(
     api_key="uc_sk_YOUR_API_KEY_HERE",
-    base_url="https://api.your-domain.com/v1/llm"
+    base_url="https://api.unicorncommander.ai/v1/llm"
 )
 
 try:
@@ -432,12 +432,12 @@ except APIError as e:
 
 ### View Usage
 
-**Credit Dashboard**: https://your-domain.com/admin/credits
+**Credit Dashboard**: https://unicorncommander.ai/admin/credits
 - Real-time credit balance
 - Transaction history
 - Usage per model
 
-**API Keys**: https://your-domain.com/admin/account/api-keys
+**API Keys**: https://unicorncommander.ai/admin/account/api-keys
 - View all API keys
 - Last used timestamp
 - Expiration status
@@ -463,7 +463,7 @@ Save costs by using your own API keys from providers:
 
 ### Setup BYOK
 
-1. Go to: https://your-domain.com/admin/account/api-keys
+1. Go to: https://unicorncommander.ai/admin/account/api-keys
 2. Click "Add API Key" in the BYOK section
 3. Select provider (OpenRouter, OpenAI, Anthropic, etc.)
 4. Enter your API key
@@ -545,7 +545,7 @@ Save costs by using your own API keys from providers:
    ```python
    client = OpenAI(
        api_key="uc_sk_YOUR_KEY",
-       base_url="https://api.your-domain.com/v1/llm",
+       base_url="https://api.unicorncommander.ai/v1/llm",
        timeout=30.0  # 30 second timeout
    )
    ```
@@ -569,7 +569,7 @@ from openai import OpenAI
 
 client = OpenAI(
     api_key="uc_sk_...",
-    base_url="https://api.your-domain.com/v1/llm"
+    base_url="https://api.unicorncommander.ai/v1/llm"
 )
 ```
 
@@ -581,9 +581,9 @@ client = OpenAI(
 
 ### Documentation
 
-- **API Guide**: https://your-domain.com/docs/api
-- **Dashboard**: https://your-domain.com/admin
-- **Status Page**: https://status.your-domain.com
+- **API Guide**: https://unicorncommander.ai/docs/api
+- **Dashboard**: https://unicorncommander.ai/admin
+- **Status Page**: https://status.unicorncommander.ai
 
 ### Support
 
@@ -593,7 +593,7 @@ client = OpenAI(
 
 ### Status & Uptime
 
-- **API Status**: Monitor at https://status.your-domain.com
+- **API Status**: Monitor at https://status.unicorncommander.ai
 - **SLA**: 99.9% uptime guarantee (Enterprise tier)
 
 ---
@@ -613,7 +613,7 @@ A: Yes! Use BYOK to add your own keys from OpenRouter, OpenAI, etc.
 A: All tiers have access to all models. BYOK users need their own keys for provider-specific models.
 
 **Q: How do I monitor my usage?**
-A: View real-time usage at https://your-domain.com/admin/credits
+A: View real-time usage at https://unicorncommander.ai/admin/credits
 
 **Q: What's the difference between credits and API calls?**
 A: API calls count requests. Credits measure actual cost (based on tokens used).
@@ -622,6 +622,6 @@ A: API calls count requests. Credits measure actual cost (based on tokens used).
 
 **Generated**: November 3, 2025
 **Version**: 2.0
-**Base URL**: https://api.your-domain.com
+**Base URL**: https://api.unicorncommander.ai
 
-For the latest documentation, visit: https://your-domain.com/docs
+For the latest documentation, visit: https://unicorncommander.ai/docs

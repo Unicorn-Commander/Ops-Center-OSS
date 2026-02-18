@@ -186,8 +186,8 @@ POST /api/v1/billing/subscriptions/checkout
 {
   "tier_id": "professional",
   "billing_cycle": "monthly",
-  "success_url": "https://your-domain.com/admin/subscription/success?session_id={CHECKOUT_SESSION_ID}",
-  "cancel_url": "https://your-domain.com/admin/subscription/plan?canceled=true"
+  "success_url": "https://unicorncommander.ai/admin/subscription/success?session_id={CHECKOUT_SESSION_ID}",
+  "cancel_url": "https://unicorncommander.ai/admin/subscription/plan?canceled=true"
 }
 
 Response:
@@ -229,7 +229,7 @@ GET /admin/subscription/success?session_id={CHECKOUT_SESSION_ID}
 ## Files Modified
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/
+/opt/ops-center/
 ├── src/pages/subscription/SubscriptionPlan.jsx  [MODIFIED]
 ├── public/                                      [UPDATED]
 │   ├── index.html
@@ -255,7 +255,7 @@ GET /admin/subscription/success?session_id={CHECKOUT_SESSION_ID}
 2. **Test Card (Declined)**:
    - Card: `4000 0000 0000 0002`
 
-3. **Test URL**: https://your-domain.com/admin/subscription/plan
+3. **Test URL**: https://unicorncommander.ai/admin/subscription/plan
 
 ### Production Checklist:
 

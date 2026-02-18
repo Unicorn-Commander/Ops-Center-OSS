@@ -536,7 +536,7 @@ async def get_services_status():
 
         # Define services to check
         service_names = [
-            "keycloak",
+            "uchub-keycloak",
             "unicorn-postgresql",
             "unicorn-redis",
             "uchub-litellm",
@@ -613,7 +613,7 @@ async def get_system_settings(
             },
             {
                 "key": "site_url",
-                "value": os.getenv("EXTERNAL_URL", "https://your-domain.com"),
+                "value": os.getenv("EXTERNAL_URL", "https://unicorncommander.ai"),
                 "description": "External site URL",
                 "category": "general",
                 "is_editable": True

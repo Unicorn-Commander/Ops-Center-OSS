@@ -5,7 +5,7 @@ import asyncio
 from urllib.parse import parse_qs, urlparse
 
 # Configuration
-EXTERNAL_HOST = "your-domain.com"
+EXTERNAL_HOST = "unicorncommander.ai"
 KEYCLOAK_URL = "http://uchub-keycloak:8080"
 KEYCLOAK_REALM = "uchub"
 CLIENT_ID = "ops-center"
@@ -13,8 +13,8 @@ CLIENT_SECRET = "your-keycloak-client-secret"
 REDIRECT_URI = f"https://{EXTERNAL_HOST}/auth/callback"
 
 # Test credentials (if you have a test user)
-TEST_USERNAME = "test@example.com"
-TEST_PASSWORD = "your-test-password"
+TEST_USERNAME = "admin@example.com"
+TEST_PASSWORD = "your-admin-password"
 
 async def test_direct_grant_flow():
     """

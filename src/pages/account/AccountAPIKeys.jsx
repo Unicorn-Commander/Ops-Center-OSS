@@ -235,7 +235,7 @@ export default function AccountAPIKeys() {
         'OpenAI-compatible API',
         'Perfect for multi-server deployments'
       ],
-      getKeyUrl: 'https://your-domain.com/admin/account/api-keys',
+      getKeyUrl: 'https://unicorncommander.ai/admin/account/api-keys',
       keyFormat: 'uc_sk_...',
       description: 'Unicorn Commander API (this platform or remote instance)'
     },
@@ -592,7 +592,7 @@ export default function AccountAPIKeys() {
       python: `import requests
 
 # Unicorn Commander API
-BASE_URL = "https://api.your-domain.com"
+BASE_URL = "https://api.unicorncommander.ai"
 API_KEY = "${apiKey}"
 
 # Example: Chat completion
@@ -606,7 +606,7 @@ response = requests.post(
 )
 print(response.json())`,
       javascript: `// Unicorn Commander API
-const BASE_URL = "https://api.your-domain.com";
+const BASE_URL = "https://api.unicorncommander.ai";
 const API_KEY = "${apiKey}";
 
 // Example: Chat completion
@@ -708,10 +708,10 @@ fetch(\`\${BASE_URL}/v1/chat/completions\`, {
               <div className="flex items-center justify-between">
                 <div>
                   <p className={`text-sm font-medium ${themeClasses.text} mb-1`}>Base URL:</p>
-                  <code className={`text-sm ${themeClasses.text} font-mono`}>https://api.your-domain.com</code>
+                  <code className={`text-sm ${themeClasses.text} font-mono`}>https://api.unicorncommander.ai</code>
                 </div>
                 <button
-                  onClick={() => handleCopyToClipboard('https://api.your-domain.com', 'Base URL')}
+                  onClick={() => handleCopyToClipboard('https://api.unicorncommander.ai', 'Base URL')}
                   className={`p-2 rounded-lg ${themeClasses.subtext} hover:bg-gray-700/30`}
                 >
                   <ClipboardDocumentIcon className="h-5 w-5" />

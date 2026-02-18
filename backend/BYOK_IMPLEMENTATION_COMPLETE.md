@@ -91,18 +91,18 @@ Keys are stored in Keycloak user attributes with the following format:
 python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
 
-Output: `Cx6IW6h4ydmRQaSwi7MdZ1soAaM0FgbQuSBzuxH41Ao=`
+Output: `your-encryption-key-here`
 
 ### 2. Configure Environment Variables
 
-Add to `/home/muut/Production/UC-1-Pro/services/ops-center/backend/.env`:
+Add to `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/.env`:
 
 ```bash
 # BYOK Configuration
-ENCRYPTION_KEY=Cx6IW6h4ydmRQaSwi7MdZ1soAaM0FgbQuSBzuxH41Ao=
+ENCRYPTION_KEY=your-encryption-key-here
 
 # Keycloak
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_CLIENT_ID=ops-center
 KEYCLOAK_CLIENT_SECRET=your_client_secret_here
@@ -134,7 +134,7 @@ services:
 ### 1. List Supported Providers
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/byok/providers \
+curl -X GET https://unicorncommander.ai/api/v1/byok/providers \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   | jq
 ```
@@ -160,7 +160,7 @@ Response:
 ### 2. Add API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/byok/keys/add \
+curl -X POST https://unicorncommander.ai/api/v1/byok/keys/add \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -183,7 +183,7 @@ Response:
 ### 3. List Configured Keys
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/byok/keys \
+curl -X GET https://unicorncommander.ai/api/v1/byok/keys \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   | jq
 ```
@@ -206,7 +206,7 @@ Response:
 ### 4. Test API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/byok/keys/test/openai \
+curl -X POST https://unicorncommander.ai/api/v1/byok/keys/test/openai \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   | jq
 ```
@@ -226,7 +226,7 @@ Response:
 ### 5. Get BYOK Statistics
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/byok/stats \
+curl -X GET https://unicorncommander.ai/api/v1/byok/stats \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   | jq
 ```
@@ -245,7 +245,7 @@ Response:
 ### 6. Delete API Key
 
 ```bash
-curl -X DELETE https://your-domain.com/api/v1/byok/keys/openai \
+curl -X DELETE https://unicorncommander.ai/api/v1/byok/keys/openai \
   -H "Cookie: session=YOUR_SESSION_COOKIE" \
   | jq
 ```
@@ -305,7 +305,7 @@ async with httpx.AsyncClient() as client:
 ### 1. Rebuild Ops-Center Container
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 docker-compose -f docker-compose.ops-center-sso.yml build
 ```
 
@@ -355,7 +355,7 @@ Use the curl examples above or:
 export SESSION_COOKIE="your_session_cookie_here"
 
 # Run test script
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 export TEST_SESSION_COOKIE=$SESSION_COOKIE
 python3 tests/test_byok.py
 ```
@@ -366,7 +366,7 @@ python3 tests/test_byok.py
 
 **Solution**: Add to `.env` file:
 ```bash
-ENCRYPTION_KEY=Cx6IW6h4ydmRQaSwi7MdZ1soAaM0FgbQuSBzuxH41Ao=
+ENCRYPTION_KEY=your-encryption-key-here
 ```
 
 ### Issue: "Failed to authenticate with Keycloak"
@@ -379,7 +379,7 @@ KEYCLOAK_ADMIN_PASSWORD=your_password
 
 ### Issue: "User not found in Keycloak"
 
-**Solution**: Ensure user exists and has logged in at least once via https://auth.your-domain.com
+**Solution**: Ensure user exists and has logged in at least once via https://auth.unicorncommander.ai
 
 ### Issue: "BYOK requires Starter tier"
 
@@ -463,9 +463,9 @@ docker-compose -f docker-compose.ops-center-sso.yml build --no-cache
 
 ## References
 
-- **Keycloak Admin API**: https://auth.your-domain.com/admin/master/console/
-- **BYOK Spec**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/byok_api.py`
-- **Test Suite**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_byok.py`
+- **Keycloak Admin API**: https://auth.unicorncommander.ai/admin/master/console/
+- **BYOK Spec**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/byok_api.py`
+- **Test Suite**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_byok.py`
 - **Encryption**: https://cryptography.io/en/latest/fernet/
 
 ---

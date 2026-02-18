@@ -58,6 +58,29 @@ LITELLM_PROXY_URL = os.getenv('LITELLM_PROXY_URL', 'http://unicorn-litellm-wilme
 # BYOK encryption key (used for both user and system keys)
 BYOK_ENCRYPTION_KEY = os.getenv('BYOK_ENCRYPTION_KEY')
 
+# =============================================================================
+# CONFIGURABLE BILLING SETTINGS
+# =============================================================================
+# These can be customized per deployment via environment variables.
+# Personal servers or internal company servers can disable billing entirely.
+
+# Tiers that are exempt from credit charges (comma-separated)
+# Default includes common "unlimited" tier names. Customize for your deployment.
+# Set to "*" to exempt ALL tiers (effectively disabling billing)
+CREDIT_EXEMPT_TIERS_ENV = os.getenv("CREDIT_EXEMPT_TIERS", "free,vip_founder,vip,founder,admin,unlimited,internal")
+CREDIT_EXEMPT_TIERS = set(t.strip() for t in CREDIT_EXEMPT_TIERS_ENV.split(",") if t.strip())
+
+# Master billing toggle - set to "false" to disable all credit checking
+BILLING_ENABLED = os.getenv("BILLING_ENABLED", "true").lower() == "true"
+
+def is_credit_exempt(user_tier: str) -> bool:
+    """Check if a user tier is exempt from credit charges."""
+    if not BILLING_ENABLED:
+        return True
+    if "*" in CREDIT_EXEMPT_TIERS:
+        return True
+    return user_tier in CREDIT_EXEMPT_TIERS
+
 
 # ============================================================================
 # Provider Configuration
@@ -81,8 +104,8 @@ PROVIDER_CONFIGS = {
         'base_url': 'https://openrouter.ai/api/v1',
         'model_prefixes': [],  # Accepts all models
         'default_headers': {
-            'HTTP-Referer': os.getenv('APP_URL', 'http://localhost:8084'),
-            'X-Title': os.getenv('APP_TITLE', 'Ops Center')
+            'HTTP-Referer': 'https://unicorncommander.ai',
+            'X-Title': 'UC-1 Pro Ops Center'
         }
     },
     'google': {
@@ -160,7 +183,15 @@ MODEL_ID_MAPPING = {
     # Claude variants
     'claude-3-opus': 'anthropic/claude-3-opus',
     'claude-3-sonnet': 'anthropic/claude-3-sonnet',
+    'claude-3-haiku': 'anthropic/claude-3-haiku',
     'claude-3.5-sonnet': 'anthropic/claude-3.5-sonnet',
+    'claude-3.5-haiku': 'anthropic/claude-3.5-haiku',
+    'claude-opus-4': 'anthropic/claude-opus-4',
+    'claude-opus-4.5': 'anthropic/claude-opus-4.5',
+    'claude-opus-4-6': 'anthropic/claude-opus-4-6',
+    'claude-opus-4.6': 'anthropic/claude-opus-4.6',
+    'claude-sonnet-4': 'anthropic/claude-sonnet-4',
+    'claude-sonnet-4.5': 'anthropic/claude-sonnet-4.5',
 
     # Mistral variants
     'mistral-7b': 'mistralai/mistral-7b-instruct',
@@ -693,7 +724,9 @@ async def get_user_id(
             'sk-presenton-service-key-2025': 'presenton-service',
             'sk-brigade-service-key-2025': 'brigade-service',
             'sk-centerdeep-service-key-2025': 'centerdeep-service',
-            'sk-partnerpulse-service-key-2025': 'partnerpulse-service'
+            'sk-partnerpulse-service-key-2025': 'partnerpulse-service',
+            'sk-open-webui-service-key-2026': 'open-webui-service',
+            'sk-colonel-service-key-2026': 'colonel-service'
         }
 
         # FIX P0: Map service names to actual UUIDs from database (not strings)
@@ -703,7 +736,9 @@ async def get_user_id(
             'presenton-service': '13587747-66e6-43df-b21d-4411c7373465',     # UUID for presenton-service org
             'brigade-service': 'e9b40f6b-b683-4bcf-b462-9fd526cfbb37',       # UUID for brigade-service org
             'centerdeep-service': '91d3b68e-e4c4-457e-80ce-de6997243c34',    # UUID for centerdeep-service org
-            'partnerpulse-service': '8f5bf9a9-2e7c-4465-93d8-97f18bdac098'   # UUID for partnerpulse-service org
+            'partnerpulse-service': '8f5bf9a9-2e7c-4465-93d8-97f18bdac098',  # UUID for partnerpulse-service org
+            'open-webui-service': 'f47ac10b-58cc-4372-a567-0e02b2c3d479',    # UUID for open-webui-service org
+            'colonel-service': 'e9b40f6b-b683-4bcf-b462-9fd526cfbb37'        # Colonel uses brigade org for billing
         }
 
         if token in service_keys:
@@ -865,9 +900,9 @@ async def chat_completions(
             user_tier=user_tier
         )
 
-        # Check credits BEFORE making request (skip if using BYOK)
+        # Check credits BEFORE making request (skip if using BYOK or credit-exempt tier)
         org_id = None  # Will be set if using org billing
-        if not using_byok and user_tier != 'free':
+        if not using_byok and not is_credit_exempt(user_tier):
             # Try organizational billing first
             org_integration = get_org_credit_integration()
             has_org_credits, org_id, message = await org_integration.has_sufficient_org_credits(
@@ -952,19 +987,32 @@ async def chat_completions(
             }
 
         else:
-            # Using system OpenRouter key (charge credits)
-            logger.info(f"Using system OpenRouter key for {user_id}")
+            # Using system key (charge credits)
+            logger.info(f"Using system provider for {user_id}")
 
             # Get provider info from database for direct API call
             async with credit_system.db_pool.acquire() as conn:
-                # Get OpenRouter provider (or first enabled provider)
+                # FIRST: Check if requested model has a specific provider mapping
+                model_name = request.model or "Qwen3-30B-Q4_K_M"
                 provider = await conn.fetchrow("""
-                    SELECT id, name, type, api_key_encrypted, config
-                    FROM llm_providers
-                    WHERE enabled = true AND type = 'openrouter'
-                    ORDER BY priority DESC
-                    LIMIT 1
-                """)
+                    SELECT p.id, p.name, p.type, p.api_key_encrypted, p.api_base_url, p.config
+                    FROM llm_models m
+                    JOIN llm_providers p ON m.provider_id = p.id
+                    WHERE m.name = $1 AND m.enabled = true AND p.enabled = true
+                """, model_name)
+
+                if provider:
+                    logger.info(f"Found model-specific provider for '{model_name}': {provider['name']}")
+                else:
+                    # FALLBACK: Get highest priority provider (for unknown models)
+                    logger.info(f"No specific provider for '{model_name}', using highest priority")
+                    provider = await conn.fetchrow("""
+                        SELECT id, name, type, api_key_encrypted, api_base_url, config
+                        FROM llm_providers
+                        WHERE enabled = true AND type IN ('openai_compatible', 'openrouter', 'local')
+                        ORDER BY priority DESC
+                        LIMIT 1
+                    """)
 
                 if not provider:
                     raise HTTPException(
@@ -978,49 +1026,64 @@ async def chat_completions(
                     import json
                     provider_db_config = json.loads(provider_db_config)
 
-                base_url = provider_db_config.get('base_url', 'https://openrouter.ai/api/v1')
+                # Use api_base_url from database if available, otherwise check config, fallback to openrouter
+                base_url = provider.get('api_base_url') or provider_db_config.get('base_url', 'https://openrouter.ai/api/v1')
                 provider_name = provider['name']
 
-                # Get system API key (prefer database over environment)
+                # Check if this is a local provider that doesn't need API key
+                is_local_provider = provider['type'] in ('openai_compatible', 'local') and (
+                    provider.get('api_base_url', '').startswith('http://') or
+                    'localhost' in provider.get('api_base_url', '') or
+                    'unicorn-' in provider.get('api_base_url', '')
+                )
+
+                # Get system API key (prefer database over environment) - skip for local providers
                 api_key = None
-                try:
-                    # Try to use SystemKeyManager if encryption key is available
-                    system_key_manager = SystemKeyManager(credit_system.db_pool, BYOK_ENCRYPTION_KEY)
-                    api_key = await system_key_manager.get_system_key(provider['id'])
-                except Exception as e:
-                    logger.warning(f"SystemKeyManager failed: {e}, falling back to direct decryption")
-                    api_key = None
-                if not api_key:
-                    # Fallback: Try to decrypt the key directly
-                    encrypted_key = provider['api_key_encrypted']
-                    if not encrypted_key:
-                        raise HTTPException(
-                            status_code=503,
-                            detail="No API key configured for system provider. Please configure in Platform Settings."
-                        )
-
+                if not is_local_provider:
                     try:
-                        # Try to decrypt if it looks like Fernet encrypted data
-                        if encrypted_key.startswith('gAAAAA'):
-                            from cryptography.fernet import Fernet
-                            cipher = Fernet(BYOK_ENCRYPTION_KEY.encode() if isinstance(BYOK_ENCRYPTION_KEY, str) else BYOK_ENCRYPTION_KEY)
-                            api_key = cipher.decrypt(encrypted_key.encode()).decode()
-                            logger.info("Successfully decrypted system API key from database")
-                        else:
-                            # Assume it's plain text
-                            api_key = encrypted_key
-                            logger.info("Using plain text API key from database")
+                        # Try to use SystemKeyManager if encryption key is available
+                        system_key_manager = SystemKeyManager(credit_system.db_pool, BYOK_ENCRYPTION_KEY)
+                        api_key = await system_key_manager.get_system_key(provider['id'])
                     except Exception as e:
-                        logger.error(f"Failed to decrypt API key, trying as plain text: {e}")
-                        api_key = encrypted_key
+                        logger.warning(f"SystemKeyManager failed: {e}, falling back to direct decryption")
+                        api_key = None
+                    if not api_key:
+                        # Fallback: Try to decrypt the key directly
+                        encrypted_key = provider['api_key_encrypted']
+                        if not encrypted_key:
+                            raise HTTPException(
+                                status_code=503,
+                                detail="No API key configured for system provider. Please configure in Platform Settings."
+                            )
 
-            # Build headers for OpenRouter
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": os.getenv('APP_URL', 'http://localhost:8084'),  # Required by OpenRouter
-                "X-Title": os.getenv('APP_TITLE', 'Ops Center')  # Required by OpenRouter
-            }
+                        try:
+                            # Try to decrypt if it looks like Fernet encrypted data
+                            if encrypted_key.startswith('gAAAAA'):
+                                from cryptography.fernet import Fernet
+                                cipher = Fernet(BYOK_ENCRYPTION_KEY.encode() if isinstance(BYOK_ENCRYPTION_KEY, str) else BYOK_ENCRYPTION_KEY)
+                                api_key = cipher.decrypt(encrypted_key.encode()).decode()
+                                logger.info("Successfully decrypted system API key from database")
+                            else:
+                                # Assume it's plain text
+                                api_key = encrypted_key
+                                logger.info("Using plain text API key from database")
+                        except Exception as e:
+                            logger.error(f"Failed to decrypt API key, trying as plain text: {e}")
+                            api_key = encrypted_key
+
+            # Build headers (skip auth for local providers)
+            if is_local_provider:
+                headers = {
+                    "Content-Type": "application/json"
+                }
+                logger.info(f"Using local provider: {provider_name} at {base_url} (no API key required)")
+            else:
+                headers = {
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://unicorncommander.ai",  # Required by OpenRouter
+                    "X-Title": "UC-1 Pro Ops Center"  # Required by OpenRouter
+                }
 
         # Call provider API directly
         # Handle streaming vs non-streaming requests differently
@@ -1260,7 +1323,13 @@ async def chat_completions(
             transaction_id = None
             actual_cost = 0.0  # No cost to user's credit balance
             logger.info(f"BYOK request for {user_id} - no credits charged")
-        elif user_tier != 'free' or actual_cost > 0:
+        elif is_credit_exempt(user_tier):
+            # Credit-exempt tier - completely free, skip credit deduction
+            new_balance = 0.0
+            transaction_id = None
+            actual_cost = 0.0  # Override cost for exempt users
+            logger.info(f"Credit-exempt tier request for {user_id} (tier: {user_tier}) - no credits charged")
+        elif actual_cost > 0:
             # Check if using org billing or individual billing
             if org_id:
                 # Using organization billing
@@ -1518,9 +1587,9 @@ async def generate_image(
             user_tier=user_tier
         )
 
-        # Check credits BEFORE making request (skip if using BYOK)
+        # Check credits BEFORE making request (skip if using BYOK or credit-exempt tier)
         org_id = None  # Will be set if using org billing
-        if not using_byok and user_tier != 'free':
+        if not using_byok and not is_credit_exempt(user_tier):
             # Try organizational billing first
             org_integration = get_org_credit_integration()
             has_org_credits, org_id, message = await org_integration.has_sufficient_org_credits(
@@ -1608,8 +1677,8 @@ async def generate_image(
                 headers = {
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
-                    "HTTP-Referer": os.getenv('APP_URL', 'http://localhost:8084'),
-                    "X-Title": os.getenv('APP_TITLE', 'Ops Center')
+                    "HTTP-Referer": "https://unicorncommander.ai",
+                    "X-Title": "UC-1 Pro Ops Center"
                 }
             else:
                 # Should never reach here
@@ -1755,8 +1824,8 @@ async def generate_image(
                 headers = {
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
-                    "HTTP-Referer": os.getenv('APP_URL', 'http://localhost:8084'),
-                    "X-Title": os.getenv('APP_TITLE', 'Ops Center')
+                    "HTTP-Referer": "https://unicorncommander.ai",
+                    "X-Title": "UC-1 Pro Ops Center"
                 }
 
                 # Prefix model for OpenRouter (e.g., "stable-diffusion-xl" -> "stability-ai/stable-diffusion-xl")
@@ -2072,6 +2141,27 @@ async def get_credit_history(
 
 # Curated models list - best FREE models from OpenRouter (updated Nov 2025)
 CURATED_MODELS = [
+    # Local LAN Models - Strix Halo Workstation (highest priority)
+    {
+        'id': 'gpt-oss-120b',
+        'object': 'model',
+        'name': 'GPT-OSS 120B (LOCAL)',
+        'provider': 'Local',
+        'context_length': 8192,
+        'category': 'reasoning',
+        'description': '116.83B MoE model (62.8GB) - Strix Halo workstation, high privacy',
+        'free': True
+    },
+    {
+        'id': 'qwen3-coder-30b',
+        'object': 'model',
+        'name': 'Qwen3 Coder 30B (LOCAL)',
+        'provider': 'Local',
+        'context_length': 4096,
+        'category': 'coding',
+        'description': '30B coding specialist (18GB) - Strix Halo workstation, high privacy',
+        'free': True
+    },
     # Coding specialists
     {
         'id': 'qwen/qwen3-coder:free',
@@ -2335,6 +2425,8 @@ async def list_models(
         # Define models by tier
         models_by_tier = {
             'free': [
+                {'id': 'gpt-oss-120b', 'object': 'model', 'owned_by': 'local', 'tier': 'free', 'description': '116.83B MoE model, Strix Halo workstation'},
+                {'id': 'qwen3-coder-30b', 'object': 'model', 'owned_by': 'local', 'tier': 'free', 'description': '30B coding specialist, Strix Halo workstation'},
                 {'id': 'llama3-8b-local', 'object': 'model', 'owned_by': 'local', 'tier': 'free'},
                 {'id': 'qwen-32b-local', 'object': 'model', 'owned_by': 'local', 'tier': 'free'},
                 {'id': 'llama3-70b-groq', 'object': 'model', 'owned_by': 'groq', 'tier': 'free'},
@@ -2891,8 +2983,8 @@ async def test_provider_api_key(provider: str, api_key: str) -> Dict:
                     'https://openrouter.ai/api/v1/models',
                     headers={
                         'Authorization': f'Bearer {api_key}',
-                        'HTTP-Referer': os.getenv('APP_URL', 'http://localhost:8084'),
-                        'X-Title': os.getenv('APP_TITLE', 'Ops Center')
+                        'HTTP-Referer': 'https://unicorncommander.ai',
+                        'X-Title': 'UC-1 Pro Ops Center'
                     }
                 )
 
@@ -3163,12 +3255,12 @@ async def list_supported_providers():
                 'supports_test': False
             },
             {
-                'name': 'ops-center',
-                'display_name': 'Ops Center',
+                'name': 'unicorn-commander',
+                'display_name': 'Unicorn Commander',
                 'description': 'This platform - local vLLM models (Qwen 2.5 32B, etc.)',
                 'key_format': 'internal',
-                'signup_url': os.getenv('APP_URL', 'http://localhost:8084'),
-                'docs_url': os.getenv('DOCS_URL', 'http://localhost:8084/docs'),
+                'signup_url': 'https://unicorncommander.ai',
+                'docs_url': 'https://docs.unicorncommander.ai',
                 'supports_test': True
             },
             {
@@ -3433,8 +3525,8 @@ async def get_openrouter_models(
                     'https://openrouter.ai/api/v1/models',
                     headers={
                         'Authorization': f'Bearer {api_key}',
-                        'HTTP-Referer': os.getenv('APP_URL', 'http://localhost:8084'),
-                        'X-Title': os.getenv('APP_TITLE', 'Ops Center')
+                        'HTTP-Referer': 'https://unicorncommander.ai',
+                        'X-Title': 'UC-1 Pro Ops Center'
                     }
                 )
 

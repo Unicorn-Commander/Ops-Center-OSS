@@ -45,6 +45,27 @@ function RoleBadge({ role }) {
   );
 }
 
+// Tier badge component
+function TierBadge({ tierCode, tierName, getTierColor }) {
+  if (!tierCode) return null;
+
+  const color = getTierColor ? getTierColor(tierCode) : '#9e9e9e';
+  const displayName = tierName || tierCode.replace('_', ' ');
+
+  return (
+    <span
+      className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+      style={{
+        backgroundColor: `${color}20`,
+        color: color,
+        border: `1px solid ${color}40`
+      }}
+    >
+      {displayName}
+    </span>
+  );
+}
+
 export default function OrganizationSelector() {
   const {
     currentOrgId,
@@ -52,7 +73,8 @@ export default function OrganizationSelector() {
     loading,
     switchOrganization,
     getCurrentOrganization,
-    refreshOrganizations
+    refreshOrganizations,
+    getTierColor
   } = useOrganization();
 
   const { currentTheme } = useTheme();
@@ -274,8 +296,15 @@ export default function OrganizationSelector() {
                     }`}>
                       {org.name}
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
                       <RoleBadge role={org.role} />
+                      {org.tier && (
+                        <TierBadge
+                          tierCode={org.tier.code || org.tier}
+                          tierName={org.tier.name}
+                          getTierColor={getTierColor}
+                        />
+                      )}
                       {org.member_count !== undefined && (
                         <span className={`text-xs ${
                           currentTheme === 'unicorn'

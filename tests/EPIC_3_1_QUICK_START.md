@@ -9,7 +9,7 @@
 ### Run All Epic 3.1 Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Set encryption key
 export ENCRYPTION_KEY=$(python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
@@ -161,7 +161,7 @@ See: `/tests/e2e/test_epic_3_1_flows.md`
 **Tests not found**:
 ```bash
 # Check PYTHONPATH
-export PYTHONPATH="${PYTHONPATH}:/home/muut/Production/UC-Cloud/services/ops-center/backend"
+export PYTHONPATH="${PYTHONPATH}:/opt/ops-center/backend"
 ```
 
 **Import errors**:

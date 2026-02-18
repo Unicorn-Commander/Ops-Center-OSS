@@ -4,7 +4,7 @@
 
 Ensure all files are in place:
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme
 tree uc1-pro
 ```
 
@@ -40,9 +40,9 @@ services:
     image: quay.io/keycloak/keycloak:25.0
     container_name: keycloak
     volumes:
-      - /home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc1-pro:/opt/keycloak/themes/uc1-pro:ro
+      - /home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc1-pro:/opt/keycloak/themes/uc1-pro:ro
     environment:
-      KC_HOSTNAME: auth.your-domain.com
+      KC_HOSTNAME: auth.unicorncommander.ai
       KC_HOSTNAME_STRICT: false
       KC_HTTP_ENABLED: true
       KC_PROXY: edge
@@ -60,7 +60,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak.rule=Host(`auth.your-domain.com`)"
+      - "traefik.http.routers.keycloak.rule=Host(`auth.unicorncommander.ai`)"
       - "traefik.http.routers.keycloak.entrypoints=websecure"
       - "traefik.http.routers.keycloak.tls=true"
       - "traefik.http.routers.keycloak.tls.certresolver=letsencrypt"
@@ -93,7 +93,7 @@ RUN /opt/keycloak/bin/kc.sh build
 
 Build and deploy:
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 docker build -f Dockerfile.keycloak -t keycloak-uc1pro:latest .
 ```
 
@@ -109,7 +109,7 @@ services:
 
 1. Access Keycloak Admin Console:
    ```
-   https://auth.your-domain.com/admin
+   https://auth.unicorncommander.ai/admin
    ```
 
 2. Login with admin credentials
@@ -124,7 +124,7 @@ services:
 
 6. Test the login page:
    ```
-   https://auth.your-domain.com/realms/your-realm/account
+   https://auth.unicorncommander.ai/realms/your-realm/account
    ```
 
 ## Step 5: Verify Installation
@@ -247,8 +247,8 @@ docker exec keycloak ls -la /opt/keycloak/themes/uc1-pro
 docker exec -it keycloak bash
 
 # Test login endpoint
-curl -I https://auth.your-domain.com/realms/master/account
+curl -I https://auth.unicorncommander.ai/realms/master/account
 
 # Check Keycloak health
-curl https://auth.your-domain.com/health
+curl https://auth.unicorncommander.ai/health
 ```

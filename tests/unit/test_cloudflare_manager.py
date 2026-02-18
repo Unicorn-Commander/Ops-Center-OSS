@@ -325,7 +325,7 @@ def mock_zone_data():
     """Mock zone data"""
     return {
         'zone_id': 'zone_123',
-        'domain': 'your-domain.com',
+        'domain': 'unicorncommander.ai',
         'status': 'active',
         'nameservers': ['vera.ns.cloudflare.com', 'walt.ns.cloudflare.com'],
         'plan': 'free',
@@ -339,8 +339,8 @@ def mock_dns_record():
     return {
         'id': 'rec_123',
         'type': 'A',
-        'name': 'your-domain.com',
-        'content': 'YOUR_SERVER_IP',
+        'name': 'unicorncommander.ai',
+        'content': 'your-server-ip',
         'proxied': True,
         'ttl': 1,
         'created_at': '2025-10-22T10:00:00Z'
@@ -487,14 +487,14 @@ class TestDNSRecordManagement:
         record = DNSRecordCreate(
             type='A',
             name='@',
-            content='YOUR_SERVER_IP',
+            content='your-server-ip',
             proxied=True
         )
 
         result = await manager.create_dns_record('zone_123', record)
 
         assert result['type'] == 'A'
-        assert result['content'] == 'YOUR_SERVER_IP'
+        assert result['content'] == 'your-server-ip'
         assert result['proxied'] is True
 
     @pytest.mark.asyncio
@@ -667,7 +667,7 @@ class TestDNSRecordManagement:
         result = await manager.apply_template(
             'zone_123',
             'web_server',
-            {'ip': 'YOUR_SERVER_IP', 'domain': 'example.com'}
+            {'ip': 'your-server-ip', 'domain': 'example.com'}
         )
 
         assert result['created'] >= 2  # A + CNAME

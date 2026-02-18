@@ -99,8 +99,8 @@ class DeploymentConfigManager:
             has_local_inference=False,
             requires_license=False,
 
-            base_url="https://your-domain.com",
-            auth_url="https://auth.your-domain.com",
+            base_url="https://unicorncommander.ai",
+            auth_url="https://auth.unicorncommander.ai",
 
             metadata={
                 "sla": "99%",
@@ -157,8 +157,8 @@ class DeploymentConfigManager:
             has_local_inference=True,
             requires_license=False,
 
-            base_url="https://gpu.your-domain.com",
-            auth_url="https://auth.gpu.your-domain.com",
+            base_url="https://gpu.unicorncommander.ai",
+            auth_url="https://auth.gpu.unicorncommander.ai",
 
             metadata={
                 "sla": "99.9%",

@@ -49,6 +49,8 @@ export default function SubscriptionDowngrade() {
 
   const loadData = async () => {
     setLoading(true);
+    let subData = null;
+
     try {
       const subRes = await fetch('/api/v1/subscriptions/current', {
         credentials: 'include',
@@ -58,7 +60,7 @@ export default function SubscriptionDowngrade() {
       });
 
       if (subRes.ok) {
-        const subData = await subRes.json();
+        subData = await subRes.json();
         setCurrentSubscription(subData);
       }
 
@@ -71,11 +73,19 @@ export default function SubscriptionDowngrade() {
 
       if (plansRes.ok) {
         const plansData = await plansRes.json();
-        // Only show plans cheaper than current
-        if (subData) {
-          const lowerPlans = plansData.filter(p => p.price_monthly < subData.price);
+        // Handle both {plans: [...]} wrapper and direct array formats
+        const plansArray = plansData.plans || plansData;
+        // Only show plans cheaper than current subscription
+        if (Array.isArray(plansArray) && subData) {
+          const lowerPlans = plansArray.filter(p => p.price_monthly < subData.price);
           setPlans(lowerPlans);
+        } else if (!Array.isArray(plansArray)) {
+          console.error('Unexpected plans data format:', plansData);
+          toast.error('Failed to load downgrade options: unexpected data format');
         }
+      } else {
+        console.error('Failed to load plans, status:', plansRes.status);
+        toast.error('Failed to load downgrade options');
       }
 
     } catch (error) {

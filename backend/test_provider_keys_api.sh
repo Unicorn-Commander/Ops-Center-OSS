@@ -9,7 +9,7 @@
 #   ./test_provider_keys_api.sh "abc123def456..."
 #
 # Get your session token:
-#   1. Login at https://your-domain.com/auth/login
+#   1. Login at https://unicorncommander.ai/auth/login
 #   2. Open browser console
 #   3. Run: document.cookie.split(';').find(c => c.includes('session_token'))
 #
@@ -32,7 +32,7 @@ if [ -z "$SESSION_TOKEN" ]; then
     echo "Usage: $0 <session_token>"
     echo ""
     echo "Get your session token:"
-    echo "  1. Login at https://your-domain.com/auth/login"
+    echo "  1. Login at https://unicorncommander.ai/auth/login"
     echo "  2. Open browser console"
     echo "  3. Run: document.cookie.split(';').find(c => c.includes('session_token'))"
     exit 1

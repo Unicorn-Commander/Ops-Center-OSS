@@ -49,6 +49,7 @@ import {
   Refresh as RefreshIcon
 } from '@mui/icons-material';
 import { useTheme } from '../../contexts/ThemeContext';
+import PageHeader from '../../components/admin/PageHeader';
 
 const ForgejoManagement = () => {
   // State management
@@ -249,62 +250,29 @@ const ForgejoManagement = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-          borderRadius: 2,
-          p: 3,
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <Box>
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
-            Forgejo Git Service
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Manage organizations and repositories
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={refreshAll}
-            disabled={loading}
-            sx={{
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 2
-              }
-            }}
-          >
-            Refresh
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<ExternalIcon />}
-            onClick={() => window.open(stats?.instance_url || 'https://git.your-domain.com', '_blank')}
-            sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 4,
-                background: 'linear-gradient(135deg, #7e8fef 0%, #8a5bb2 100%)'
-              }
-            }}
-          >
-            Open Forgejo
-          </Button>
-        </Box>
-      </Box>
+      <PageHeader
+        title="Forgejo Git Service"
+        subtitle="Manage organizations and repositories"
+        actions={(
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={refreshAll}
+              disabled={loading}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<ExternalIcon />}
+              onClick={() => window.open(stats?.instance_url || 'https://git.unicorncommander.ai', '_blank')}
+            >
+              Open Forgejo
+            </Button>
+          </Box>
+        )}
+      />
 
       {/* Alerts */}
       {error && (

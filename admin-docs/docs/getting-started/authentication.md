@@ -7,7 +7,7 @@ The UC-1 Pro Admin Dashboard uses secure JWT-based authentication to protect acc
 ### Default Credentials
 The system comes with a default administrator account:
 - **Username**: `ucladmin`
-- **Password**: `your-admin-password`
+- **Password**: `MagicUnicorn!8-)`
 
 !!! danger "Security Warning"
     **Change the default password immediately** after first login. Using default credentials in production is a security risk.

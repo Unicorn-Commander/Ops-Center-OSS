@@ -3,13 +3,13 @@
 ## Access the Admin Dashboard
 
 1. **Login as Admin**
-   - Go to https://your-domain.com
+   - Go to https://unicorncommander.ai
    - Login with admin credentials
    - You'll be redirected to the main dashboard
 
 2. **Navigate to Subscription Management**
    - Click the "Subscription Management" tile (👑 icon)
-   - URL: https://your-domain.com/admin/subscriptions.html
+   - URL: https://unicorncommander.ai/admin/subscriptions.html
 
 ## Dashboard Overview
 

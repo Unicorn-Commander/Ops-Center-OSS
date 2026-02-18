@@ -19,16 +19,16 @@ Add these to your `.env` file:
 # Email Configuration
 EMAIL_ENABLED=true                          # Set to "false" to disable emails (console logging only)
 EMAIL_PROVIDER=sendgrid                     # Options: console, sendgrid, mailgun, smtp
-EMAIL_FROM=noreply@your-domain.com     # From email address
+EMAIL_FROM=noreply@unicorncommander.ai     # From email address
 EMAIL_FROM_NAME=Unicorn Commander           # From name
-EMAIL_REPLY_TO=support@your-domain.com # Reply-to address
+EMAIL_REPLY_TO=support@unicorncommander.ai # Reply-to address
 
 # SendGrid (if using EMAIL_PROVIDER=sendgrid)
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxx
 
 # Mailgun (if using EMAIL_PROVIDER=mailgun)
 MAILGUN_API_KEY=key-xxxxxxxxxxxxxxxxxx
-MAILGUN_DOMAIN=mg.your-domain.com
+MAILGUN_DOMAIN=mg.unicorncommander.ai
 
 # SMTP (if using EMAIL_PROVIDER=smtp)
 SMTP_HOST=smtp.gmail.com
@@ -59,7 +59,7 @@ SMTP_PASSWORD=your-app-password
    EMAIL_ENABLED=true
    EMAIL_PROVIDER=sendgrid
    SENDGRID_API_KEY=SG.your-api-key-here
-   EMAIL_FROM=noreply@your-domain.com
+   EMAIL_FROM=noreply@unicorncommander.ai
    ```
 
 ### Option 2: Mailgun
@@ -302,7 +302,7 @@ For issues:
 2. Verify configuration in `.env`
 3. Test with console provider first
 4. Check provider dashboards for errors
-5. Contact support@your-domain.com
+5. Contact support@unicorncommander.ai
 
 ## Advanced Configuration
 

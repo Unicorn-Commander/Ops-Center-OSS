@@ -510,7 +510,7 @@ class EdgeAgent:
 
 set -e
 
-CLOUD_URL="https://your-domain.com"
+CLOUD_URL="https://unicorncommander.ai"
 REGISTRATION_TOKEN="$1"
 
 if [ -z "$REGISTRATION_TOKEN" ]; then

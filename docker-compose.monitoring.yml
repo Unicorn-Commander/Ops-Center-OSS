@@ -38,7 +38,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.your-domain.com`)"
       - "traefik.http.routers.prometheus.entrypoints=https"
       - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
@@ -51,11 +51,11 @@ services:
     container_name: ops-center-grafana
     restart: unless-stopped
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=your-admin-password
       - GF_INSTALL_PLUGINS=grafana-piechart-panel
-      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-http://localhost:3000}
-      - GF_SERVER_DOMAIN=${APP_DOMAIN:-localhost}
+      - GF_SERVER_ROOT_URL=https://grafana.your-domain.com
+      - GF_SERVER_DOMAIN=grafana.your-domain.com
     volumes:
       - grafana_data:/var/lib/grafana
       - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
@@ -69,7 +69,7 @@ services:
       - prometheus
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.your-domain.com`)"
       - "traefik.http.routers.grafana.entrypoints=https"
       - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
@@ -121,7 +121,7 @@ services:
     container_name: ops-center-postgres-exporter
     restart: unless-stopped
     environment:
-      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ops_center_db}?sslmode=disable"
+      DATA_SOURCE_NAME: "postgresql://unicorn:your-postgres-password@unicorn-postgresql:5432/unicorn_db?sslmode=disable"
     ports:
       - "9187:9187"
     networks:
@@ -137,7 +137,7 @@ services:
     container_name: ops-center-redis-exporter
     restart: unless-stopped
     environment:
-      REDIS_ADDR: "${REDIS_HOST:-redis}:${REDIS_PORT:-6379}"
+      REDIS_ADDR: "unicorn-redis:6379"
     ports:
       - "9121:9121"
     networks:

@@ -170,7 +170,7 @@ DEPLOYMENT METHODS
 ==================
 
 1. Automated Script (Recommended):
-   cd /home/muut/Production/UC-1-Pro/services/ops-center
+   cd /home/deploy/Production/UC-1-Pro/services/ops-center
    ./deploy-keycloak-theme.sh
 
 2. Docker Volume Mount (Development):
@@ -190,7 +190,7 @@ ACTIVATION STEPS
 ================
 
 1. Access Keycloak Admin Console:
-   https://auth.your-domain.com/admin
+   https://auth.unicorncommander.ai/admin
 
 2. Login with admin credentials
 
@@ -202,7 +202,7 @@ ACTIVATION STEPS
 
 6. Click Save
 
-7. Test: https://auth.your-domain.com/realms/YOUR-REALM/account
+7. Test: https://auth.unicorncommander.ai/realms/YOUR-REALM/account
 
 CUSTOMIZATION GUIDE
 ===================
@@ -342,7 +342,7 @@ Documentation:
 Contact:
   🐛 GitHub: https://github.com/Unicorn-Commander/UC-1-Pro/issues
   📧 Email: support@magicunicorn.tech
-  📚 Docs: https://your-domain.com/docs
+  📚 Docs: https://unicorncommander.com/docs
 
 LICENSE
 =======

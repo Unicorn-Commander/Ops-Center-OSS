@@ -500,7 +500,7 @@ def main():
 
         # Generate report
         report = generate_report()
-        report_path = "/home/muut/Production/UC-Cloud/services/ops-center/TEST_REPORT_BACKEND.md"
+        report_path = "/opt/ops-center/TEST_REPORT_BACKEND.md"
 
         with open(report_path, 'w') as f:
             f.write(report)

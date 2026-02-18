@@ -105,7 +105,7 @@ export default function ModelUsageChart({ data }) {
         const index = elements[0].index;
         const modelName = sortedData[index].model_name;
         // Filter transactions by this model
-        window.location.href = `/admin/credits?model=${encodeURIComponent(modelName)}`;
+        window.location.href = `/admin/billing/credits?model=${encodeURIComponent(modelName)}`;
       }
     }
   };

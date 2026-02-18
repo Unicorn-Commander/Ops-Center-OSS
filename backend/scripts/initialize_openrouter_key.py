@@ -32,7 +32,7 @@ async def initialize_openrouter_key():
 
         if count == 0:
             # Encrypt the API key
-            api_key = "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"
+            api_key = "sk-or-v1-your-openrouter-key"
             encrypted_key = fernet.encrypt(api_key.encode()).decode()
 
             # Insert the key

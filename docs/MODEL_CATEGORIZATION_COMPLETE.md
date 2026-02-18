@@ -116,7 +116,7 @@ You currently have these API keys configured:
 **Location**: Admin Panel → Settings → Connections
 
 ```yaml
-API Base URL: https://your-domain.com/api/v1/llm
+API Base URL: https://unicorncommander.ai/api/v1/llm
 API Key: [Generate at /admin/account/api-keys]
 ```
 
@@ -124,7 +124,7 @@ API Key: [Generate at /admin/account/api-keys]
 1. Login to Open-WebUI
 2. Go to Admin Settings
 3. Under OpenAI API settings:
-   - Set Base URL to `https://your-domain.com/api/v1/llm`
+   - Set Base URL to `https://unicorncommander.ai/api/v1/llm`
    - Add your UC API key
 4. Click "Verify Connection"
 5. Open-WebUI will auto-discover all 348 models
@@ -135,7 +135,7 @@ API Key: [Generate at /admin/account/api-keys]
 
 ```bash
 # Add to .env or docker-compose.yml
-OPENAI_API_BASE=https://your-domain.com/api/v1/llm
+OPENAI_API_BASE=https://unicorncommander.ai/api/v1/llm
 OPENAI_API_KEY=uc_api_xxxxxxxxxxxxx
 DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 ```
@@ -145,7 +145,7 @@ DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 services:
   bolt:
     environment:
-      - OPENAI_API_BASE=https://your-domain.com/api/v1/llm
+      - OPENAI_API_BASE=https://unicorncommander.ai/api/v1/llm
       - OPENAI_API_KEY=uc_api_xxxxxxxxxxxxx
       - DEFAULT_MODEL=openrouter/anthropic/claude-3.5-sonnet
 ```
@@ -154,7 +154,7 @@ services:
 ```bash
 # From inside Bolt container
 curl -H "Authorization: Bearer uc_api_xxxxxxxxxxxxx" \
-  https://your-domain.com/api/v1/llm/models
+  https://unicorncommander.ai/api/v1/llm/models
 ```
 
 ### 3. Presenton Setup
@@ -163,16 +163,16 @@ curl -H "Authorization: Bearer uc_api_xxxxxxxxxxxxx" \
 
 ```bash
 # Frontend (.env.local or NEXT_PUBLIC vars)
-NEXT_PUBLIC_LLM_API_BASE=https://your-domain.com/api/v1/llm
+NEXT_PUBLIC_LLM_API_BASE=https://unicorncommander.ai/api/v1/llm
 NEXT_PUBLIC_LLM_API_KEY=uc_api_xxxxxxxxxxxxx
 
 # Backend
-LLM_API_BASE_URL=https://your-domain.com/api/v1/llm/chat/completions
+LLM_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/chat/completions
 LLM_API_KEY=uc_api_xxxxxxxxxxxxx
 LLM_MODEL=openrouter/anthropic/claude-3.5-sonnet
 
 # Image generation (optional)
-IMAGE_API_BASE_URL=https://your-domain.com/api/v1/llm/image/generations
+IMAGE_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/image/generations
 IMAGE_API_KEY=uc_api_xxxxxxxxxxxxx
 ```
 
@@ -181,14 +181,14 @@ IMAGE_API_KEY=uc_api_xxxxxxxxxxxxx
 services:
   presenton-frontend:
     environment:
-      - NEXT_PUBLIC_LLM_API_BASE=https://your-domain.com/api/v1/llm
+      - NEXT_PUBLIC_LLM_API_BASE=https://unicorncommander.ai/api/v1/llm
       - NEXT_PUBLIC_LLM_API_KEY=uc_api_xxxxxxxxxxxxx
 
   presenton-backend:
     environment:
-      - LLM_API_BASE_URL=https://your-domain.com/api/v1/llm/chat/completions
+      - LLM_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/chat/completions
       - LLM_API_KEY=uc_api_xxxxxxxxxxxxx
-      - IMAGE_API_BASE_URL=https://your-domain.com/api/v1/llm/image/generations
+      - IMAGE_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/image/generations
 ```
 
 ---
@@ -199,16 +199,16 @@ services:
 
 ```bash
 # Get all models (flat list)
-curl https://your-domain.com/api/v1/llm/models
+curl https://unicorncommander.ai/api/v1/llm/models
 
 # Get categorized models (BYOK vs Platform)
-curl https://your-domain.com/api/v1/llm/models/categorized
+curl https://unicorncommander.ai/api/v1/llm/models/categorized
 ```
 
 ### Test Chat Completion
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \
   -H "Authorization: Bearer uc_api_xxxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -224,7 +224,7 @@ curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
 ### Test Image Generation
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer uc_api_xxxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -314,7 +314,7 @@ GET /api/v1/credits/transactions
 
 **Check**:
 1. Environment variables set correctly
-2. API key is valid: `curl -H "Authorization: Bearer YOUR_KEY" https://your-domain.com/api/v1/llm/models`
+2. API key is valid: `curl -H "Authorization: Bearer YOUR_KEY" https://unicorncommander.ai/api/v1/llm/models`
 3. No trailing slash on base URL
 4. Restart Bolt after changing environment variables
 
@@ -379,7 +379,7 @@ Potential additions based on feedback:
 
 ## 📞 Support
 
-- **Documentation**: https://your-domain.com/docs
+- **Documentation**: https://unicorncommander.ai/docs
 - **API Reference**: Full guide in `/services/ops-center/docs/INTEGRATION_GUIDE.md`
 - **Logs**: Check `docker logs ops-center-direct` for API errors
 

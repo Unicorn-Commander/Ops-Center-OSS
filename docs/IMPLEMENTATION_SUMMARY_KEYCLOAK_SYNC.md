@@ -8,12 +8,12 @@
 
 ## Mission Accomplished
 
-Successfully migrated subscription sync system from Authentik to **Keycloak** at `https://auth.your-domain.com/realms/uchub`.
+Successfully migrated subscription sync system from Authentik to **Keycloak** at `https://auth.unicorncommander.ai/realms/uchub`.
 
 ## Files Created/Modified
 
 ### 1. Keycloak Integration Module
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
 
 **Key Functions:**
 - `get_admin_token()` - Token management with caching
@@ -31,7 +31,7 @@ Successfully migrated subscription sync system from Authentik to **Keycloak** at
 - ✅ SSL support (self-signed certs)
 
 ### 2. Updated Webhook Handler
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
 
 **Changes:**
 - Replaced Authentik imports with Keycloak integration
@@ -48,7 +48,7 @@ Successfully migrated subscription sync system from Authentik to **Keycloak** at
 - ✅ `invoice.payment_status_updated`
 
 ### 3. Fixed Route Handling
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py` (line 3763)
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py` (line 3763)
 
 **Problem:** Catch-all SPA route was intercepting API endpoints
 
@@ -76,7 +76,7 @@ if full_path.startswith("api/"):
 ```
 1. User subscribes → Stripe processes payment
 2. Stripe notifies → Lago billing system
-3. Lago sends webhook → https://your-domain.com/api/v1/webhooks/lago
+3. Lago sends webhook → https://unicorncommander.ai/api/v1/webhooks/lago
 4. Ops Center validates → HMAC signature verification
 5. Ops Center calls → Keycloak Admin API
 6. Keycloak updates → User attributes
@@ -112,7 +112,7 @@ if full_path.startswith("api/"):
 
 ```bash
 # Keycloak Configuration
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
@@ -134,11 +134,11 @@ LAGO_WEBHOOK_SECRET=<get_from_lago_admin>
   docker start ops-center-direct
   ```
 - [ ] **Configure Lago webhook URL**
-  - URL: `https://your-domain.com/api/v1/webhooks/lago`
+  - URL: `https://unicorncommander.ai/api/v1/webhooks/lago`
   - Copy webhook secret to `LAGO_WEBHOOK_SECRET`
 - [ ] **Test webhook health**
   ```bash
-  curl https://your-domain.com/api/v1/webhooks/lago/health
+  curl https://unicorncommander.ai/api/v1/webhooks/lago/health
   ```
 - [ ] **Run test suite**
   ```bash
@@ -153,7 +153,7 @@ LAGO_WEBHOOK_SECRET=<get_from_lago_admin>
 ### Quick Health Check
 
 ```bash
-curl https://your-domain.com/api/v1/webhooks/lago/health
+curl https://unicorncommander.ai/api/v1/webhooks/lago/health
 ```
 
 Expected response:
@@ -172,7 +172,7 @@ Expected response:
 ### Test Subscription Created
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/webhooks/lago \
+curl -X POST https://unicorncommander.ai/api/v1/webhooks/lago \
   -H "Content-Type: application/json" \
   -d '{
     "webhook_type": "subscription.created",
@@ -189,20 +189,20 @@ curl -X POST https://your-domain.com/api/v1/webhooks/lago \
 
 ```bash
 TOKEN=$(curl -sk -X POST \
-  "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+  "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -d "username=admin" \
   -d "password=your-admin-password" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" | jq -r '.access_token')
 
-curl -sk "https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com&exact=true" \
+curl -sk "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com&exact=true" \
   -H "Authorization: Bearer $TOKEN" | jq '.[0].attributes'
 ```
 
 ### Comprehensive Test Suite
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./scripts/test_keycloak_webhook.sh
 ```
 
@@ -302,17 +302,17 @@ docker start ops-center-direct
 ## File Locations
 
 ### Source Code
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` (468 lines)
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py` (307 lines)
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py` (routing fix at line 3763)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` (468 lines)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py` (307 lines)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py` (routing fix at line 3763)
 
 ### Documentation
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_SUBSCRIPTION_SYNC.md` (515 lines)
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_WEBHOOK_DEPLOYMENT.md` (396 lines)
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/IMPLEMENTATION_SUMMARY_KEYCLOAK_SYNC.md` (this file)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_SUBSCRIPTION_SYNC.md` (515 lines)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_WEBHOOK_DEPLOYMENT.md` (396 lines)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/IMPLEMENTATION_SUMMARY_KEYCLOAK_SYNC.md` (this file)
 
 ### Testing
-- `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/test_keycloak_webhook.sh` (executable)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/test_keycloak_webhook.sh` (executable)
 
 ---
 
@@ -339,7 +339,7 @@ docker start ops-center-direct
 
 **Contact:** admin@example.com
 **Logs:** `docker logs ops-center-direct`
-**Keycloak Admin:** https://auth.your-domain.com/admin
+**Keycloak Admin:** https://auth.unicorncommander.ai/admin
 **Lago Admin:** (URL from your Lago deployment)
 
 ---

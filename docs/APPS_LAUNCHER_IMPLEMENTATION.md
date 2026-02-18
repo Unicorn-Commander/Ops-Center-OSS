@@ -11,7 +11,7 @@ Implemented a super simple apps launcher for the Ops-Center dashboard that displ
 
 ### 1. New Frontend Component
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/AppsLauncher.jsx`
+**File**: `/opt/ops-center/src/pages/AppsLauncher.jsx`
 
 **Features**:
 - Fetches apps from existing API: `GET /api/v1/extensions/catalog`
@@ -47,16 +47,16 @@ ALTER TABLE add_ons ADD COLUMN IF NOT EXISTS launch_url VARCHAR(500);
 
 **Populated Launch URLs**:
 ```sql
-UPDATE add_ons SET launch_url = 'https://chat.your-domain.com' WHERE name = 'Open-WebUI';
-UPDATE add_ons SET launch_url = 'https://search.your-domain.com' WHERE name = 'Center-Deep Pro';
-UPDATE add_ons SET launch_url = 'https://presentations.your-domain.com' WHERE name = 'Presenton';
-UPDATE add_ons SET launch_url = 'https://bolt.your-domain.com' WHERE name = 'Bolt.DIY';
-UPDATE add_ons SET launch_url = 'https://brigade.your-domain.com' WHERE name = 'Unicorn Brigade';
+UPDATE add_ons SET launch_url = 'https://chat.unicorncommander.ai' WHERE name = 'Open-WebUI';
+UPDATE add_ons SET launch_url = 'https://search.unicorncommander.ai' WHERE name = 'Center-Deep Pro';
+UPDATE add_ons SET launch_url = 'https://presentations.unicorncommander.ai' WHERE name = 'Presenton';
+UPDATE add_ons SET launch_url = 'https://bolt.unicorncommander.ai' WHERE name = 'Bolt.DIY';
+UPDATE add_ons SET launch_url = 'https://brigade.unicorncommander.ai' WHERE name = 'Unicorn Brigade';
 ```
 
 ### 3. Routing Changes
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/App.jsx`
+**File**: `/opt/ops-center/src/App.jsx`
 
 **Changes**:
 1. Added lazy import for `AppsLauncher`
@@ -79,11 +79,11 @@ UPDATE add_ons SET launch_url = 'https://brigade.your-domain.com' WHERE name = '
 
 | App | Launch URL | Status |
 |-----|-----------|--------|
-| Open-WebUI | https://chat.your-domain.com | ✅ Active |
-| Center-Deep Pro | https://search.your-domain.com | ✅ Active |
-| Presenton | https://presentations.your-domain.com | ✅ Active |
-| Bolt.DIY | https://bolt.your-domain.com | ✅ Active |
-| Unicorn Brigade | https://brigade.your-domain.com | ✅ Active |
+| Open-WebUI | https://chat.unicorncommander.ai | ✅ Active |
+| Center-Deep Pro | https://search.unicorncommander.ai | ✅ Active |
+| Presenton | https://presentations.unicorncommander.ai | ✅ Active |
+| Bolt.DIY | https://bolt.unicorncommander.ai | ✅ Active |
+| Unicorn Brigade | https://brigade.unicorncommander.ai | ✅ Active |
 | Unicorn Amanuensis | (No URL yet) | ⚠️ Hidden (no launch_url) |
 | Unicorn Orator | (No URL yet) | ⚠️ Hidden (no launch_url) |
 
@@ -93,7 +93,7 @@ UPDATE add_ons SET launch_url = 'https://brigade.your-domain.com' WHERE name = '
 
 **Endpoint**: `GET /api/v1/extensions/catalog`
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/extensions_catalog_api.py`
+**File**: `/opt/ops-center/backend/extensions_catalog_api.py`
 
 **Response** (example):
 ```json
@@ -107,7 +107,7 @@ UPDATE add_ons SET launch_url = 'https://brigade.your-domain.com' WHERE name = '
     "billing_type": "monthly",
     "icon_url": "/assets/services/openwebui-icon.png",
     "is_active": true,
-    "launch_url": "https://chat.your-domain.com",
+    "launch_url": "https://chat.unicorncommander.ai",
     "features": {...},
     "created_at": "2025-11-01T22:45:34.478623"
   }
@@ -210,14 +210,14 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
 curl http://localhost:8084/api/v1/extensions/catalog | jq
 
 # Access UI
-# Navigate to: https://your-domain.com/admin/
+# Navigate to: https://unicorncommander.ai/admin/
 ```
 
 ## Future Enhancements (Optional)
 
 1. **Add Launch URLs for Missing Apps**:
-   - Unicorn Amanuensis: `https://stt.your-domain.com`
-   - Unicorn Orator: `https://tts.your-domain.com`
+   - Unicorn Amanuensis: `https://stt.unicorncommander.ai`
+   - Unicorn Orator: `https://tts.unicorncommander.ai`
 
 2. **Category Filters**:
    - Add filter tabs at top (All, AI & Chat, Development, etc.)
@@ -255,12 +255,12 @@ curl http://localhost:8084/api/v1/extensions/catalog | jq
 ## Files Reference
 
 ### Frontend
-- `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/AppsLauncher.jsx` - Main component
-- `/home/muut/Production/UC-Cloud/services/ops-center/src/App.jsx` - Routing config
+- `/opt/ops-center/src/pages/AppsLauncher.jsx` - Main component
+- `/opt/ops-center/src/App.jsx` - Routing config
 
 ### Backend
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/extensions_catalog_api.py` - API endpoint
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py` - Router registration
+- `/opt/ops-center/backend/extensions_catalog_api.py` - API endpoint
+- `/opt/ops-center/backend/server.py` - Router registration
 
 ### Database
 - Table: `add_ons` (PostgreSQL `unicorn_db`)

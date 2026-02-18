@@ -265,9 +265,19 @@ export default function DashboardPro() {
   };
   
   const healthScore = calculateHealthScore();
-  const gpuUsage = systemData?.gpu?.[0]?.utilization || 0;
-  const vramUsed = systemData?.gpu?.[0]?.memory_used || 0;
-  const vramTotal = systemData?.gpu?.[0]?.memory_total || 33554432000;
+  const gpuCount = systemData?.gpu?.length || 0;
+  const gpuUsage = gpuCount > 0
+    ? systemData.gpu.reduce((sum, g) => sum + (g.utilization || 0), 0) / gpuCount
+    : 0;
+  const vramUsed = gpuCount > 0
+    ? systemData.gpu.reduce((sum, g) => sum + (g.memory_used || 0), 0)
+    : 0;
+  const vramTotal = gpuCount > 0
+    ? systemData.gpu.reduce((sum, g) => sum + (g.memory_total || 0), 0)
+    : 33554432000;
+  const gpuLabel = gpuCount > 1
+    ? `${gpuCount}x ${systemData?.gpu?.[0]?.name || 'GPU'}`
+    : (systemData?.gpu?.[0]?.name || hardwareInfo?.gpu?.model || 'GPU');
   
   return (
     <motion.div
@@ -343,7 +353,7 @@ export default function DashboardPro() {
         <MetricCard
           title="GPU Utilization"
           value={`${gpuUsage.toFixed(1)}%`}
-          subtitle="RTX 5090"
+          subtitle={gpuLabel}
           icon={CpuChipIcon}
           trend={5}
           color="purple"
@@ -398,7 +408,7 @@ export default function DashboardPro() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '/admin/models'}
+              onClick={() => window.location.href = '/admin/ai/registry'}
               className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-sm hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg"
             >
               <div className="flex items-center gap-2">
@@ -410,7 +420,7 @@ export default function DashboardPro() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '/admin/logs'}
+              onClick={() => window.location.href = '/admin/monitoring/logs'}
               className="px-4 py-2 rounded-lg bg-gray-800 text-white font-medium text-sm hover:bg-gray-700 transition-all"
             >
               <div className="flex items-center gap-2">
@@ -450,7 +460,7 @@ export default function DashboardPro() {
               Resource Monitoring
             </h2>
             <button 
-              onClick={() => window.location.href = '/admin/system'}
+              onClick={() => window.location.href = '/admin/infra/resources'}
               className={`text-sm ${theme.text.accent} hover:underline flex items-center gap-1`}
             >
               View Details

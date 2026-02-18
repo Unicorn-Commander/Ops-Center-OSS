@@ -3,7 +3,7 @@
 ## Run All Tests
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 bash tests/test_plans_page.sh
 ```
 
@@ -11,19 +11,19 @@ bash tests/test_plans_page.sh
 
 ### 1. Check Plans Page
 ```bash
-curl -I https://your-domain.com/plans.html
+curl -I https://unicorncommander.ai/plans.html
 # Expected: HTTP/2 200
 ```
 
 ### 2. Check API Endpoint
 ```bash
-curl https://your-domain.com/api/v1/subscriptions/plans | jq
+curl https://unicorncommander.ai/api/v1/subscriptions/plans | jq
 # Expected: JSON with 4 plans
 ```
 
 ### 3. Verify Trial Tier
 ```bash
-curl -s https://your-domain.com/api/v1/subscriptions/plans | \
+curl -s https://unicorncommander.ai/api/v1/subscriptions/plans | \
   jq '.plans[] | select(.name == "trial")'
 ```
 
@@ -41,7 +41,7 @@ curl -s https://your-domain.com/api/v1/subscriptions/plans | \
 
 ### 4. Test in Browser
 ```
-1. Open: https://your-domain.com/plans.html
+1. Open: https://unicorncommander.ai/plans.html
 2. Open browser console (F12)
 3. Check for errors
 4. Click "Select Trial" button

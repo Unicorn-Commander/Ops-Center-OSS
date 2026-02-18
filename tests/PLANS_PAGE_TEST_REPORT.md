@@ -3,7 +3,7 @@
 **Test Date:** October 11, 2025
 **Test Subject:** plans.html and /api/v1/subscriptions/plans endpoint
 **Tester:** Automated Test Suite
-**Environment:** Production (https://your-domain.com)
+**Environment:** Production (https://unicorncommander.ai)
 
 ---
 
@@ -34,7 +34,7 @@ All critical functionality tests passed successfully. The plans page and subscri
 
 **Verification:**
 ```bash
-$ curl -I https://your-domain.com/plans.html
+$ curl -I https://unicorncommander.ai/plans.html
 HTTP/2 200
 content-type: text/html
 content-length: 9584
@@ -170,8 +170,8 @@ function selectPlan(planName) {
 
 | Test | Status | Details |
 |------|--------|---------|
-| Plans Page | ✅ PASS | https://your-domain.com/plans.html |
-| Signup Flow Page | ✅ PASS | https://your-domain.com/signup-flow.html (200 OK) |
+| Plans Page | ✅ PASS | https://unicorncommander.ai/plans.html |
+| Signup Flow Page | ✅ PASS | https://unicorncommander.ai/signup-flow.html (200 OK) |
 | Plan Selection | ✅ PASS | Passes plan parameter via URL |
 | Back to Dashboard | ✅ PASS | Link to "/" present |
 
@@ -198,7 +198,7 @@ function selectPlan(planName) {
 
 1. **Invalid Endpoint:**
 ```bash
-$ curl https://your-domain.com/api/v1/subscriptions/invalid
+$ curl https://unicorncommander.ai/api/v1/subscriptions/invalid
 {"detail":"API endpoint not found"}
 ```
 
@@ -231,7 +231,7 @@ catch (error) {
 
 **Current Behavior:**
 ```bash
-$ curl -X POST https://your-domain.com/api/v1/subscriptions/plans
+$ curl -X POST https://unicorncommander.ai/api/v1/subscriptions/plans
 Internal Server Error
 ```
 
@@ -451,7 +451,7 @@ def get_plans():
 ### Automated Testing:
 ```bash
 # Run the comprehensive test script
-bash /home/muut/Production/UC-1-Pro/services/ops-center/tests/test_plans_page.sh
+bash /home/deploy/Production/UC-1-Pro/services/ops-center/tests/test_plans_page.sh
 
 # Expected output:
 # - 18+ tests passing
@@ -507,31 +507,31 @@ The UC-1 Pro plans page and subscription API are **fully functional and producti
 
 ### Test Script Location:
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/tests/test_plans_page.sh
+/home/deploy/Production/UC-1-Pro/services/ops-center/tests/test_plans_page.sh
 ```
 
 ### Test Execution:
 ```bash
 # To re-run tests:
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 bash tests/test_plans_page.sh
 ```
 
 ### API Test Examples:
 ```bash
 # Get all plans
-curl https://your-domain.com/api/v1/subscriptions/plans | jq
+curl https://unicorncommander.ai/api/v1/subscriptions/plans | jq
 
 # Get just trial tier
-curl https://your-domain.com/api/v1/subscriptions/plans | \
+curl https://unicorncommander.ai/api/v1/subscriptions/plans | \
   jq '.plans[] | select(.name == "trial")'
 
 # Check page status
-curl -I https://your-domain.com/plans.html
+curl -I https://unicorncommander.ai/plans.html
 
 # Performance test
 curl -o /dev/null -s -w "Time: %{time_total}s\n" \
-  https://your-domain.com/api/v1/subscriptions/plans
+  https://unicorncommander.ai/api/v1/subscriptions/plans
 ```
 
 ---

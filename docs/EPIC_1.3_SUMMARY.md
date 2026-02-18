@@ -17,7 +17,7 @@ A **web-based GUI for managing Traefik reverse proxy configuration** integrated 
 - **Active Routes**: 15+ production routes
 - **SSL Certificates**: Let's Encrypt auto-renewal
 - **Configuration**: Hybrid (file provider + Docker labels)
-- **Dynamic Config**: 7+ YAML files in `/home/muut/Infrastructure/traefik/dynamic/`
+- **Dynamic Config**: 7+ YAML files in `/home/deploy/Infrastructure/traefik/dynamic/`
 
 ### Pain Points Identified
 1. Manual YAML editing required (error-prone)
@@ -195,7 +195,7 @@ Admin made changes that broke routing, views backup list, restores previous vers
 
 1. **Ops-Center**: Use existing Keycloak auth, database, UI framework
 2. **Docker**: Mount Docker socket for container discovery
-3. **File System**: Mount Traefik config directory (`/home/muut/Infrastructure/traefik`)
+3. **File System**: Mount Traefik config directory (`/home/deploy/Infrastructure/traefik`)
 4. **Notifications**: Email alerts via existing email provider system
 5. **Monitoring**: Optional Prometheus metrics integration
 

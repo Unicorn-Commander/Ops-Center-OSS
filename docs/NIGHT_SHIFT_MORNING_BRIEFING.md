@@ -58,8 +58,8 @@ All night shift objectives achieved with **100% success rate**. While you slept,
 
 ### 🎉 Result
 **Geeses (ATLAS Multi-Agent System) is now live and accessible at:**
-- `https://your-domain.com/admin/monitoring/geeses`
-- `https://your-domain.com/admin/geeses`
+- `https://unicorncommander.ai/admin/monitoring/geeses`
+- `https://unicorncommander.ai/admin/geeses`
 
 ---
 
@@ -143,7 +143,7 @@ npx playwright test tests/e2e/critical-paths.spec.js
 
 **Run Report**:
 ```bash
-/home/muut/Production/UC-Cloud/services/ops-center/tests/api/validate-endpoints.sh
+/opt/ops-center/tests/api/validate-endpoints.sh
 # Results saved to: /tmp/api_validation_20251028_140029.json
 ```
 
@@ -380,7 +380,7 @@ npx playwright test tests/e2e/critical-paths.spec.js
    - `/.swarm/NIGHT_SHIFT_MISSION.md` (mission log)
 
 ### All Files Location
-**Base Directory**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Base Directory**: `/opt/ops-center/`
 
 ---
 
@@ -389,7 +389,7 @@ npx playwright test tests/e2e/critical-paths.spec.js
 ### Immediate Actions (Today)
 
 1. **✅ Review Deployment**
-   - Navigate to https://your-domain.com/admin/geeses
+   - Navigate to https://unicorncommander.ai/admin/geeses
    - Verify ATLAS Multi-Agent System loads correctly
    - Test navigation from monitoring section
 
@@ -401,10 +401,10 @@ npx playwright test tests/e2e/critical-paths.spec.js
 3. **🧪 Run Tests**
    ```bash
    # API validation
-   /home/muut/Production/UC-Cloud/services/ops-center/tests/api/validate-endpoints.sh
+   /opt/ops-center/tests/api/validate-endpoints.sh
 
    # E2E tests (requires Playwright)
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    npm install --save-dev @playwright/test
    npx playwright test tests/e2e/critical-paths.spec.js
    ```
@@ -501,7 +501,7 @@ If you encounter any issues with the deployed changes:
 2. **Rollback if Needed**:
    ```bash
    # Previous deployment backed up in git
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    git log -1  # See this deployment commit
    # To rollback: Use deployment runbook Section 3
    ```
@@ -526,7 +526,7 @@ While you slept, the autonomous night shift teams successfully:
 **All changes are safe, tested, and production-ready.**
 
 The Geeses (ATLAS Multi-Agent System) is now live and waiting for you at:
-**https://your-domain.com/admin/monitoring/geeses**
+**https://unicorncommander.ai/admin/monitoring/geeses**
 
 Welcome back, and enjoy your fully deployed feature! 🚀
 

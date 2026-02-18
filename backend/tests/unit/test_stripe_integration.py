@@ -35,8 +35,8 @@ class TestStripeCheckoutSession:
                 "quantity": test_cart["items"][0]["quantity"],
             }],
             mode="payment",
-            success_url="https://your-domain.com/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url="https://your-domain.com/cancel",
+            success_url="https://unicorncommander.ai/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url="https://unicorncommander.ai/cancel",
             metadata={
                 "user_id": test_user["user_id"],
                 "cart_id": "cart-123"

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO & PWA Meta Tags -->
+    <meta name="description" content="UC-Cloud Operations Center - Centralized management dashboard for infrastructure, users, billing, and services" />
+    <meta name="theme-color" content="#7c3aed" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Performance Resource Hints -->
+    <!-- DNS prefetch for external domains -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Preconnect for critical third-party origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Prefetch likely next pages (dashboard, services) -->
+    <link rel="prefetch" href="/admin/dashboard" />
+    <link rel="prefetch" href="/admin/services" />
+
+    <!-- Preload critical fonts with optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
+
+    <!-- Logo preloads removed - they caused warnings on admin pages where they're not used -->
+    <!-- Images are loaded on-demand where needed -->
+
+    <!-- Apple Touch Icon for iOS -->
+    <link rel="apple-touch-icon" href="/logos/uc-logo-192.png" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-domain.com/" />
+    <meta property="og:title" content="Ops-Center - UC-Cloud Management" />
+    <meta property="og:description" content="Centralized operations and management dashboard for UC-Cloud infrastructure" />
+    <meta property="og:image" content="/logos/uc-logo-512.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://your-domain.com/" />
+    <meta property="twitter:title" content="Ops-Center - UC-Cloud Management" />
+    <meta property="twitter:description" content="Centralized operations and management dashboard for UC-Cloud infrastructure" />
+    <meta property="twitter:image" content="/logos/uc-logo-512.png" />
+
+    <!-- Umami Analytics - Disabled until Umami is deployed -->
+    <!-- <script defer src="https://umami.your-domain.com/script.js" data-website-id="7a8bd2c2-5482-472b-8242-6a33919f8ba7"></script> -->
+
+    <title>Unicorn Commander Pro - Admin Dashboard</title>
+    <script type="module" crossorigin src="/assets/index-BUhSmHXm.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DhDq90Uh.css">
+  <link rel="manifest" href="/manifest.webmanifest"></head>
+  <body>
+    <!-- Loading indicator (hidden by main.jsx) -->
+    <div id="loading-splash" style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); z-index: 9999;">
+      <div style="text-align: center;">
+        <div style="width: 64px; height: 64px; border: 4px solid rgba(124, 58, 237, 0.2); border-top-color: #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+        <p style="color: #94a3b8; font-family: system-ui, -apple-system, sans-serif;">Loading Ops-Center...</p>
+      </div>
+    </div>
+    <style>
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+
+    <div id="root"></div>
+  </body>
+</html>

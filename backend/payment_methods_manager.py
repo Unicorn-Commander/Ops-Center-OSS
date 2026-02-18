@@ -31,35 +31,32 @@ class PaymentMethodsManager:
 
     async def get_stripe_customer_id(self, user_email: str) -> Optional[str]:
         """
-        Get Stripe customer ID from Lago customer
+        Get Stripe customer ID by looking up via Lago or directly in Stripe.
 
         Args:
-            user_email: User's email address (external_id in Lago)
+            user_email: User's email address
 
         Returns:
             Stripe customer ID or None if not found
         """
+        # Try Lago first if available
+        if self.lago:
+            try:
+                customer = await self.lago.get_customer(user_email)
+                if customer:
+                    stripe_id = customer.get("stripe_customer", {}).get("stripe_customer_id")
+                    if stripe_id:
+                        return stripe_id
+            except Exception as e:
+                logger.warning(f"Lago lookup failed for {user_email}: {e}")
+
+        # Fall back to direct Stripe lookup by email
         try:
-            if not self.lago:
-                logger.error("Lago client not configured")
-                return None
-
-            # Query Lago for customer
-            customer = await self.lago.get_customer(user_email)
-
-            if not customer:
-                logger.warning(f"Customer not found in Lago: {user_email}")
-                return None
-
-            # Get Stripe customer ID from Lago metadata
-            stripe_id = customer.get("stripe_customer", {}).get("stripe_customer_id")
-
-            if not stripe_id:
-                logger.warning(f"Stripe customer ID not found for: {user_email}")
-                return None
-
-            return stripe_id
-
+            customers = stripe.Customer.list(email=user_email, limit=1)
+            if customers.data:
+                return customers.data[0].id
+            logger.warning(f"No Stripe customer found for: {user_email}")
+            return None
         except Exception as e:
             logger.error(f"Error fetching Stripe customer ID: {e}")
             return None

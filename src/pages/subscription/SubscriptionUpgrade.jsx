@@ -133,7 +133,17 @@ export default function SubscriptionUpgrade() {
 
       if (plansRes.ok) {
         const plansData = await plansRes.json();
-        setPlans(plansData);
+        // Handle both {plans: [...]} wrapper and direct array formats
+        const plansArray = plansData.plans || plansData;
+        if (Array.isArray(plansArray)) {
+          setPlans(plansArray);
+        } else {
+          console.error('Unexpected plans data format:', plansData);
+          toast.error('Failed to load plans: unexpected data format');
+        }
+      } else {
+        console.error('Failed to load plans, status:', plansRes.status);
+        toast.error('Failed to load subscription plans');
       }
 
       // Load tier features

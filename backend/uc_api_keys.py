@@ -1,8 +1,8 @@
 """
-UC API Keys Management - User API Keys for calling api.your-domain.com
+UC API Keys Management - User API Keys for calling api.unicorncommander.ai
 
 This module manages UC-specific API keys that users can generate to call
-api.your-domain.com from external systems (Postman, curl, custom apps, etc.)
+api.unicorncommander.ai from external systems (Postman, curl, custom apps, etc.)
 
 Key Features:
 - Generate UC API keys with bcrypt hashing
@@ -190,7 +190,7 @@ async def create_uc_api_key(
     """
     Create a new UC API key for the authenticated user
 
-    This generates a unique API key that can be used to call api.your-domain.com
+    This generates a unique API key that can be used to call api.unicorncommander.ai
     endpoints from external systems (Postman, curl, custom applications).
 
     **IMPORTANT**: The full API key is shown ONLY ONCE in the response. Save it securely.

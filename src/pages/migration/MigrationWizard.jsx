@@ -614,7 +614,7 @@ const MigrationWizard = () => {
                   label="Client IP"
                   value={namecheapAccount.clientIp}
                   onChange={(e) => setNamecheapAccount({ ...namecheapAccount, clientIp: e.target.value })}
-                  placeholder="192.168.1.100"
+                  placeholder="your-server-ip"
                   helperText="Your server's public IP address"
                 />
               </Grid>

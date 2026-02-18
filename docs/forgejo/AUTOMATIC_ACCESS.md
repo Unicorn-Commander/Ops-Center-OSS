@@ -10,18 +10,18 @@
 ### For Users with Tier Access
 
 1. **User Signs Up**
-   - Goes to https://your-domain.com
+   - Goes to https://unicorncommander.ai
    - Clicks SSO login (Google/GitHub/Microsoft)
    - Keycloak creates account with sanitized username
    - Example: `connect@shafenkhan.com` → username: `google.connect`
 
 2. **User Accesses Apps Marketplace**
-   - Goes to https://your-domain.com/my-apps
+   - Goes to https://unicorncommander.ai/my-apps
    - Sees apps based on their subscription tier
    - If tier includes Forgejo → Forgejo card appears
 
 3. **User Clicks Forgejo**
-   - Redirected to https://git.your-domain.com
+   - Redirected to https://git.unicorncommander.ai
    - Clicks "Sign in with Unicorn Commander SSO"
    - Keycloak sends `preferred_username: google.connect`
    - Forgejo auto-creates account with username `google.connect`
@@ -92,7 +92,7 @@
 **OAuth Source**: Unicorn Commander SSO
 - Auto-registration: **Enabled**
 - Client ID: `forgejo`
-- Discovery URL: `https://auth.your-domain.com/realms/uchub/.well-known/openid-configuration`
+- Discovery URL: `https://auth.unicorncommander.ai/realms/uchub/.well-known/openid-configuration`
 
 **Why**: Creates Forgejo account automatically on first SSO login
 
@@ -122,7 +122,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ User visits your-domain.com/my-apps                      │
+│ User visits unicorncommander.ai/my-apps                      │
 └─────────────────┬───────────────────────────────────────────┘
                   │
                   ▼
@@ -156,7 +156,7 @@
                   │
                   ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ User clicks "Open" → https://git.your-domain.com        │
+│ User clicks "Open" → https://git.unicorncommander.ai        │
 └─────────────────┬───────────────────────────────────────────┘
                   │
                   ▼
@@ -188,7 +188,7 @@
 
 1. User signs up via SSO → Gets username `google.alice`
 2. Admin assigns them "Managed" tier
-3. User goes to https://your-domain.com/my-apps
+3. User goes to https://unicorncommander.ai/my-apps
 4. Sees Forgejo card
 5. Clicks "Open" → Auto-logged into Forgejo
 6. Can start using Git immediately
@@ -199,7 +199,7 @@
 
 1. User signs up via SSO
 2. Admin assigns them "Trial" tier (no Forgejo)
-3. User goes to https://your-domain.com/my-apps
+3. User goes to https://unicorncommander.ai/my-apps
 4. Does NOT see Forgejo card
 5. To grant access: Admin updates tier to "Managed" or higher
 6. User refreshes → Forgejo card appears
@@ -246,12 +246,12 @@ WHERE feature_key = 'forgejo'
 ### Test New User Registration
 
 1. **Open incognito browser**
-2. **Go to**: https://your-domain.com
+2. **Go to**: https://unicorncommander.ai
 3. **Click**: Sign in with Google/GitHub
 4. **Create account** (use test email)
 5. **Check Keycloak**: Username should be `google.{name}` or `github.{name}`
 6. **Assign tier**: Give user a tier with Forgejo access
-7. **Go to**: https://your-domain.com/my-apps
+7. **Go to**: https://unicorncommander.ai/my-apps
 8. **Verify**: Forgejo card appears
 9. **Click**: Open → Should auto-login to Forgejo
 10. **Success**: User can create repos immediately!
@@ -301,7 +301,7 @@ If something goes wrong, revert with:
 
 ```bash
 # Get admin token
-TOKEN=$(curl -s -X POST "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+TOKEN=$(curl -s -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=admin" \
   -d "password=your-admin-password" \
@@ -309,7 +309,7 @@ TOKEN=$(curl -s -X POST "https://auth.your-domain.com/realms/master/protocol/ope
   -d "client_id=admin-cli" | jq -r '.access_token')
 
 # Revert realm settings
-curl -X PUT "https://auth.your-domain.com/admin/realms/uchub" \
+curl -X PUT "https://auth.unicorncommander.ai/admin/realms/uchub" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

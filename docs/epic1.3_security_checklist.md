@@ -63,8 +63,8 @@ sudo mkdir /secure/traefik
 sudo mount /dev/mapper/traefik_secure /secure/traefik
 
 # Move acme.json to encrypted partition
-sudo mv /home/muut/Infrastructure/traefik/acme/acme.json /secure/traefik/
-sudo ln -s /secure/traefik/acme.json /home/muut/Infrastructure/traefik/acme/acme.json
+sudo mv /home/deploy/Infrastructure/traefik/acme/acme.json /secure/traefik/
+sudo ln -s /secure/traefik/acme.json /home/deploy/Infrastructure/traefik/acme/acme.json
 
 # Update Traefik docker-compose.yml
 volumes:
@@ -84,8 +84,8 @@ class EncryptedACMEStorage:
 
 - [ ] **Set correct file permissions**
   ```bash
-  sudo chmod 0400 /home/muut/Infrastructure/traefik/acme/acme.json
-  sudo chown muut:traefik-admin /home/muut/Infrastructure/traefik/acme/acme.json
+  sudo chmod 0400 /home/deploy/Infrastructure/traefik/acme/acme.json
+  sudo chown muut:traefik-admin /home/deploy/Infrastructure/traefik/acme/acme.json
   ```
 
 **Acceptance Criteria**:
@@ -134,7 +134,7 @@ async def backup_config(self, filename: Optional[str] = None) -> str:
 
 - [ ] **Set correct backup directory permissions**
   ```bash
-  sudo chmod 0700 /home/muut/Infrastructure/traefik/backups
+  sudo chmod 0700 /home/deploy/Infrastructure/traefik/backups
   ```
 
 - [ ] **Implement backup retention policy**
@@ -170,8 +170,8 @@ INTERNAL_IP_RANGES = [
 ]
 
 ALLOWED_DOMAINS = [
-    "your-domain.com",
-    "*.your-domain.com"
+    "unicorncommander.ai",
+    "*.unicorncommander.ai"
 ]
 
 # Update create_route() function
@@ -207,7 +207,7 @@ async def create_route(route: RouteCreate, admin: Dict = Depends(require_admin))
     if not domain_valid:
         raise HTTPException(
             status_code=400,
-            detail=f"Domain in rule must be under your-domain.com"
+            detail=f"Domain in rule must be under unicorncommander.ai"
         )
 
     # ... continue with existing route creation logic
@@ -217,7 +217,7 @@ async def create_route(route: RouteCreate, admin: Dict = Depends(require_admin))
 - ✅ Cannot create route to `unicorn-postgresql`
 - ✅ Cannot create route to `http://172.20.0.5:5432`
 - ✅ Cannot create route for `attacker.com`
-- ✅ Can create route for `api.your-domain.com`
+- ✅ Can create route for `api.unicorncommander.ai`
 
 ---
 
@@ -440,22 +440,22 @@ sudo groupadd traefik-admin
 sudo usermod -a -G traefik-admin muut
 
 # Set directory permissions
-sudo chmod 0750 /home/muut/Infrastructure/traefik/acme
-sudo chmod 0750 /home/muut/Infrastructure/traefik/dynamic
-sudo chmod 0700 /home/muut/Infrastructure/traefik/backups
+sudo chmod 0750 /home/deploy/Infrastructure/traefik/acme
+sudo chmod 0750 /home/deploy/Infrastructure/traefik/dynamic
+sudo chmod 0700 /home/deploy/Infrastructure/traefik/backups
 
 # Set file permissions
-sudo chmod 0400 /home/muut/Infrastructure/traefik/acme/acme.json
-sudo find /home/muut/Infrastructure/traefik/dynamic -name "*.yml" -exec chmod 0640 {} \;
+sudo chmod 0400 /home/deploy/Infrastructure/traefik/acme/acme.json
+sudo find /home/deploy/Infrastructure/traefik/dynamic -name "*.yml" -exec chmod 0640 {} \;
 
 # Set ownership
-sudo chown -R muut:traefik-admin /home/muut/Infrastructure/traefik/
+sudo chown -R muut:traefik-admin /home/deploy/Infrastructure/traefik/
 
 # Verify
 echo "Verifying permissions..."
-ls -la /home/muut/Infrastructure/traefik/acme/
-ls -la /home/muut/Infrastructure/traefik/dynamic/
-ls -la /home/muut/Infrastructure/traefik/backups/
+ls -la /home/deploy/Infrastructure/traefik/acme/
+ls -la /home/deploy/Infrastructure/traefik/dynamic/
+ls -la /home/deploy/Infrastructure/traefik/backups/
 
 echo "✅ Permissions set successfully"
 ```
@@ -485,7 +485,7 @@ class SecurityAlertManager:
 
         # Email alert
         await self._send_email(
-            to=["security@your-domain.com"],
+            to=["security@unicorncommander.ai"],
             subject=f"🚨 SECURITY ALERT: {event}",
             body=f"""
             Severity: CRITICAL
@@ -619,7 +619,7 @@ Before deploying to production:
 
 ## Emergency Contacts
 
-- **Security Team**: security@your-domain.com
+- **Security Team**: security@unicorncommander.ai
 - **On-Call Engineer**: [PagerDuty rotation]
 - **Incident Response Lead**: [Name/Contact]
 

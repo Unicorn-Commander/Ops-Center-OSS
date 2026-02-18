@@ -113,7 +113,7 @@ const handleDeleteSshKey = async (keyId) => {  // ✅ Changed parameter name
 
 #### Backend Verification Required
 
-Check `/home/muut/Production/UC-Cloud/services/ops-center/backend/local_users_api.py`:
+Check `/opt/ops-center/backend/local_users_api.py`:
 - Ensure SSH keys have unique IDs
 - Ensure DELETE endpoint accepts key ID, not index
 - Add proper error handling for "key not found"

@@ -220,7 +220,7 @@ Authorization: Bearer {token}
 ### Build and Deploy Steps
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # 1. Build frontend
 npm run build
@@ -254,7 +254,7 @@ docker logs ops-center-direct --tail 20
 
 1. **Navigate to Services page**:
    ```
-   https://your-domain.com/admin/services
+   https://unicorncommander.ai/admin/services
    ```
 
 2. **Verify service list loads**:

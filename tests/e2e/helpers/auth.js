@@ -14,8 +14,8 @@
  * @returns {Promise<void>}
  */
 export async function loginViaKeycloak(page, credentials = {}) {
-  const username = credentials.username || process.env.TEST_USERNAME || 'aaron';
-  const password = credentials.password || process.env.TEST_PASSWORD || 'test-password-placeholder';
+  const username = credentials.username || process.env.TEST_USERNAME || 'admin';
+  const password = credentials.password || process.env.TEST_PASSWORD || 'your-admin-password';
 
   console.log(`[Auth] Logging in as: ${username}`);
 
@@ -38,8 +38,7 @@ export async function loginViaKeycloak(page, credentials = {}) {
   }
 
   // Wait for Keycloak login page
-  const authDomain = process.env.AUTH_DOMAIN || 'localhost';
-  await page.waitForURL(new RegExp(`${authDomain.replace('.', '\\.')}.*`), { timeout: 10000 });
+  await page.waitForURL(/auth\.unicorncommander\.ai.*/, { timeout: 10000 });
 
   // Fill in credentials
   await page.fill('input[name="username"], input[id="username"]', username);
@@ -49,8 +48,7 @@ export async function loginViaKeycloak(page, credentials = {}) {
   await page.click('input[type="submit"], button[type="submit"], button:has-text("Sign In")');
 
   // Wait for redirect back to Ops-Center
-  const appDomain = process.env.APP_DOMAIN || 'localhost';
-  await page.waitForURL(new RegExp(appDomain.replace('.', '\\.')), { timeout: 15000 });
+  await page.waitForURL(/unicorncommander\.ai/, { timeout: 15000 });
 
   // Wait for user menu to appear (indicates successful login)
   await page.waitForSelector('[data-testid="user-menu"], .user-menu, [aria-label*="user menu"]', {

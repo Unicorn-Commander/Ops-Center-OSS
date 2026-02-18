@@ -101,7 +101,7 @@ class UsageTracker:
 
             # Redis connection
             self.redis = await aioredis.from_url(
-                f"redis://{os.getenv('REDIS_HOST', 'unicorn-lago-redis')}:{os.getenv('REDIS_PORT', 6379)}",
+                f"redis://{os.getenv('REDIS_HOST', 'unicorn-redis')}:{os.getenv('REDIS_PORT', 6379)}",
                 encoding="utf-8",
                 decode_responses=True
             )

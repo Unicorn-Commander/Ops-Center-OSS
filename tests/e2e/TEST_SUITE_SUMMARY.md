@@ -204,8 +204,8 @@ npm run playwright:install:deps # Install system dependencies
 
 ### Required
 ```bash
-BASE_URL=https://your-domain.com
-TEST_USERNAME=aaron
+BASE_URL=https://unicorncommander.ai
+TEST_USERNAME=admin
 TEST_PASSWORD=your-admin-password
 ```
 
@@ -344,7 +344,7 @@ timeout: 120 * 1000
 cat .env.test
 
 # Test manually
-open https://your-domain.com
+open https://unicorncommander.ai
 ```
 
 #### Browsers not found

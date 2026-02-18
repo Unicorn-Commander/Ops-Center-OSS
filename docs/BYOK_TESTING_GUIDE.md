@@ -1,7 +1,7 @@
 # BYOK UI Testing Guide
 
 **Quick Start**: Access the BYOK management page at:
-- **Production**: https://your-domain.com/admin/account/api-keys
+- **Production**: https://unicorncommander.ai/admin/account/api-keys
 - **Local**: http://localhost:8084/admin/account/api-keys
 
 ---

@@ -14,7 +14,7 @@ Enhanced the `/api/v1/llm/models` endpoint with tier-based filtering, BYOK integ
 ## What Was Changed
 
 ### File Modified
-- **Path**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/litellm_api.py`
+- **Path**: `/opt/ops-center/backend/litellm_api.py`
 - **Lines**: 1405-1605 (200 lines)
 - **Function**: `list_models()`
 

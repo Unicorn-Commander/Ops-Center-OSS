@@ -683,14 +683,14 @@ import { Link } from 'react-router-dom';
 
 **Old Links:**
 ```html
-<a href="https://your-domain.com/admin/models">Manage Models</a>
-<a href="https://your-domain.com/admin/billing">View Billing</a>
+<a href="https://unicorncommander.ai/admin/models">Manage Models</a>
+<a href="https://unicorncommander.ai/admin/billing">View Billing</a>
 ```
 
 **New Links:**
 ```html
-<a href="https://your-domain.com/admin/system/models">Manage Models</a>
-<a href="https://your-domain.com/admin/subscription/plan">View Billing</a>
+<a href="https://unicorncommander.ai/admin/system/models">Manage Models</a>
+<a href="https://unicorncommander.ai/admin/subscription/plan">View Billing</a>
 ```
 
 ### Programmatic Navigation

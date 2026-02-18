@@ -26,7 +26,7 @@ NC='\033[0m' # No Color
 # Check if running from correct directory
 if [ ! -f "testing_lab_api.py" ]; then
     echo -e "${RED}Error: testing_lab_api.py not found${NC}"
-    echo "Please run this script from: /home/muut/Production/UC-Cloud/services/ops-center/backend/"
+    echo "Please run this script from: /opt/ops-center/backend/"
     exit 1
 fi
 
@@ -166,7 +166,7 @@ echo "Next Steps:"
 echo "----------"
 echo ""
 echo "1. Register API in server.py (if not done):"
-echo "   vim /home/muut/Production/UC-Cloud/services/ops-center/backend/server.py"
+echo "   vim /opt/ops-center/backend/server.py"
 echo ""
 echo "2. Restart backend:"
 echo "   docker restart ops-center-direct"

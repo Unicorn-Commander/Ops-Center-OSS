@@ -30,13 +30,13 @@ docker restart ops-center-direct
 
 Get admin session token:
 ```bash
-# Login at: https://your-domain.com/auth/login
+# Login at: https://unicorncommander.ai/auth/login
 # Browser console: document.cookie
 ```
 
 Run tests:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ./test_provider_keys_api.sh "YOUR_SESSION_TOKEN"
 ```
 

@@ -11,7 +11,7 @@
 
 ### 1. Firewall API Router ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/firewall_api.py`
+**File**: `/opt/ops-center/backend/firewall_api.py`
 
 **Statistics**:
 - **Lines of Code**: 667
@@ -33,7 +33,7 @@
 
 ### 2. Rate Limiter (Existing) ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/rate_limiter.py`
+**File**: `/opt/ops-center/backend/rate_limiter.py`
 
 **Status**: Already exists (17KB, 440+ lines)
 
@@ -340,8 +340,8 @@ RATE_LIMIT_ENABLED=true
 
 ### Architecture
 
-- **Epic Spec**: `/home/muut/Production/UC-Cloud/docs/epic1.2_architecture_spec.md`
-- **Network Manager**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/network_manager.py`
+- **Epic Spec**: `/opt/uc-cloud/docs/epic1.2_architecture_spec.md`
+- **Network Manager**: `/opt/ops-center/backend/network_manager.py`
 
 ### Dependencies
 

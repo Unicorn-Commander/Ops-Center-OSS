@@ -47,7 +47,7 @@ def initialize_default_triggers():
     """
     # Get admin email from environment
     admin_email = os.getenv('ADMIN_EMAIL', 'admin@example.com')
-    support_email = os.getenv('SUPPORT_EMAIL', 'support@your-domain.com')
+    support_email = os.getenv('SUPPORT_EMAIL', 'support@unicorncommander.ai')
 
     print(f"Initializing alert triggers...")
     print(f"Admin email: {admin_email}")

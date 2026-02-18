@@ -194,7 +194,7 @@ export default function RecentActivityWidget({ activities, limit = 10, autoRefre
   };
 
   const handleViewAll = () => {
-    navigate('/admin/logs');
+    navigate('/admin/monitoring/logs');
   };
 
   return (

@@ -15,7 +15,7 @@ The Ops-Center has **54+ unprotected admin endpoints** that anyone can access wi
 
 ## Fix #1: Add Authentication to Service Management Endpoints
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Current Code (Line 1263):
 ```python
@@ -63,7 +63,7 @@ async def service_action(
 
 ## Fix #2: Add Authentication to AI Model Management
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -106,7 +106,7 @@ async def switch_vllm_model(
 
 ## Fix #3: Add Authentication to Network Configuration
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -134,7 +134,7 @@ async def configure_network(
 
 ## Fix #4: Add Authentication to Backup & Storage
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -169,7 +169,7 @@ async def delete_backup(
 
 ## Fix #5: Add Authentication to Extensions
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -205,7 +205,7 @@ async def control_extension(
 
 ## Fix #6: Add Authentication to System Updates
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -230,7 +230,7 @@ async def apply_update(
 
 ## Fix #7: Add Authentication to Logs
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -262,7 +262,7 @@ async def export_logs(
 
 ## Fix #8: Add Authentication to Landing Page Customization
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Lines to Update:
 
@@ -299,7 +299,7 @@ async def toggle_service(
 
 ## Fix #9: Add Role Hierarchy Support
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 ### Add after line 2406:
 
@@ -337,7 +337,7 @@ async def require_user(current_user: dict = Depends(get_current_user)):
 
 ## Fix #10: Update Frontend Navigation Filtering
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/src/components/Layout.jsx`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/src/components/Layout.jsx`
 
 ### Replace lines 25-38:
 
@@ -413,7 +413,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 # Login as admin
 ADMIN_TOKEN=$(curl -X POST http://localhost:8084/api/v1/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"ucadmin","password":"your-admin-password"}' \
+  -d '{"username":"ucadmin","password":"MagicUnicorn!8-)"}' \
   | jq -r '.access_token')
 
 # Should succeed
@@ -472,7 +472,7 @@ If issues occur after deployment:
 
 ```bash
 # Stop the service
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 docker-compose down
 
 # Restore backup

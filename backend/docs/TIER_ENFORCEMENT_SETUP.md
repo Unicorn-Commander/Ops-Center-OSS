@@ -4,7 +4,7 @@
 
 This implementation uses **Keycloak** (not Authentik) for subscription tier management and usage tracking. User subscription tiers and API usage counters are stored as Keycloak user attributes.
 
-**Keycloak Instance**: `https://auth.your-domain.com/realms/uchub`
+**Keycloak Instance**: `https://auth.unicorncommander.ai/realms/uchub`
 
 ## Architecture
 
@@ -42,7 +42,7 @@ Add these to your `.env` file or docker-compose environment:
 
 ```bash
 # Keycloak Configuration
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_CLIENT_ID=admin-cli
 KEYCLOAK_ADMIN_USERNAME=admin
@@ -137,7 +137,7 @@ app.include_router(usage_router)
 
 1. Login to Keycloak admin console:
    ```
-   https://auth.your-domain.com/admin/master/console/#/uchub
+   https://auth.unicorncommander.ai/admin/master/console/#/uchub
    ```
 
 2. Go to **Users** → Select user → **Attributes** tab
@@ -175,7 +175,7 @@ asyncio.run(setup_test_user())
 ### 1. Python Unit Tests
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 tests/test_tier_enforcement.py test@example.com
 ```
 
@@ -194,7 +194,7 @@ Expected output:
 
 ```bash
 # First, login to get session
-curl -c /tmp/session.txt -X POST https://your-domain.com/api/v1/auth/login \
+curl -c /tmp/session.txt -X POST https://unicorncommander.ai/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"yourpass"}'
 
@@ -207,7 +207,7 @@ SESSION_FILE=/tmp/session.txt \
 
 ```bash
 # Make authenticated API call
-curl -b /tmp/session.txt https://your-domain.com/api/v1/services -v 2>&1 | grep X-
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services -v 2>&1 | grep X-
 
 # Expected headers:
 X-Tier: trial
@@ -221,7 +221,7 @@ X-API-Calls-Remaining: 99
 
 ```bash
 # Get current usage
-curl -b /tmp/session.txt https://your-domain.com/api/v1/usage/current | jq
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/usage/current | jq
 
 # Expected response:
 {
@@ -304,7 +304,7 @@ curl -b /tmp/session.txt https://your-domain.com/api/v1/usage/current | jq
 ```bash
 # Via Keycloak Admin API
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \
-  "https://auth.your-domain.com/admin/realms/uchub/users?email=test@example.com" | jq '.[] | .attributes'
+  "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=test@example.com" | jq '.[] | .attributes'
 ```
 
 ### Check Application Logs
@@ -317,7 +317,7 @@ docker logs unicorn-ops-center | grep -E "Tier|usage|Keycloak"
 
 ```bash
 curl -b /tmp/session.txt -X POST \
-  https://your-domain.com/api/v1/usage/reset-demo
+  https://unicorncommander.ai/api/v1/usage/reset-demo
 ```
 
 ## Troubleshooting

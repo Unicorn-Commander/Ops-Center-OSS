@@ -54,7 +54,7 @@ docker exec ops-center-direct printenv | grep -E "(KEYCLOAK|POSTGRES|REDIS|LAGO|
 set -e
 
 # Navigate to ops-center directory
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Ensure on correct branch
 git fetch origin
@@ -84,7 +84,7 @@ echo "Deployment prepared: $COMMIT_HASH"
 
 set -e
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install dependencies (if package.json changed)
 npm install
@@ -116,10 +116,10 @@ echo "Frontend build successful"
 
 set -e
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Create database backup BEFORE migration
-BACKUP_FILE="/home/muut/backups/ops-center-db-$(date +%Y%m%d_%H%M%S).sql"
+BACKUP_FILE="/opt/backups/ops-center-db-$(date +%Y%m%d_%H%M%S).sql"
 docker exec unicorn-postgresql pg_dump -U unicorn unicorn_db > "$BACKUP_FILE"
 echo "Database backup created: $BACKUP_FILE"
 
@@ -140,7 +140,7 @@ echo "Database migrations completed"
 
 set -e
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Stop services gracefully
 echo "Stopping ops-center..."
@@ -261,10 +261,10 @@ if [ -z "$HOTFIX_BRANCH" ]; then
     exit 1
 fi
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Create hotfix backup
-BACKUP_DIR="/home/muut/backups/hotfix-$(date +%Y%m%d_%H%M%S)"
+BACKUP_DIR="/opt/backups/hotfix-$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup database
@@ -324,7 +324,7 @@ fi
 PREVIOUS_COMMIT=$(cat /tmp/last_deployment.txt)
 echo "Rolling back to commit: $PREVIOUS_COMMIT"
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Checkout previous commit
 git checkout "$PREVIOUS_COMMIT"
@@ -478,7 +478,7 @@ docker compose -f docker-compose.direct.yml build --no-cache
 **Diagnosis**:
 ```bash
 # Check if frontend files exist
-ls -la /home/muut/Production/UC-Cloud/services/ops-center/public/
+ls -la /opt/ops-center/public/
 
 # Check nginx logs
 docker logs ops-center-direct | grep nginx
@@ -487,7 +487,7 @@ docker logs ops-center-direct | grep nginx
 **Fix**:
 ```bash
 # Rebuild and redeploy frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct

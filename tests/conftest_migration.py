@@ -26,7 +26,7 @@ def mock_namecheap_client():
         'success': True,
         'domains': [
             {
-                'name': 'your-domain.com',
+                'name': 'unicorncommander.ai',
                 'tld': 'ai',
                 'status': 'active',
                 'is_locked': False,
@@ -105,7 +105,7 @@ def sample_active_domain():
     """Sample active domain data"""
     return {
         'id': '550e8400-e29b-41d4-a716-446655440000',
-        'domain': 'your-domain.com',
+        'domain': 'unicorncommander.ai',
         'tld': 'ai',
         'status': 'active',
         'current_nameservers': ['dns1.registrar-servers.com', 'dns2.registrar-servers.com'],
@@ -165,13 +165,13 @@ def sample_basic_dns_records():
         {
             'type': 'A',
             'host': '@',
-            'value': 'YOUR_SERVER_IP',
+            'value': 'your-server-ip',
             'ttl': 1800
         },
         {
             'type': 'CNAME',
             'host': 'www',
-            'value': 'your-domain.com',
+            'value': 'unicorncommander.ai',
             'ttl': 1800
         },
         {
@@ -191,7 +191,7 @@ def sample_microsoft365_dns_records():
         {
             'type': 'A',
             'host': '@',
-            'value': 'YOUR_SERVER_IP',
+            'value': 'your-server-ip',
             'ttl': 1800
         },
         {
@@ -235,7 +235,7 @@ def sample_namecheap_private_email_records():
         {
             'type': 'A',
             'host': '@',
-            'value': 'YOUR_SERVER_IP',
+            'value': 'your-server-ip',
             'ttl': 1800
         },
         {
@@ -311,7 +311,7 @@ def sample_google_workspace_records():
 def sample_all_record_types():
     """Sample DNS records with all supported types"""
     return [
-        {'type': 'A', 'host': '@', 'value': 'YOUR_SERVER_IP', 'ttl': 1800},
+        {'type': 'A', 'host': '@', 'value': 'your-server-ip', 'ttl': 1800},
         {'type': 'AAAA', 'host': '@', 'value': '2606:4700:4700::1111', 'ttl': 1800},
         {'type': 'CNAME', 'host': 'www', 'value': 'example.com', 'ttl': 1800},
         {'type': 'MX', 'host': '@', 'value': 'mail.example.com', 'priority': 10, 'ttl': 3600},
@@ -330,7 +330,7 @@ def sample_all_record_types():
 def detected_microsoft365_service():
     """Detected Microsoft 365 email service"""
     return {
-        'domain': 'your-domain.com',
+        'domain': 'unicorncommander.ai',
         'service_type': 'microsoft365',
         'detected_at': datetime.now().isoformat(),
         'mx_records': ['superiorbsolutions-com.mail.protection.outlook.com'],
@@ -408,7 +408,7 @@ def sample_migration_domain_queue():
     return [
         {
             'id': '770e8400-e29b-41d4-a716-446655440000',
-            'domain': 'your-domain.com',
+            'domain': 'unicorncommander.ai',
             'priority': 'high',
             'status': 'queued',
             'phase': 'queued',
@@ -456,13 +456,13 @@ def sample_dns_backup():
     """Sample DNS backup"""
     return {
         'id': '880e8400-e29b-41d4-a716-446655440000',
-        'domain': 'your-domain.com',
+        'domain': 'unicorncommander.ai',
         'exported_at': datetime.now().isoformat(),
         'exported_by': 'test_user@example.com',
         'original_nameservers': ['dns1.registrar-servers.com', 'dns2.registrar-servers.com'],
         'records': [],  # Will be populated by specific tests
         'format': 'json',
-        'file_path': '/backups/dns/your-domain.com_20251022_120000.json',
+        'file_path': '/backups/dns/unicorncommander.ai_20251022_120000.json',
         'retain_until': (datetime.now() + timedelta(days=90)).isoformat()
     }
 
@@ -480,7 +480,7 @@ def mock_cloudflare_client():
         'success': True,
         'result': {
             'id': 'cf_zone_id_123',
-            'name': 'your-domain.com',
+            'name': 'unicorncommander.ai',
             'status': 'pending',
             'nameservers': ['vera.ns.cloudflare.com', 'walt.ns.cloudflare.com']
         }
@@ -492,7 +492,7 @@ def mock_cloudflare_client():
             'id': 'cf_record_id_123',
             'type': 'A',
             'name': '@',
-            'content': 'YOUR_SERVER_IP',
+            'content': 'your-server-ip',
             'ttl': 1800
         }
     })
@@ -516,7 +516,7 @@ def mock_cloudflare_client():
 def sample_health_check_results():
     """Sample health check results"""
     return {
-        'domain': 'your-domain.com',
+        'domain': 'unicorncommander.ai',
         'check_type': 'full',
         'checked_at': datetime.now().isoformat(),
         'status': 'passed',
@@ -547,7 +547,7 @@ def sample_health_check_results():
             },
             'website_accessibility': {
                 'status': 'passed',
-                'http': {'status_code': 301, 'redirected_to': 'https://your-domain.com'},
+                'http': {'status_code': 301, 'redirected_to': 'https://unicorncommander.ai'},
                 'https': {'status_code': 200, 'accessible': True}
             }
         }

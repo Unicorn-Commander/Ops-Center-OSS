@@ -17,7 +17,7 @@ Usage:
 Environment Variables:
     MCP_USER_ID: Your Ops-Center user ID
     MCP_API_KEY: Your Ops-Center API key
-    MCP_API_URL: Ops-Center API URL (default: https://api.your-domain.com)
+    MCP_API_URL: Ops-Center API URL (default: https://api.unicorncommander.ai)
     MCP_ALLOWED_PATHS: Comma-separated list of allowed paths (default: current directory)
 """
 
@@ -41,7 +41,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Default configuration
-DEFAULT_API_URL = "wss://api.your-domain.com"
+DEFAULT_API_URL = "wss://api.unicorncommander.ai"
 DEFAULT_ALLOWED_PATHS = [str(Path.home())]
 
 class MCPConnector:

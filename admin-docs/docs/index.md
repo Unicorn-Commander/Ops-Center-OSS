@@ -55,7 +55,7 @@ System-wide configuration options and preferences.
 Getting started with the Admin Dashboard is simple:
 
 1. **Access the Dashboard**: Navigate to `http://your-uc1-pro-ip:8084`
-2. **Login**: Use your admin credentials (default: `ucadmin` / `your-admin-password`)
+2. **Login**: Use your admin credentials (default: `ucadmin` / `MagicUnicorn!8-)`)
 3. **Explore**: Use the sidebar navigation to access different management sections
 4. **Get Help**: Press `?` at any time for contextual help
 

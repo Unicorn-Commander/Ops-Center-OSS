@@ -3,7 +3,7 @@
 **Date**: January 12, 2025
 **Status**: PRODUCTION READY
 **Team**: Dynamic Pricing GUI Team Lead
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 
 ---
 
@@ -292,7 +292,7 @@ GET    /users/{user_id}/byok/balance  # Get user's free BYOK credit balance
 
 ### 1. Accessing the Interface
 
-**URL**: https://your-domain.com/admin/system/pricing-management
+**URL**: https://unicorncommander.ai/admin/system/pricing-management
 
 **Requirements**:
 - Admin role required
@@ -438,7 +438,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8084 (Press CTRL+C to quit)
 
 ```bash
 # Build frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 
 # Deploy to public
@@ -660,7 +660,7 @@ Success/Error Alert
 
 The Dynamic Pricing Management GUI is **PRODUCTION READY** and can be used by admins immediately.
 
-**Deployment**: https://your-domain.com/admin/system/pricing-management
+**Deployment**: https://unicorncommander.ai/admin/system/pricing-management
 
 ---
 

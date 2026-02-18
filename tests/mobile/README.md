@@ -24,7 +24,7 @@ This directory contains comprehensive automated tests for mobile responsiveness,
 
 ```bash
 # Install dependencies
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install playwright @axe-core/playwright lighthouse
 
 # Install Playwright browsers
@@ -160,7 +160,7 @@ npx playwright test tests/mobile/mobile-performance.test.js
 export TEST_BASE_URL=http://localhost:8084
 
 # Or pass via command line
-TEST_BASE_URL=https://your-domain.com npx playwright test tests/mobile/
+TEST_BASE_URL=https://unicorncommander.ai npx playwright test tests/mobile/
 ```
 
 ### Playwright Configuration

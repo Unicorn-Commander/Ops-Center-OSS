@@ -84,7 +84,7 @@ No configuration needed - works with sensible defaults:
 
 Run tests:
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 password_policy.py
 ```
 

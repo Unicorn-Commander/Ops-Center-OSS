@@ -3,15 +3,15 @@
 
 set -e
 
-# Configuration - Override with environment variables
-BASE_URL="${BASE_URL:-http://localhost:8084}"
-KEYCLOAK_URL="${KEYCLOAK_URL:-http://localhost:8080}"
-KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
-KEYCLOAK_ADMIN_USER="${KEYCLOAK_ADMIN_USER:-admin}"
-KEYCLOAK_ADMIN_PASSWORD="${KEYCLOAK_ADMIN_PASSWORD:-change-me}"
+# Configuration
+BASE_URL="https://unicorncommander.ai"
+KEYCLOAK_URL="https://auth.unicorncommander.ai"
+KEYCLOAK_REALM="uchub"
+KEYCLOAK_ADMIN_USER="admin"
+KEYCLOAK_ADMIN_PASSWORD="your-admin-password"
 
-# Test user - Override with environment variable
-TEST_EMAIL="${TEST_EMAIL:-test@example.com}"
+# Test user
+TEST_EMAIL="admin@example.com"
 
 # Colors
 GREEN='\033[0;32m'

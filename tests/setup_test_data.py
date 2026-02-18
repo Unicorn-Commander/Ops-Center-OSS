@@ -312,7 +312,7 @@ async def generate_test_credentials():
 
     credentials = {
         "base_url": "http://localhost:8084",
-        "keycloak_url": os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com"),
+        "keycloak_url": os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai"),
         "test_users": {}
     }
 

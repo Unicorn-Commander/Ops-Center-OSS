@@ -77,10 +77,10 @@ INSERT INTO system_settings (key, value, type, category, label, description, def
 ('branding.text_color', '#ffffff', 'string', 'branding', 'Text Color', 'Primary text color (hex format)', '#ffffff', true, false),
 ('branding.tagline', 'Enterprise AI Infrastructure Platform', 'string', 'branding', 'Tagline', 'Short tagline displayed on landing page', 'Enterprise AI Infrastructure Platform', true, false),
 ('branding.description', 'Manage your AI infrastructure, subscriptions, and services from one unified dashboard.', 'string', 'branding', 'Description', 'Longer description for landing page and SEO', 'Manage your AI infrastructure, subscriptions, and services from one unified dashboard.', true, false),
-('branding.support_email', 'support@your-domain.com', 'string', 'branding', 'Support Email', 'Contact email for customer support', 'support@your-domain.com', true, false),
-('branding.support_url', 'https://your-domain.com/support', 'string', 'branding', 'Support URL', 'Link to support/help center', 'https://your-domain.com/support', true, false),
-('branding.terms_url', 'https://your-domain.com/terms', 'string', 'branding', 'Terms of Service URL', 'Link to Terms of Service', 'https://your-domain.com/terms', true, false),
-('branding.privacy_url', 'https://your-domain.com/privacy', 'string', 'branding', 'Privacy Policy URL', 'Link to Privacy Policy', 'https://your-domain.com/privacy', true, false)
+('branding.support_email', 'support@unicorncommander.ai', 'string', 'branding', 'Support Email', 'Contact email for customer support', 'support@unicorncommander.ai', true, false),
+('branding.support_url', 'https://unicorncommander.ai/support', 'string', 'branding', 'Support URL', 'Link to support/help center', 'https://unicorncommander.ai/support', true, false),
+('branding.terms_url', 'https://unicorncommander.ai/terms', 'string', 'branding', 'Terms of Service URL', 'Link to Terms of Service', 'https://unicorncommander.ai/terms', true, false),
+('branding.privacy_url', 'https://unicorncommander.ai/privacy', 'string', 'branding', 'Privacy Policy URL', 'Link to Privacy Policy', 'https://unicorncommander.ai/privacy', true, false)
 ON CONFLICT (key) DO NOTHING;
 
 -- ============================================================================
@@ -102,9 +102,9 @@ ON CONFLICT (key) DO NOTHING;
 INSERT INTO system_settings (key, value, type, category, label, description, default_value, is_public, is_readonly) VALUES
 ('integrations.stripe_enabled', 'true', 'boolean', 'integrations', 'Stripe Integration', 'Enable Stripe payment processing', 'true', false, false),
 ('integrations.openrouter_enabled', 'true', 'boolean', 'integrations', 'OpenRouter Integration', 'Enable OpenRouter LLM models', 'true', false, false),
-('integrations.brigade_url', 'https://brigade.your-domain.com', 'string', 'integrations', 'Brigade URL', 'URL to Unicorn Brigade agent platform', 'https://brigade.your-domain.com', true, false),
-('integrations.open_webui_url', 'https://chat.your-domain.com', 'string', 'integrations', 'Open-WebUI URL', 'URL to Open-WebUI chat interface', 'https://chat.your-domain.com', true, false),
-('integrations.center_deep_url', 'https://search.your-domain.com', 'string', 'integrations', 'Center-Deep URL', 'URL to Center-Deep search engine', 'https://search.your-domain.com', true, false)
+('integrations.brigade_url', 'https://brigade.unicorncommander.ai', 'string', 'integrations', 'Brigade URL', 'URL to Unicorn Brigade agent platform', 'https://brigade.unicorncommander.ai', true, false),
+('integrations.open_webui_url', 'https://chat.unicorncommander.ai', 'string', 'integrations', 'Open-WebUI URL', 'URL to Open-WebUI chat interface', 'https://chat.unicorncommander.ai', true, false),
+('integrations.center_deep_url', 'https://search.unicorncommander.ai', 'string', 'integrations', 'Center-Deep URL', 'URL to Center-Deep search engine', 'https://search.unicorncommander.ai', true, false)
 ON CONFLICT (key) DO NOTHING;
 
 -- ============================================================================

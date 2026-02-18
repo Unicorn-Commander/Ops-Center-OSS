@@ -313,7 +313,7 @@ async def main():
     """Run all tests"""
     print_section("KEYCLOAK ADMIN SUBSCRIPTION MANAGEMENT TESTS")
 
-    print_info("Testing Keycloak integration at: https://auth.your-domain.com/realms/uchub")
+    print_info("Testing Keycloak integration at: https://auth.unicorncommander.ai/realms/uchub")
     print_info("Starting test suite...\n")
 
     tests = [

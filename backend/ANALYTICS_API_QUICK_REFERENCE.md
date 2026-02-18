@@ -1,7 +1,7 @@
 # Analytics & Metering API - Quick Reference
 
 **Date**: November 26, 2025
-**Base URL**: `http://localhost:8084` or `https://your-domain.com`
+**Base URL**: `http://localhost:8084` or `https://unicorncommander.ai`
 
 ---
 

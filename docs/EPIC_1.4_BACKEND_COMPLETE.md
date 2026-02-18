@@ -69,7 +69,7 @@ Get comprehensive storage information
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/storage/info" \
+curl -X GET "https://unicorncommander.ai/api/v1/storage/info" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -97,7 +97,7 @@ List all Docker volumes with details
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/storage/volumes" \
+curl -X GET "https://unicorncommander.ai/api/v1/storage/volumes" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -135,7 +135,7 @@ Get detailed information about a specific volume
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/storage/volumes/vllm-models" \
+curl -X GET "https://unicorncommander.ai/api/v1/storage/volumes/vllm-models" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -173,7 +173,7 @@ Clean up unused volumes, images, logs, and cache
 
 **Example**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/storage/cleanup" \
+curl -X POST "https://unicorncommander.ai/api/v1/storage/cleanup" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -215,7 +215,7 @@ Optimize storage (compress logs, verify integrity)
 
 **Example**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/storage/optimize" \
+curl -X POST "https://unicorncommander.ai/api/v1/storage/optimize" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -249,7 +249,7 @@ Check storage health and get recommendations
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/storage/health" \
+curl -X GET "https://unicorncommander.ai/api/v1/storage/health" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -270,7 +270,7 @@ List all backups with status
   "schedule": "0 2 * * *",
   "last_backup": "2025-10-23T02:00:00",
   "next_backup": "2025-10-24T02:00:00",
-  "backup_location": "/home/muut/Production/UC-Cloud/backups",
+  "backup_location": "/opt/uc-cloud/backups",
   "retention_days": 7,
   "backups": [
     {
@@ -288,7 +288,7 @@ List all backups with status
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/backups" \
+curl -X GET "https://unicorncommander.ai/api/v1/backups" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -321,7 +321,7 @@ Create a new backup
 
 **Example**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/backups/create" \
+curl -X POST "https://unicorncommander.ai/api/v1/backups/create" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -359,7 +359,7 @@ Restore from a backup
 
 **Example**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/backups/backup-20251023-020000/restore" \
+curl -X POST "https://unicorncommander.ai/api/v1/backups/backup-20251023-020000/restore" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -386,7 +386,7 @@ Delete a backup
 
 **Example**:
 ```bash
-curl -X DELETE "https://your-domain.com/api/v1/backups/backup-20251023-020000" \
+curl -X DELETE "https://unicorncommander.ai/api/v1/backups/backup-20251023-020000" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -411,7 +411,7 @@ Verify backup integrity
 
 **Example**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/backups/verify/backup-20251023-020000" \
+curl -X POST "https://unicorncommander.ai/api/v1/backups/verify/backup-20251023-020000" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -429,9 +429,9 @@ Get backup configuration
   "backup_enabled": true,
   "schedule": "0 2 * * *",
   "retention_days": 7,
-  "backup_location": "/home/muut/Production/UC-Cloud/backups",
+  "backup_location": "/opt/uc-cloud/backups",
   "include_paths": [
-    "/home/muut/Production/UC-Cloud/volumes"
+    "/opt/uc-cloud/volumes"
   ],
   "exclude_patterns": [
     "*.tmp",
@@ -443,7 +443,7 @@ Get backup configuration
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/backups/config" \
+curl -X GET "https://unicorncommander.ai/api/v1/backups/config" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -473,7 +473,7 @@ Update backup configuration
   "retention_days": 14,
   "backup_location": "/mnt/backups",
   "include_paths": [
-    "/home/muut/Production/UC-Cloud/volumes"
+    "/opt/uc-cloud/volumes"
   ],
   "exclude_patterns": [
     "*.tmp",
@@ -485,7 +485,7 @@ Update backup configuration
 
 **Example**:
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/backups/config" \
+curl -X PUT "https://unicorncommander.ai/api/v1/backups/config" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -506,7 +506,7 @@ Download a backup file
 
 **Example**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/backups/backup-20251023-020000/download" \
+curl -X GET "https://unicorncommander.ai/api/v1/backups/backup-20251023-020000/download" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -o backup.tar.gz
 ```
@@ -563,7 +563,7 @@ Duration: 0:15:30
 Status: Success
 
 The scheduled system backup has completed successfully.
-Backup Location: /home/muut/Production/UC-Cloud/backups
+Backup Location: /opt/uc-cloud/backups
 
 ---
 UC-Cloud Ops-Center
@@ -763,7 +763,7 @@ boto3>=1.28.0        # For S3-compatible cloud storage
 ### Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 pip install apscheduler boto3
 ```
 
@@ -954,7 +954,7 @@ docker restart ops-center-direct
 **Solution**:
 ```bash
 # Check .env.auth
-grep CLOUD_BACKUP_ENABLED /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+grep CLOUD_BACKUP_ENABLED /opt/ops-center/.env.auth
 
 # Enable cloud backups
 # Edit .env.auth and set:
@@ -985,14 +985,14 @@ docker restart ops-center-direct
 
 #### 4. Permission Denied on Backup Directory
 
-**Error**: "Permission denied: '/home/muut/Production/UC-Cloud/backups'"
+**Error**: "Permission denied: '/opt/uc-cloud/backups'"
 
 **Solution**:
 ```bash
 # Create backup directory with correct permissions
-sudo mkdir -p /home/muut/Production/UC-Cloud/backups
-sudo chown -R 1000:1000 /home/muut/Production/UC-Cloud/backups
-sudo chmod 755 /home/muut/Production/UC-Cloud/backups
+sudo mkdir -p /opt/uc-cloud/backups
+sudo chown -R 1000:1000 /opt/uc-cloud/backups
+sudo chmod 755 /opt/uc-cloud/backups
 
 # Restart container
 docker restart ops-center-direct
@@ -1007,7 +1007,7 @@ docker restart ops-center-direct
 **Solution**:
 ```bash
 # Verify credentials in .env.auth
-grep CLOUD_BACKUP /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+grep CLOUD_BACKUP /opt/ops-center/.env.auth
 
 # Test S3 connection
 docker exec ops-center-direct python3 -c "
@@ -1142,20 +1142,20 @@ async def cleanup_storage(request):
 
 ### New Files
 
-1. `/home/muut/Production/UC-Cloud/services/ops-center/backend/storage_backup_api.py` (678 lines)
+1. `/opt/ops-center/backend/storage_backup_api.py` (678 lines)
    - Complete FastAPI router with all endpoints
    - Storage management (info, volumes, cleanup, optimize, health)
    - Backup management (list, create, restore, delete, verify, config, download)
    - Helper functions for cleanup and verification
 
-2. `/home/muut/Production/UC-Cloud/services/ops-center/backend/backup_scheduler.py` (286 lines)
+2. `/opt/ops-center/backend/backup_scheduler.py` (286 lines)
    - APScheduler integration
    - Cron-based scheduling
    - Email notifications
    - Automatic backup execution
    - Scheduler lifecycle management
 
-3. `/home/muut/Production/UC-Cloud/services/ops-center/backend/cloud_backup.py` (570 lines)
+3. `/opt/ops-center/backend/cloud_backup.py` (570 lines)
    - S3-compatible storage integration
    - Multi-provider support (AWS S3, Backblaze B2, Wasabi, MinIO)
    - Upload/download with multipart support
@@ -1164,12 +1164,12 @@ async def cleanup_storage(request):
 
 ### Modified Files
 
-1. `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py`
+1. `/opt/ops-center/backend/server.py`
    - Added `storage_backup_api` import and router registration
    - Added `backup_scheduler` import and startup/shutdown hooks
    - Registered storage/backup endpoints at `/api/v1/storage` and `/api/v1/backups`
 
-2. `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth`
+2. `/opt/ops-center/.env.auth`
    - Added cloud backup configuration section
    - 10 new environment variables for S3 integration
 

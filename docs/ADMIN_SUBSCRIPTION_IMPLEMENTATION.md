@@ -10,7 +10,7 @@ Successfully implemented a comprehensive admin subscription management system fo
 ## Files Created
 
 ### Backend API
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py`
 
 - Complete FastAPI router with 8 endpoints
 - Admin authentication middleware
@@ -28,7 +28,7 @@ Successfully implemented a comprehensive admin subscription management system fo
 - Usage statistics by tier
 
 ### Frontend Dashboard
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html`
 
 - Modern glassmorphic UI matching UC-1 Pro branding
 - DataTables-powered subscription table (sortable, searchable, paginated)
@@ -46,7 +46,7 @@ Successfully implemented a comprehensive admin subscription management system fo
 - Action buttons (view, edit, reset usage)
 
 ### Tests
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_admin_subscriptions.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_admin_subscriptions.py`
 
 - Comprehensive test suite for all API endpoints
 - Async HTTP client tests
@@ -54,7 +54,7 @@ Successfully implemented a comprehensive admin subscription management system fo
 - Safe testing (read-only by default)
 
 ### Documentation
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/docs/admin-subscription-api.md`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/admin-subscription-api.md`
 
 - Complete API reference
 - Request/response examples
@@ -128,7 +128,7 @@ attributes = {
 ```
 
 ### Server Registration
-Updated `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`:
+Updated `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`:
 
 ```python
 # Line 65: Import router
@@ -140,7 +140,7 @@ logger.info("Admin subscription management registered at /api/v1/admin/subscript
 ```
 
 ### Dashboard Navigation
-Updated `/home/muut/Production/UC-1-Pro/services/ops-center/public/dashboard.html`:
+Updated `/home/deploy/Production/UC-1-Pro/services/ops-center/public/dashboard.html`:
 
 Added subscription management tile visible only to admins:
 ```javascript
@@ -228,7 +228,7 @@ The system tracks and displays:
 ## Testing
 
 ### Manual Testing
-1. Login as admin at https://your-domain.com
+1. Login as admin at https://unicorncommander.ai
 2. Navigate to /admin/subscriptions.html
 3. Verify analytics display correctly
 4. Test table search and sort
@@ -238,7 +238,7 @@ The system tracks and displays:
 
 ### Automated Testing
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 python3 backend/tests/test_admin_subscriptions.py
 ```
 
@@ -255,7 +255,7 @@ AUTHENTIK_URL=http://authentik-server:9000
 AUTHENTIK_BOOTSTRAP_TOKEN=your_token_here
 
 # External URLs
-EXTERNAL_HOST=your-domain.com
+EXTERNAL_HOST=unicorncommander.ai
 EXTERNAL_PROTOCOL=https
 ```
 

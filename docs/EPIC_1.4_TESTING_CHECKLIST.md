@@ -12,7 +12,7 @@
 - [ ] Frontend built: `npm run build`
 - [ ] Files deployed to public: `cp -r dist/* public/`
 - [ ] Ops-Center restarted: `docker restart ops-center-direct`
-- [ ] Access URL: https://your-domain.com/admin/storage
+- [ ] Access URL: https://unicorncommander.ai/admin/storage
 - [ ] Browser: Chrome / Firefox / Safari (circle one)
 - [ ] Browser console open (F12)
 - [ ] No console errors on page load

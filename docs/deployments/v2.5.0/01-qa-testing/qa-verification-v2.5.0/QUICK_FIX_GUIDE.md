@@ -103,7 +103,7 @@ curl http://localhost:8084/api/v1/alerts/history
 
 3. **Add to Environment**:
    ```bash
-   # File: /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+   # File: /opt/ops-center/.env.auth
 
    # Add these lines:
    GRAFANA_API_KEY=<paste-your-token-here>
@@ -133,7 +133,7 @@ After applying all fixes:
 
 ### 1. Rebuild Container
 ```bash
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 
 # Rebuild with --no-cache to ensure changes are picked up
 docker build -t uc-1-pro-ops-center --no-cache services/ops-center/
@@ -180,7 +180,7 @@ curl http://localhost:8084/api/v1/monitoring/grafana/dashboards
 Run complete test suite to verify 90%+ pass rate:
 ```bash
 # Run all tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 -m pytest tests/test_email_alerts.py -v
 python3 -m pytest tests/test_logs_search.py -v
 python3 -m pytest tests/test_grafana_api.py -v
@@ -237,14 +237,14 @@ After deploying to production:
 
 2. **Check Health**:
    ```bash
-   curl https://your-domain.com/api/v1/alerts/health
-   curl https://your-domain.com/api/v1/monitoring/grafana/health
+   curl https://unicorncommander.ai/api/v1/alerts/health
+   curl https://unicorncommander.ai/api/v1/monitoring/grafana/health
    ```
 
 3. **Send Real Alert**:
    ```bash
    # Test actual email delivery
-   curl -X POST https://your-domain.com/api/v1/alerts/test \
+   curl -X POST https://unicorncommander.ai/api/v1/alerts/test \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer YOUR_TOKEN" \
      -d '{"recipient": "admin@example.com"}'
@@ -253,9 +253,9 @@ After deploying to production:
    ```
 
 4. **Verify UI**:
-   - Access: https://your-domain.com/admin/logs
+   - Access: https://unicorncommander.ai/admin/logs
    - Verify: Filters work, logs load
-   - Access: https://your-domain.com/admin/monitoring/grafana
+   - Access: https://unicorncommander.ai/admin/monitoring/grafana
    - Verify: Dashboards appear
 
 ---

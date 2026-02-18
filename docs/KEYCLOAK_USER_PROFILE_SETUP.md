@@ -41,7 +41,7 @@ docker exec ops-center-direct python3 /app/scripts/configure_keycloak_user_profi
 
 ### Step 1: Access Keycloak Admin Console
 
-1. **Open Browser**: Navigate to https://auth.your-domain.com/admin/uchub/console
+1. **Open Browser**: Navigate to https://auth.unicorncommander.ai/admin/uchub/console
 
 2. **Login**:
    - Username: `admin`
@@ -399,8 +399,8 @@ Once configured, these features will work correctly:
 ## Additional Resources
 
 - **Keycloak User Profile Documentation**: https://www.keycloak.org/docs/latest/server_admin/#user-profile
-- **Ops-Center User Management**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/`
-- **Configuration Scripts**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/`
+- **Ops-Center User Management**: `/opt/ops-center/docs/`
+- **Configuration Scripts**: `/opt/ops-center/backend/scripts/`
 
 ---
 

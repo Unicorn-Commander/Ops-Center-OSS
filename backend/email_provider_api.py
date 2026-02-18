@@ -440,7 +440,7 @@ async def get_microsoft_oauth_instructions():
             "Mail.Send",
             "User.Read"
         ],
-        "redirect_uri": "https://your-domain.com/api/v1/email-provider/oauth2/microsoft/callback"
+        "redirect_uri": "https://unicorncommander.ai/api/v1/email-provider/oauth2/microsoft/callback"
     }
 
     return {

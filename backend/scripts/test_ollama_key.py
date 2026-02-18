@@ -23,7 +23,7 @@ POSTGRES_DB = os.getenv("POSTGRES_DB", "unicorn_db")
 BYOK_ENCRYPTION_KEY = os.getenv("BYOK_ENCRYPTION_KEY")
 
 # Expected key
-EXPECTED_KEY = "c19094f8ef024a37885f0fac1febdd1f.nfPbsr46Tw2OjY8brbcUo8ub"
+EXPECTED_KEY = "your-ollama-cloud-api-key"
 
 
 async def main():

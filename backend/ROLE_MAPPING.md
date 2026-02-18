@@ -85,7 +85,7 @@ If no matching groups or roles are found, users are assigned the **viewer** role
 ### Files Modified
 
 1. **role_mapper.py** - New module for role mapping logic
-   - Location: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
+   - Location: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
    - Functions:
      - `map_keycloak_role(user_info)` - Maps Keycloak data to role
      - `add_role_to_user_info(user_info)` - Adds role to user data
@@ -131,7 +131,7 @@ INFO: OAuth callback: User 'john.doe' logged in with role 'power_user'
 Run the role mapper test suite:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 role_mapper.py
 ```
 

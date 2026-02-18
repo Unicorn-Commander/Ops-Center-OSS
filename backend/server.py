@@ -81,8 +81,10 @@ from credit_api import router as credit_router
 from credit_purchase_api import router as credit_purchase_router
 from local_user_api import router as local_user_router
 from org_api import router as org_router
+from org_access_api import router as org_access_router
 from org_manager import org_manager
 from org_billing_api import router as org_billing_router
+from org_features_api import router as org_features_router
 from firewall_api import router as firewall_router
 from cloudflare_api import router as cloudflare_router
 from migration_api import router as migration_router
@@ -107,6 +109,21 @@ from subscription_tiers_api import router as subscription_tiers_router
 from tier_features_api import router as tier_features_router
 from app_definitions_api import router as app_definitions_router
 from routers.forgejo import router as forgejo_router
+
+# Local Inference Module (GPU/Model Management)
+from routers.local_inference import router as local_inference_router
+
+# RAG Services (Infinity Embedding/Reranker Proxy)
+from routers.rag_services import router as rag_services_router
+
+# GPU Services (Unified Infinity + Granite Management)
+from routers.gpu_services import router as gpu_services_router
+
+# Granite API Keys Management
+from routers.granite_keys import router as granite_keys_router
+
+# Billing Analytics API
+from billing_analytics_api import router as billing_analytics_router
 
 # Model List Management API
 from model_list_api import admin_router as model_list_admin_router
@@ -147,6 +164,21 @@ from grafana_api import router as grafana_router
 
 # Umami Analytics Integration (Epic 2.5 - Monitoring)
 from umami_api import router as umami_router
+
+# Umami Dashboard API (January 2026)
+from routers.umami import router as umami_dashboard_router
+
+# Website Uptime Monitor (January 2026)
+from routers.website_monitor import router as website_monitor_router
+
+# Alerts Management API (January 2026)
+from routers.alerts_api import router as alerts_router
+
+# Webhooks Management API (January 2026)
+from routers.webhooks_api import router as webhooks_router
+
+# System Audit Log API (January 2026)
+from routers.audit_api import admin_router as audit_admin_router, internal_router as audit_internal_router
 
 # Prometheus Monitoring API (Epic 3.1)
 from prometheus_api import router as prometheus_router
@@ -190,6 +222,9 @@ from provider_keys_api import router as provider_keys_router
 from uc_api_keys import router as uc_api_keys_router
 from platform_keys_api import router as platform_keys_router
 
+# Service API Keys Management (January 2026) - GUI-configurable service-to-service auth
+from service_keys_api import router as service_keys_router
+
 # LLM Testing Lab API (Epic 3.2 - Unified LLM Management)
 from testing_lab_api import router as testing_lab_router
 
@@ -227,6 +262,11 @@ from brigade_api import router as brigade_router
 from system_metrics_api import router as system_metrics_router
 from metrics_collector import MetricsCollector
 
+# The Colonel AI Command System (Phase 1)
+from routers.colonel import router as colonel_router
+from colonel.websocket_gateway import colonel_gateway
+from colonel.a2a_server import router as colonel_a2a_router
+
 # White-Label Configuration API
 from white_label_api import router as white_label_router
 
@@ -263,7 +303,7 @@ else:
     OAUTH_REDIRECT_URI = f"{EXTERNAL_PROTOCOL}://{EXTERNAL_HOST}:8084/auth/callback"
 
 # Session storage - Redis-backed with 2-hour TTL
-# Configuration: REDIS_HOST=unicorn-lago-redis, REDIS_PORT=6379, SESSION_TTL=7200
+# Configuration: REDIS_HOST=unicorn-redis, REDIS_PORT=6379, SESSION_TTL=7200
 sessions = redis_session_manager
 
 # Security Feature Toggles
@@ -322,68 +362,300 @@ docker_manager = DockerServiceManager()
 # Helper function to get user organization context
 async def get_user_org_context(user_id: str, email: str = None) -> dict:
     """
-    Get organization context for a user from Keycloak attributes.
+    Get organization context for a user from Keycloak attributes or database.
 
     Args:
-        user_id: Keycloak user ID
+        user_id: Keycloak user ID (sub claim)
         email: User's email (optional, for lookup if needed)
 
     Returns:
         Dictionary with org_id, org_name, org_role
         Returns default values if user has no organization
     """
+    # Helper function to check database for organization membership
+    async def check_database_membership(uid: str) -> dict:
+        """Check PostgreSQL for organization membership.
+
+        uid can be either:
+        - Keycloak sub (zitadel_id) - needs to be looked up first
+        - Internal user ID - can be used directly
+        """
+        try:
+            # Use the app's database pool if available
+            if hasattr(app.state, 'db_pool') and app.state.db_pool:
+                async with app.state.db_pool.acquire() as conn:
+                    # First, try to find org membership by joining through users table
+                    # This handles Keycloak sub (zitadel_id) -> internal user ID -> org membership
+                    result = await conn.fetchrow("""
+                        SELECT om.org_id, om.role, o.name as org_name
+                        FROM users u
+                        JOIN organization_members om ON u.id::text = om.user_id
+                        JOIN organizations o ON om.org_id = o.id
+                        WHERE u.zitadel_id = $1
+                        LIMIT 1
+                    """, uid)
+
+                    if result:
+                        logger.info(f"Found org membership in database for Keycloak user {uid}: {result['org_id']}")
+                        return {
+                            "org_id": str(result["org_id"]),
+                            "org_name": result["org_name"],
+                            "org_role": result["role"].lower() if result["role"] else "member"
+                        }
+
+                    # Fallback: try direct user_id lookup (for internal IDs)
+                    result = await conn.fetchrow("""
+                        SELECT om.org_id, om.role, o.name as org_name
+                        FROM organization_members om
+                        JOIN organizations o ON om.org_id = o.id
+                        WHERE om.user_id = $1
+                        LIMIT 1
+                    """, uid)
+
+                    if result:
+                        logger.info(f"Found org membership in database for user {uid}: {result['org_id']}")
+                        return {
+                            "org_id": str(result["org_id"]),
+                            "org_name": result["org_name"],
+                            "org_role": result["role"].lower() if result["role"] else "member"
+                        }
+            else:
+                logger.warning("Database pool not available for org membership lookup")
+        except Exception as db_err:
+            logger.error(f"Database lookup for org membership failed: {db_err}")
+
+        return {"org_id": None, "org_name": None, "org_role": None}
+
     try:
         # Import here to avoid circular dependency
         from keycloak_integration import get_user_by_email, _get_attr_value
 
-        # Get user from Keycloak
+        # First, try Keycloak lookup
+        org_id = None
+        org_name = None
+        org_role = "member"
+
         if email:
             user = await get_user_by_email(email)
+            if user:
+                # Extract organization attributes from Keycloak user
+                attrs = user.get("attributes", {})
+                org_id = _get_attr_value(attrs, "org_id")
+                org_name = _get_attr_value(attrs, "org_name")
+                org_role = _get_attr_value(attrs, "org_role", "member")
+            else:
+                logger.warning(f"User not found in Keycloak: {email}")
         else:
-            # If we only have user_id, we'd need to fetch by ID
-            # For now, return defaults
-            logger.warning(f"Cannot fetch org context for user_id {user_id} without email")
-            return {
-                "org_id": None,
-                "org_name": None,
-                "org_role": None
-            }
+            logger.warning(f"Cannot fetch org context from Keycloak for user_id {user_id} without email")
 
-        if not user:
-            logger.warning(f"User not found in Keycloak: {email}")
-            return {
-                "org_id": None,
-                "org_name": None,
-                "org_role": None
-            }
+        # If Keycloak doesn't have org info, check the database
+        if not org_id and user_id:
+            logger.info(f"Keycloak has no org info for user {user_id}, checking database...")
+            db_result = await check_database_membership(user_id)
+            if db_result.get("org_id"):
+                return db_result
 
-        # Extract organization attributes from Keycloak user
-        attrs = user.get("attributes", {})
-
-        org_id = _get_attr_value(attrs, "org_id")
-        org_name = _get_attr_value(attrs, "org_name")
-        org_role = _get_attr_value(attrs, "org_role", "member")
+        # Fallback to file-backed org manager if database doesn't have membership
+        if not org_id and user_id:
+            try:
+                from org_manager import org_manager
+                user_orgs = org_manager.get_user_orgs(user_id)
+                if user_orgs:
+                    org = user_orgs[0]
+                    org_role = org_manager.get_user_role_in_org(org.id, user_id) or "member"
+                    logger.info(f"Found org membership in file store for user {user_id}: {org.id}")
+                    return {
+                        "org_id": org.id,
+                        "org_name": org.name,
+                        "org_role": org_role
+                    }
+            except Exception as org_err:
+                logger.error(f"File store lookup for org membership failed: {org_err}")
 
         return {
             "org_id": org_id,
             "org_name": org_name,
             "org_role": org_role
         }
-
     except Exception as e:
         logger.error(f"Error getting user org context: {e}")
         return {
             "org_id": None,
             "org_name": None,
-            "org_role": None
+            "org_role": "member"
         }
+
+
+async def auto_provision_user_org(user_id: str, email: Optional[str], display_name: str) -> dict:
+    """
+    Create a default organization and assign the user as owner when no org is found.
+    Mirrors signup provisioning for Keycloak-only users.
+    """
+    from org_manager import org_manager
+
+    # Build a unique org name
+    base_name = f"{display_name}'s Organization" if display_name else "My Organization"
+    org_name = base_name
+    attempt = 1
+    while True:
+        try:
+            org_id = org_manager.create_organization(
+                name=org_name,
+                plan_tier="founders_friend"
+            )
+            break
+        except ValueError as e:
+            if "already exists" not in str(e).lower() or attempt >= 5:
+                raise
+            attempt += 1
+            org_name = f"{base_name} ({attempt})"
+
+    # Add user as owner
+    org_manager.add_user_to_org(
+        org_id=org_id,
+        user_id=user_id,
+        role="owner"
+    )
+
+    # Write to Postgres for org-centric APIs (best-effort)
+    try:
+        if hasattr(app.state, 'db_pool') and app.state.db_pool:
+            async with app.state.db_pool.acquire() as conn:
+                # Detect available columns to support multiple schema variants
+                org_columns = await conn.fetch(
+                    """
+                    SELECT column_name
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public' AND table_name = 'organizations'
+                    """
+                )
+                org_column_names = {row["column_name"] for row in org_columns}
+
+                def slugify(value: str) -> str:
+                    return re.sub(r"[^a-z0-9-]", "", value.lower().replace(" ", "-"))
+
+                org_values = {
+                    "id": org_id,
+                    "name": org_name,
+                    "display_name": org_name,
+                    "slug": slugify(org_name) if "slug" in org_column_names else None,
+                    "plan_tier": "founders_friend",
+                    "status": "active",
+                    "is_active": True,
+                    "max_seats": 1,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                }
+
+                insert_org_cols = [c for c in org_values if c in org_column_names]
+                if "id" in insert_org_cols and "name" in insert_org_cols:
+                    placeholders = ", ".join(f"${i}" for i in range(1, len(insert_org_cols) + 1))
+                    cols_sql = ", ".join(insert_org_cols)
+                    values = [org_values[c] for c in insert_org_cols]
+                    await conn.execute(
+                        f"""
+                        INSERT INTO organizations ({cols_sql})
+                        VALUES ({placeholders})
+                        ON CONFLICT (id) DO NOTHING
+                        """,
+                        *values
+                    )
+
+                member_columns = await conn.fetch(
+                    """
+                    SELECT column_name
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public' AND table_name = 'organization_members'
+                    """
+                )
+                member_column_names = {row["column_name"] for row in member_columns}
+
+                org_id_column = "org_id" if "org_id" in member_column_names else (
+                    "organization_id" if "organization_id" in member_column_names else None
+                )
+
+                if org_id_column and "user_id" in member_column_names and "role" in member_column_names:
+                    member_values = {
+                        org_id_column: org_id,
+                        "user_id": user_id,
+                        "role": "owner",
+                        "joined_at": datetime.utcnow(),
+                        "is_active": True
+                    }
+                    insert_member_cols = [c for c in member_values if c in member_column_names]
+                    member_placeholders = ", ".join(f"${i}" for i in range(1, len(insert_member_cols) + 1))
+                    member_cols_sql = ", ".join(insert_member_cols)
+                    member_values_list = [member_values[c] for c in insert_member_cols]
+                    await conn.execute(
+                        f"""
+                        INSERT INTO organization_members ({member_cols_sql})
+                        VALUES ({member_placeholders})
+                        ON CONFLICT DO NOTHING
+                        """,
+                        *member_values_list
+                    )
+    except Exception as db_error:
+        logger.error(f"Failed to write org provisioning data to Postgres: {db_error}")
+
+    # Update Keycloak attributes if available
+    if KEYCLOAK_ENABLED and email:
+        try:
+            from keycloak_integration import update_user_attributes
+            await update_user_attributes(email, {
+                "subscription_tier": ["trial"],
+                "subscription_status": ["active"],
+                "org_id": [org_id],
+                "org_name": [org_name],
+                "org_role": ["owner"]
+            })
+        except Exception as keycloak_error:
+            logger.error(f"Failed to update Keycloak attributes for {email}: {keycloak_error}")
+
+    # Create Lago subscription for the organization (best-effort)
+    try:
+        from lago_integration import subscribe_org_to_plan, LagoIntegrationError
+        subscription = await subscribe_org_to_plan(
+            org_id=org_id,
+            plan_code="founders_friend",
+            org_name=org_name,
+            email=email or "",
+            user_id=user_id
+        )
+        if subscription and subscription.get("lago_id"):
+            org_manager.update_org_billing_ids(
+                org_id=org_id,
+                lago_id=subscription.get("lago_id")
+            )
+    except LagoIntegrationError as lago_error:
+        logger.error(f"Failed to create Lago subscription for org {org_id}: {lago_error}")
+    except Exception as lago_error:
+        logger.error(f"Unexpected error creating Lago subscription for org {org_id}: {lago_error}")
+
+    # Create credit account (best-effort)
+    try:
+        from credit_system import credit_manager
+        await credit_manager.initialize()
+        await credit_manager.create_user_credits(
+            user_id=email or user_id,
+            tier="trial"
+        )
+    except Exception as credit_error:
+        logger.error(f"Failed to create credit account during auto-provision for {email}: {credit_error}")
+
+    logger.info(f"Auto-provisioned org {org_id} for user {user_id}")
+    return {
+        "org_id": org_id,
+        "org_name": org_name,
+        "org_role": "owner"
+    }
+
 
 # CORS configuration (Security Team - Nov 12, 2025)
 # Restrict origins to known domains for security
 allowed_origins = [
-    "https://your-domain.com",
-    "https://api.your-domain.com",
-    "https://auth.your-domain.com",
+    "https://unicorncommander.ai",
+    "https://api.unicorncommander.ai",
+    "https://auth.unicorncommander.ai",
     "http://localhost:8084",
     "http://localhost:3000",
     "http://localhost:5173",  # Vite dev server
@@ -467,7 +739,14 @@ csrf_protect, csrf_middleware_factory = create_csrf_protection(
         "/api/v1/org/",  # Organization management API - CRUD operations
         "/api/v1/org",    # Organization management API (without trailing slash)
         "/api/v1/alerts/",  # Email alert system - REST API operations
-        "/api/v1/logs/"  # Log search system - REST API operations
+        "/api/v1/logs/",  # Log search system - REST API operations
+        "/api/v1/website-monitor/",  # Website uptime monitoring - REST API operations
+        "/api/v1/umami/",  # Umami analytics dashboard - REST API operations
+        "/api/v1/my-apps/",  # Apps marketplace - REST API operations
+        "/api/v1/credits/",  # Credit system - REST API operations
+        "/api/v1/subscriptions/",  # Subscription management - REST API operations
+        "/api/v1/system/",  # System status - REST API operations
+        "/api/v1/billing/",  # Billing analytics - REST API operations
     },
     sessions_store=sessions,
     cookie_secure=COOKIE_SECURE
@@ -529,7 +808,7 @@ async def startup_event():
         logger.info("PostgreSQL connection pool created")
 
         # Create Redis client
-        redis_url = os.getenv('REDIS_URL', f"redis://{os.getenv('REDIS_HOST', 'unicorn-lago-redis')}:{os.getenv('REDIS_PORT', '6379')}")
+        redis_url = os.getenv('REDIS_URL', f"redis://{os.getenv('REDIS_HOST', 'unicorn-redis')}:{os.getenv('REDIS_PORT', '6379')}")
         redis_client = aioredis.from_url(
             redis_url,
             encoding="utf-8",
@@ -599,7 +878,8 @@ async def startup_event():
 
     # Start alert checker (Epic 2.5)
     try:
-        from alert_manager import alert_manager
+        from alert_manager import AlertManager
+        alert_manager = AlertManager()
         asyncio.create_task(check_alerts_periodically())
         logger.info("Alert checker started successfully")
     except Exception as e:
@@ -612,7 +892,8 @@ async def check_alerts_periodically():
     Background task that checks for system alerts every 60 seconds.
     Epic 2.5: Admin Dashboard Polish - Analytics Lead
     """
-    from alert_manager import alert_manager
+    from alert_manager import AlertManager
+    alert_manager = AlertManager()
 
     while True:
         try:
@@ -750,9 +1031,17 @@ logger.info("Local User Management API endpoints registered at /api/v1/local-use
 app.include_router(org_router)
 logger.info("Organization Management API endpoints registered at /api/v1/org")
 
+# Register Org-Centric Access endpoints (multi-tenancy)
+app.include_router(org_access_router)
+logger.info("Org-Centric Access API endpoints registered at /api/v1/users/me")
+
 # Register Organization Billing endpoints
 app.include_router(org_billing_router)
 logger.info("Organization Billing API endpoints registered at /api/v1/org-billing")
+
+# Register Organization Features Admin endpoints
+app.include_router(org_features_router)
+logger.info("Organization Features Admin API endpoints registered at /api/v1/admin/orgs/{org_id}/features")
 
 # Register Firewall Management endpoints
 app.include_router(firewall_router)
@@ -775,6 +1064,19 @@ app.include_router(invite_codes_admin_router)
 logger.info("Invite Codes Admin API endpoints registered at /api/v1/admin/invite-codes")
 app.include_router(invite_codes_user_router)
 logger.info("Invite Codes User API endpoints registered at /api/v1/invite-codes")
+
+# Alerts Management (January 2026)
+app.include_router(alerts_router)
+logger.info("Alerts Management API endpoints registered at /api/v1/monitoring/alerts")
+
+# Webhooks Management (January 2026)
+app.include_router(webhooks_router)
+logger.info("Webhooks Management API endpoints registered at /api/v1/admin/webhooks")
+
+# System Audit Log (January 2026)
+app.include_router(audit_admin_router)
+app.include_router(audit_internal_router)
+logger.info("System Audit Log API endpoints registered at /api/v1/admin/audit-log, /api/v1/audit/log")
 
 # Keycloak Status API
 app.include_router(keycloak_status_router)
@@ -815,6 +1117,26 @@ logger.info("LiteLLM routing API endpoints registered at /api/v1/llm")
 app.include_router(forgejo_router)
 logger.info("Forgejo API endpoints registered at /api/v1/forgejo")
 
+# Local Inference Module (GPU/Model Management) - January 2026
+app.include_router(local_inference_router)
+logger.info("Local Inference API endpoints registered at /api/v1/local-inference")
+
+# RAG Services (Infinity Embedding/Reranker Proxy) - January 2026
+app.include_router(rag_services_router)
+logger.info("RAG Services API endpoints registered at /api/v1/rag-services")
+
+# GPU Services (Unified Infinity + Granite Management) - January 2026
+app.include_router(gpu_services_router)
+logger.info("GPU Services API endpoints registered at /api/v1/gpu-services")
+
+# Granite API Keys Management - February 2026
+app.include_router(granite_keys_router)
+logger.info("Granite API Keys endpoints registered at /api/v1/granite-keys")
+
+# Billing Analytics API
+app.include_router(billing_analytics_router)
+logger.info("Billing Analytics API endpoints registered at /api/v1/billing/analytics")
+
 # Model List Management API
 app.include_router(model_list_admin_router)
 app.include_router(model_list_user_router)
@@ -841,6 +1163,10 @@ app.include_router(uc_api_keys_router)
 logger.info("UC API Keys endpoints registered at /api/v1/account/uc-api-keys")
 app.include_router(platform_keys_router)
 logger.info("Platform Keys Management endpoints registered at /api/v1/admin/platform-keys (Admin only)")
+
+# Service API Keys Management (January 2026)
+app.include_router(service_keys_router)
+logger.info("Service Keys Management endpoints registered at /api/v1/admin/service-keys (Admin only)")
 
 # Platform Settings API
 app.include_router(platform_settings_router)
@@ -906,6 +1232,14 @@ logger.info("System Metrics API endpoints registered at /api/v1/system")
 # Umami Analytics API (Epic 2.5 - Monitoring)
 app.include_router(umami_router)
 logger.info("Umami Analytics API endpoints registered at /api/v1/monitoring/umami")
+
+# Umami Dashboard API (January 2026)
+app.include_router(umami_dashboard_router)
+logger.info("Umami Dashboard API endpoints registered at /api/v1/umami")
+
+# Website Uptime Monitor (January 2026)
+app.include_router(website_monitor_router)
+logger.info("Website Monitor API endpoints registered at /api/v1/website-monitor")
 
 # Prometheus Monitoring API (Epic 3.1)
 app.include_router(prometheus_router)
@@ -990,6 +1324,11 @@ app.include_router(dynamic_pricing_router)
 from pricing_packages_api import router as pricing_packages_router
 app.include_router(pricing_packages_router)
 logger.info("Dynamic Pricing Management API endpoints registered at /api/v1/pricing")
+
+# The Colonel AI Command System
+app.include_router(colonel_router)
+app.include_router(colonel_a2a_router)
+logger.info("🎖️ Colonel AI Command System registered at /api/v1/colonel + A2A at /.well-known/agent.json")
 
 # CSRF Token Endpoint removed - see line 2897 for the full implementation that handles unauthenticated users
 
@@ -1479,6 +1818,12 @@ class GlobalModelSettings(BaseModel):
     default_retention: str = "keep"
     default_context_size: int = 16384
 
+# Colonel WebSocket endpoint for streaming AI chat
+@app.websocket("/ws/colonel")
+async def colonel_websocket(websocket: WebSocket):
+    """WebSocket endpoint for Colonel AI chat with streaming LLM responses."""
+    await colonel_gateway.handle_websocket(websocket)
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -1905,6 +2250,14 @@ async def get_current_user(request: Request):
     if not session_token or session_token not in sessions:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
+
+async def get_current_user_optional(request: Request) -> Optional[dict]:
+    """Get current user if authenticated, otherwise return None (doesn't fail)"""
+    session_token = request.cookies.get("session_token")
+
+    if not session_token or session_token not in sessions:
+        return None
+
     session = sessions[session_token]
     user_data = session.get("user", {})
 
@@ -1951,8 +2304,8 @@ async def require_user(current_user: dict = Depends(get_current_user)):
 # API Routes
 
 @app.get("/api/v1/system/status")
-async def get_system_status(current_user: dict = Depends(get_current_user)):
-    """Get current system resource usage with enhanced monitoring (authenticated users only)"""
+async def get_system_status(current_user: Optional[dict] = Depends(get_current_user_optional)):
+    """Get current system resource usage with enhanced monitoring (works with or without auth)"""
     try:
         # Try enhanced monitoring first
         if ENHANCED_MONITORING:
@@ -2335,38 +2688,6 @@ async def get_service_urls():
         "external_protocol": external_protocol,
         "service_urls": service_urls
     }
-
-@app.get("/api/v1/geeses/agent-card")
-async def get_geeses_agent_card():
-    """
-    Get Geeses Navigator Agent Card (Brigade A2A protocol compatible)
-    Returns the agent definition JSON for Navigator Geeses
-    """
-    try:
-        agent_card_path = os.path.join(os.path.dirname(__file__), "../geeses/architecture/geeses-agent.json")
-
-        # Try alternate path if not found
-        if not os.path.exists(agent_card_path):
-            agent_card_path = os.path.join(os.path.dirname(__file__), "geeses/architecture/geeses-agent.json")
-
-        if not os.path.exists(agent_card_path):
-            raise HTTPException(
-                status_code=404,
-                detail="Agent card not found. Ensure geeses/architecture/geeses-agent.json exists."
-            )
-
-        with open(agent_card_path, 'r') as f:
-            agent_card = json.load(f)
-
-        return agent_card
-
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Geeses agent card file not found")
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Invalid JSON in agent card file")
-    except Exception as e:
-        logger.error(f"Error loading Geeses agent card: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to load agent card: {str(e)}")
 
 @app.post("/api/v1/landing/service/{service_id}")
 async def update_landing_service(
@@ -3835,9 +4156,9 @@ async def logout(request: Request, current_user: dict = Depends(get_current_user
             del sessions[session_token]
 
         # Build Keycloak logout URL with id_token_hint (required for auto-logout)
-        keycloak_external_url = os.getenv("KEYCLOAK_EXTERNAL_URL", "https://auth.your-domain.com")
+        keycloak_external_url = os.getenv("KEYCLOAK_EXTERNAL_URL", "https://auth.unicorncommander.ai")
         keycloak_realm = os.getenv("KEYCLOAK_REALM", "uchub")
-        external_host = os.getenv("EXTERNAL_HOST", "your-domain.com")
+        external_host = os.getenv("EXTERNAL_HOST", "unicorncommander.ai")
         external_protocol = os.getenv("EXTERNAL_PROTOCOL", "https")
 
         # Our logout confirmation page URL (where Keycloak will redirect after clearing session)
@@ -4006,14 +4327,19 @@ async def get_csrf_token_endpoint(request: Request):
 
     # Set session_token cookie if this is a new session
     if new_session_token:
-        response.set_cookie(
-            key="session_token",
-            value=new_session_token,
-            httponly=True,
-            secure=False,  # Set to True in production with HTTPS
-            samesite="lax",
-            max_age=7200  # 2 hours, matching Redis TTL
-        )
+        cookie_kwargs = {
+            "key": "session_token",
+            "value": new_session_token,
+            "httponly": True,
+            "secure": (EXTERNAL_PROTOCOL == "https"),
+            "samesite": "none",
+            "max_age": 7200,  # 2 hours, matching Redis TTL
+            "path": "/"
+        }
+        # Set domain for cross-subdomain cookie sharing
+        if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
+            cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
+        response.set_cookie(**cookie_kwargs)
 
     return response
 
@@ -4850,25 +5176,34 @@ async def register_user(request: Request):
             "org_role": "owner"
         })
 
-        response.set_cookie(
-            key="session_token",
-            value=session_token,
-            httponly=True,
-            secure=False,  # Set to True in production with HTTPS
-            samesite="lax",
-            max_age=7200  # 2 hours
-        )
+        # Build cookie kwargs for cross-subdomain support
+        session_cookie_kwargs = {
+            "key": "session_token",
+            "value": session_token,
+            "httponly": True,
+            "secure": (EXTERNAL_PROTOCOL == "https"),
+            "samesite": "none",
+            "max_age": 7200,  # 2 hours
+            "path": "/"
+        }
+        if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
+            session_cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
+        response.set_cookie(**session_cookie_kwargs)
 
         # Also set CSRF token cookie for double-submit pattern
         csrf_token = sessions[session_token]["csrf_token"]
-        response.set_cookie(
-            key="csrf_token",
-            value=csrf_token,
-            httponly=False,  # Must be accessible to JavaScript
-            secure=False,  # Set to True in production with HTTPS
-            samesite="lax",
-            max_age=86400  # 24 hours
-        )
+        csrf_cookie_kwargs = {
+            "key": "csrf_token",
+            "value": csrf_token,
+            "httponly": False,  # Must be accessible to JavaScript
+            "secure": (EXTERNAL_PROTOCOL == "https"),
+            "samesite": "none",
+            "max_age": 86400,  # 24 hours
+            "path": "/"
+        }
+        if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
+            csrf_cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
+        response.set_cookie(**csrf_cookie_kwargs)
 
         return response
 
@@ -5023,7 +5358,7 @@ async def direct_login(request: Request, credentials: dict):
         keycloak_realm = os.getenv("KEYCLOAK_REALM", "master")
 
         # Try to authenticate using Keycloak's password flow
-        auth_url = "https://auth.yoda.your-domain.com" if "yoda.your-domain.com" in str(request.url) else f"https://auth.{EXTERNAL_HOST}"
+        auth_url = "https://auth.yoda.unicorncommander.ai" if "yoda.unicorncommander.ai" in str(request.url) else f"https://auth.{EXTERNAL_HOST}"
 
         # Use OAuth password grant with Keycloak endpoints
         token_url = f"{auth_url}/realms/{keycloak_realm}/protocol/openid-connect/token"
@@ -5070,6 +5405,24 @@ async def direct_login(request: Request, credentials: dict):
                     # Get organization context for the user
                     email = user_info.get('email')
                     org_context = await get_user_org_context(user_id, email)
+                    auto_provisioned = False
+
+                    # Auto-provision org for Keycloak-only users with no org context
+                    if not org_context.get("org_id") and role != "admin":
+                        display_name = (
+                            user_info.get("name")
+                            or user_info.get("preferred_username")
+                            or username
+                        )
+                        try:
+                            org_context = await auto_provision_user_org(
+                                user_id=user_id,
+                                email=email,
+                                display_name=display_name
+                            )
+                            auto_provisioned = True
+                        except Exception as provision_error:
+                            logger.error(f"Auto-provisioning org failed for {email}: {provision_error}")
 
                     # Create session with org data
                     session_token = base64.urlsafe_b64encode(secrets.token_bytes(32)).decode('utf-8')
@@ -5089,14 +5442,19 @@ async def direct_login(request: Request, credentials: dict):
 
                     # Create response with session cookie
                     response = JSONResponse({"success": True, "user": user_info})
-                    response.set_cookie(
-                        key="session_token",
-                        value=session_token,
-                        httponly=True,
-                        secure=("https" in str(request.url)),
-                        samesite="lax",
-                        max_age=86400  # 24 hours
-                    )
+                    # Build cookie kwargs for cross-subdomain support
+                    login_cookie_kwargs = {
+                        "key": "session_token",
+                        "value": session_token,
+                        "httponly": True,
+                        "secure": (EXTERNAL_PROTOCOL == "https"),
+                        "samesite": "none",
+                        "max_age": 86400,  # 24 hours
+                        "path": "/"
+                    }
+                    if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
+                        login_cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
+                    response.set_cookie(**login_cookie_kwargs)
                     return response
             else:
                 # Authentication failed
@@ -5133,12 +5491,14 @@ async def direct_login(request: Request, credentials: dict):
 async def oauth_login(request: Request):
     """Redirect to Authentik OAuth authorization"""
     state = secrets.token_urlsafe(32)
-    sessions[state] = {"created": time.time()}
+    # Capture return_url for post-login redirect
+    return_url = request.query_params.get("return_url")
+    sessions[state] = {"created": time.time(), "return_url": return_url}
     
     # Build redirect URI based on the request host
-    if "yoda.your-domain.com" in str(request.url):
-        redirect_uri = "https://yoda.your-domain.com/auth/callback"
-        auth_base = "https://auth.yoda.your-domain.com"
+    if "yoda.unicorncommander.ai" in str(request.url):
+        redirect_uri = "https://yoda.unicorncommander.ai/auth/callback"
+        auth_base = "https://auth.yoda.unicorncommander.ai"
     else:
         # Use the external host from environment
         redirect_uri = f"https://{EXTERNAL_HOST}/auth/callback"
@@ -5302,6 +5662,7 @@ async def oauth_callback(request: Request, code: str, state: str = None):
                     # Get organization context for the user
                     email = user_info.get('email')
                     org_context = await get_user_org_context(user_id, email)
+                    auto_provisioned = False  # Initialize for subscription check logic
 
                     # Create session with org data (store id_token for logout!)
                     session_token = secrets.token_urlsafe(32)
@@ -5324,28 +5685,62 @@ async def oauth_callback(request: Request, code: str, state: str = None):
                     # Check if user has active subscription (UNLESS they're an admin)
                     user_role = user_info.get("role", "viewer")
                     org_id = org_context.get("org_id")
+
+                    # Check for return_url from login flow (stored with state)
+                    stored_return_url = None
+                    if state:
+                        try:
+                            state_data = sessions.get(state)
+                            if state_data and isinstance(state_data, dict):
+                                stored_return_url = state_data.get("return_url")
+                                print(f"Found stored return_url: {stored_return_url}")
+                        except Exception as e:
+                            print(f"Could not retrieve state data: {e}")
+
                     redirect_url = "/"  # Default to landing page
 
                     # Admins bypass payment gate entirely
                     if user_role == "admin":
                         print(f"User is admin, bypassing subscription check - direct access to landing page")
                         redirect_url = "/"
+                    elif auto_provisioned:
+                        print("Auto-provisioned user org, skipping subscription check")
+                        redirect_url = "/"
                     elif org_id:
                         try:
-                            # Import lago_integration here to avoid circular dependency
-                            from lago_integration import get_subscription
+                            # First check the database for subscription status
+                            db_subscription = None
+                            if hasattr(app.state, 'db_pool') and app.state.db_pool:
+                                async with app.state.db_pool.acquire() as conn:
+                                    db_sub_result = await conn.fetchrow("""
+                                        SELECT subscription_plan, status
+                                        FROM organization_subscriptions
+                                        WHERE org_id = $1 AND status IN ('active', 'trialing')
+                                        LIMIT 1
+                                    """, org_id)
+                                    if db_sub_result:
+                                        db_subscription = {
+                                            "plan_code": db_sub_result["subscription_plan"],
+                                            "status": db_sub_result["status"]
+                                        }
+                                        print(f"Found active subscription in database: {db_subscription}")
 
-                            # Check for active subscription
-                            subscription = await get_subscription(org_id)
-
-                            if not subscription or subscription.get("status") != "active":
-                                # No active subscription - redirect to signup flow
-                                print(f"No active subscription for org {org_id}, redirecting to signup flow")
-                                redirect_url = "/signup-flow.html"
-                            else:
-                                print(f"User has active subscription: {subscription.get('plan_code', 'unknown')}")
-                                # Active subscription exists - allow access to landing page
+                            # If database has active or trial subscription, allow access
+                            if db_subscription and db_subscription.get("status") in ("active", "trialing"):
+                                print(f"User has valid subscription (from database): {db_subscription.get('plan_code', 'unknown')} - status: {db_subscription.get('status')}")
                                 redirect_url = "/"
+                            else:
+                                # Fall back to Lago check
+                                from lago_integration import get_subscription
+                                subscription = await get_subscription(org_id)
+
+                                if not subscription or subscription.get("status") not in ("active", "trialing"):
+                                    # No active or trial subscription - redirect to signup flow
+                                    print(f"No active subscription for org {org_id}, redirecting to signup flow")
+                                    redirect_url = "/signup-flow.html"
+                                else:
+                                    print(f"User has active subscription (from Lago): {subscription.get('plan_code', 'unknown')}")
+                                    redirect_url = "/"
                         except Exception as e:
                             # If subscription check fails, log error but allow access
                             # This prevents blocking users if Lago is temporarily unavailable
@@ -5357,6 +5752,15 @@ async def oauth_callback(request: Request, code: str, state: str = None):
                         print(f"User has no organization, redirecting to signup flow")
                         redirect_url = "/signup-flow.html"
 
+                    # Override with stored return_url if valid (external subdomain)
+                    if stored_return_url and redirect_url != "/signup-flow.html":
+                        # Validate return_url is a safe subdomain
+                        if stored_return_url.startswith(f"https://") and EXTERNAL_HOST in stored_return_url:
+                            print(f"Redirecting to return_url: {stored_return_url}")
+                            redirect_url = stored_return_url
+                        else:
+                            print(f"Ignoring invalid return_url: {stored_return_url}")
+
                     # Redirect with session token
                     response = RedirectResponse(url=redirect_url)
                     
@@ -5367,12 +5771,12 @@ async def oauth_callback(request: Request, code: str, state: str = None):
                         "path": "/",  # Ensure cookie is available for all paths
                         "httponly": True,
                         "secure": (EXTERNAL_PROTOCOL == "https"),
-                        "samesite": "lax",
+                        "samesite": "none",
                         "max_age": 86400  # 24 hours
                     }
 
                     # Set domain for cookie sharing across subdomains
-                    # your-domain.com -> .your-domain.com
+                    # unicorncommander.ai -> .unicorncommander.ai
                     if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
                         cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
                         print(f"Setting cookie domain to: .{EXTERNAL_HOST}")
@@ -5503,7 +5907,7 @@ async def logged_out(request: Request):
             // Clear Keycloak session via hidden iframe
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
-            iframe.src = 'https://auth.your-domain.com/realms/uchub/protocol/openid-connect/logout';
+            iframe.src = 'https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/logout';
             document.body.appendChild(iframe);
 
             // Redirect to home page after 2 seconds (not /auth/login to avoid auto-login)
@@ -5582,11 +5986,143 @@ async def get_session_info(request: Request):
     )
 
 
+@app.get("/api/v1/auth/sso-token")
+async def get_sso_token(request: Request):
+    """
+    Return the session_token for trusted subdomain SSO.
+
+    This endpoint allows trusted subdomains (*.your-domain.com) to obtain
+    the session_token for use as a Bearer token in cross-origin API requests.
+
+    The browser sends cookies to this endpoint (same origin), and we return
+    the session_token in the response body for the subdomain to use.
+    """
+    origin = request.headers.get("origin", "")
+
+    # Only allow requests from trusted subdomains
+    trusted_origins = [
+        f"https://{EXTERNAL_HOST}",
+        f"https://leads.{EXTERNAL_HOST}",
+        f"https://leads-api.{EXTERNAL_HOST}",
+    ]
+
+    if origin not in trusted_origins:
+        print(f"[SSO-TOKEN] Rejected origin: {origin}")
+        return JSONResponse(
+            status_code=403,
+            content={"detail": f"Origin not allowed: {origin}"},
+            headers={
+                "Access-Control-Allow-Origin": origin if origin else "*",
+                "Access-Control-Allow-Credentials": "true",
+            }
+        )
+
+    session_token = request.cookies.get("session_token")
+    print(f"[SSO-TOKEN] Origin: {origin}, session_token exists: {bool(session_token)}")
+
+    if session_token and session_token in sessions:
+        session = sessions[session_token]
+        user_info = session.get("user", {})
+
+        if user_info:
+            # Return the session_token for use as Bearer token
+            response_data = {
+                "authenticated": True,
+                "session_token": session_token,
+                "user": {
+                    "id": user_info.get("sub", "unknown"),
+                    "email": user_info.get("email", ""),
+                    "name": user_info.get("preferred_username") or user_info.get("name", ""),
+                    "is_admin": user_info.get("role") in ["admin", "power_user"]
+                }
+            }
+            print(f"[SSO-TOKEN] Returning token for user: {user_info.get('email')}")
+            response = JSONResponse(content=response_data)
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            return response
+
+    print(f"[SSO-TOKEN] No valid session")
+    response = JSONResponse(
+        status_code=401,
+        content={"authenticated": False, "detail": "No valid session"}
+    )
+    response.headers["Access-Control-Allow-Origin"] = origin if origin else "*"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
+
+# Login route handler - checks for existing session and handles return_url
+@app.get("/login")
+async def login_page(request: Request):
+    """Handle login requests with return_url support for SSO.
+
+    If user already has a valid session (e.g., logged into ops-center),
+    redirect directly to return_url for seamless SSO experience.
+    If not authenticated, initiate OAuth flow with Keycloak.
+    """
+    session_token = request.cookies.get("session_token")
+    return_url = request.query_params.get("return_url")
+
+    print(f"[LOGIN] return_url={return_url}, session_token exists={bool(session_token)}")
+
+    # If already authenticated, redirect to return_url or home
+    if session_token and session_token in sessions:
+        session_data = sessions.get(session_token)
+        if session_data and session_data.get("user"):
+            print(f"[LOGIN] User already authenticated, redirecting to return_url")
+            if return_url:
+                # Validate return_url is a safe subdomain
+                if return_url.startswith("https://") and EXTERNAL_HOST in return_url:
+                    # Set cookie again with proper domain before redirect
+                    response = RedirectResponse(url=return_url)
+                    cookie_kwargs = {
+                        "key": "session_token",
+                        "value": session_token,
+                        "httponly": True,
+                        "secure": (EXTERNAL_PROTOCOL == "https"),
+                        "samesite": "none",
+                        "max_age": 86400,
+                        "path": "/"
+                    }
+                    if "." in EXTERNAL_HOST and not EXTERNAL_HOST.startswith("localhost"):
+                        cookie_kwargs["domain"] = f".{EXTERNAL_HOST}"
+                    response.set_cookie(**cookie_kwargs)
+                    return response
+            return RedirectResponse(url="/")
+
+    # Not authenticated, start OAuth flow with return_url preserved
+    print(f"[LOGIN] No valid session, redirecting to OAuth")
+    oauth_url = "/auth/login"
+    if return_url:
+        oauth_url += f"?return_url={return_url}"
+    return RedirectResponse(url=oauth_url)
+
 # Login page endpoint - now just redirects to OAuth
 @app.get("/login.html")
 async def serve_login():
     """Redirect to OAuth login flow"""
     return RedirectResponse(url="/auth/login")
+
+# Serve the React app for dashboard route (handles refresh)
+@app.get("/dashboard")
+async def serve_dashboard(request: Request):
+    """Serve the React app for /dashboard route with auth check"""
+    session_token = request.cookies.get("session_token")
+
+    if session_token and session_token in sessions:
+        # User is authenticated, serve the React app
+        for index_path in ["public/index.html", "dist/index.html", "../public/index.html"]:
+            if os.path.exists(index_path):
+                response = FileResponse(index_path)
+                response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response.headers["Pragma"] = "no-cache"
+                response.headers["Expires"] = "0"
+                return response
+        raise HTTPException(status_code=404, detail="Frontend not found")
+    else:
+        # Not authenticated, redirect to OAuth login
+        return RedirectResponse(url="/auth/login", status_code=302)
 
 # Serve the React app for admin routes
 @app.get("/admin")
@@ -5645,7 +6181,7 @@ async def serve_spa(full_path: str, request: Request):
         return RedirectResponse(url="/login.html", status_code=302)
 
     # Check if requesting a static file
-    if full_path.startswith("assets/") or full_path.endswith((".html", ".js", ".css", ".png", ".jpg", ".svg", ".ico", ".json", ".woff", ".woff2", ".ttf")):
+    if full_path.startswith(("assets/", "logos/")) or full_path.endswith((".html", ".js", ".css", ".png", ".jpg", ".svg", ".ico", ".json", ".webmanifest", ".woff", ".woff2", ".ttf", ".webp", ".jpeg", ".gif")):
         # First check public directory
         public_path = os.path.join("public", full_path)
         if os.path.exists(public_path):
@@ -5656,16 +6192,16 @@ async def serve_spa(full_path: str, request: Request):
             return FileResponse(file_path)
 
     # For all other routes, return the index.html (for React Router)
-    index_path = "dist/index.html"
-    if os.path.exists(index_path):
-        # Add cache-control headers to prevent browser caching of index.html
-        response = FileResponse(index_path)
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
-        return response
-    else:
-        raise HTTPException(status_code=404, detail="Frontend not found")
+    # Check public directory first (deployed build), then dist
+    for index_path in ["public/index.html", "dist/index.html"]:
+        if os.path.exists(index_path):
+            # Add cache-control headers to prevent browser caching of index.html
+            response = FileResponse(index_path)
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+            return response
+    raise HTTPException(status_code=404, detail="Frontend not found")
 
 if __name__ == "__main__":
     import uvicorn

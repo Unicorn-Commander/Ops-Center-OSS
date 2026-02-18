@@ -1,7 +1,7 @@
 # LiteLLM Container & Monitoring Analysis
 
 **Date**: November 14, 2025
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 **Status**: OPERATIONAL - Production Ready
 
 ---
@@ -302,7 +302,7 @@ async def enforce_usage_limits(request, call_next):
             "error": "API limit reached",
             "limit": daily_limit,
             "current": current_usage,
-            "upgrade_url": "https://your-domain.com/upgrade"
+            "upgrade_url": "https://unicorncommander.ai/upgrade"
         }
 
     response = await call_next(request)
@@ -509,7 +509,7 @@ general_settings:
   database_url: ${DATABASE_URL}
   jwt_auth:
     enabled: true
-    public_key_url: https://auth.your-domain.com/...
+    public_key_url: https://auth.unicorncommander.ai/...
   success_callback:
     - lago
   lago_settings:
@@ -535,7 +535,7 @@ byok_settings:
 
 ### Ops-Center Configuration
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth`
+**File**: `/opt/ops-center/.env.auth`
 
 ```bash
 # LiteLLM Connection
@@ -543,7 +543,7 @@ LITELLM_PROXY_URL=http://unicorn-litellm:4000
 LITELLM_MASTER_KEY=sk-master-key-generate-this
 
 # Lago Integration
-LAGO_API_KEY=d87f40d7-25c4-411c-bd51-677b26299e1c
+LAGO_API_KEY=your-lago-api-key
 LAGO_API_URL=http://unicorn-lago-api:3000
 
 # OpenRouter (System Key)
@@ -743,7 +743,7 @@ docker exec unicorn-lago-postgres psql -U lago -d lago -c \
 | File | Purpose |
 |------|---------|
 | `/app/config.yaml` (LiteLLM) | Proxy configuration with Lago callback |
-| `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth` | Credentials |
+| `/opt/ops-center/.env.auth` | Credentials |
 | `backend/litellm_integration.py` | Ops-Center ↔ LiteLLM bridge |
 | `backend/litellm_api.py` | LLM endpoint implementation |
 | `backend/litellm_routing_api.py` | Advanced routing with usage tracking |

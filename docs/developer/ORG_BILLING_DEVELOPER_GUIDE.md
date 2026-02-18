@@ -32,7 +32,7 @@
 
 ```bash
 # 1. Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # 2. Check database migration applied
 docker exec uchub-postgres psql -U unicorn -d unicorn_db -c "\dt org*"
@@ -99,7 +99,7 @@ WHERE org_id = 'test-dev-org' AND user_id = 'test-user-123';
 
 ```bash
 # Create Python virtual environment (optional)
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 -m venv venv
 source venv/bin/activate
 
@@ -140,7 +140,7 @@ docker logs ops-center-direct -f
 #### Environment Setup
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install dependencies
 npm install
@@ -330,7 +330,7 @@ async def test_deduct_credits_atomic(db_connection):
 
 ```bash
 # Run all tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_org_billing_functions.py -v
 
 # Run specific test

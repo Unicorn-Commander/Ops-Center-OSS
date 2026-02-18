@@ -15,6 +15,9 @@
  */
 
 const { chromium } = require('playwright');
+
+const runPlaywright = process.env.RUN_PLAYWRIGHT === 'true';
+const suite = runPlaywright ? describe : describe.skip;
 const lighthouse = require('lighthouse');
 const { URL } = require('url');
 
@@ -46,7 +49,7 @@ const NETWORK_PRESETS = {
 // Mobile device configurations
 const MOBILE_DEVICE = { width: 390, height: 844 };
 
-describe('Mobile Performance Test Suite', () => {
+suite('Mobile Performance Test Suite', () => {
   let browser;
   let context;
   let page;

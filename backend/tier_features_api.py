@@ -171,20 +171,20 @@ async def get_tier_apps(tier_code: str):
         if not tier:
             raise HTTPException(status_code=404, detail=f"Tier '{tier_code}' not found")
 
-        # Get apps for this tier
+        # Get apps for this tier (uses tier_features and add_ons tables)
         apps_query = """
             SELECT
-                ad.id,
-                ad.app_key,
-                ad.app_name,
-                ad.category,
-                ad.description,
-                ad.is_active,
-                ad.sort_order
-            FROM tier_apps ta
-            JOIN app_definitions ad ON ta.app_key = ad.app_key
-            WHERE ta.tier_id = $1 AND ta.enabled = TRUE AND ad.is_active = TRUE
-            ORDER BY ad.category, ad.sort_order, ad.app_name
+                ao.id,
+                COALESCE(ao.slug, tf.feature_key) as app_key,
+                ao.name as app_name,
+                ao.category,
+                ao.description,
+                ao.is_active,
+                COALESCE(ao.sort_order, 0) as sort_order
+            FROM tier_features tf
+            JOIN add_ons ao ON tf.feature_key = ao.slug OR tf.feature_key = ao.feature_key
+            WHERE tf.tier_id = $1 AND tf.enabled = TRUE AND ao.is_active = TRUE
+            ORDER BY ao.category, COALESCE(ao.sort_order, 0), ao.name
         """
         apps = await conn.fetch(apps_query, tier['id'])
 
@@ -217,17 +217,17 @@ async def list_all_tier_apps_detailed(
                 st.id as tier_id,
                 st.tier_code,
                 st.tier_name,
-                ad.id as app_id,
-                ad.app_key,
-                ad.app_name,
-                ad.category,
-                ad.description,
-                ta.enabled
-            FROM tier_apps ta
-            JOIN subscription_tiers st ON ta.tier_id = st.id
-            JOIN app_definitions ad ON ta.app_key = ad.app_key
-            WHERE st.is_active = TRUE AND ad.is_active = TRUE
-            ORDER BY st.sort_order, ad.category, ad.sort_order, ad.app_name
+                ao.id as app_id,
+                COALESCE(ao.slug, tf.feature_key) as app_key,
+                ao.name as app_name,
+                ao.category,
+                ao.description,
+                tf.enabled
+            FROM tier_features tf
+            JOIN subscription_tiers st ON tf.tier_id = st.id
+            JOIN add_ons ao ON tf.feature_key = ao.slug OR tf.feature_key = ao.feature_key
+            WHERE st.is_active = TRUE AND ao.is_active = TRUE
+            ORDER BY st.sort_order, ao.category, COALESCE(ao.sort_order, 0), ao.name
         """
         rows = await conn.fetch(query)
         return [dict(row) for row in rows]
@@ -260,12 +260,12 @@ async def update_tier_apps(
 
         tier_id = tier['id']
 
-        # Update each app
+        # Update each app (uses tier_features table with feature_key column)
         updated_count = 0
         for update in updates:
             # Check if association exists
             existing = await conn.fetchrow(
-                "SELECT id FROM tier_apps WHERE tier_id = $1 AND app_key = $2",
+                "SELECT id FROM tier_features WHERE tier_id = $1 AND feature_key = $2",
                 tier_id, update.app_key
             )
 
@@ -273,9 +273,9 @@ async def update_tier_apps(
                 # Update existing
                 await conn.execute(
                     """
-                    UPDATE tier_apps
+                    UPDATE tier_features
                     SET enabled = $1, updated_at = NOW()
-                    WHERE tier_id = $2 AND app_key = $3
+                    WHERE tier_id = $2 AND feature_key = $3
                     """,
                     update.enabled, tier_id, update.app_key
                 )
@@ -284,7 +284,7 @@ async def update_tier_apps(
                 # Insert new
                 await conn.execute(
                     """
-                    INSERT INTO tier_apps (tier_id, app_key, enabled)
+                    INSERT INTO tier_features (tier_id, feature_key, enabled)
                     VALUES ($1, $2, $3)
                     """,
                     tier_id, update.app_key, update.enabled
@@ -328,14 +328,14 @@ async def bulk_set_tier_apps(
 
         tier_id = tier['id']
 
-        # Update all apps
+        # Update all apps (uses tier_features table with feature_key column)
         for app_key in app_keys:
             # Upsert (insert or update)
             await conn.execute(
                 """
-                INSERT INTO tier_apps (tier_id, app_key, enabled)
+                INSERT INTO tier_features (tier_id, feature_key, enabled)
                 VALUES ($1, $2, $3)
-                ON CONFLICT (tier_id, app_key)
+                ON CONFLICT (tier_id, feature_key)
                 DO UPDATE SET enabled = $3, updated_at = NOW()
                 """,
                 tier_id, app_key, enabled

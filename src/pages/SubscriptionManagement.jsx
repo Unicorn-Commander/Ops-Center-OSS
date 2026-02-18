@@ -66,7 +66,7 @@ export default function SubscriptionManagement() {
   const availableServices = [
     { id: 'ops-center', name: 'Ops Center', icon: ChartBarIcon },
     { id: 'chat', name: 'Open-WebUI', icon: SparklesIcon },
-    { id: 'search', name: 'Center-Deep Search', icon: MagnifyingGlassIcon },
+    { id: 'search', name: 'Magic Unicorn Search', icon: MagnifyingGlassIcon },
     { id: 'billing', name: 'Billing Portal', icon: CurrencyDollarIcon },
     { id: 'litellm', name: 'LiteLLM Proxy', icon: KeyIcon },
     { id: 'lago', name: 'Lago Billing', icon: ChartBarIcon },

@@ -2,7 +2,7 @@
 
 **Last Updated:** October 11, 2025
 **Service:** ops-center (unicorn-ops-center)
-**Base URL:** https://your-domain.com
+**Base URL:** https://unicorncommander.ai
 **API Version:** v1
 
 ---
@@ -28,13 +28,13 @@
 
 ```bash
 # List all subscription plans
-curl https://your-domain.com/api/v1/subscriptions/plans
+curl https://unicorncommander.ai/api/v1/subscriptions/plans
 
 # Get specific plan
-curl https://your-domain.com/api/v1/subscriptions/plans/starter
+curl https://unicorncommander.ai/api/v1/subscriptions/plans/starter
 
 # Health check
-curl https://your-domain.com/api/v1/tier-check/health
+curl https://unicorncommander.ai/api/v1/tier-check/health
 ```
 
 **Response:** ✅ 200 OK (2-3ms)
@@ -44,11 +44,11 @@ curl https://your-domain.com/api/v1/tier-check/health
 ```bash
 # Get subscription status (requires auth cookie)
 curl -H "Cookie: session_token=YOUR_TOKEN" \
-  https://your-domain.com/api/v1/billing/subscription-status
+  https://unicorncommander.ai/api/v1/billing/subscription-status
 
 # Get payment methods (requires auth cookie)
 curl -H "Cookie: session_token=YOUR_TOKEN" \
-  https://your-domain.com/api/v1/billing/payment-methods
+  https://unicorncommander.ai/api/v1/billing/payment-methods
 ```
 
 **Response:** 401 Unauthorized (correct - requires session)
@@ -57,7 +57,7 @@ curl -H "Cookie: session_token=YOUR_TOKEN" \
 
 ```bash
 # Stripe webhook (requires valid signature)
-curl -X POST https://your-domain.com/api/v1/billing/webhooks/stripe \
+curl -X POST https://unicorncommander.ai/api/v1/billing/webhooks/stripe \
   -H "stripe-signature: STRIPE_SIGNATURE" \
   -H "Content-Type: application/json" \
   -d '{"type":"customer.subscription.created"}'
@@ -227,7 +227,7 @@ curl -X POST https://your-domain.com/api/v1/billing/webhooks/stripe \
 ### Run Full Test Suite
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/tests
 chmod +x test_billing_endpoints.sh
 ./test_billing_endpoints.sh
 ```
@@ -239,7 +239,7 @@ chmod +x test_billing_endpoints.sh
 docker exec ops-center-direct curl -s http://localhost:8084/api/v1/subscriptions/plans
 
 # From host (via Traefik)
-curl -s https://your-domain.com/api/v1/subscriptions/plans
+curl -s https://unicorncommander.ai/api/v1/subscriptions/plans
 ```
 
 ### View Test Results
@@ -256,7 +256,7 @@ cat /tmp/billing_test_report_*.md
 
 ## 📚 Related Documentation
 
-- **Full Test Report:** `/home/muut/Production/UC-1-Pro/services/ops-center/tests/BILLING_ENDPOINTS_TEST_REPORT.md`
+- **Full Test Report:** `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/BILLING_ENDPOINTS_TEST_REPORT.md`
 - **Source Code:**
   - Stripe API: `backend/stripe_api.py`
   - Subscription API: `backend/subscription_api.py`

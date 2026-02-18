@@ -17,7 +17,7 @@ import time
 from typing import Dict, Any
 
 # Configuration
-BASE_URL = "http://localhost:8084"  # Change to https://api.your-domain.com in production
+BASE_URL = "http://localhost:8084"  # Change to https://api.unicorncommander.ai in production
 API_KEY = "test-api-key"  # Replace with real API key
 
 def test_health_check():

@@ -89,7 +89,7 @@ async def get_brigade_usage(
     """
     Get Brigade usage statistics for current user (H23)
 
-    Proxies to: https://api.brigade.your-domain.com/api/agents/usage
+    Proxies to: https://api.brigade.unicorncommander.ai/api/agents/usage
 
     Query Parameters:
         user_id: Optional user ID to filter (defaults to current authenticated user)
@@ -204,7 +204,7 @@ async def get_tasks_history(
     """
     Get task execution history from Brigade (H23)
 
-    Proxies to: https://api.brigade.your-domain.com/api/tasks/history
+    Proxies to: https://api.brigade.unicorncommander.ai/api/tasks/history
 
     Query Parameters:
         user_id: Filter by user ID

@@ -151,13 +151,13 @@ class CreditSystem:
                 async with self.db_pool.acquire() as conn:
                     result = await conn.fetchval(
                         """
-                        SELECT credit_balance FROM organization_credits WHERE org_id = $1
+                        SELECT available_credits FROM organization_credit_pools WHERE org_id = $1
                         """,
                         org_uuid
                     )
                     if result is not None:
-                        # Convert millicredits to credits
-                        balance = float(result) / 1000.0
+                        # Credits are stored as integers (no millicredits conversion)
+                        balance = float(result)
                         # Cache the result
                         await self.redis.setex(cache_key, self.cache_ttl, str(balance))
                         logger.info(f"Service org {user_id} balance: {balance} credits")
@@ -235,11 +235,11 @@ class CreditSystem:
                         org_uuid = user_id[4:]  # Remove 'org_' prefix to get raw UUID
                         result = await conn.fetchrow(
                             """
-                            SELECT oc.credit_balance, o.subscription_tier
-                            FROM organization_credits oc
-                            JOIN organizations o ON oc.org_id = o.id
-                            WHERE oc.org_id = $1
-                            FOR UPDATE OF oc
+                            SELECT ocp.available_credits, ocp.used_credits, o.plan_tier
+                            FROM organization_credit_pools ocp
+                            JOIN organizations o ON ocp.org_id = o.id
+                            WHERE ocp.org_id = $1
+                            FOR UPDATE OF ocp
                             """,
                             org_uuid
                         )
@@ -247,9 +247,9 @@ class CreditSystem:
                         if not result:
                             raise HTTPException(status_code=404, detail=f"Service organization {user_id} not found")
 
-                        # Convert millicredits to credits
-                        current_balance = float(result['credit_balance']) / 1000.0
-                        tier = result['subscription_tier']
+                        # Credits are stored as integers (no millicredits)
+                        current_balance = float(result['available_credits'])
+                        tier = result['plan_tier']
 
                         # Check sufficient credits
                         if current_balance < amount:
@@ -258,40 +258,41 @@ class CreditSystem:
                                 detail=f"Insufficient service credits for {user_id}. Balance: {current_balance:.2f}, Required: {amount:.2f}"
                             )
 
-                        # Debit credits (convert back to millicredits for storage)
-                        new_balance = max(0, current_balance - amount)
+                        # Debit credits - update used_credits (available_credits is computed)
+                        new_used = int(result['used_credits']) + int(amount)
                         await conn.execute(
                             """
-                            UPDATE organization_credits
-                            SET credit_balance = $1,
-                                total_credits_used = total_credits_used + $3,
-                                last_usage_date = NOW(),
+                            UPDATE organization_credit_pools
+                            SET used_credits = $1,
                                 updated_at = NOW()
                             WHERE org_id = $2
                             """,
-                            int(new_balance * 1000),  # Convert credits to millicredits
-                            org_uuid,
-                            int(amount * 1000)  # Amount used in millicredits
+                            new_used,
+                            org_uuid
                         )
+                        new_balance = current_balance - amount
 
-                        # Log service usage for analytics
-                        service_name = metadata.get('service_name', user_id.replace('org_', '').replace('_service', ''))
-                        await conn.execute(
-                            """
-                            INSERT INTO service_usage_log (
-                                service_org_id, service_name, endpoint,
-                                credits_used, model_used, user_id, request_metadata
+                        # Log service usage for analytics (optional - table may not exist)
+                        try:
+                            service_name = metadata.get('service_name', user_id.replace('org_', '').replace('_service', ''))
+                            await conn.execute(
+                                """
+                                INSERT INTO service_usage_log (
+                                    service_org_id, service_name, endpoint,
+                                    credits_used, model_used, user_id, request_metadata
+                                )
+                                VALUES ($1, $2, $3, $4, $5, $6, $7)
+                                """,
+                                org_uuid,
+                                service_name,
+                                metadata.get('endpoint', '/api/v1/llm/chat/completions'),
+                                amount,
+                                metadata.get('model', 'unknown'),
+                                metadata.get('proxied_user_id'),  # NULL if service-initiated
+                                json.dumps(metadata)
                             )
-                            VALUES ($1, $2, $3, $4, $5, $6, $7)
-                            """,
-                            org_uuid,
-                            service_name,
-                            metadata.get('endpoint', '/api/v1/llm/image/generations'),
-                            amount,
-                            metadata.get('model', 'unknown'),
-                            metadata.get('proxied_user_id'),  # NULL if service-initiated
-                            json.dumps(metadata)
-                        )
+                        except Exception as log_error:
+                            logger.debug(f"Service usage log not recorded (table may not exist): {log_error}")
 
                         # Create placeholder transaction ID for service
                         transaction_id = f"svc_{user_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -665,13 +666,36 @@ class CreditSystem:
 
             # Regular user tier lookup
             async with self.db_pool.acquire() as conn:
+                # First try to get tier from user's organization membership
+                # organization_members.user_id stores UUIDs as varchar, users.id is UUID
+                # Need to cast users.id to text for comparison
                 tier = await conn.fetchval(
                     """
-                    SELECT tier FROM user_credits WHERE user_id = $1
+                    SELECT o.plan_tier
+                    FROM organization_members om
+                    JOIN organizations o ON o.id = om.org_id
+                    JOIN users u ON u.id::text = om.user_id
+                    WHERE u.email = $1
+                    ORDER BY om.joined_at DESC
+                    LIMIT 1
                     """,
                     user_id
                 )
-                return tier or "free"
+                if tier:
+                    logger.info(f"User {user_id} tier from organization: {tier}")
+                    return tier
+
+                # Fallback to user_credits table if it exists
+                try:
+                    tier = await conn.fetchval(
+                        """
+                        SELECT tier FROM user_credits WHERE user_id = $1
+                        """,
+                        user_id
+                    )
+                    return tier or "free"
+                except Exception:
+                    return "free"
         except Exception as e:
             logger.error(f"Error getting user tier for {user_id}: {e}")
             return "free"

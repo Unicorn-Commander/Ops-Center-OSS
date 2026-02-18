@@ -117,7 +117,7 @@ curl http://localhost:8084/api/v1/traefik/services/discover
 
 **Testing**: ✅ Passed
 ```bash
-curl -X POST http://localhost:8084/api/v1/traefik/ssl/renew/your-domain.com
+curl -X POST http://localhost:8084/api/v1/traefik/ssl/renew/unicorncommander.ai
 ```
 
 ---
@@ -217,7 +217,7 @@ curl "http://localhost:8084/api/v1/brigade/tasks/history?limit=10&status=complet
 
 **Usage**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ./TEST_NEW_ENDPOINTS.sh
 ```
 
@@ -339,7 +339,7 @@ cd /home/muut/Production/UC-Cloud/services/ops-center/backend
 
 1. **Pull latest code**:
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    git pull
    ```
 

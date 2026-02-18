@@ -11,7 +11,7 @@
 ### Step 1: Backup Database (1 minute)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Backup current database
 docker exec ops-center-postgres pg_dump -U unicorn_ops unicorn_ops_db > \
@@ -79,7 +79,7 @@ echo "✅ Ops-center restarted"
 ```
 
 **Manual Testing:**
-1. Navigate to: https://your-domain.com/marketplace
+1. Navigate to: https://unicorncommander.ai/marketplace
 2. Verify 8 services display
 3. Check featured services (should show star/badge)
 4. Click on a service to see details
@@ -89,7 +89,7 @@ echo "✅ Ops-center restarted"
 
 ```bash
 # View all created documentation
-ls -lh /home/muut/Production/UC-Cloud/services/ops-center/backend/docs/
+ls -lh /opt/ops-center/backend/docs/
 
 echo "✅ Documentation ready"
 ```
@@ -159,7 +159,7 @@ docker restart ops-center-frontend  # if separate container
 
 ```bash
 # Find your backup file
-ls -lt /home/muut/Production/UC-Cloud/services/ops-center/backend/backups/
+ls -lt /opt/ops-center/backend/backups/
 
 # Restore from backup (replace with actual filename)
 docker exec -i ops-center-postgres psql -U unicorn_ops -d unicorn_ops_db < \
@@ -276,7 +276,7 @@ The UC-Cloud Services Catalog is now deployed and ready for users.
 
 **Questions?** See the full documentation in `SERVICES_CATALOG_SUMMARY.md`
 
-**Need help?** Contact: support@your-domain.com
+**Need help?** Contact: support@unicorncommander.ai
 
 ---
 

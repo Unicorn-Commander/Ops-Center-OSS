@@ -1,25 +1,19 @@
 #!/bin/bash
 set -e
 
-# Configuration - Override with environment variables
-KEYCLOAK_URL="${KEYCLOAK_URL:-http://localhost:8080}"
-KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
-KEYCLOAK_ADMIN_USER="${KEYCLOAK_ADMIN_USER:-admin}"
-KEYCLOAK_ADMIN_PASSWORD="${KEYCLOAK_ADMIN_PASSWORD:-change-me}"
-
 echo "=== Setting Up Automatic Username Sanitization ==="
 
-TOKEN=$(curl -s -X POST "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+TOKEN=$(curl -s -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=${KEYCLOAK_ADMIN_USER}" \
-  -d "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+  -d "username=admin" \
+  -d "password=your-admin-password" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" | jq -r '.access_token')
 
 echo "Checking for username generation in identity provider mappers..."
 
 # Get Google identity provider
-GOOGLE_MAPPERS=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/google/mappers" \
+GOOGLE_MAPPERS=$(curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/google/mappers" \
   -H "Authorization: Bearer $TOKEN")
 
 echo "Google IDP mappers:"
@@ -34,12 +28,12 @@ EXISTING=$(echo "$GOOGLE_MAPPERS" | jq -r '.[] | select(.name=="username-importe
 
 if [ -n "$EXISTING" ]; then
   echo "Deleting existing mapper..."
-  curl -s -X DELETE "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/google/mappers/$EXISTING" \
+  curl -s -X DELETE "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/google/mappers/$EXISTING" \
     -H "Authorization: Bearer $TOKEN"
 fi
 
 # Create new mapper that extracts local part of email
-curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/google/mappers" \
+curl -s -X POST "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/google/mappers" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -51,23 +45,23 @@ curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provide
     }
   }'
 
-echo "Created username mapper for Google (will use: google.{email_local_part})"
+echo "✓ Created username mapper for Google (will use: google.{email_local_part})"
 
 # Do the same for GitHub
 echo ""
 echo "Creating username mapper for GitHub IDP..."
 
-GITHUB_MAPPERS=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/github/mappers" \
+GITHUB_MAPPERS=$(curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/github/mappers" \
   -H "Authorization: Bearer $TOKEN")
 
 EXISTING_GITHUB=$(echo "$GITHUB_MAPPERS" | jq -r '.[] | select(.name=="username-from-email") | .id')
 
 if [ -n "$EXISTING_GITHUB" ]; then
-  curl -s -X DELETE "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/github/mappers/$EXISTING_GITHUB" \
+  curl -s -X DELETE "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/github/mappers/$EXISTING_GITHUB" \
     -H "Authorization: Bearer $TOKEN"
 fi
 
-curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provider/instances/github/mappers" \
+curl -s -X POST "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances/github/mappers" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -79,17 +73,17 @@ curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/identity-provide
     }
   }'
 
-echo "Created username mapper for GitHub"
+echo "✓ Created username mapper for GitHub"
 
 echo ""
 echo "=== Configuration Complete ==="
 echo ""
-echo "New users registering via Google will get username: google.{name}"
-echo "New users registering via GitHub will get username: github.{name}"
-echo "No @ symbols in usernames!"
+echo "✅ New users registering via Google will get username: google.{name}"
+echo "✅ New users registering via GitHub will get username: github.{name}"
+echo "✅ No @ symbols in usernames!"
 echo ""
 echo "Example:"
-echo "  Email: user@example.com"
-echo "  Username: google.user"
+echo "  Email: connect@shafenkhan.com"
+echo "  Username: google.connect"
 echo ""
 echo "This will work automatically with Forgejo!"

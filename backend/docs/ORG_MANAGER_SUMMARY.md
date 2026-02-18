@@ -7,7 +7,7 @@ Successfully created a comprehensive organization management system for UC-Cloud
 ### 📦 Deliverables
 
 #### 1. Core Module
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/org_manager.py`
+**File**: `/opt/ops-center/backend/org_manager.py`
 - **Size**: 20 KB
 - **Lines**: 651 lines of production-ready code
 - **Status**: ✅ Syntax validated
@@ -24,7 +24,7 @@ Successfully created a comprehensive organization management system for UC-Cloud
 - ✅ Extensive docstrings
 
 #### 2. Test Suite
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_org_manager.py`
+**File**: `/opt/ops-center/backend/tests/test_org_manager.py`
 - **Size**: 13 KB
 - **Lines**: 356 lines
 - **Status**: Ready to run
@@ -47,7 +47,7 @@ Successfully created a comprehensive organization management system for UC-Cloud
 **Test Count**: 50+ comprehensive tests
 
 #### 3. Usage Examples
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/org_manager_examples.py`
+**File**: `/opt/ops-center/backend/docs/org_manager_examples.py`
 - **Size**: 11 KB
 - **Lines**: 311 lines
 - **Status**: Executable
@@ -261,7 +261,7 @@ org_manager.get_user_role_in_org(org_id, user_id) -> str | None
 
 ### Run All Tests
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_org_manager.py -v
 ```
 
@@ -302,7 +302,7 @@ python docs/org_manager_examples.py
 
 ```python
 # Data directory
-DATA_DIR = "/home/muut/Production/UC-Cloud/services/ops-center/backend/data"
+DATA_DIR = "/opt/ops-center/backend/data"
 
 # Files
 ORGANIZATIONS_FILE = f"{DATA_DIR}/organizations.json"
@@ -432,9 +432,9 @@ custom_manager = OrgManager(data_dir="/custom/path")
 
 ## 📞 Support
 
-- **Module Path**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/org_manager.py`
-- **Documentation**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/`
-- **Tests**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_org_manager.py`
+- **Module Path**: `/opt/ops-center/backend/org_manager.py`
+- **Documentation**: `/opt/ops-center/backend/docs/`
+- **Tests**: `/opt/ops-center/backend/tests/test_org_manager.py`
 
 For questions:
 1. Check documentation in `docs/` folder
@@ -463,7 +463,7 @@ For questions:
 ## 📦 File Manifest
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/
+/opt/ops-center/backend/
 ├── org_manager.py                      # Core module (651 lines)
 ├── data/                                # Storage (auto-created)
 │   ├── organizations.json               # Organization records

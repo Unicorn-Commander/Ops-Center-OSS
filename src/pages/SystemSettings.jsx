@@ -42,6 +42,7 @@ import {
 import { useTheme } from '../contexts/ThemeContext';
 import SystemSettingCard from '../components/SystemSettingCard';
 import EditSettingModal from '../components/EditSettingModal';
+import PageHeader from '../components/admin/PageHeader';
 
 const SystemSettings = () => {
   const navigate = useNavigate();
@@ -220,14 +221,10 @@ const SystemSettings = () => {
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-          System Settings
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Manage environment variables and system configuration through the GUI
-        </Typography>
-      </Box>
+      <PageHeader
+        title="System Settings"
+        subtitle="Manage environment variables and system configuration through the GUI"
+      />
 
       {/* Alert for errors */}
       {error && (

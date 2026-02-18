@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/llm/test", tags=["Testing Lab"])
 
 # Environment
-REDIS_HOST = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+REDIS_HOST = os.getenv("REDIS_HOST", "unicorn-redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 LITELLM_PROXY_URL = os.getenv("LITELLM_PROXY_URL", "http://unicorn-litellm:4000")
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY", Fernet.generate_key().decode())
@@ -370,7 +370,7 @@ async def test_openrouter_model(request: ModelTestRequest, user_id: str, api_key
                 headers={
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json",
-                    "HTTP-Referer": "https://your-domain.com",
+                    "HTTP-Referer": "https://unicorncommander.ai",
                     "X-Title": "UC-1 Pro Testing Lab"
                 },
                 json={

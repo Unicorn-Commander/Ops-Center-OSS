@@ -180,7 +180,7 @@ The frontend components now use the correct API paths (`/api/v1/*`). The 2 test 
 
 ## Test Artifacts
 
-- **Test Script**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_fixed_endpoints_csrf.py`
+- **Test Script**: `/opt/ops-center/backend/tests/test_fixed_endpoints_csrf.py`
 - **Test Date**: 2025-10-26 02:40 UTC
 - **Backend Version**: ops-center-direct (latest)
 - **Docker Container**: ops-center-direct (Up 2 hours)

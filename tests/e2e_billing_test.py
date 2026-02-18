@@ -38,7 +38,7 @@ from billing.stripe_client import StripeClient
 
 # Test configuration
 BASE_URL = os.getenv("BASE_URL", "http://localhost:8084")
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com")
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_TEST_MODE = True
 

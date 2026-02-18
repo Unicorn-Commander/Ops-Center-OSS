@@ -18,11 +18,11 @@ from psycopg2.extras import execute_values
 
 # Database connection parameters
 DB_CONFIG = {
-    "host": os.getenv("POSTGRES_HOST", "localhost"),
-    "port": int(os.getenv("POSTGRES_PORT", 5432)),
-    "database": os.getenv("POSTGRES_DB", "ops_center_db"),
-    "user": os.getenv("POSTGRES_USER", "ops_user"),
-    "password": os.getenv("POSTGRES_PASSWORD", "change-me"),
+    "host": "unicorn-postgresql",
+    "port": 5432,
+    "database": "unicorn_db",
+    "user": "unicorn",
+    "password": "your-postgres-password",
 }
 
 # OpenRouter API configuration

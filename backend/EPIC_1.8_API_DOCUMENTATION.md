@@ -965,7 +965,7 @@ Manages promotional coupons with validation.
 Run the migration SQL to create tables:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Connect to PostgreSQL
 docker exec -it unicorn-postgresql psql -U unicorn -d unicorn_db
@@ -1152,7 +1152,7 @@ REDIS_PORT=6379
 ### 2. Container Restart
 
 ```bash
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 
 # Restart ops-center to load new APIs
 docker restart ops-center-direct

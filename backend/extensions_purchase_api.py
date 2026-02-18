@@ -152,8 +152,8 @@ async def create_checkout(
                     discount_amount = int(float(promo['discount_value']) * 100)
 
         # Prepare success and cancel URLs
-        success_url = checkout_data.success_url or 'https://your-domain.com/extensions/success?session_id={CHECKOUT_SESSION_ID}'
-        cancel_url = checkout_data.cancel_url or 'https://your-domain.com/extensions/cancelled'
+        success_url = checkout_data.success_url or 'https://unicorncommander.ai/extensions/success?session_id={CHECKOUT_SESSION_ID}'
+        cancel_url = checkout_data.cancel_url or 'https://unicorncommander.ai/extensions/cancelled'
 
         # Create Stripe session
         session_params = {

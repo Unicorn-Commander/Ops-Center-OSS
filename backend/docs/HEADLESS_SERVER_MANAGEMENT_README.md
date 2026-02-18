@@ -48,7 +48,7 @@ Successfully implemented comprehensive headless server management API for UC-1 P
 ### Implementation Files
 
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/backend/
+/home/deploy/Production/UC-1-Pro/services/ops-center/backend/
 ├── system_manager.py                  # Core module (506 lines)
 ├── server.py                          # API endpoints (modified)
 └── docs/
@@ -60,11 +60,11 @@ Successfully implemented comprehensive headless server management API for UC-1 P
 
 ### Key Code Sections
 
-**Backend Module:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`
+**Backend Module:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`
 - Lines 1-506: Complete implementation
 - Includes: SystemManager class, Pydantic models, validation
 
-**API Endpoints:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**API Endpoints:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 - Lines 2685-2878: New system management endpoints
 - Lines 41-47: Imports from system_manager
 - Lines 95-97: Logging configuration
@@ -75,7 +75,7 @@ Successfully implemented comprehensive headless server management API for UC-1 P
 ### 1. Verify Installation
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 -c "from system_manager import system_manager; print('✅ Module loaded successfully')"
 ```
 
@@ -86,17 +86,17 @@ python3 -c "from system_manager import system_manager; print('✅ Module loaded 
 export JWT_TOKEN="your_admin_jwt_token"
 
 # Get network configuration
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN"
 
 # Get available package updates
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
 ### 3. Interactive Documentation
 
-Visit: https://your-domain.com/docs
+Visit: https://unicorncommander.ai/docs
 
 Look for the "System Management" section with these endpoints:
 - GET /api/v1/system/network
@@ -109,7 +109,7 @@ Look for the "System Management" section with these endpoints:
 ### Get Network Configuration
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
@@ -130,7 +130,7 @@ curl -X GET "https://your-domain.com/api/v1/system/network" \
 
 **Static IP:**
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -144,7 +144,7 @@ curl -X PUT "https://your-domain.com/api/v1/system/network" \
 
 **DHCP:**
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"dhcp": true}'
@@ -153,7 +153,7 @@ curl -X PUT "https://your-domain.com/api/v1/system/network" \
 ### Change User Password
 
 ```bash
-curl -X POST "https://your-domain.com/api/v1/system/user/password" \
+curl -X POST "https://unicorncommander.ai/api/v1/system/user/password" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -166,7 +166,7 @@ curl -X POST "https://your-domain.com/api/v1/system/user/password" \
 ### Get Available Updates
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
@@ -232,7 +232,7 @@ class SystemManager:
         return response.json()
 
 # Usage
-manager = SystemManager("https://your-domain.com", "your_jwt_token")
+manager = SystemManager("https://unicorncommander.ai", "your_jwt_token")
 
 # Get current network configuration
 network = manager.get_network_config()
@@ -309,7 +309,7 @@ for pkg in updates['packages']:
 
 1. **Start the server:**
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 uvicorn server:app --host 0.0.0.0 --port 8084 --reload
 ```
 
@@ -422,7 +422,7 @@ All dependencies are already in `requirements.txt`:
 ### Getting Help
 - 📚 Documentation: See files in `docs/` directory
 - 🐛 Issues: https://github.com/Unicorn-Commander/UC-1-Pro/issues
-- 🌐 Website: https://your-domain.com
+- 🌐 Website: https://unicorncommander.ai
 
 ### Contributing
 Contributions welcome! Areas for improvement:

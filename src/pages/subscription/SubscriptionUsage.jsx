@@ -40,30 +40,7 @@ const formatDate = (dateString) => {
   });
 };
 
-// Generate mock historical data (until backend implements full tracking)
-const generateMockHistoryData = (days, currentUsage) => {
-  const data = [];
-  const today = new Date();
-  const avgDailyUsage = Math.floor(currentUsage / 30); // Assume current usage spread over 30 days
-
-  for (let i = days - 1; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-
-    // Generate realistic variation (±30% of average)
-    const variance = avgDailyUsage * 0.3;
-    const dailyUsage = Math.max(0, Math.floor(avgDailyUsage + (Math.random() - 0.5) * 2 * variance));
-    const creditsUsed = Math.floor(dailyUsage * 0.1); // Credits roughly 10% of API calls
-
-    data.push({
-      date: date.toISOString().split('T')[0],
-      api_calls: dailyUsage,
-      credits_used: creditsUsed
-    });
-  }
-
-  return data;
-};
+// No mock data - show empty state when no history is available
 
 export default function SubscriptionUsage() {
   const { theme } = useTheme();
@@ -162,11 +139,8 @@ export default function SubscriptionUsage() {
         }));
         setUsageHistory(historyData);
       } else {
-        // Fallback to mock data if no history available
-        const periodToDays = { week: 7, month: 30, year: 365 };
-        const days = periodToDays[period] || 30;
-        const mockData = generateMockHistoryData(days, usage?.api_calls_used || 0);
-        setUsageHistory(mockData);
+        // No history data available - show empty state
+        setUsageHistory([]);
       }
 
       setErrors(prev => ({ ...prev, history: null }));
@@ -474,6 +448,16 @@ export default function SubscriptionUsage() {
       </motion.div>
 
       {/* Usage History Graph */}
+      {usageHistory.length === 0 && !errors.history && (
+        <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6 text-center`}>
+          <h4 className={`text-md font-semibold ${theme.text.primary} mb-4`}>Usage Trend</h4>
+          <div className="py-12">
+            <ChartBarIcon className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+            <p className={`${theme.text.secondary} text-sm`}>No usage data yet</p>
+            <p className={`${theme.text.secondary} text-xs mt-1`}>Usage history will appear here as you use the platform.</p>
+          </div>
+        </motion.div>
+      )}
       {usageHistory.length > 0 && (
         <motion.div variants={itemVariants} className={`${theme.card} rounded-xl p-6`}>
           <h4 className={`text-md font-semibold ${theme.text.primary} mb-4`}>

@@ -3,7 +3,7 @@
 ## Project Context
 
 **Project**: Ops-Center Production Monitoring Infrastructure
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 **Stack**: FastAPI, React, PostgreSQL, Redis, Keycloak, Docker
 **Container**: `ops-center-direct` (port 8084)
 
@@ -37,7 +37,7 @@ Configure complete Prometheus metrics collection for all Ops-Center services.
 
 ### Deliverables
 
-1. **docker-compose.monitoring.yml** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/docker-compose.monitoring.yml`)
+1. **docker-compose.monitoring.yml** (`/opt/ops-center/monitoring/docker-compose.monitoring.yml`)
    - Prometheus container (port 9090)
    - Grafana container (port 3000)
    - Alertmanager container (port 9093)
@@ -45,7 +45,7 @@ Configure complete Prometheus metrics collection for all Ops-Center services.
    - Volumes for persistence
    - Traefik labels for HTTPS access
 
-2. **prometheus.yml** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus/prometheus.yml`)
+2. **prometheus.yml** (`/opt/ops-center/monitoring/prometheus/prometheus.yml`)
    - Global config (scrape_interval: 15s, evaluation_interval: 15s)
    - Scrape configs for:
      - Ops-Center FastAPI `/metrics` endpoint (ops-center-direct:8084)
@@ -57,7 +57,7 @@ Configure complete Prometheus metrics collection for all Ops-Center services.
    - Service discovery for Docker containers
    - Relabeling rules for clean metrics
 
-3. **metrics_exporter.py** (`/home/muut/Production/UC-Cloud/services/ops-center/backend/metrics_exporter.py`)
+3. **metrics_exporter.py** (`/opt/ops-center/backend/metrics_exporter.py`)
    - FastAPI `/metrics` endpoint using `prometheus_client`
    - Custom metrics:
      - `ops_center_api_requests_total` (Counter) - API request count by endpoint
@@ -77,7 +77,7 @@ Configure complete Prometheus metrics collection for all Ops-Center services.
    - Add: `prometheus-client==0.19.0`
    - Add: `prometheus-fastapi-instrumentator==6.1.0`
 
-5. **Update server.py** (`/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py`)
+5. **Update server.py** (`/opt/ops-center/backend/server.py`)
    - Import metrics_exporter
    - Add `/metrics` endpoint
    - Add middleware for request tracking
@@ -104,7 +104,7 @@ Create 15 production-ready Grafana dashboards with visualizations for all Ops-Ce
 
 ### Deliverables
 
-**15 Grafana Dashboard JSON files** in `/home/muut/Production/UC-Cloud/services/ops-center/monitoring/grafana/dashboards/`:
+**15 Grafana Dashboard JSON files** in `/opt/ops-center/monitoring/grafana/dashboards/`:
 
 1. **system-health-overview.json**
    - Panels: CPU usage, memory usage, disk usage, network I/O
@@ -256,7 +256,7 @@ Configure comprehensive alerting rules for production monitoring with Slack/emai
 
 ### Deliverables
 
-1. **alertmanager.yml** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/alerting/alertmanager.yml`)
+1. **alertmanager.yml** (`/opt/ops-center/monitoring/alerting/alertmanager.yml`)
    - Route configuration
    - Receiver definitions:
      - Slack webhook (channel: #ops-center-alerts)
@@ -265,7 +265,7 @@ Configure comprehensive alerting rules for production monitoring with Slack/emai
    - Grouping rules (by severity, service)
    - Inhibition rules (suppress lower severity when higher severity active)
 
-2. **alert-rules.yml** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus/alert-rules.yml`)
+2. **alert-rules.yml** (`/opt/ops-center/monitoring/prometheus/alert-rules.yml`)
 
    **Critical Alerts** (PagerDuty + Slack + Email):
    - `OpsCenterDown` - API not responding for 2 minutes
@@ -288,12 +288,12 @@ Configure comprehensive alerting rules for production monitoring with Slack/emai
    - `HighCacheMissRate` - Redis cache miss rate >50%
    - `SlowDatabaseQueries` - >10 slow queries/minute
 
-3. **notification-templates/** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/alerting/templates/`)
+3. **notification-templates/** (`/opt/ops-center/monitoring/alerting/templates/`)
    - `slack-template.tmpl` - Formatted Slack notifications
    - `email-template.tmpl` - HTML email notifications
    - `pagerduty-template.tmpl` - PagerDuty alert format
 
-4. **ALERT_RUNBOOK.md** (`/home/muut/Production/UC-Cloud/services/ops-center/docs/ALERT_RUNBOOK.md`)
+4. **ALERT_RUNBOOK.md** (`/opt/ops-center/docs/ALERT_RUNBOOK.md`)
    - For each alert type:
      - Description: What triggered the alert
      - Impact: What users experience
@@ -324,7 +324,7 @@ Configure comprehensive alerting rules for production monitoring with Slack/emai
      **Escalation**: Page on-call engineer if not resolved in 5 minutes
      ```
 
-5. **alert-test-script.sh** (`/home/muut/Production/UC-Cloud/services/ops-center/monitoring/alerting/test-alerts.sh`)
+5. **alert-test-script.sh** (`/opt/ops-center/monitoring/alerting/test-alerts.sh`)
    - Script to test each alert condition
    - Verify Slack/email delivery
    - Test alert grouping and routing

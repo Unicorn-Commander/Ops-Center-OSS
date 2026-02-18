@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 STRIPE_SECRET_KEY = get_credential("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = get_credential("STRIPE_WEBHOOK_SECRET")
 # Redirect back to signup-flow page after payment (success or cancel)
-STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "https://your-domain.com/signup-flow.html?success=true")
-STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", "https://your-domain.com/signup-flow.html?canceled=true")
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "https://unicorncommander.ai/signup-flow.html?success=true")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", "https://unicorncommander.ai/signup-flow.html?canceled=true")
 LAGO_API_URL = os.getenv("LAGO_API_URL", "http://lago-api:3000")
 LAGO_API_KEY = get_credential("LAGO_API_KEY")
 
@@ -156,7 +156,7 @@ class StripeIntegration:
         try:
             session = stripe.billing_portal.Session.create(
                 customer=customer_id,
-                return_url="https://your-domain.com/billing"
+                return_url="https://unicorncommander.ai/billing"
             )
             logger.info(f"Created portal session for customer: {customer_id}")
             return session.url

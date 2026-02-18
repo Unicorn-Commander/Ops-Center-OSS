@@ -67,6 +67,7 @@ import {
   CheckCircle as FreeIcon,
   Image as ImageIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
 
 // Category color definitions
 const categoryColors = {
@@ -594,67 +595,34 @@ const ModelListManagement = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-          borderRadius: 2,
-          p: 3,
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <Box>
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
-            Model List Management
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Create and manage app-specific curated model lists
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={() => {
-              fetchLists();
-              if (selectedList) fetchModels(selectedList.id);
-            }}
-            sx={{
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 2
-              }
-            }}
-          >
-            Refresh
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              resetListForm();
-              setCreateListDialogOpen(true);
-            }}
-            sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 4,
-                background: 'linear-gradient(135deg, #7e8fef 0%, #8a5bb2 100%)'
-              }
-            }}
-          >
-            Create New List
-          </Button>
-        </Box>
-      </Box>
+      <PageHeader
+        title="Model List Management"
+        subtitle="Create and manage app-specific curated model lists"
+        actions={(
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={() => {
+                fetchLists();
+                if (selectedList) fetchModels(selectedList.id);
+              }}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => {
+                resetListForm();
+                setCreateListDialogOpen(true);
+              }}
+            >
+              Create New List
+            </Button>
+          </Box>
+        )}
+      />
 
       {/* Alerts */}
       {error && (

@@ -398,7 +398,7 @@ tests/
 ### 1. Installation
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/tests
 
 # Install dependencies
 pip install -r requirements-test.txt
@@ -599,7 +599,7 @@ The system is ready for production deployment with immediate attention to:
 
 **Created by:** Claude Code (QA Specialist Agent)
 **Date:** 2025-10-11
-**Location:** `/home/muut/Production/UC-1-Pro/services/ops-center/tests/`
+**Location:** `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/`
 
 For questions or issues:
 - Review TEST_REPORT.md for detailed documentation

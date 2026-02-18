@@ -127,25 +127,25 @@ RESTful API for admins to manage 2FA:
 ```bash
 # Get 2FA status for a user
 curl -H "Authorization: Bearer $TOKEN" \
-  https://your-domain.com/api/v1/admin/2fa/users/abc-123/status
+  https://unicorncommander.ai/api/v1/admin/2fa/users/abc-123/status
 
 # Enforce 2FA via email
 curl -X POST \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"method": "email", "reason": "Policy enforcement"}' \
-  https://your-domain.com/api/v1/admin/2fa/users/abc-123/enforce
+  https://unicorncommander.ai/api/v1/admin/2fa/users/abc-123/enforce
 
 # Reset 2FA (lost device scenario)
 curl -X DELETE \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"reason": "User lost device", "require_reconfigure": true, "logout_sessions": true}' \
-  https://your-domain.com/api/v1/admin/2fa/users/abc-123/reset
+  https://unicorncommander.ai/api/v1/admin/2fa/users/abc-123/reset
 
 # List all users with 2FA status
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://your-domain.com/api/v1/admin/2fa/users?has_2fa=false&limit=50"
+  "https://unicorncommander.ai/api/v1/admin/2fa/users?has_2fa=false&limit=50"
 ```
 
 **Security Features**:
@@ -501,7 +501,7 @@ done
 
 ```bash
 # 1. Register router and restart backend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 # Edit backend/server.py to include router
 docker restart ops-center-direct
 
@@ -514,7 +514,7 @@ npm run build
 cp -r dist/* public/
 
 # 4. Test in browser
-# Visit: https://your-domain.com/admin/security
+# Visit: https://unicorncommander.ai/admin/security
 # Click "2FA Management" tab
 # Verify users list loads
 # Try enforcing 2FA for a test user
@@ -601,7 +601,7 @@ I've implemented all security measures outlined in the architecture:
 **Solution**:
 ```bash
 # Get admin token from Keycloak
-curl -X POST https://auth.your-domain.com/realms/master/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token \
   -d "grant_type=password" \
   -d "client_id=admin-cli" \
   -d "username=admin" \
@@ -635,7 +635,7 @@ _reset_rate_limits.clear()
 3. Configure SMTP settings:
    - Host: smtp.gmail.com
    - Port: 587
-   - From: noreply@your-domain.com
+   - From: noreply@unicorncommander.ai
    - Enable StartTLS
    - Username/Password: Your SMTP credentials
 4. Test configuration
@@ -728,7 +728,7 @@ For the next developer:
 
 **Testing**:
 - Health check: `GET /api/v1/admin/2fa/health`
-- Keycloak admin: https://auth.your-domain.com/admin/uchub/console
+- Keycloak admin: https://auth.unicorncommander.ai/admin/uchub/console
 
 ---
 

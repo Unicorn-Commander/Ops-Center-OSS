@@ -24,7 +24,7 @@ The Subscription Management GUI provides a comprehensive administrative interfac
 
 ## Access
 
-**URL**: https://your-domain.com/admin/system/subscription-management
+**URL**: https://unicorncommander.ai/admin/system/subscription-management
 
 **Required Role**: System Admin or Org Admin
 
@@ -577,7 +577,7 @@ docker logs ops-center-direct | grep "Subscription Tier Management"
 curl -s http://localhost:8084/api/v1/admin/tiers/ | jq '.[].tier_name'
 
 # Access UI
-# https://your-domain.com/admin/system/subscription-management
+# https://unicorncommander.ai/admin/system/subscription-management
 ```
 
 ---
@@ -625,7 +625,7 @@ docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh get users \
 **Solution**: Check browser console for errors
 ```bash
 # Rebuild frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct

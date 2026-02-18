@@ -63,8 +63,8 @@ This directory contains comprehensive security documentation for the Ops-Center 
 
 ### Contact
 
-**Security Team**: security@your-domain.com  
-**Documentation Location**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/`
+**Security Team**: security@unicorncommander.ai  
+**Documentation Location**: `/opt/ops-center/docs/`
 
 ---
 

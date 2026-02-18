@@ -71,11 +71,11 @@ MICROSOFT_CLIENT_ID = os.environ.get("MICROSOFT_CLIENT_ID")
 MICROSOFT_CLIENT_SECRET = os.environ.get("MICROSOFT_CLIENT_SECRET")
 
 # External URL configuration
-EXTERNAL_HOST = os.environ.get("EXTERNAL_HOST", "your-domain.com")
+EXTERNAL_HOST = os.environ.get("EXTERNAL_HOST", "unicorncommander.ai")
 EXTERNAL_PROTOCOL = os.environ.get("EXTERNAL_PROTOCOL", "https")
 
 # Build OAuth redirect URI
-if EXTERNAL_PROTOCOL == "https" and "your-domain.com" in EXTERNAL_HOST:
+if EXTERNAL_PROTOCOL == "https" and "unicorncommander.ai" in EXTERNAL_HOST:
     OAUTH_REDIRECT_URI = f"{EXTERNAL_PROTOCOL}://{EXTERNAL_HOST}/auth/callback"
 elif EXTERNAL_PROTOCOL == "http" and EXTERNAL_HOST == "localhost":
     OAUTH_REDIRECT_URI = f"{EXTERNAL_PROTOCOL}://{EXTERNAL_HOST}:8084/auth/callback"
@@ -142,7 +142,7 @@ usage_tracker = UsageTracker(
 
 # ===== DATABASE SETUP =====
 
-DB_PATH = "/home/muut/Production/UC-1-Pro/volumes/ops_center.db"
+DB_PATH = "/home/deploy/Production/UC-1-Pro/volumes/ops_center.db"
 
 @contextmanager
 def get_db():

@@ -433,12 +433,12 @@ class StripeClient:
         if not success_url:
             success_url = os.getenv(
                 "STRIPE_SUCCESS_URL",
-                "https://your-domain.com/billing/success"
+                "https://unicorncommander.ai/billing/success"
             )
         if not cancel_url:
             cancel_url = os.getenv(
                 "STRIPE_CANCEL_URL",
-                "https://your-domain.com/billing/canceled"
+                "https://unicorncommander.ai/billing/canceled"
             )
 
         try:

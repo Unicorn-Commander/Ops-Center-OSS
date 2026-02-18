@@ -8,7 +8,7 @@
 ## 🚀 TL;DR - Run All Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 ./run_all_tests.sh
 ```
 
@@ -125,7 +125,7 @@ Some tests may fail or return 501 (Not Implemented):
 
 ### Module Not Found
 ```bash
-export PYTHONPATH=/home/muut/Production/UC-Cloud/services/ops-center/backend:$PYTHONPATH
+export PYTHONPATH=/opt/ops-center/backend:$PYTHONPATH
 ```
 
 ### Service Not Running (E2E Tests)

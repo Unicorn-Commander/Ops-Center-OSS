@@ -500,7 +500,7 @@ isCriticalProcess('unicorn-postgresql') // ✅ true
 **Deployment Steps**:
 ```bash
 # 1. Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # 2. Pull latest changes (already done via git push)
 git pull origin main

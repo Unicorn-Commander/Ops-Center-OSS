@@ -13,7 +13,7 @@
 ### Core Files Created
 
 #### 1. Theme Configuration
-- **Location:** `/home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/theme.properties`
+- **Location:** `/home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/theme.properties`
 - **Purpose:** Main theme configuration, specifies parent theme and CSS imports
 
 #### 2. Login Page Template
@@ -130,7 +130,7 @@ Gold Light:       #FBBF24
 ### Method 1: Automated Script (Recommended)
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 
@@ -157,13 +157,13 @@ docker restart uchub-keycloak
 
 ## Activation Steps
 
-1. Access Keycloak Admin: `https://auth.your-domain.com/admin`
+1. Access Keycloak Admin: `https://auth.unicorncommander.ai/admin`
 2. Login with admin credentials
 3. Select your realm
 4. Go to: **Realm Settings** → **Themes** tab
 5. Set **Login Theme** to: `uc-1-pro`
 6. Click **Save**
-7. Test: `https://auth.your-domain.com/realms/your-realm/account`
+7. Test: `https://auth.unicorncommander.ai/realms/your-realm/account`
 
 ## Adding The Colonel Logo
 
@@ -315,7 +315,7 @@ keycloak-theme/
 ### Getting Help
 - GitHub Issues: https://github.com/Unicorn-Commander/UC-1-Pro/issues
 - Email: support@magicunicorn.tech
-- Documentation: https://your-domain.com/docs
+- Documentation: https://unicorncommander.com/docs
 
 ### Updating Theme
 1. Make changes to theme files

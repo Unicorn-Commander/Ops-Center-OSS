@@ -15,6 +15,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./backend:/app
       - ./public:/app/public
+      - ./public:/app/dist
       # Mount host user/group files for Local Users feature
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro

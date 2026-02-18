@@ -172,19 +172,19 @@ INFO: GET /signup-flow.html HTTP/1.1 200 OK
 ## Files Reference
 
 ### Frontend:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/plans.html`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/signup-flow.html`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/billing-settings.html`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/js/billing.js`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/plans.html`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/signup-flow.html`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/billing-settings.html`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/js/billing.js`
 
 ### Backend:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/subscription_api.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/subscription_manager.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/subscription_api.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/subscription_manager.py`
 
 ### Documentation:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/SIGNUP_FLOW_TEST_REPORT.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/SIGNUP_FLOW_TEST_REPORT.md`
 
 ---
 
@@ -201,4 +201,4 @@ All pages load correctly, APIs are functional, authentication is configured, and
 **Tested By**: Claude (AI QA Specialist)
 **Date**: October 11, 2025
 **Container**: ops-center-direct (healthy)
-**Environment**: Production VPS (your-domain.com)
+**Environment**: Production VPS (unicorncommander.ai)

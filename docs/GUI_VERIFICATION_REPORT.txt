@@ -10,20 +10,20 @@ COMPONENT STRUCTURE VERIFICATION
 Total Components Found: 14
 
 Component Directory: src/components/AIModelManagement/
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/GlobalSettings/EmbeddingsSettings.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/GlobalSettings/OllamaSettings.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/GlobalSettings/RerankerSettings.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/GlobalSettings/VllmSettings.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/GlobalSettings/index.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/InstalledModels/ModelCard.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/InstalledModels/index.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ModelDetailsModal.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ModelSearch/SearchBar.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ModelSearch/SearchFilters.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ModelSearch/SearchResults.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ServiceInfoCard.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/ServiceTabs.jsx
-  ✓ /home/muut/Production/UC-Cloud/services/ops-center/src/components/AIModelManagement/index.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/GlobalSettings/EmbeddingsSettings.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/GlobalSettings/OllamaSettings.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/GlobalSettings/RerankerSettings.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/GlobalSettings/VllmSettings.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/GlobalSettings/index.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/InstalledModels/ModelCard.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/InstalledModels/index.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ModelDetailsModal.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ModelSearch/SearchBar.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ModelSearch/SearchFilters.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ModelSearch/SearchResults.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ServiceInfoCard.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/ServiceTabs.jsx
+  ✓ /opt/ops-center/src/components/AIModelManagement/index.jsx
 
 Component Breakdown:
   1. index.jsx (Main Coordinator) - 19KB
@@ -153,7 +153,7 @@ the AIModelManagement coordinator (index.jsx) are not yet reflected
 in the production build.
 
 Required Action:
-  cd /home/muut/Production/UC-Cloud/services/ops-center
+  cd /opt/ops-center
   npm run build && cp -r dist/* public/
 
 This will:

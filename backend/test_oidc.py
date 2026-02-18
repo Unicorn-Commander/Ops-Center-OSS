@@ -4,11 +4,10 @@ import httpx
 import asyncio
 import os
 
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "master")
-CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "ops-center")
-CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET", "")
-KEYCLOAK_ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "")
+KEYCLOAK_URL = "http://uchub-keycloak:8080"
+KEYCLOAK_REALM = "uchub"
+CLIENT_ID = "ops-center"
+CLIENT_SECRET = "your-keycloak-client-secret"
 
 async def test_oidc_discovery():
     """Test OIDC discovery endpoint"""
@@ -56,7 +55,7 @@ async def test_client_config():
                     "grant_type": "password",
                     "client_id": "admin-cli",
                     "username": "admin",
-                    "password": KEYCLOAK_ADMIN_PASSWORD
+                    "password": "your-admin-password"
                 }
             )
 
@@ -119,7 +118,7 @@ async def test_token_exchange():
     # But it will show us what error Keycloak returns
 
     token_url = f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token"
-    redirect_uri = os.getenv("REDIRECT_URI", "http://localhost:8084/auth/callback")
+    redirect_uri = "https://unicorncommander.ai/auth/callback"
 
     print(f"Token URL: {token_url}")
     print(f"Client ID: {CLIENT_ID}")

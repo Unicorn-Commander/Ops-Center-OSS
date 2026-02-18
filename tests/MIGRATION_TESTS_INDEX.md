@@ -3,7 +3,7 @@
 ## Quick Start
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 ./run_migration_tests.sh
 ```
 
@@ -201,7 +201,7 @@ pytest unit/test_namecheap_manager.py::TestDomainListing::test_get_domain_list_s
 ## File Locations
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/tests/
+/opt/ops-center/tests/
 │
 ├── conftest_migration.py                    # Test fixtures
 │

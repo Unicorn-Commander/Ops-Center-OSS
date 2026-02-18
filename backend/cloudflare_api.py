@@ -350,7 +350,7 @@ async def list_zones(
             "zones": [
                 {
                     "id": "mock-zone-1",
-                    "name": "your-domain.com",
+                    "name": "unicorncommander.ai",
                     "status": "active",
                     "type": "full",
                     "name_servers": ["ns1.example.com", "ns2.example.com"],

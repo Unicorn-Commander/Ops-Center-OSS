@@ -46,7 +46,7 @@ WHERE key_alias IN ('litellm-master-key', 'ops-center-service');
 
 ### 2. Configuration File Review ✅
 
-**What We Checked**: `/home/muut/UC-1-Hub/config/litellm-config.yaml`
+**What We Checked**: `/home/deploy/UC-1-Hub/config/litellm-config.yaml`
 
 **Key Configuration**:
 ```yaml
@@ -246,7 +246,7 @@ FROM "LiteLLM_VerificationToken";
 ### 2. Verify LiteLLM Config
 ```bash
 # View configuration file
-cat /home/muut/UC-1-Hub/config/litellm-config.yaml
+cat /home/deploy/UC-1-Hub/config/litellm-config.yaml
 
 # Look for wildcard model definitions:
 # - openrouter/*
@@ -257,7 +257,7 @@ cat /home/muut/UC-1-Hub/config/litellm-config.yaml
 ### 3. Test Direct LiteLLM Access
 ```bash
 # Get master key from environment
-grep LITELLM_MASTER_KEY /home/muut/UC-1-Hub/.env
+grep LITELLM_MASTER_KEY /home/deploy/UC-1-Hub/.env
 
 # Test with configured model
 docker exec ops-center-direct curl -X POST http://uchub-litellm:4000/chat/completions \
@@ -327,12 +327,12 @@ WHERE key_alias = 'ops-center-service';
 ## Related Documentation
 
 **LiteLLM Configuration**:
-- Config file: `/home/muut/UC-1-Hub/config/litellm-config.yaml`
+- Config file: `/home/deploy/UC-1-Hub/config/litellm-config.yaml`
 - Documentation: https://docs.litellm.ai/docs/proxy/virtual_keys
 
 **Ops-Center Access Control**:
-- Tier management: `/home/muut/Production/UC-Cloud/services/ops-center/docs/TIER_PRICING_STRATEGY.md`
-- API documentation: `/home/muut/Production/UC-Cloud/services/ops-center/docs/API_REFERENCE.md`
+- Tier management: `/opt/ops-center/docs/TIER_PRICING_STRATEGY.md`
+- API documentation: `/opt/ops-center/docs/API_REFERENCE.md`
 
 **Database Schema**:
 - LiteLLM tables: `LiteLLM_VerificationToken`, `LiteLLM_Config`

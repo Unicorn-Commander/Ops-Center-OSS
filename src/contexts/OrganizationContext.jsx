@@ -64,15 +64,25 @@ export function OrganizationProvider({ children }) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('/api/v1/org/my-orgs', {
+      // Try new org-centric endpoint first, fall back to legacy
+      let response = await fetch('/api/v1/users/me/organizations', {
         method: 'GET',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' }
       });
 
+      // Fall back to legacy endpoint if new one not available
+      if (response.status === 404) {
+        response = await fetch('/api/v1/org/my-orgs', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
       if (!response.ok) {
         // If user has no organizations yet, that's okay
-        if (response.status === 404) {
+        if (response.status === 404 || response.status === 401) {
           setOrganizations([]);
           setCurrentOrgId(null);
           setLoading(false);
@@ -84,15 +94,16 @@ export function OrganizationProvider({ children }) {
       const data = await response.json();
       console.log('[OrganizationContext] Fetched user organizations:', data);
 
-      setOrganizations(data || []);
+      // Handle new API response format: { organizations: [...], current_org_id, default_org_id }
+      const orgs = data.organizations || data || [];
+      setOrganizations(orgs);
 
-      // If no current org set, default to first org
-      if (!currentOrgId && data && data.length > 0) {
-        const firstOrg = data[0];
-        // Set org ID without reloading (initial load)
-        setCurrentOrgId(firstOrg.id);
-        localStorage.setItem('currentOrgId', firstOrg.id);
-        console.log('[OrganizationContext] Set initial organization:', firstOrg.id);
+      // If no current org set, use API's current_org_id or default to first org
+      if (!currentOrgId && orgs.length > 0) {
+        const orgId = data.current_org_id || data.default_org_id || orgs[0].id;
+        setCurrentOrgId(orgId);
+        localStorage.setItem('currentOrgId', orgId);
+        console.log('[OrganizationContext] Set initial organization:', orgId);
       }
     } catch (err) {
       console.error('[OrganizationContext] Error fetching organizations:', err);
@@ -107,15 +118,27 @@ export function OrganizationProvider({ children }) {
     try {
       console.log('[OrganizationContext] Switching to organization:', orgId);
 
+      // Call backend to set org cookie and validate membership
+      const response = await fetch('/api/v1/users/me/switch-org', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ org_id: orgId })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Failed to switch organization');
+      }
+
+      const data = await response.json();
+      console.log('[OrganizationContext] Organization switched:', data);
+
       // Update local state
       setCurrentOrgId(orgId);
 
       // Persist to localStorage
       localStorage.setItem('currentOrgId', orgId);
-
-      // Notify backend (for analytics) - endpoint doesn't exist yet, so just skip
-      // TODO: Implement /api/v1/org/{orgId}/switch endpoint if analytics needed
-      console.log('[OrganizationContext] Organization switched to:', orgId);
 
       // Broadcast to other tabs
       if (orgChannel) {
@@ -171,6 +194,34 @@ export function OrganizationProvider({ children }) {
 
   const currentOrg = getCurrentOrganization();
 
+  // Get tier badge color based on tier code
+  const getTierColor = (tierCode) => {
+    const tierColors = {
+      'vip_founder': '#FFD700',      // Gold
+      'founder-friend': '#FFD700',   // Gold
+      'byok': '#9c27b0',             // Purple
+      'managed': '#2196f3',          // Blue
+      'human_interest': '#4caf50',   // Green
+      'loopnet_starter': '#ff9800',  // Orange
+      'loopnet_professional': '#ff5722', // Deep Orange
+      'professional': '#2196f3',     // Blue
+      'enterprise': '#673ab7',       // Deep Purple
+      'trial': '#9e9e9e',            // Gray
+      'starter': '#03a9f4',          // Light Blue
+    };
+    return tierColors[tierCode?.toLowerCase()] || '#9e9e9e';
+  };
+
+  // Get current org's tier code
+  const getCurrentTierCode = () => {
+    return currentOrg?.tier?.code || null;
+  };
+
+  // Get current org's apps
+  const getCurrentOrgApps = () => {
+    return currentOrg?.apps || [];
+  };
+
   const value = {
     organizations,
     currentOrg,
@@ -182,9 +233,13 @@ export function OrganizationProvider({ children }) {
     setCurrentOrg,  // New: set org without reload
     getCurrentOrganization,
     getCurrentOrgRole,
+    getCurrentTierCode,
+    getCurrentOrgApps,
+    getTierColor,
     hasOrgRole,
     refreshOrganizations,
-    hasOrganization: currentOrg !== null
+    hasOrganization: currentOrg !== null,
+    hasMultipleOrgs: organizations.length > 1
   };
 
   return (

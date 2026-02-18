@@ -524,7 +524,7 @@ Update these files:
 
 ## Migration SQL Script
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/migrate_tier_names.sql`
+**File**: `/opt/ops-center/backend/sql/migrate_tier_names.sql`
 
 ```sql
 -- ============================================================================
@@ -646,7 +646,7 @@ SELECT tier, COUNT(*) FROM user_credits GROUP BY tier;
 
 **Rollback frontend changes**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 git checkout HEAD~1 src/constants/tiers.js
 npm run build && cp -r dist/* public/
 docker restart ops-center-direct
@@ -705,7 +705,7 @@ Migration is considered successful when:
 
 1. **Create migration branch**:
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    git checkout -b feature/standardize-tier-naming
    ```
 

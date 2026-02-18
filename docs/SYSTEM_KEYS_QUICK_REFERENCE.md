@@ -14,7 +14,7 @@
 **Endpoint**: `PUT /api/v1/llm/providers/{id}`
 
 **How to use**:
-1. Go to: https://your-domain.com/admin/openrouter-settings
+1. Go to: https://unicorncommander.ai/admin/openrouter-settings
 2. Enter OpenRouter API key: `sk-or-v1-...`
 3. Click **Save** → Key stored as `api_key_encrypted`
 4. Click **Test** → Validates key works
@@ -31,7 +31,7 @@
 - `PUT /api/v1/llm/providers/{id}` - Update provider with API key
 
 **How to use**:
-1. Go to: https://your-domain.com/admin/llm-management
+1. Go to: https://unicorncommander.ai/admin/llm-management
 2. Click **Add Provider** button
 3. Fill form:
    - Provider Name: `OpenAI`
@@ -62,7 +62,7 @@
 
 ## Environment Variables (Current Best Practice)
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth`
+**File**: `/opt/ops-center/.env.auth`
 
 ```bash
 # System Provider Keys (used when users don't have BYOK)
@@ -195,7 +195,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c \
 # OpenRouter
 curl https://openrouter.ai/api/v1/models \
   -H "Authorization: Bearer sk-or-v1-YOUR_KEY" \
-  -H "HTTP-Referer: https://your-domain.com"
+  -H "HTTP-Referer: https://unicorncommander.ai"
 
 # OpenAI
 curl https://api.openai.com/v1/models \

@@ -305,7 +305,7 @@ cd /tmp/qa-verification-v2.5.0
 
 ### 2. Deploy Frontend (If Needed)
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 ```

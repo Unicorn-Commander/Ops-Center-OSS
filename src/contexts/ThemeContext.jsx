@@ -106,6 +106,28 @@ const themes = {
       body: 'font-poppins',
       display: 'font-space'
     }
+  },
+  underground: {
+    name: 'Special Projects',
+    id: 'underground',
+    primary: 'purple-700',
+    accent: 'fuchsia-500',
+    background: 'bg-gradient-to-br from-black via-purple-950 to-slate-950',
+    sidebar: 'bg-black/95 backdrop-blur-xl border-r border-purple-900/50',
+    card: 'bg-purple-950/80 backdrop-blur-md border border-purple-800/30 shadow-xl shadow-purple-900/20',
+    button: 'bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-800 hover:to-fuchsia-800 text-white shadow-lg shadow-purple-900/40',
+    text: {
+      primary: 'text-white',
+      secondary: 'text-purple-300',
+      accent: 'text-fuchsia-400',
+      logo: 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400'
+    },
+    status: {
+      success: 'text-emerald-400',
+      warning: 'text-amber-400',
+      error: 'text-red-500',
+      info: 'text-cyan-400'
+    }
   }
 };
 
@@ -140,7 +162,7 @@ const themes = {
  */
 
 export function ThemeProvider({ children }) {
-  const [currentTheme, setCurrentTheme] = useState('unicorn'); // Default to Magic Unicorn theme
+  const [currentTheme, setCurrentTheme] = useState('underground'); // Default to Underground theme for your-domain.com
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {

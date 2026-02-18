@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Authentication:** Keycloak
-**Base URL:** `https://your-domain.com/api/v1/admin/subscriptions`
+**Base URL:** `https://unicorncommander.ai/api/v1/admin/subscriptions`
 
 ## Overview
 
@@ -23,7 +23,7 @@ Authentication is handled via session cookies from the main application.
 ### Environment Variables
 
 ```bash
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_CLIENT_ID=admin-cli
 KEYCLOAK_ADMIN_USERNAME=admin
@@ -338,7 +338,7 @@ const data = await response.json();
 ### Run Test Suite
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/tests
 ./run_admin_tests.sh
 ```
 
@@ -346,22 +346,22 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
 
 1. **Login as admin:**
    ```
-   https://your-domain.com/login.html
+   https://unicorncommander.ai/login.html
    ```
 
 2. **Access admin dashboard:**
    ```
-   https://your-domain.com/admin/subscriptions.html
+   https://unicorncommander.ai/admin/subscriptions.html
    ```
 
 3. **Test API directly:**
    ```bash
    # Get all subscriptions
-   curl -X GET https://your-domain.com/api/v1/admin/subscriptions/list \
+   curl -X GET https://unicorncommander.ai/api/v1/admin/subscriptions/list \
      -H "Cookie: session=your_session_cookie"
 
    # Update subscription
-   curl -X PATCH https://your-domain.com/api/v1/admin/subscriptions/user@example.com \
+   curl -X PATCH https://unicorncommander.ai/api/v1/admin/subscriptions/user@example.com \
      -H "Cookie: session=your_session_cookie" \
      -H "Content-Type: application/json" \
      -d '{"tier":"professional","status":"active"}'
@@ -371,7 +371,7 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
 
 ```python
 import sys
-sys.path.insert(0, '/home/muut/Production/UC-1-Pro/services/ops-center/backend')
+sys.path.insert(0, '/home/deploy/Production/UC-1-Pro/services/ops-center/backend')
 
 from keycloak_integration import get_all_users, get_user_tier_info
 
@@ -419,19 +419,19 @@ print(f"Tier: {tier_info['subscription_tier']}")
 ## Files
 
 **Backend:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` - Keycloak client
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py` - API endpoints
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` - Keycloak client
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py` - API endpoints
 
 **Frontend:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html` - Admin UI
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html` - Admin UI
 
 **Tests:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/tests/test_keycloak_admin.py` - Test suite
-- `/home/muut/Production/UC-1-Pro/services/ops-center/tests/run_admin_tests.sh` - Test runner
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/test_keycloak_admin.py` - Test suite
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/run_admin_tests.sh` - Test runner
 
 ## Support
 
 For issues or questions:
 - Check logs: `docker logs unicorn-ops-center`
-- Keycloak admin: `https://auth.your-domain.com/admin/uchub/console`
+- Keycloak admin: `https://auth.unicorncommander.ai/admin/uchub/console`
 - GitHub Issues: https://github.com/Unicorn-Commander/UC-1-Pro/issues

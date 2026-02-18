@@ -178,7 +178,7 @@ $ ./scripts/health_check.sh --service=keycloak
 docker ps | grep keycloak
 
 # Test Keycloak endpoint
-curl -I https://auth.your-domain.com/realms/uchub
+curl -I https://auth.unicorncommander.ai/realms/uchub
 
 # Verify Keycloak configuration
 docker exec ops-center-direct env | grep KEYCLOAK
@@ -217,7 +217,7 @@ CLIENT_ID=$(docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh get clients \
 
 docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh update clients/$CLIENT_ID \
   --realm uchub \
-  -s 'redirectUris=["https://your-domain.com/auth/callback","http://localhost:8084/auth/callback"]'
+  -s 'redirectUris=["https://unicorncommander.ai/auth/callback","http://localhost:8084/auth/callback"]'
 ```
 
 **B. Fix Client Secret**
@@ -254,7 +254,7 @@ docker exec unicorn-redis redis-cli FLUSHDB
 
 **Symptoms**:
 ```bash
-$ curl https://your-domain.com/api/v1/admin/users
+$ curl https://unicorncommander.ai/api/v1/admin/users
 {"detail":"Unauthorized"}
 ```
 
@@ -263,11 +263,11 @@ $ curl https://your-domain.com/api/v1/admin/users
 **A. Missing or Invalid Token**
 ```bash
 # Login to get token
-curl -X POST https://your-domain.com/auth/oidc/login
+curl -X POST https://unicorncommander.ai/auth/oidc/login
 
 # Use token in requests
 curl -H "Authorization: Bearer $TOKEN" \
-  https://your-domain.com/api/v1/admin/users
+  https://unicorncommander.ai/api/v1/admin/users
 ```
 
 **B. Expired Token**
@@ -283,7 +283,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 **Symptoms**:
 ```bash
 $ curl -H "Authorization: Bearer $TOKEN" \
-  https://your-domain.com/api/v1/admin/users
+  https://unicorncommander.ai/api/v1/admin/users
 {"detail":"Forbidden"}
 ```
 
@@ -294,7 +294,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c \
   "SELECT email, roles FROM users WHERE email = 'your-email@example.com';"
 
 # Assign admin role via Keycloak
-# https://auth.your-domain.com/admin/uchub/console
+# https://auth.unicorncommander.ai/admin/uchub/console
 # Users → Select user → Role mapping → Assign role: admin
 ```
 
@@ -302,7 +302,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c \
 
 **Symptoms**:
 ```bash
-$ curl https://your-domain.com/api/v1/admin/users
+$ curl https://unicorncommander.ai/api/v1/admin/users
 {"detail":"Internal Server Error"}
 ```
 
@@ -423,7 +423,7 @@ free -h
 
 **Symptoms**:
 ```bash
-$ time curl https://your-domain.com/api/v1/admin/users
+$ time curl https://unicorncommander.ai/api/v1/admin/users
 real    0m15.423s
 ```
 
@@ -633,7 +633,7 @@ echo "Diagnostic report created: $REPORT_DIR.tar.gz"
 ### Support Channels
 
 - **GitHub Issues**: https://github.com/Unicorn-Commander/Ops-Center/issues
-- **Documentation**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/`
+- **Documentation**: `/opt/ops-center/docs/`
 - **Logs**: Check container logs first
 
 ## References

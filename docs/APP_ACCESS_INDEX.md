@@ -300,7 +300,7 @@
 
 ### Documentation
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/docs/
+/home/deploy/Production/UC-1-Pro/services/ops-center/docs/
 ├── APP_ACCESS_INDEX.md                      (this file)
 ├── APP_ACCESS_EXECUTIVE_SUMMARY.md          (8 pages)
 ├── ROLE_BASED_APP_ACCESS_DESIGN.md          (60 pages)
@@ -311,7 +311,7 @@
 
 ### Source Code (To Be Created)
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/
+/home/deploy/Production/UC-1-Pro/services/ops-center/
 ├── backend/
 │   ├── config/
 │   │   └── apps_access.json                 (configuration)
@@ -332,22 +332,22 @@
 ## Related Documentation
 
 ### Existing UC-1 Pro Documentation
-- **[ROLE_MAPPING.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)**
+- **[ROLE_MAPPING.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)**
   - Current role system
   - Authentik integration
   - Role mapping logic
 
-- **[AUTHENTIK_SETUP.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)**
+- **[AUTHENTIK_SETUP.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)**
   - SSO configuration
   - OAuth setup
   - User management
 
-- **[ADMIN_API_QUICK_REFERENCE.md](/home/muut/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)**
+- **[ADMIN_API_QUICK_REFERENCE.md](/home/deploy/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)**
   - Existing API endpoints
   - Authentication methods
   - API usage examples
 
-- **[OPS_CENTER_DESIGN.md](/home/muut/Production/UC-1-Pro/services/ops-center/OPS_CENTER_DESIGN.md)**
+- **[OPS_CENTER_DESIGN.md](/home/deploy/Production/UC-1-Pro/services/ops-center/OPS_CENTER_DESIGN.md)**
   - Overall ops-center architecture
   - Design philosophy
   - Component overview

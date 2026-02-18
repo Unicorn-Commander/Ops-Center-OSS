@@ -547,11 +547,11 @@ export default function PublicLanding() {
 
 1. **Create backup**
    ```bash
-   mkdir -p /home/muut/backups/$(date +%Y%m%d)
-   cp -r /home/muut/Production/UC-1-Pro/services/ops-center/src \
-      /home/muut/backups/$(date +%Y%m%d)/
-   cp -r /home/muut/Production/UC-1-Pro/services/ops-center/backend \
-      /home/muut/backups/$(date +%Y%m%d)/
+   mkdir -p /opt/backups/$(date +%Y%m%d)
+   cp -r /home/deploy/Production/UC-1-Pro/services/ops-center/src \
+      /opt/backups/$(date +%Y%m%d)/
+   cp -r /home/deploy/Production/UC-1-Pro/services/ops-center/backend \
+      /opt/backups/$(date +%Y%m%d)/
    ```
 
 2. **Git commit**
@@ -565,7 +565,7 @@ export default function PublicLanding() {
 
 1. **Deploy to staging**
    ```bash
-   cd /home/muut/Production/UC-1-Pro/services/ops-center
+   cd /home/deploy/Production/UC-1-Pro/services/ops-center
    git checkout staging
    git merge main
    npm run build
@@ -595,8 +595,8 @@ export default function PublicLanding() {
 
 1. **Verify deployment**
    ```bash
-   curl -I https://your-domain.com
-   curl -H "Authorization: Bearer $TOKEN" https://your-domain.com/api/v1/apps
+   curl -I https://unicorncommander.ai
+   curl -H "Authorization: Bearer $TOKEN" https://unicorncommander.ai/api/v1/apps
    ```
 
 2. **Update documentation**
@@ -617,7 +617,7 @@ export default function PublicLanding() {
 
 1. **Quick rollback**
    ```bash
-   cd /home/muut/Production/UC-1-Pro/services/ops-center
+   cd /home/deploy/Production/UC-1-Pro/services/ops-center
    git checkout HEAD~1
    npm run build
    docker restart unicorn-ops-center

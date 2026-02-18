@@ -33,7 +33,7 @@ async def test_keycloak_admin():
         # Initialize admin client
         print("\n1️⃣  Initializing Keycloak Admin client...")
         admin = KeycloakAdmin(
-            keycloak_url="https://auth.your-domain.com",
+            keycloak_url="https://auth.unicorncommander.ai",
             realm="uchub",
             admin_username="admin",
             admin_password=admin_password
@@ -99,7 +99,7 @@ async def test_keycloak_admin():
         print("\n" + "=" * 60)
         print("✅ ALL TESTS PASSED!")
         print("\n📋 Summary:")
-        print(f"   • Keycloak URL: https://auth.your-domain.com")
+        print(f"   • Keycloak URL: https://auth.unicorncommander.ai")
         print(f"   • Realm: uchub")
         print(f"   • Total users: {count}")
         print(f"   • Available roles: {len(roles)}")

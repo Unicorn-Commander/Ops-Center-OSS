@@ -133,7 +133,7 @@ async def test_query_customer():
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 'http://unicorn-lago-api:3000/api/v1/customers',
-                headers={'Authorization': 'Bearer d87f40d7-25c4-411c-bd51-677b26299e1c'},
+                headers={'Authorization': 'Bearer your-lago-api-key'},
                 timeout=10.0
             )
 

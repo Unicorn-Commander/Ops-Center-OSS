@@ -374,7 +374,7 @@ function OverviewTab({ balance, usage }) {
               <Button variant="outlined" href="/admin/subscription/plan">
                 View Plans
               </Button>
-              <Button variant="outlined" href="/admin/credits/tiers">
+              <Button variant="outlined" href="/admin/billing/tiers/compare">
                 Compare Tiers
               </Button>
               <Button variant="outlined" href="/admin/subscription/billing">

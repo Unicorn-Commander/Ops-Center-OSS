@@ -411,7 +411,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://your-domain.com"],  # ← Only your domain
+    allow_origins=["https://unicorncommander.ai"],  # ← Only your domain
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -598,13 +598,13 @@ After addressing these issues, the system will meet enterprise security standard
 
 ## Test Artifacts
 
-**Test Report File**: `/home/muut/Production/UC-Cloud/services/ops-center/tests/SECURITY_REPORT_BILLING.md`
-**Test Script**: `/home/muut/Production/UC-Cloud/services/ops-center/tests/security_test_billing.py`
+**Test Report File**: `/opt/ops-center/tests/SECURITY_REPORT_BILLING.md`
+**Test Script**: `/opt/ops-center/tests/security_test_billing.py`
 **Run Command**: `python3 tests/security_test_billing.py`
 
 **Re-run Tests After Fixes**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 python3 tests/security_test_billing.py > tests/security_results_$(date +%Y%m%d).txt
 ```
 

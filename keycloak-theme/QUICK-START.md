@@ -5,24 +5,24 @@
 ### Prerequisites
 - Docker is running
 - Keycloak container is running (name: `uchub-keycloak`)
-- Theme files are in: `/home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/`
+- Theme files are in: `/home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/`
 
 ### Deploy in 3 Steps
 
 #### Step 1: Run Deployment Script
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 
 #### Step 2: Activate Theme
-1. Go to: https://auth.your-domain.com/admin
+1. Go to: https://auth.unicorncommander.ai/admin
 2. Navigate to: **Realm Settings** → **Themes**
 3. Set **Login Theme** to: `uc-1-pro`
 4. Click **Save**
 
 #### Step 3: Test
-Visit: https://auth.your-domain.com/realms/YOUR-REALM/account
+Visit: https://auth.unicorncommander.ai/realms/YOUR-REALM/account
 
 You should see:
 - Purple gradient background

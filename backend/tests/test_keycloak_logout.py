@@ -10,9 +10,9 @@ import json
 
 # Configuration
 BASE_URL = os.getenv("API_URL", "http://localhost:8084")
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com")
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai")
 KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "master")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://your-domain.com")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://unicorncommander.ai")
 
 
 async def test_logout_endpoint():
@@ -87,7 +87,7 @@ When user clicks logout:
 2. Parse the response:
    {
      "message": "Logged out successfully",
-     "sso_logout_url": "https://auth.your-domain.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://your-domain.com"
+     "sso_logout_url": "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout?redirect_uri=https://unicorncommander.ai"
    }
 
 3. Redirect browser to sso_logout_url:

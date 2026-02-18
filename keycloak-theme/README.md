@@ -7,7 +7,7 @@ Custom Keycloak theme for UC-1 Pro Operations Center with purple and gold brandi
 Deploy the theme to Keycloak:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 
@@ -42,7 +42,7 @@ uc-1-pro/
 Use the provided deployment script:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 
@@ -65,7 +65,7 @@ services:
     volumes:
       - ./keycloak-theme/uc1-pro:/opt/keycloak/themes/uc1-pro
     environment:
-      KC_HOSTNAME: auth.your-domain.com
+      KC_HOSTNAME: auth.unicorncommander.ai
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: your-admin-password
     command:
@@ -120,7 +120,7 @@ cp uc1-pro.jar /opt/keycloak/providers/
 
 ## Activation
 
-1. Log in to Keycloak Admin Console: `https://auth.your-domain.com/admin`
+1. Log in to Keycloak Admin Console: `https://auth.unicorncommander.ai/admin`
 
 2. Navigate to: **Realm Settings** → **Themes** tab
 
@@ -131,7 +131,7 @@ cp uc1-pro.jar /opt/keycloak/providers/
 
 4. Click **Save**
 
-5. Test by visiting login page: `https://auth.your-domain.com/realms/your-realm/account`
+5. Test by visiting login page: `https://auth.unicorncommander.ai/realms/your-realm/account`
 
 ## Adding The Colonel Logo
 
@@ -139,7 +139,7 @@ cp uc1-pro.jar /opt/keycloak/providers/
 
 2. Copy to theme directory:
 ```bash
-cp colonel-logo.png /home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc1-pro/login/resources/img/
+cp colonel-logo.png /home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc1-pro/login/resources/img/
 ```
 
 3. If using Docker volume mount, the change will be reflected immediately
@@ -321,7 +321,7 @@ For issues, questions, or contributions:
 
 - GitHub: https://github.com/Unicorn-Commander/UC-1-Pro
 - Email: support@magicunicorn.tech
-- Documentation: https://your-domain.com/docs
+- Documentation: https://unicorncommander.com/docs
 
 ## License
 

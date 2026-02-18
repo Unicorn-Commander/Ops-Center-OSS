@@ -141,7 +141,7 @@ async def mcp_websocket(websocket: WebSocket, user_id: str):
     WebSocket endpoint for MCP server connections.
 
     Users should connect their local MCP server to:
-    wss://api.your-domain.com/api/mcp/ws/{user_id}
+    wss://api.unicorncommander.ai/api/mcp/ws/{user_id}
 
     Protocol:
     - Server -> Client: {"type": "tool_call", "call_id": "...", "tool": "...", "input": {...}}

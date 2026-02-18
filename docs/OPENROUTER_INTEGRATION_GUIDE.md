@@ -474,7 +474,7 @@ if __name__ == "__main__":
 ### Run Integration Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Install test dependencies
 pip install pytest pytest-asyncio httpx

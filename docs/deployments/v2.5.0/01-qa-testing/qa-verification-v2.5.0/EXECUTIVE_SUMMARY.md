@@ -249,6 +249,6 @@ docker logs ops-center-direct -f | grep -iE "error|warning"
 ```
 
 **Access UIs**:
-- Ops-Center: https://your-domain.com/admin
-- Logs: https://your-domain.com/admin/logs
-- Grafana: https://your-domain.com/admin/monitoring/grafana
+- Ops-Center: https://unicorncommander.ai/admin
+- Logs: https://unicorncommander.ai/admin/logs
+- Grafana: https://unicorncommander.ai/admin/monitoring/grafana

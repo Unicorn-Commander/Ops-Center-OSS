@@ -140,7 +140,7 @@ export default function Login() {
           <p className="text-sm text-blue-200 text-center">
             Default credentials:<br />
             Username: <span className="font-mono">ucadmin</span><br />
-            Password: <span className="font-mono">your-admin-password</span>
+            Password: <span className="font-mono">MagicUnicorn!8-)</span>
           </p>
         </div>
 

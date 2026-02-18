@@ -31,15 +31,15 @@ class TestNameCheapManagerInitialization:
         from backend.namecheap_manager import NameCheapManager
 
         manager = NameCheapManager(
-            api_username='SkyBehind',
+            api_username='your-namecheap-username',
             api_key='test_api_key_123',
-            client_ip='YOUR_SERVER_IP',
+            client_ip='your-server-ip',
             sandbox_mode=False
         )
 
-        assert manager.api_username == 'SkyBehind'
+        assert manager.api_username == 'your-namecheap-username'
         assert manager.api_key == 'test_api_key_123'
-        assert manager.client_ip == 'YOUR_SERVER_IP'
+        assert manager.client_ip == 'your-server-ip'
         assert manager.sandbox_mode is False
 
     def test_init_with_sandbox_mode(self):
@@ -87,7 +87,7 @@ class TestDomainListing:
 
         assert result['success'] is True
         assert len(result['domains']) == 4
-        assert result['domains'][0]['name'] == 'your-domain.com'
+        assert result['domains'][0]['name'] == 'unicorncommander.ai'
 
     @pytest.mark.asyncio
     async def test_filter_domains_by_status(self, mock_namecheap_client):
@@ -134,7 +134,7 @@ class TestDomainListing:
         # Filter .ai domains
         ai_domains = [d for d in all_domains['domains'] if d['tld'] == 'ai']
         assert len(ai_domains) == 1
-        assert ai_domains[0]['name'] == 'your-domain.com'
+        assert ai_domains[0]['name'] == 'unicorncommander.ai'
 
     @pytest.mark.asyncio
     async def test_filter_locked_domains(self, mock_namecheap_client):
@@ -175,12 +175,12 @@ class TestDNSExport:
             'records': sample_basic_dns_records
         }
 
-        result = await manager.export_dns_records('your-domain.com', format='json')
+        result = await manager.export_dns_records('unicorncommander.ai', format='json')
 
         assert result['success'] is True
         assert result['format'] == 'json'
         assert len(result['records']) == 3
-        assert result['domain'] == 'your-domain.com'
+        assert result['domain'] == 'unicorncommander.ai'
 
     @pytest.mark.asyncio
     async def test_export_dns_records_csv(self, mock_namecheap_client, sample_basic_dns_records):
@@ -198,7 +198,7 @@ class TestDNSExport:
             'records': sample_basic_dns_records
         }
 
-        result = await manager.export_dns_records('your-domain.com', format='csv')
+        result = await manager.export_dns_records('unicorncommander.ai', format='csv')
 
         assert result['success'] is True
         assert result['format'] == 'csv'
@@ -220,7 +220,7 @@ class TestDNSExport:
             'records': sample_basic_dns_records
         }
 
-        result = await manager.export_dns_records('your-domain.com', format='bind')
+        result = await manager.export_dns_records('unicorncommander.ai', format='bind')
 
         assert result['success'] is True
         assert result['format'] == 'bind'
@@ -276,7 +276,7 @@ class TestEmailServiceDetection:
             'records': sample_microsoft365_dns_records
         }
 
-        result = await manager.detect_email_service('your-domain.com')
+        result = await manager.detect_email_service('unicorncommander.ai')
 
         assert result['service_type'] == 'microsoft365'
         assert 'mail.protection.outlook.com' in result['mx_records'][0]
@@ -368,7 +368,7 @@ class TestNameserverUpdates:
         manager.client = mock_namecheap_client
 
         new_nameservers = ['vera.ns.cloudflare.com', 'walt.ns.cloudflare.com']
-        result = await manager.update_nameservers('your-domain.com', new_nameservers)
+        result = await manager.update_nameservers('unicorncommander.ai', new_nameservers)
 
         assert result['success'] is True
         mock_namecheap_client.set_nameservers.assert_called_once()
@@ -422,7 +422,7 @@ class TestNameserverUpdates:
         )
         manager.client = mock_namecheap_client
 
-        domains = ['your-domain.com', 'superiorbsolutions.com', 'magicunicorn.tech']
+        domains = ['unicorncommander.ai', 'superiorbsolutions.com', 'magicunicorn.tech']
         new_nameservers = ['vera.ns.cloudflare.com', 'walt.ns.cloudflare.com']
 
         results = await manager.batch_update_nameservers(domains, new_nameservers)
@@ -448,11 +448,11 @@ class TestRollbackCapability:
         manager.client = mock_namecheap_client
 
         original_ns = sample_dns_backup['original_nameservers']
-        result = await manager.rollback_nameservers('your-domain.com', original_ns)
+        result = await manager.rollback_nameservers('unicorncommander.ai', original_ns)
 
         assert result['success'] is True
         mock_namecheap_client.set_nameservers.assert_called_once_with(
-            'your-domain.com',
+            'unicorncommander.ai',
             original_ns
         )
 
@@ -486,7 +486,7 @@ class TestRollbackCapability:
 
         original_ns = ['dns1.registrar-servers.com', 'dns2.registrar-servers.com']
         await manager.rollback_nameservers(
-            'your-domain.com',
+            'unicorncommander.ai',
             original_ns,
             reason='Email not working'
         )
@@ -577,7 +577,7 @@ class TestIPWhitelisting:
         manager = NameCheapManager(
             api_username='test',
             api_key='test_key',
-            client_ip='YOUR_SERVER_IP'
+            client_ip='your-server-ip'
         )
         manager.client = mock_namecheap_client
 
@@ -635,7 +635,7 @@ class TestMigrationIntegration:
         }
 
         # Prepare domain for migration (export DNS, detect email)
-        prep_result = await manager.prepare_for_migration('your-domain.com')
+        prep_result = await manager.prepare_for_migration('unicorncommander.ai')
 
         assert prep_result['success'] is True
         assert 'dns_backup' in prep_result

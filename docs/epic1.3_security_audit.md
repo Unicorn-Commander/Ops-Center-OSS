@@ -50,7 +50,7 @@ This security audit analyzes the proposed Traefik Configuration Management syste
 **Attack Scenario**:
 ```
 1. Attacker gains access to admin panel (phishing, credential theft)
-2. Creates new route: Host(`your-domain.com`) -> http://attacker-server:8080
+2. Creates new route: Host(`unicorncommander.ai`) -> http://attacker-server:8080
 3. All traffic routed to attacker, SSL certificate still valid
 4. Man-in-the-middle attack successful
 ```
@@ -81,8 +81,8 @@ This security audit analyzes the proposed Traefik Configuration Management syste
 **Attack Scenario**:
 ```
 1. Attacker gains code execution in Ops-Center container
-2. Reads /home/muut/Infrastructure/traefik/acme/acme.json
-3. Extracts private keys for *.your-domain.com
+2. Reads /home/deploy/Infrastructure/traefik/acme/acme.json
+3. Extracts private keys for *.unicorncommander.ai
 4. Performs SSL interception attacks
 ```
 
@@ -160,7 +160,7 @@ volumes:
 **Attack Scenario**:
 ```
 1. Attacker creates route:
-   Host(`internal-database.your-domain.com`) -> http://unicorn-postgresql:5432
+   Host(`internal-database.unicorncommander.ai`) -> http://unicorn-postgresql:5432
 
 2. Database now accessible from internet
 3. Bypasses all authentication middleware
@@ -180,7 +180,7 @@ volumes:
 
 **Current Backup Location**:
 ```python
-TRAEFIK_BACKUP_DIR = Path("/home/muut/Infrastructure/traefik/backups")
+TRAEFIK_BACKUP_DIR = Path("/home/deploy/Infrastructure/traefik/backups")
 ```
 
 **Vulnerabilities**:
@@ -229,9 +229,9 @@ with open(yaml_file, 'r') as f:
 **Attack Scenario**:
 ```html
 <!-- Attacker's malicious webpage -->
-<form action="https://your-domain.com/api/v1/traefik/routes" method="POST">
+<form action="https://unicorncommander.ai/api/v1/traefik/routes" method="POST">
   <input type="hidden" name="name" value="backdoor">
-  <input type="hidden" name="rule" value="Host(`your-domain.com`)">
+  <input type="hidden" name="rule" value="Host(`unicorncommander.ai`)">
   <input type="hidden" name="service" value="attacker-server">
 </form>
 <script>document.forms[0].submit();</script>
@@ -352,7 +352,7 @@ drwxrwxr-x 2 muut muut 4096 Oct 23 02:06 dynamic/
 {
   "letsencrypt": {
     "Account": {
-      "Email": "admin@your-domain.com",
+      "Email": "admin@unicorncommander.ai",
       "Registration": {
         "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/...",
         "body": {...}
@@ -362,8 +362,8 @@ drwxrwxr-x 2 muut muut 4096 Oct 23 02:06 dynamic/
     "Certificates": [
       {
         "domain": {
-          "main": "your-domain.com",
-          "sans": ["*.your-domain.com"]
+          "main": "unicorncommander.ai",
+          "sans": ["*.unicorncommander.ai"]
         },
         "certificate": "-----BEGIN CERTIFICATE-----...",
         "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIE..." // ⚠️ PLAINTEXT!
@@ -414,7 +414,7 @@ def validate_rule(cls, v):
 # Currently allowed, but extremely dangerous:
 route = RouteCreate(
     name="internal-db-access",
-    rule="Host(`db.your-domain.com`)",
+    rule="Host(`db.unicorncommander.ai`)",
     service="unicorn-postgresql",  # Internal database exposed!
     entryPoints=["https"]
 )
@@ -611,7 +611,7 @@ async def require_admin(authorization: str = Header(None)):
 sudo cryptsetup luksFormat /dev/sdX
 sudo cryptsetup luksOpen /dev/sdX traefik_encrypted
 sudo mkfs.ext4 /dev/mapper/traefik_encrypted
-sudo mount /dev/mapper/traefik_encrypted /home/muut/Infrastructure/traefik
+sudo mount /dev/mapper/traefik_encrypted /home/deploy/Infrastructure/traefik
 ```
 
 **Option 2: Application-Level Encryption**
@@ -674,7 +674,7 @@ INTERNAL_IP_RANGES = [
 ]
 
 ALLOWED_DOMAINS = [
-    "your-domain.com", "*.your-domain.com"
+    "unicorncommander.ai", "*.unicorncommander.ai"
 ]
 
 async def validate_route_security(route: RouteCreate) -> List[str]:
@@ -1089,7 +1089,7 @@ Implement these for enhanced security posture:
 
 ### 7.1 Directory Structure
 ```bash
-/home/muut/Infrastructure/traefik/
+/home/deploy/Infrastructure/traefik/
 ├── acme/               (0750, muut:traefik-admin)
 │   └── acme.json       (0400, muut:traefik-admin) ⚠️ ENCRYPTED
 ├── dynamic/            (0750, muut:traefik-admin)
@@ -1110,19 +1110,19 @@ sudo groupadd traefik-admin
 sudo usermod -a -G traefik-admin muut
 
 # Set directory permissions
-sudo chmod 0750 /home/muut/Infrastructure/traefik/acme
-sudo chmod 0750 /home/muut/Infrastructure/traefik/dynamic
-sudo chmod 0700 /home/muut/Infrastructure/traefik/backups
+sudo chmod 0750 /home/deploy/Infrastructure/traefik/acme
+sudo chmod 0750 /home/deploy/Infrastructure/traefik/dynamic
+sudo chmod 0700 /home/deploy/Infrastructure/traefik/backups
 
 # Set file permissions
-sudo chmod 0400 /home/muut/Infrastructure/traefik/acme/acme.json
-sudo find /home/muut/Infrastructure/traefik/dynamic -name "*.yml" -exec chmod 0640 {} \;
+sudo chmod 0400 /home/deploy/Infrastructure/traefik/acme/acme.json
+sudo find /home/deploy/Infrastructure/traefik/dynamic -name "*.yml" -exec chmod 0640 {} \;
 
 # Set ownership
-sudo chown -R muut:traefik-admin /home/muut/Infrastructure/traefik/
+sudo chown -R muut:traefik-admin /home/deploy/Infrastructure/traefik/
 
 # Verify
-sudo find /home/muut/Infrastructure/traefik -ls
+sudo find /home/deploy/Infrastructure/traefik -ls
 ```
 
 ### 7.3 Permission Explanation
@@ -1183,7 +1183,7 @@ echo "traefik_secure /home/traefik-encrypted.img /secure/traefik-keyfile" | sudo
 echo "/dev/mapper/traefik_secure /secure/traefik ext4 defaults 0 2" | sudo tee -a /etc/fstab
 
 # Update Traefik paths
-sudo ln -sf /secure/traefik/acme.json /home/muut/Infrastructure/traefik/acme/acme.json
+sudo ln -sf /secure/traefik/acme.json /home/deploy/Infrastructure/traefik/acme/acme.json
 ```
 
 ---
@@ -1309,7 +1309,7 @@ class SecurityAlertManager:
 
         # Email to security team
         await self.send_email(
-            to=["security@your-domain.com", "admin@your-domain.com"],
+            to=["security@unicorncommander.ai", "admin@unicorncommander.ai"],
             subject=f"🚨 SECURITY ALERT: {event}",
             body=f"""
             Severity: {severity.upper()}
@@ -1438,7 +1438,7 @@ async def test_route_validation_blocks_internal_service():
     """Ensure internal services cannot be exposed"""
     route = RouteCreate(
         name="malicious-route",
-        rule="Host(`db.your-domain.com`)",
+        rule="Host(`db.unicorncommander.ai`)",
         service="unicorn-postgresql",  # Internal service
         entryPoints=["https"]
     )
@@ -1694,7 +1694,7 @@ Review date: ___________________ (30 days)
 ```bash
 # OWASP ZAP scanning
 docker run -t owasp/zap2docker-stable zap-baseline.py \
-  -t https://your-domain.com/api/v1/traefik/
+  -t https://unicorncommander.ai/api/v1/traefik/
 
 # Trivy container scanning
 trivy image uc-1-pro-ops-center
@@ -1768,7 +1768,7 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ops-center.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.ops-center.rule=Host(`unicorncommander.ai`)"
       - "traefik.http.routers.ops-center.entrypoints=https"
       - "traefik.http.routers.ops-center.tls.certresolver=letsencrypt"
 

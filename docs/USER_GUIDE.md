@@ -45,7 +45,7 @@ Ops-Center is the **centralized management hub** for the UC-Cloud ecosystem. It 
 
 ### Logging In
 
-1. Navigate to **https://your-domain.com**
+1. Navigate to **https://unicorncommander.ai**
 2. You'll be redirected to Keycloak SSO login
 3. Choose your authentication method:
    - **Email/Password** (manual registration)
@@ -628,8 +628,8 @@ A:
 **Q: How do I contact support?**
 A:
 - **Community**: GitHub Discussions
-- **Email**: support@your-domain.com (Enterprise tier)
-- **Documentation**: https://your-domain.com/docs
+- **Email**: support@unicorncommander.com (Enterprise tier)
+- **Documentation**: https://unicorncommander.com/docs
 
 ---
 
@@ -660,9 +660,9 @@ _Current plan details, usage limits, and billing history_
 
 ## Additional Resources
 
-- **UC-Cloud Main Docs**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
-- **Brigade Integration**: `/home/muut/Production/UC-Cloud/Unicorn-Brigade/UC-CLOUD-INTEGRATION.md`
-- **Lago Billing Docs**: `/home/muut/Production/UC-1-Pro/docs/BILLING_ARCHITECTURE_FINAL.md`
+- **UC-Cloud Main Docs**: `/opt/uc-cloud/CLAUDE.md`
+- **Brigade Integration**: `/opt/uc-cloud/Unicorn-Brigade/UC-CLOUD-INTEGRATION.md`
+- **Lago Billing Docs**: `/home/deploy/Production/UC-1-Pro/docs/BILLING_ARCHITECTURE_FINAL.md`
 - **API Reference**: `/admin/platform/api-docs`
 - **Keycloak Docs**: https://www.keycloak.org/documentation
 
@@ -693,7 +693,7 @@ _Current plan details, usage limits, and billing history_
 
 ---
 
-**Need help?** Check the [FAQ](#faq) or contact support at support@your-domain.com
+**Need help?** Check the [FAQ](#faq) or contact support at support@unicorncommander.com
 
 **Found a bug?** Report it on [GitHub Issues](https://github.com/Unicorn-Commander/UC-Cloud/issues)
 

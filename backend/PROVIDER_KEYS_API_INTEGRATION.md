@@ -304,7 +304,7 @@ docker ps | grep ops-center-direct
 ```
 
 2. **Admin session** (login as admin first):
-- Visit: https://your-domain.com/auth/login
+- Visit: https://unicorncommander.ai/auth/login
 - Login as admin user
 
 3. **Get session cookie**:

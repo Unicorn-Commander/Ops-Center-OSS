@@ -225,7 +225,7 @@ async def debit_credits(self, user_id: str, amount: float, metadata: Dict):
 
 **Usage**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 ./scripts/deploy_service_auth_fix.sh
 ```
 
@@ -277,7 +277,7 @@ Debit 48 credits from org_presenton_service balance
 
 #### Test Case 1: Service Key Without X-User-ID ✅
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-presenton-service-key-2025" \
   -H "Content-Type: application/json" \
   -d '{
@@ -295,7 +295,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 
 #### Test Case 2: Service Key With X-User-ID ✅
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-presenton-service-key-2025" \
   -H "X-User-ID: 7a6bfd31-0120-4a30-9e21-0fc3b8006579" \
   -d '{...}'
@@ -307,7 +307,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 
 #### Test Case 3: BYOK (Existing Functionality) ✅
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer uc_<user-api-key>" \
   -d '{...}'
 ```
@@ -397,15 +397,15 @@ ORDER BY created_at DESC;
 ### Recommended Alerts
 
 1. **Low Balance Alert** (< 1,000 credits)
-   - Email: admin@your-domain.com
+   - Email: admin@unicorncommander.ai
    - Frequency: Daily at 9 AM UTC
 
 2. **Exhausted Balance Alert** (< 100 credits)
-   - Email: admin@your-domain.com + on-call
+   - Email: admin@unicorncommander.ai + on-call
    - Frequency: Immediate
 
 3. **High Usage Alert** (> 500 credits/hour)
-   - Email: admin@your-domain.com
+   - Email: admin@unicorncommander.ai
    - Frequency: Hourly
 
 ---
@@ -433,7 +433,7 @@ async def generate_image(prompt: str, user_id: str = None):
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            'https://your-domain.com/api/v1/llm/image/generations',
+            'https://unicorncommander.ai/api/v1/llm/image/generations',
             headers=headers,
             json={
                 'prompt': prompt,
@@ -478,7 +478,7 @@ If deployment fails or causes issues:
 ### Step 1: Restore Database
 ```bash
 # Find backup file (created during deployment)
-BACKUP_FILE=$(ls -t /home/muut/backups/ops-center-pre-service-auth-fix-*.sql | head -1)
+BACKUP_FILE=$(ls -t /opt/backups/ops-center-pre-service-auth-fix-*.sql | head -1)
 
 # Restore backup
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < "$BACKUP_FILE"
@@ -486,7 +486,7 @@ docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < "$BACKUP_FILE"
 
 ### Step 2: Revert Code Changes
 ```bash
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 git revert HEAD  # If changes were committed
 # Or restore from backup
 ```
@@ -574,7 +574,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "
 
 ### Support
 - **Slack**: #ops-center-dev
-- **Email**: dev@your-domain.com
+- **Email**: dev@unicorncommander.ai
 - **On-Call**: See PagerDuty rotation
 
 ---

@@ -17,7 +17,7 @@ This guide helps you quickly get started with the LiteLLM Multi-Provider Routing
 ### 1. Database Migration
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Create migration
 alembic revision --autogenerate -m "Add LLM infrastructure tables"

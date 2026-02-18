@@ -12,7 +12,7 @@ You can now generate images using DALL-E 2/3, Stable Diffusion, and other models
 
 ### 1. Endpoint Information
 
-**Base URL**: `https://your-domain.com/api/v1/llm`
+**Base URL**: `https://unicorncommander.ai/api/v1/llm`
 
 **Endpoint**: `POST /image/generations`
 
@@ -26,7 +26,7 @@ You can now generate images using DALL-E 2/3, Stable Diffusion, and other models
 import openai
 
 # Configure for Unicorn Commander
-openai.api_base = "https://your-domain.com/api/v1/llm"
+openai.api_base = "https://unicorncommander.ai/api/v1/llm"
 openai.api_key = "YOUR_UC_API_KEY"  # Get from ops-center
 
 # Generate image
@@ -45,7 +45,7 @@ print(f"Cost: {response['_metadata']['cost_incurred']} credits")
 #### JavaScript/TypeScript
 
 ```javascript
-const response = await fetch('https://your-domain.com/api/v1/llm/image/generations', {
+const response = await fetch('https://unicorncommander.ai/api/v1/llm/image/generations', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_UC_API_KEY',
@@ -67,7 +67,7 @@ console.log('Cost:', data._metadata.cost_incurred, 'credits');
 #### cURL
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer YOUR_UC_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -169,7 +169,7 @@ If your users have their own OpenAI or OpenRouter API keys, they can add them:
 # Add BYOK key (one-time setup)
 import requests
 
-requests.post('https://your-domain.com/api/v1/llm/byok/keys',
+requests.post('https://unicorncommander.ai/api/v1/llm/byok/keys',
     headers={'Authorization': 'Bearer UC_API_KEY'},
     json={
         'provider': 'openrouter',  # or 'openai'
@@ -274,7 +274,7 @@ function ImageGenerator() {
   const generateImage = async () => {
     setLoading(true);
     try {
-      const res = await fetch('https://your-domain.com/api/v1/llm/image/generations', {
+      const res = await fetch('https://unicorncommander.ai/api/v1/llm/image/generations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -360,7 +360,7 @@ export default ImageGenerator;
 
 ## 12. Support & Resources
 
-- **API Endpoint**: `https://your-domain.com/api/v1/llm/image/generations`
+- **API Endpoint**: `https://unicorncommander.ai/api/v1/llm/image/generations`
 - **Get API Key**: Log in to Ops-Center → Account → API Keys
 - **Check Credits**: `GET /api/v1/llm/credits`
 - **Enable BYOK**: `POST /api/v1/llm/byok/keys`

@@ -14,7 +14,7 @@ A user-friendly password policy has been successfully implemented for the Ops-Ce
 
 ### 1. Core Password Policy Module
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/password_policy.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/password_policy.py`
 
 Features:
 - Password validation against policy requirements
@@ -25,7 +25,7 @@ Features:
 
 ### 2. Authentication Manager Integration
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py`
 
 Updates:
 - Added password policy validation to `UserCreate` model
@@ -35,7 +35,7 @@ Updates:
 
 ### 3. API Endpoints
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 New/Updated Endpoints:
 - `POST /api/v1/auth/change-password` - Enhanced with detailed feedback
@@ -44,8 +44,8 @@ New/Updated Endpoints:
 ### 4. Documentation
 
 **Files Created**:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY.md` - Comprehensive user documentation
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY_IMPLEMENTATION_SUMMARY.md` - This file
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY.md` - Comprehensive user documentation
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY_IMPLEMENTATION_SUMMARY.md` - This file
 
 ## Password Policy Details
 
@@ -224,11 +224,11 @@ Error Response:
 
 ## Files Modified
 
-1. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/password_policy.py` - **CREATED**
-2. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py` - **MODIFIED**
-3. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py` - **MODIFIED**
-4. `/home/muut/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY.md` - **CREATED**
-5. `/home/muut/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY_IMPLEMENTATION_SUMMARY.md` - **CREATED**
+1. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/password_policy.py` - **CREATED**
+2. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py` - **MODIFIED**
+3. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py` - **MODIFIED**
+4. `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY.md` - **CREATED**
+5. `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/PASSWORD_POLICY_IMPLEMENTATION_SUMMARY.md` - **CREATED**
 
 ## Next Steps (Optional Enhancements)
 
@@ -277,7 +277,7 @@ The password policy works out-of-the-box with sensible defaults:
 
 Run the test suite:
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 password_policy.py
 ```
 

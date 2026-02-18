@@ -1,7 +1,7 @@
 # UC-1 Pro Billing & Payment Endpoints - Comprehensive Test Report
 
 **Test Date:** October 11, 2025
-**Base URL:** https://your-domain.com
+**Base URL:** https://unicorncommander.ai
 **Test Environment:** Docker Container (ops-center-direct)
 **Service Version:** UC-1 Pro v1.0
 **Total Endpoints Tested:** 31
@@ -507,7 +507,7 @@ The system is **production-ready** with the following caveats:
 
 ### Test Execution Details
 
-**Test Script:** `/home/muut/Production/UC-1-Pro/services/ops-center/tests/test_billing_endpoints.sh`
+**Test Script:** `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/test_billing_endpoints.sh`
 **Results File:** `/tmp/billing_test_results_1760160374.json`
 **Report File:** `/tmp/billing_test_report_1760160374.md`
 **Docker Container:** `ops-center-direct`

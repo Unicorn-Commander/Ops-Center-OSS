@@ -276,7 +276,7 @@ This document outlines the complete testing strategy for Epic 3.1: LiteLLM Multi
 
 ```bash
 # Run all unit tests
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 pytest tests/unit/ -v
 
 # Run with coverage

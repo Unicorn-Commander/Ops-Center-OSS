@@ -7,7 +7,7 @@
 
 ## Overview
 
-Created a comprehensive Local User Management backend API for the Ops-Center at `/home/muut/Production/UC-Cloud/services/ops-center/backend/local_users_api.py`.
+Created a comprehensive Local User Management backend API for the Ops-Center at `/opt/ops-center/backend/local_users_api.py`.
 
 This API provides full Linux system user management capabilities with security, validation, and audit logging.
 
@@ -36,7 +36,7 @@ GET /api/v1/admin/system/local-users
       "username": "muut",
       "uid": 1000,
       "gid": 1000,
-      "home": "/home/muut",
+      "home": "/home/deploy",
       "shell": "/bin/bash",
       "groups": ["muut", "sudo", "docker"],
       "has_sudo": true,
@@ -380,7 +380,7 @@ GET /api/v1/admin/system/local-users/groups
 
 ### File Location
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/local_users_api.py
+/opt/ops-center/backend/local_users_api.py
 ```
 
 ### Dependencies

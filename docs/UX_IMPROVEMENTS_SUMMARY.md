@@ -42,7 +42,7 @@ Improve user experience and document expected behavior for confusing features in
 
 ### 1. HelpTooltip Component Enhancement ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/components/HelpTooltip.jsx`
+**File**: `/opt/ops-center/src/components/HelpTooltip.jsx`
 
 **Changes Made**:
 - Added theme-aware styling (Unicorn, Dark, Light modes)
@@ -78,7 +78,7 @@ Improve user experience and document expected behavior for confusing features in
 
 ### 2. LocalUserManagement Page Update ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/LocalUserManagement.jsx`
+**File**: `/opt/ops-center/src/pages/LocalUserManagement.jsx`
 
 **Changes Made**:
 
@@ -149,7 +149,7 @@ Added Material-UI Alert component with:
 
 ### 3. Comprehensive USER_GUIDE.md ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/USER_GUIDE.md`
+**File**: `/opt/ops-center/docs/USER_GUIDE.md`
 
 **Sections Created**:
 

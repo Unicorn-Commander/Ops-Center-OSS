@@ -300,7 +300,7 @@ python3 tests/simulate_webhooks.py --run-all
 
 1. **Environment Setup:**
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/tests
 
 # Install dependencies
 pip install -r requirements-test.txt
@@ -313,7 +313,7 @@ cp .env.test.example .env.test
 2. **Required Environment Variables:**
 ```bash
 # Keycloak
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USERNAME=admin
 KEYCLOAK_ADMIN_PASSWORD=your_password
@@ -452,7 +452,7 @@ jobs:
 ### Test Environment Dependencies
 
 **Required Services:**
-- ✅ Keycloak (auth.your-domain.com)
+- ✅ Keycloak (auth.unicorncommander.ai)
 - ✅ Ops-Center Backend (localhost:8084)
 - ❌ Lago Billing API (optional)
 - ❌ Stripe Live Mode (test mode only)
@@ -669,7 +669,7 @@ Areas for improvement:
 ## Contact & Support
 
 For questions about this test suite:
-- Email: dev@your-domain.com
+- Email: dev@unicorncommander.ai
 - Documentation: /docs/testing
 - Issue Tracker: GitHub Issues
 

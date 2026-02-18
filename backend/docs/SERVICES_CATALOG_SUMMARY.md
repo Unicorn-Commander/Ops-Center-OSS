@@ -14,7 +14,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 ## 📦 Files Created
 
 ### 1. **uc_cloud_services_catalog.sql**
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/uc_cloud_services_catalog.sql`
+**Location**: `/opt/ops-center/backend/sql/uc_cloud_services_catalog.sql`
 
 **Purpose**: Production-ready SQL file to populate the marketplace with real UC-Cloud services
 
@@ -27,7 +27,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 - ✅ Additional tracking tables for analytics
 
 ### 2. **SERVICE_URLS.md**
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/SERVICE_URLS.md`
+**Location**: `/opt/ops-center/backend/docs/SERVICE_URLS.md`
 
 **Purpose**: Complete documentation of service access, authentication, and integration
 
@@ -40,7 +40,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 - ✅ Troubleshooting guides
 
 ### 3. **SERVICES_CATALOG_SUMMARY.md** (this file)
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/SERVICES_CATALOG_SUMMARY.md`
+**Location**: `/opt/ops-center/backend/docs/SERVICES_CATALOG_SUMMARY.md`
 
 **Purpose**: Implementation summary and deployment guide
 
@@ -53,7 +53,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 1. **Open-WebUI** 🎭
 - **Category**: AI & Chat
 - **Price**: FREE
-- **URL**: https://chat.your-domain.com
+- **URL**: https://chat.unicorncommander.ai
 - **Description**: Full-featured AI chat interface with 100+ LLM models
 - **Features**: Multi-model support, conversation history, document upload, RAG capabilities
 - **SSO**: Keycloak (uchub realm)
@@ -61,7 +61,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 2. **Center-Deep Pro** 🔍
 - **Category**: Search & Research
 - **Price**: FREE
-- **URL**: https://search.your-domain.com
+- **URL**: https://search.unicorncommander.ai
 - **Description**: Privacy-focused metasearch with 70+ search engines
 - **Features**: Zero tracking, AI-enhanced ranking, academic search, news aggregation
 - **SSO**: Authentik
@@ -73,7 +73,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 3. **Presenton** 📊
 - **Category**: Productivity
 - **Price**: $19.99/month
-- **URL**: https://presentations.your-domain.com
+- **URL**: https://presentations.unicorncommander.ai
 - **Description**: AI-powered presentation generation with web grounding
 - **Features**: GPT-4 content generation, web research, auto-formatting, PPTX/PDF export
 - **Trial**: 14 days
@@ -82,7 +82,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 4. **Bolt.DIY** ⚡
 - **Category**: Development
 - **Price**: $29.99/month
-- **URL**: https://bolt.your-domain.com
+- **URL**: https://bolt.unicorncommander.ai
 - **Description**: AI development environment with instant code generation
 - **Features**: Full-stack generation, live preview, Git integration, 1-click deploy
 - **Limits**: 500 AI generations/month, 100 deployments/month
@@ -92,7 +92,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 5. **Unicorn Brigade** 🎖️
 - **Category**: AI Agents
 - **Price**: $39.99/month
-- **URL**: https://brigade.your-domain.com
+- **URL**: https://brigade.unicorncommander.ai
 - **Description**: Multi-agent AI platform with 47+ specialists
 - **Features**: The General orchestrator, domain specialists, Gunny agent builder, A2A protocol
 - **Limits**: 1000 orchestrations/month, 50 custom agents
@@ -106,8 +106,8 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 6. **Unicorn Amanuensis** 🎤
 - **Category**: Voice Services
 - **Price**: $14.99/month
-- **URL**: https://stt.your-domain.com
-- **API**: https://stt.your-domain.com/v1
+- **URL**: https://stt.unicorncommander.ai
+- **API**: https://stt.unicorncommander.ai/v1
 - **Description**: Professional speech-to-text with speaker diarization
 - **Features**: WhisperX, 100+ languages, word-level timestamps, OpenAI-compatible API
 - **Limits**: 300 hours/month
@@ -117,8 +117,8 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 7. **Unicorn Orator** 🔊
 - **Category**: Voice Services
 - **Price**: $14.99/month
-- **URL**: https://tts.your-domain.com
-- **API**: https://tts.your-domain.com/v1
+- **URL**: https://tts.unicorncommander.ai
+- **API**: https://tts.unicorncommander.ai/v1
 - **Description**: Multi-voice text-to-speech with emotion control
 - **Features**: 20+ voices, SSML support, emotion control, OpenAI-compatible API
 - **Limits**: 500,000 characters/month
@@ -132,7 +132,7 @@ This implementation transforms the generic "Extensions Marketplace" into a **rea
 #### 8. **MagicDeck** 🃏
 - **Category**: Productivity
 - **Price**: $24.99/month (expected)
-- **URL**: https://magicdeck.your-domain.com
+- **URL**: https://magicdeck.unicorncommander.ai
 - **Description**: Next-gen presentation tool with 100+ templates
 - **Status**: Development (Q1 2026)
 - **Features**: Advanced templates, real-time collaboration, analytics, presenter mode
@@ -235,14 +235,14 @@ Now includes comprehensive feature lists:
 Service configuration and access details:
 ```json
 {
-  "access_url": "https://service.your-domain.com",
+  "access_url": "https://service.unicorncommander.ai",
   "sso_provider": "keycloak",
   "realm": "uchub",
   "requires_api_key": false,
   "included_in_base": true,
   "setup_time": "instant",
   "trial_period_days": 14,
-  "documentation": "https://docs.your-domain.com/..."
+  "documentation": "https://docs.unicorncommander.ai/..."
 }
 ```
 
@@ -254,7 +254,7 @@ Service configuration and access details:
 
 ```bash
 # Backup before applying changes
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 docker exec ops-center-postgres pg_dump -U unicorn_ops unicorn_ops_db > backup_before_catalog_$(date +%Y%m%d_%H%M%S).sql
 ```
 
@@ -277,7 +277,7 @@ docker exec ops-center-postgres psql -U unicorn_ops -d unicorn_ops_db -c "SELECT
 
 ### Step 4: Test Marketplace UI
 
-1. Navigate to: https://your-domain.com/marketplace
+1. Navigate to: https://unicorncommander.ai/marketplace
 2. Verify services display correctly
 3. Check featured services appear first
 4. Test "Subscribe" button flow (don't complete payment unless testing)
@@ -503,19 +503,19 @@ ORDER BY mrr DESC;
 ## 📞 Support & Documentation
 
 ### For Users
-- **Service Access**: https://docs.your-domain.com/services/
-- **Billing Questions**: billing@your-domain.com
-- **Technical Support**: support@your-domain.com
+- **Service Access**: https://docs.unicorncommander.ai/services/
+- **Billing Questions**: billing@unicorncommander.ai
+- **Technical Support**: support@unicorncommander.ai
 
 ### For Developers
-- **API Documentation**: https://docs.your-domain.com/api/
+- **API Documentation**: https://docs.unicorncommander.ai/api/
 - **Service URLs**: See `SERVICE_URLS.md`
-- **Integration Guides**: https://docs.your-domain.com/integrations/
+- **Integration Guides**: https://docs.unicorncommander.ai/integrations/
 
 ### For Administrators
 - **SSO Configuration**: `/services/ops-center/SSO-SETUP-COMPLETE.md`
-- **Keycloak Admin**: https://auth.your-domain.com/admin/uchub/console/
-- **Authentik Admin**: https://auth.your-domain.com/if/flow/initial-setup/
+- **Keycloak Admin**: https://auth.unicorncommander.ai/admin/uchub/console/
+- **Authentik Admin**: https://auth.unicorncommander.ai/if/flow/initial-setup/
 - **Service Management**: This document
 
 ---

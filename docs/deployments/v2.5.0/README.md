@@ -251,10 +251,10 @@ GET    /api/v1/alert-triggers/statistics      - Statistics
 
 ## Access URLs
 
-- **Ops-Center Dashboard**: https://your-domain.com
-- **Admin Panel**: https://your-domain.com/admin
-- **Log Search**: https://your-domain.com/admin/logs (Log History tab)
-- **Grafana Viewer**: https://your-domain.com/admin/monitoring/grafana/dashboards
+- **Ops-Center Dashboard**: https://unicorncommander.ai
+- **Admin Panel**: https://unicorncommander.ai/admin
+- **Log Search**: https://unicorncommander.ai/admin/logs (Log History tab)
+- **Grafana Viewer**: https://unicorncommander.ai/admin/monitoring/grafana/dashboards
 - **Health Check**: http://localhost:8084/health
 
 ---
@@ -303,7 +303,7 @@ curl http://localhost:8084/api/v1/alert-triggers/
 **Deployment**: November 29, 2025
 **Status**: Production Ready
 
-**Documentation Location**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/deployments/v2.5.0/`
+**Documentation Location**: `/opt/ops-center/docs/deployments/v2.5.0/`
 
 **For Questions**: Refer to individual team reports in subdirectories
 

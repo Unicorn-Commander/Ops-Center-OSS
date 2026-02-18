@@ -97,7 +97,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -f /tmp/002_add_sys
 
 - **Schema Documentation**: `../SCHEMA.md`
 - **Migration Summary**: `../MIGRATION_002_SUMMARY.md`
-- **Main UC-Cloud Docs**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **Main UC-Cloud Docs**: `/opt/uc-cloud/CLAUDE.md`
 
 ## Best Practices
 

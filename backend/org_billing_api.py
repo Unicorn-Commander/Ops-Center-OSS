@@ -192,8 +192,15 @@ async def check_org_admin(conn: asyncpg.Connection, org_id: str, user_id: str) -
 
 async def check_system_admin(user: Dict) -> bool:
     """Check if user has system admin role"""
-    roles = user.get("roles", [])
-    return "admin" in roles or "system_admin" in roles
+    # Check both singular role and roles array for compatibility
+    user_role = user.get("role", "")
+    user_roles = user.get("roles", [])
+    return (
+        user_role == "admin" or
+        user_role == "system_admin" or
+        "admin" in user_roles or
+        "system_admin" in user_roles
+    )
 
 
 # ==================== Organization Subscription Endpoints ====================

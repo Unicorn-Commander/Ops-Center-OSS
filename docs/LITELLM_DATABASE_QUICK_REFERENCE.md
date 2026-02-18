@@ -362,8 +362,8 @@ HAVING COUNT(*) > 1;
 
 ## Support
 
-- **Schema File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/litellm_schema.sql`
-- **Full Report**: `/home/muut/Production/UC-Cloud/services/ops-center/LITELLM_DATABASE_DEPLOYMENT_REPORT.md`
+- **Schema File**: `/opt/ops-center/backend/sql/litellm_schema.sql`
+- **Full Report**: `/opt/ops-center/LITELLM_DATABASE_DEPLOYMENT_REPORT.md`
 - **Container**: `unicorn-postgresql`
 - **Database**: `unicorn_db`
 - **User**: `unicorn`

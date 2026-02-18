@@ -381,7 +381,7 @@ REDIS_PORT=6379
 
 ```bash
 # Navigate to backend directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run initialization script
 python3 scripts/initialize_alert_triggers.py
@@ -484,7 +484,7 @@ WantedBy=timers.target
 ### Run Test Suite
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run all tests
 pytest tests/test_alert_triggers.py -v

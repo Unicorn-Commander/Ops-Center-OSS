@@ -6,7 +6,7 @@ Complete REST API documentation for user management via Keycloak Admin API.
 
 The Admin User Management API provides comprehensive user administration capabilities through Keycloak. All endpoints require admin authentication and use the Keycloak Admin REST API.
 
-**Base URL**: `https://your-domain.com/api/v1/admin`
+**Base URL**: `https://unicorncommander.ai/api/v1/admin`
 
 **Authentication**: Admin session cookie (`session_token`) required for all endpoints
 
@@ -27,7 +27,7 @@ All admin endpoints check for:
 Required environment variables:
 
 ```bash
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USERNAME=admin
 KEYCLOAK_ADMIN_PASSWORD=<your-admin-password>  # REQUIRED
@@ -49,7 +49,7 @@ List users with optional filtering and pagination.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/users?search=john&max=10' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/users?search=john&max=10' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -87,7 +87,7 @@ Get detailed information for a specific user.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -140,7 +140,7 @@ Create a new user in Keycloak.
 
 **Example Request**:
 ```bash
-curl -X POST 'https://your-domain.com/api/v1/admin/users' \
+curl -X POST 'https://unicorncommander.ai/api/v1/admin/users' \
   -H 'Content-Type: application/json' \
   -H 'Cookie: session_token=your-session-token' \
   -d '{
@@ -185,7 +185,7 @@ Update user information.
 
 **Example Request**:
 ```bash
-curl -X PUT 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
+curl -X PUT 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
   -H 'Content-Type: application/json' \
   -H 'Cookie: session_token=your-session-token' \
   -d '{
@@ -215,7 +215,7 @@ Delete a user from Keycloak.
 
 **Example Request**:
 ```bash
-curl -X DELETE 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
+curl -X DELETE 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -254,7 +254,7 @@ Reset user's password.
 
 **Example Request**:
 ```bash
-curl -X POST 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/reset-password' \
+curl -X POST 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/reset-password' \
   -H 'Content-Type: application/json' \
   -H 'Cookie: session_token=your-session-token' \
   -d '{
@@ -285,7 +285,7 @@ Get user's assigned realm roles.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -329,7 +329,7 @@ Add a role to a user.
 
 **Example Request**:
 ```bash
-curl -X POST 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles' \
+curl -X POST 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles' \
   -H 'Content-Type: application/json' \
   -H 'Cookie: session_token=your-session-token' \
   -d '{
@@ -359,7 +359,7 @@ Remove a role from a user.
 
 **Example Request**:
 ```bash
-curl -X DELETE 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles/admin' \
+curl -X DELETE 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/roles/admin' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -384,7 +384,7 @@ Get user's active sessions.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/sessions' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/sessions' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -424,7 +424,7 @@ Terminate all user sessions (force logout).
 
 **Example Request**:
 ```bash
-curl -X POST 'https://your-domain.com/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/logout' \
+curl -X POST 'https://unicorncommander.ai/api/v1/admin/users/a1b2c3d4-5678-90ab-cdef-1234567890ab/logout' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -446,7 +446,7 @@ Get realm statistics and user counts.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/stats' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/stats' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -472,7 +472,7 @@ Get all available realm roles.
 
 **Example Request**:
 ```bash
-curl -X GET 'https://your-domain.com/api/v1/admin/roles' \
+curl -X GET 'https://unicorncommander.ai/api/v1/admin/roles' \
   -H 'Cookie: session_token=your-session-token'
 ```
 
@@ -561,7 +561,7 @@ Use the provided test script to verify functionality:
 export KEYCLOAK_ADMIN_PASSWORD="your-admin-password"
 
 # Run tests
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 python3 test_admin_api.py
 ```
 
@@ -663,7 +663,7 @@ For issues or questions:
 - Check logs: `docker logs unicorn-ops-center`
 - Verify Keycloak Admin password is set correctly
 - Ensure admin user has proper roles in Keycloak
-- Test Keycloak connectivity: `curl https://auth.your-domain.com/realms/uchub/.well-known/openid-configuration`
+- Test Keycloak connectivity: `curl https://auth.unicorncommander.ai/realms/uchub/.well-known/openid-configuration`
 
 ---
 

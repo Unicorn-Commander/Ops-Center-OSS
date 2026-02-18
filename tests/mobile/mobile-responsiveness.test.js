@@ -11,6 +11,9 @@
 
 const { chromium } = require('playwright');
 
+const runPlaywright = process.env.RUN_PLAYWRIGHT === 'true';
+const suite = runPlaywright ? describe : describe.skip;
+
 // Device viewport configurations
 const DEVICES = {
   IPHONE_SE: { width: 375, height: 667, name: 'iPhone SE' },
@@ -25,7 +28,7 @@ const DEVICES = {
 const BASE_URL = process.env.TEST_BASE_URL || 'http://localhost:8084';
 const TIMEOUT = 30000;
 
-describe('Mobile Responsiveness Test Suite', () => {
+suite('Mobile Responsiveness Test Suite', () => {
   let browser;
   let context;
   let page;

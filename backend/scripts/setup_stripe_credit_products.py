@@ -235,7 +235,7 @@ async def main():
         print(f"\nProcessed {len(packages)} credit packages")
         print("\nNext steps:")
         print("1. Configure Stripe webhook endpoint:")
-        print("   URL: https://your-domain.com/api/v1/billing/credits/webhook")
+        print("   URL: https://unicorncommander.ai/api/v1/billing/credits/webhook")
         print("   Events: checkout.session.completed")
         print("2. Update STRIPE_WEBHOOK_SECRET_CREDITS in .env.auth")
         print("3. Restart ops-center-direct container")

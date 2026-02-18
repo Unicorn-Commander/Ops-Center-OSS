@@ -961,10 +961,10 @@ class NameCheapManager:
 
     Usage:
         credentials = NameCheapCredentials(
-            api_username="SkyBehind",
+            api_username="your-namecheap-username",
             api_key="your-namecheap-api-key",
-            username="SkyBehind",
-            client_ip="YOUR_SERVER_IP"
+            username="your-namecheap-username",
+            client_ip="your-server-ip"
         )
 
         manager = NameCheapManager(credentials)
@@ -1132,10 +1132,10 @@ if __name__ == "__main__":
 
     # Production credentials from architecture spec
     credentials = NameCheapCredentials(
-        api_username="SkyBehind",
+        api_username="your-namecheap-username",
         api_key="your-namecheap-api-key",
-        username="SkyBehind",
-        client_ip="YOUR_SERVER_IP",
+        username="your-namecheap-username",
+        client_ip="your-server-ip",
         sandbox=False  # Use production
     )
 
@@ -1184,7 +1184,7 @@ if __name__ == "__main__":
         print("   Please verify:")
         print("   1. API is enabled in NameCheap account")
         print("   2. API key is correct")
-        print("   3. Server IP (YOUR_SERVER_IP) is whitelisted")
+        print("   3. Server IP (your-server-ip) is whitelisted")
     except NameCheapError as e:
         print(f"\n❌ NameCheap Error: {e}")
     except Exception as e:

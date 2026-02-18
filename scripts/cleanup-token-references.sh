@@ -7,7 +7,7 @@
 
 set -e
 
-OLD_TOKEN="0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_"
+OLD_TOKEN="your-cloudflare-api-token"
 NEW_PLACEHOLDER="<CLOUDFLARE_API_TOKEN_REDACTED>"
 
 # Color codes for output
@@ -39,7 +39,7 @@ FILES=(
   "tests/unit/test_cloudflare_manager.py"
 )
 
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 UPDATED_COUNT=0
 SKIPPED_COUNT=0
@@ -120,7 +120,7 @@ if [ $UPDATED_COUNT -gt 0 ]; then
 
   echo ""
   echo -e "${YELLOW}Next Steps:${NC}"
-  echo -e "  1. Go to: https://your-domain.com/admin/platform/settings"
+  echo -e "  1. Go to: https://unicorncommander.ai/admin/platform/settings"
   echo -e "  2. Update CLOUDFLARE_API_TOKEN with new token from Cloudflare"
   echo -e "  3. Click 'Save & Restart'"
   echo -e "  4. Verify Cloudflare DNS page works"

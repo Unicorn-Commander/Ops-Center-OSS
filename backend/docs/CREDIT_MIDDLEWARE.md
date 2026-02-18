@@ -388,7 +388,7 @@ if not using_byok:
 
 ```bash
 # Run unit tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_credit_deduction_middleware.py -v
 
 # Run integration tests
@@ -421,7 +421,7 @@ The middleware is optimized for production:
 Run with pytest:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_credit_deduction_middleware.py -v -s
 ```
 
@@ -592,10 +592,10 @@ All credit operations are logged:
 
 ## Support
 
-**Documentation**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/CREDIT_MIDDLEWARE.md`
-**Source Code**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/credit_deduction_middleware.py`
-**Tests**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_credit_deduction_middleware.py`
-**Integration**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/integration_test_credit_middleware.py`
+**Documentation**: `/opt/ops-center/backend/docs/CREDIT_MIDDLEWARE.md`
+**Source Code**: `/opt/ops-center/backend/credit_deduction_middleware.py`
+**Tests**: `/opt/ops-center/backend/tests/test_credit_deduction_middleware.py`
+**Integration**: `/opt/ops-center/backend/tests/integration_test_credit_middleware.py`
 
 For issues or questions, check:
 - Docker logs: `docker logs ops-center-direct`

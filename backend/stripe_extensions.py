@@ -25,8 +25,8 @@ except Exception as e:
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
-STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "https://your-domain.com/extensions/success")
-STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", "https://your-domain.com/extensions/cancelled")
+STRIPE_SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "https://unicorncommander.ai/extensions/success")
+STRIPE_CANCEL_URL = os.getenv("STRIPE_CANCEL_URL", "https://unicorncommander.ai/extensions/cancelled")
 
 # Configure Stripe
 if STRIPE_SECRET_KEY:

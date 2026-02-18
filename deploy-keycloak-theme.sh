@@ -21,7 +21,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 CONTAINER_NAME="uchub-keycloak"
-THEME_SOURCE_DIR="/home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme"
+THEME_SOURCE_DIR="/home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme"
 THEME_NAME="uc-1-pro"  # Name of the theme folder
 KEYCLOAK_THEMES_DIR="/opt/keycloak/themes"
 KEYCLOAK_USER="keycloak"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Keycloak OIDC Client Setup Script for Ops-Center
+Keycloak OIDC Client Setup Script for UC-1 Pro Operations Center
 
 This script automatically configures the Ops Center OIDC client in Keycloak
 using the Admin API. It is idempotent and can be run multiple times safely.
@@ -10,50 +10,39 @@ Requirements:
     - Keycloak Admin credentials
     - Network access to Keycloak server
 
-Environment Variables:
-    KEYCLOAK_URL - Keycloak server URL (default: http://localhost:8080)
-    KEYCLOAK_REALM - Keycloak realm (default: uchub)
-    KEYCLOAK_ADMIN_USER - Admin username (default: admin)
-    KEYCLOAK_ADMIN_PASSWORD - Admin password (required)
-    KEYCLOAK_CLIENT_ID - Client ID (default: ops-center)
-    APP_URL - Application URL for redirect URIs (default: http://localhost:8084)
-    ENV_OUTPUT_FILE - Output file path for environment variables
-
 Usage:
-    KEYCLOAK_ADMIN_PASSWORD=secret python setup-keycloak-client.py
+    python setup-keycloak-client.py
 """
 
 import sys
 import json
 import httpx
-import os
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
 
-# Configuration from environment variables
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-REALM = os.getenv("KEYCLOAK_REALM", "uchub")
-ADMIN_USERNAME = os.getenv("KEYCLOAK_ADMIN_USER", "admin")
-ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
-CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "ops-center")
-APP_URL = os.getenv("APP_URL", "http://localhost:8084")
+# Configuration
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
+REALM = "uchub"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "your-admin-password"
+CLIENT_ID = "ops-center"
 
 # Client configuration
 CLIENT_CONFIG = {
     "clientId": CLIENT_ID,
-    "name": "Ops-Center Operations Dashboard",
-    "description": "Main operations and management console",
+    "name": "UC-1 Pro Operations Center",
+    "description": "Main operations and management console for UC-1 Pro platform",
     "enabled": True,
     "protocol": "openid-connect",
     "publicClient": False,
     "confidentialClient": True,
     "redirectUris": [
-        f"{APP_URL}/auth/callback",
+        "https://unicorncommander.ai/auth/callback",
         "http://localhost:8000/auth/callback"
     ],
     "webOrigins": [
-        APP_URL,
+        "https://unicorncommander.ai",
         "http://localhost:8000"
     ],
     "standardFlowEnabled": True,
@@ -62,12 +51,12 @@ CLIENT_CONFIG = {
     "serviceAccountsEnabled": False,
     "defaultClientScopes": ["openid", "email", "profile", "roles"],
     "attributes": {
-        "post.logout.redirect.uris": f"{APP_URL}+##http://localhost:8000"
+        "post.logout.redirect.uris": "https://unicorncommander.ai+##http://localhost:8000"
     }
 }
 
 # Output file
-ENV_FILE = Path(os.getenv("ENV_OUTPUT_FILE", "./.env.keycloak"))
+ENV_FILE = Path("/home/deploy/Production/UC-1-Pro/services/ops-center/.env.keycloak")
 
 
 class KeycloakAdmin:
@@ -420,7 +409,7 @@ def main() -> int:
         print("   docker-compose up -d --build ops-center")
         print()
         print("4. Test the SSO login flow:")
-        print(f"   {APP_URL}/login")
+        print("   https://unicorncommander.ai/login")
         print()
         print("Configuration saved to:")
         print(f"  {ENV_FILE}")

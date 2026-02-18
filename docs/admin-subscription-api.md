@@ -376,7 +376,7 @@ All user data is stored in Authentik user attributes:
 Run the test suite:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 python3 backend/tests/test_admin_subscriptions.py
 ```
 
@@ -388,14 +388,14 @@ Test requirements:
 ## Files
 
 ### Backend
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py` - Main API router
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/authentik_integration.py` - Authentik integration
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/admin_subscriptions_api.py` - Main API router
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/authentik_integration.py` - Authentik integration
 
 ### Frontend
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html` - Admin dashboard
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/admin/subscriptions.html` - Admin dashboard
 
 ### Tests
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_admin_subscriptions.py` - API tests
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_admin_subscriptions.py` - API tests
 
 ### Documentation
 - This file - API documentation

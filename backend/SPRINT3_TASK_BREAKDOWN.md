@@ -1,7 +1,7 @@
 # Sprint 3: Backend API Implementation
 
 **Team Lead**: Sprint 3 Team Lead
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 **Date**: October 25, 2025
 
 ---
@@ -94,12 +94,12 @@
   2. `GET /api/v1/brigade/tasks/history` - Task execution history
 
 **Requirements (Usage)**:
-- Proxy to: `https://api.brigade.your-domain.com/api/agents/usage`
+- Proxy to: `https://api.brigade.unicorncommander.ai/api/agents/usage`
 - Add authentication headers from Ops-Center session
 - Return: agent count, task count, compute hours, API calls
 
 **Requirements (History)**:
-- Proxy to: `https://api.brigade.your-domain.com/api/tasks/history`
+- Proxy to: `https://api.brigade.unicorncommander.ai/api/tasks/history`
 - Support pagination: `?limit=50&offset=0`
 - Support filtering: `?status=completed&agent_id=123`
 - Return: List of tasks with execution metadata

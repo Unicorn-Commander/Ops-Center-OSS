@@ -222,7 +222,7 @@ echo -e "${YELLOW}════════════════════�
 # Check CORS headers
 echo -e "\n${BLUE}[TEST CORS]${NC} Checking CORS headers"
 CORS_RESULT=$(docker exec $CONTAINER_NAME curl -s -I -X OPTIONS "$BASE_URL/api/v1/subscriptions/plans" \
-    -H "Origin: https://your-domain.com" \
+    -H "Origin: https://unicorncommander.ai" \
     -H "Access-Control-Request-Method: GET" 2>&1)
 
 if echo "$CORS_RESULT" | grep -q "access-control-allow-origin"; then

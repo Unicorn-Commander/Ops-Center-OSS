@@ -13,13 +13,13 @@ Successfully created and populated the `model_access_control` table in the `unic
 
 ### Files Created
 
-1. **Schema File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/model_access_control_schema.sql`
+1. **Schema File**: `/opt/ops-center/backend/sql/model_access_control_schema.sql`
    - Complete DDL for `model_access_control` table
    - 5 performance indexes (GIN index for JSONB tier_access)
    - Automatic `updated_at` trigger
    - Comprehensive column comments
 
-2. **Seed Script**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/seed_model_access.py`
+2. **Seed Script**: `/opt/ops-center/backend/scripts/seed_model_access.py`
    - Executable Python script
    - Seeds 22 models across 2 providers
    - Includes verification logic

@@ -612,7 +612,7 @@ import openai
 
 # Configure client
 client = openai.OpenAI(
-    base_url="https://your-domain.com/api/v1/llm",
+    base_url="https://unicorncommander.ai/api/v1/llm",
     api_key="your-api-key"
 )
 
@@ -637,7 +637,7 @@ print(f"Credits remaining: {response._metadata['credits_remaining']}")
 
 ```bash
 # Chat completion
-curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \
   -H "Authorization: Bearer your-api-key" \
   -H "X-Power-Level: balanced" \
   -H "Content-Type: application/json" \
@@ -648,11 +648,11 @@ curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
   }'
 
 # Check balance
-curl https://your-domain.com/api/v1/llm/credits \
+curl https://unicorncommander.ai/api/v1/llm/credits \
   -H "Authorization: Bearer your-api-key"
 
 # Purchase credits
-curl -X POST https://your-domain.com/api/v1/llm/credits/purchase \
+curl -X POST https://unicorncommander.ai/api/v1/llm/credits/purchase \
   -H "Authorization: Bearer your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -661,7 +661,7 @@ curl -X POST https://your-domain.com/api/v1/llm/credits/purchase \
   }'
 
 # Add BYOK key
-curl -X POST https://your-domain.com/api/v1/llm/byok/keys \
+curl -X POST https://unicorncommander.ai/api/v1/llm/byok/keys \
   -H "Authorization: Bearer your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -674,7 +674,7 @@ curl -X POST https://your-domain.com/api/v1/llm/byok/keys \
 
 ```javascript
 // Chat completion
-const response = await fetch('https://your-domain.com/api/v1/llm/chat/completions', {
+const response = await fetch('https://unicorncommander.ai/api/v1/llm/chat/completions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer your-api-key',
@@ -709,9 +709,9 @@ console.log('Remaining:', data._metadata.credits_remaining);
 
 ## Support
 
-- **Documentation**: https://docs.your-domain.com
+- **Documentation**: https://docs.unicorncommander.ai
 - **Email**: support@magicunicorn.tech
-- **Status Page**: https://status.your-domain.com
+- **Status Page**: https://status.unicorncommander.ai
 
 ---
 

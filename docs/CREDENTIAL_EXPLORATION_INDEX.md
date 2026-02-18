@@ -103,12 +103,12 @@ This exploration contains THREE comprehensive documents totaling 1,428 lines and
 **How encryption works**
 → CREDENTIAL_MANAGEMENT_ANALYSIS.md, Section 1.1
 → CREDENTIAL_CODE_REFERENCE.md, Section "1. Encryption Usage"
-→ File: `/home/muut/Production/UC-Cloud/services/ops-center/backend/key_encryption.py`
+→ File: `/opt/ops-center/backend/key_encryption.py`
 
 **The BYOK system**
 → CREDENTIAL_MANAGEMENT_ANALYSIS.md, Section 1.3
 → CREDENTIAL_CODE_REFERENCE.md, Section "3. BYOK API Router"
-→ File: `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py`
+→ File: `/opt/ops-center/backend/byok_api.py`
 
 **Security gaps**
 → CREDENTIAL_MANAGEMENT_ANALYSIS.md, Section 5
@@ -124,7 +124,7 @@ This exploration contains THREE comprehensive documents totaling 1,428 lines and
 
 **Frontend patterns to follow**
 → CREDENTIAL_CODE_REFERENCE.md, Section "5. Frontend BYOK Component"
-→ File: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/account/AccountAPIKeys.jsx`
+→ File: `/opt/ops-center/src/pages/account/AccountAPIKeys.jsx`
 
 **Database schema**
 → CREDENTIAL_CODE_REFERENCE.md, Section "Database Schema"
@@ -179,40 +179,40 @@ This exploration contains THREE comprehensive documents totaling 1,428 lines and
 
 ### Core Encryption Files (Don't Change)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/key_encryption.py      (92 lines)
-/home/muut/Production/UC-Cloud/services/ops-center/backend/secret_manager.py     (512 lines)
+/opt/ops-center/backend/key_encryption.py      (92 lines)
+/opt/ops-center/backend/secret_manager.py     (512 lines)
 ```
 
 ### BYOK System Files (Reference for Building Service Creds)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_service.py       (354 lines)
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_manager.py       (400 lines)
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py           (512 lines)
+/opt/ops-center/backend/byok_service.py       (354 lines)
+/opt/ops-center/backend/byok_manager.py       (400 lines)
+/opt/ops-center/backend/byok_api.py           (512 lines)
 ```
 
 ### Service Integration Files (Need Updates)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/cloudflare_api.py     (100+ lines)
-/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py             (4000+ lines) - Register new router at line 298
+/opt/ops-center/backend/cloudflare_api.py     (100+ lines)
+/opt/ops-center/backend/server.py             (4000+ lines) - Register new router at line 298
 ```
 
 ### Configuration Files (Contains Exposed Credentials!)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/.env.auth                      (56 lines) - SECURITY ALERT
+/opt/ops-center/.env.auth                      (56 lines) - SECURITY ALERT
 ```
 
 ### Frontend Components (Models to Follow)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/src/pages/account/AccountAPIKeys.jsx              (17K lines)
-/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/APIKeyCard.jsx                (332 lines)
-/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/AddAPIKeyModal.jsx            (80+ lines)
+/opt/ops-center/src/pages/account/AccountAPIKeys.jsx              (17K lines)
+/opt/ops-center/src/components/llm/APIKeyCard.jsx                (332 lines)
+/opt/ops-center/src/components/llm/AddAPIKeyModal.jsx            (80+ lines)
 ```
 
 ### Documentation (You Are Here)
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/docs/CREDENTIAL_MANAGEMENT_ANALYSIS.md
-/home/muut/Production/UC-Cloud/services/ops-center/docs/CREDENTIAL_CODE_REFERENCE.md
-/home/muut/Production/UC-Cloud/services/ops-center/docs/CREDENTIAL_EXPLORATION_INDEX.md
+/opt/ops-center/docs/CREDENTIAL_MANAGEMENT_ANALYSIS.md
+/opt/ops-center/docs/CREDENTIAL_CODE_REFERENCE.md
+/opt/ops-center/docs/CREDENTIAL_EXPLORATION_INDEX.md
 ```
 
 ---
@@ -289,11 +289,11 @@ This exploration contains THREE comprehensive documents totaling 1,428 lines and
 ```
 Priority: CRITICAL
 
-Location: /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+Location: /opt/ops-center/.env.auth
 
 Issues:
 1. CLOUDFLARE_API_TOKEN=<CLOUDFLARE_API_TOKEN_REDACTED> (EXPOSED)
-2. NAMECHEAP_API_KEY=your-example-api-key (EXPOSED)
+2. NAMECHEAP_API_KEY=your-namecheap-api-key (EXPOSED)
 3. Credentials in .env.auth are in git history
 
 Actions Before Production:
@@ -382,19 +382,19 @@ New Service Credentials System Should Follow Same Pattern:
 1. **Read the documents**
    ```bash
    # Main analysis
-   cat /home/muut/Production/UC-Cloud/services/ops-center/docs/CREDENTIAL_MANAGEMENT_ANALYSIS.md
+   cat /opt/ops-center/docs/CREDENTIAL_MANAGEMENT_ANALYSIS.md
    
    # Code reference
-   cat /home/muut/Production/UC-Cloud/services/ops-center/docs/CREDENTIAL_CODE_REFERENCE.md
+   cat /opt/ops-center/docs/CREDENTIAL_CODE_REFERENCE.md
    ```
 
 2. **Examine source code**
    ```bash
    # Understand encryption
-   cat /home/muut/Production/UC-Cloud/services/ops-center/backend/key_encryption.py
+   cat /opt/ops-center/backend/key_encryption.py
    
    # See how BYOK uses it
-   cat /home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py
+   cat /opt/ops-center/backend/byok_api.py
    ```
 
 3. **Plan implementation**

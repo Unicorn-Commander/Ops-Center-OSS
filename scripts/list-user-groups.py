@@ -2,26 +2,19 @@
 """
 List groups for a Keycloak user
 
-Environment Variables:
-    KEYCLOAK_URL - Keycloak server URL (default: http://localhost:8080)
-    KEYCLOAK_REALM - Keycloak realm (default: uchub)
-    KEYCLOAK_ADMIN_USER - Admin username (default: admin)
-    KEYCLOAK_ADMIN_PASSWORD - Admin password (required)
-
 Usage:
-    KEYCLOAK_ADMIN_PASSWORD=secret python3 scripts/list-user-groups.py <username>
+    python3 scripts/list-user-groups.py <username>
 
 Example:
-    python3 scripts/list-user-groups.py testuser
+    python3 scripts/list-user-groups.py aaron
 """
 import httpx
 import sys
-import os
 
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-REALM = os.getenv("KEYCLOAK_REALM", "uchub")
-ADMIN_USER = os.getenv("KEYCLOAK_ADMIN_USER", "admin")
-ADMIN_PASS = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
+REALM = "uchub"
+ADMIN_USER = "admin"
+ADMIN_PASS = "your-admin-password"
 
 
 def get_admin_token():

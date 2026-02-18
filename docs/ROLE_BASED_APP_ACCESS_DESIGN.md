@@ -26,7 +26,7 @@ This document provides a comprehensive architectural design for implementing rol
 
 ### 2.1 Existing Landing Page Implementation
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/src/pages/PublicLanding.jsx`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/src/pages/PublicLanding.jsx`
 
 **Current State**:
 - **Subscription Tier System**: Currently uses a `serviceTiers` object (lines 48-56) that maps services to subscription tiers (trial, starter, professional, enterprise)
@@ -680,7 +680,7 @@ function AppCard({ app, index, currentHost, currentTheme }) {
 
 **Recommendation**: Extend existing configuration
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/config/apps_access.json`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/config/apps_access.json`
 
 **Why New File?**
 1. Separates app access configuration from landing page styling
@@ -862,7 +862,7 @@ function AppCard({ app, index, currentHost, currentTheme }) {
 
 **Scenario 2**: User directly accesses service URL
 - **Mitigation**: Services use Authentik SSO for authentication
-- **Protection**: Service redirects to auth.your-domain.com
+- **Protection**: Service redirects to auth.unicorncommander.ai
 
 **Scenario 3**: User guesses internal service ports
 - **Mitigation**: Traefik reverse proxy enforces authentication
@@ -1723,7 +1723,7 @@ describe('PublicLanding', () => {
 
 **Step 3**: Rollback frontend
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 git checkout HEAD~1 src/pages/PublicLanding.jsx
 npm run build
 docker restart unicorn-ops-center
@@ -1731,7 +1731,7 @@ docker restart unicorn-ops-center
 
 **Step 4**: Rollback backend
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 git checkout HEAD~1 server.py
 rm app_access_manager.py
 docker restart unicorn-ops-center
@@ -1761,12 +1761,12 @@ docker restart unicorn-ops-center
 **Backup Files**:
 ```bash
 # Create backup directory
-mkdir -p /home/muut/backups/$(date +%Y%m%d)
+mkdir -p /opt/backups/$(date +%Y%m%d)
 
 # Backup files
-cp src/pages/PublicLanding.jsx /home/muut/backups/$(date +%Y%m%d)/
-cp backend/server.py /home/muut/backups/$(date +%Y%m%d)/
-cp backend/config/*.json /home/muut/backups/$(date +%Y%m%d)/
+cp src/pages/PublicLanding.jsx /opt/backups/$(date +%Y%m%d)/
+cp backend/server.py /opt/backups/$(date +%Y%m%d)/
+cp backend/config/*.json /opt/backups/$(date +%Y%m%d)/
 ```
 
 ---
@@ -1945,10 +1945,10 @@ This architecture design provides a comprehensive, secure, and extensible soluti
 
 ### 16.2 Related Documents
 
-- [ROLE_MAPPING.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)
-- [AUTHENTIK_SETUP.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)
-- [API_QUICK_REFERENCE.md](/home/muut/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)
-- [OPS_CENTER_DESIGN.md](/home/muut/Production/UC-1-Pro/services/ops-center/OPS_CENTER_DESIGN.md)
+- [ROLE_MAPPING.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)
+- [AUTHENTIK_SETUP.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)
+- [API_QUICK_REFERENCE.md](/home/deploy/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)
+- [OPS_CENTER_DESIGN.md](/home/deploy/Production/UC-1-Pro/services/ops-center/OPS_CENTER_DESIGN.md)
 
 ### 16.3 References
 

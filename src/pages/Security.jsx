@@ -149,7 +149,7 @@ export default function Security() {
   };
 
   const openKeycloakSettings = () => {
-    window.open('https://auth.your-domain.com/if/user/', '_blank');
+    window.open('https://auth.unicorncommander.ai/if/user/', '_blank');
   };
 
   const formatTimestamp = (timestamp) => {

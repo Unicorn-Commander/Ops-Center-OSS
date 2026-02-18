@@ -24,7 +24,7 @@ import {
   WrenchScrewdriverIcon,
   ArchiveBoxIcon
 } from '@heroicons/react/24/outline';
-import { ColonelLogo, MagicUnicornLogo } from '../components/Logos';
+import { ColonelLogo, MagicUnicornLogo, CenterDeepLogo } from '../components/Logos';
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function PublicLanding() {
@@ -50,13 +50,29 @@ export default function PublicLanding() {
     dark: { name: 'Professional Dark', icon: MoonIcon },
     light: { name: 'Professional Light', icon: SunIcon },
     unicorn: { name: 'Magic Unicorn', icon: PaintBrushIcon },
-    galaxy: { name: 'Unicorn Galaxy', icon: GlobeAltIcon }
+    galaxy: { name: 'Unicorn Galaxy', icon: GlobeAltIcon },
+    underground: { name: 'Underground', icon: CpuChipIcon }
   };
+
+  // Card gradient colors - deep, dark gradients for Underground theme
+  const CARD_COLORS = [
+    { gradient: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 100%)', iconBg: '#ffffff' },  // Deep Indigo → Purple
+    { gradient: 'linear-gradient(135deg, #4c1d95 0%, #be185d 100%)', iconBg: '#ffffff' },  // Violet → Pink
+    { gradient: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)', iconBg: '#ffffff' },  // Slate → Blue
+    { gradient: 'linear-gradient(135deg, #701a75 0%, #c026d3 100%)', iconBg: '#ffffff' },  // Fuchsia Dark
+    { gradient: 'linear-gradient(135deg, #312e81 0%, #7c3aed 100%)', iconBg: '#ffffff' },  // Indigo → Violet
+    { gradient: 'linear-gradient(135deg, #0c4a6e 0%, #0891b2 100%)', iconBg: '#ffffff' },  // Sky Dark → Cyan
+    { gradient: 'linear-gradient(135deg, #3730a3 0%, #a855f7 100%)', iconBg: '#ffffff' },  // Indigo → Purple
+    { gradient: 'linear-gradient(135deg, #6b21a8 0%, #ec4899 100%)', iconBg: '#ffffff' },  // Purple → Pink
+    { gradient: 'linear-gradient(135deg, #0e7490 0%, #06b6d4 100%)', iconBg: '#1a1a2e' },  // Cyan Dark
+    { gradient: 'linear-gradient(135deg, #86198f 0%, #d946ef 100%)', iconBg: '#ffffff' },  // Fuchsia
+  ];
+
+  const getCardColor = (index) => CARD_COLORS[index % CARD_COLORS.length];
 
   // Service tier mapping
   const serviceTiers = {
     'Open-WebUI': 'trial',
-    'Center-Deep Search': 'trial',
     'User Documentation': 'starter',
     'Bolt.diy': 'professional',
     'Grafana Monitoring': 'professional',
@@ -166,7 +182,7 @@ export default function PublicLanding() {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Open Center-Deep with the search query
-      window.open(`https://search.your-domain.com/search?q=${encodeURIComponent(searchQuery)}`, '_blank');
+      window.open(`https://search.unicorncommander.ai/search?q=${encodeURIComponent(searchQuery)}`, '_blank');
     }
   };
 
@@ -265,25 +281,16 @@ export default function PublicLanding() {
       description: 'Chat with AI models and explore advanced language capabilities',
       icon: ChatBubbleLeftRightIcon,
       iconImage: '/logos/Open-WebUI_White.png',
-      url: 'https://chat.your-domain.com',
+      url: 'https://chat.unicorncommander.ai',
       color: 'from-blue-500 to-blue-700',
       textColor: 'text-blue-100'
-    },
-    {
-      title: 'Center-Deep Search',
-      description: 'Advanced AI-powered search platform with tool servers',
-      icon: MagnifyingGlassIcon,
-      iconImage: '/logos/Center-Deep.png',
-      url: 'https://centerdeep.online',
-      color: 'from-green-500 to-green-700',
-      textColor: 'text-green-100'
     },
     {
       title: 'Bolt.diy',
       description: 'AI-powered development environment for rapid prototyping',
       icon: CodeBracketIcon,
       iconImage: '/logos/bolt-diy-logo.png',
-      url: 'https://bolt.your-domain.com',
+      url: 'https://bolt.unicorncommander.ai',
       color: 'from-purple-500 to-purple-700',
       textColor: 'text-purple-100'
     },
@@ -292,7 +299,7 @@ export default function PublicLanding() {
       description: 'AI-powered code generation with 47+ agents - Run code locally with privacy & speed',
       icon: CodeBracketIcon,
       iconImage: '/logos/magicode-logo.png',
-      url: 'https://magicode.your-domain.com',
+      url: 'https://magicode.unicorncommander.ai',
       color: 'from-purple-600 to-pink-600',
       textColor: 'text-purple-100'
     },
@@ -300,7 +307,7 @@ export default function PublicLanding() {
       title: 'User Documentation',
       description: 'End-user guides and application documentation',
       icon: DocumentTextIcon,
-      url: 'https://docs.your-domain.com',
+      url: 'https://docs.unicorncommander.ai',
       color: 'from-orange-500 to-orange-700',
       textColor: 'text-orange-100'
     },
@@ -309,7 +316,7 @@ export default function PublicLanding() {
       description: 'Professional AI voice synthesis platform with 50+ voice options',
       icon: null,
       iconImage: '/logos/Unicorn_Orator.png',
-      url: 'https://tts.your-domain.com',
+      url: 'https://tts.unicorncommander.ai',
       color: 'from-pink-500 to-pink-700',
       textColor: 'text-pink-100'
     },
@@ -318,7 +325,7 @@ export default function PublicLanding() {
       description: 'AI agent platform - Build and deploy intelligent agents',
       icon: null,
       iconImage: '/logos/The_General_Logo.png',
-      url: 'https://brigade.your-domain.com',
+      url: 'https://brigade.unicorncommander.ai',
       color: 'from-purple-600 to-pink-600',
       textColor: 'text-purple-100'
     },
@@ -327,7 +334,7 @@ export default function PublicLanding() {
       description: 'Self-hosted Git repository platform with CI/CD, issue tracking, and AI agent integration',
       icon: ArchiveBoxIcon,
       iconImage: null,
-      url: 'https://git.your-domain.com',
+      url: 'https://git.unicorncommander.ai',
       color: 'from-green-500 to-emerald-600',
       textColor: 'text-green-100'
     },
@@ -336,7 +343,7 @@ export default function PublicLanding() {
       description: 'Professional speech-to-text with speaker diarization',
       icon: null,
       iconImage: '/logos/Unicorn_Orator.png',
-      url: 'https://stt.your-domain.com',
+      url: 'https://stt.unicorncommander.ai',
       color: 'from-teal-600 to-cyan-600',
       textColor: 'text-teal-100'
     },
@@ -345,7 +352,7 @@ export default function PublicLanding() {
       description: 'AI-powered presentation generation and design',
       icon: null,
       iconImage: '/logos/presenton-logo.png',
-      url: 'https://presentations.your-domain.com',
+      url: 'https://presentations.unicorncommander.ai',
       color: 'from-blue-600 to-cyan-600',
       textColor: 'text-blue-100'
     },
@@ -354,7 +361,7 @@ export default function PublicLanding() {
       description: 'AI-powered presentation generator with 200+ templates and multi-agent collaboration',
       icon: null,
       iconImage: '/logos/magicdeck-logo.png',
-      url: 'https://magicdeck.your-domain.com',
+      url: 'https://magicdeck.unicorncommander.ai',
       color: 'from-purple-600 to-indigo-600',
       textColor: 'text-purple-100'
     }
@@ -367,7 +374,7 @@ export default function PublicLanding() {
       description: 'Subscription and billing management system',
       icon: CreditCardIcon,
       iconImage: '/logos/lago-icon.png',
-      url: 'https://billing.your-domain.com',
+      url: 'https://billing.unicorncommander.ai',
       color: 'from-green-600 to-emerald-600',
       textColor: 'text-green-100'
     },
@@ -376,7 +383,7 @@ export default function PublicLanding() {
       description: 'Docker container orchestration and monitoring',
       icon: ServerIcon,
       iconImage: '/logos/portainer-logo-icon.png',
-      url: 'https://containers.your-domain.com',
+      url: 'https://containers.unicorncommander.ai',
       color: 'from-indigo-500 to-indigo-700',
       textColor: 'text-indigo-100'
     },
@@ -385,7 +392,7 @@ export default function PublicLanding() {
       description: 'System performance dashboards and real-time metrics',
       icon: ChartBarIcon,
       iconImage: '/logos/grafana-logo-icon.png',
-      url: 'https://grafana.your-domain.com',
+      url: 'https://grafana.unicorncommander.ai',
       color: 'from-amber-500 to-orange-600',
       textColor: 'text-amber-100'
     },
@@ -394,7 +401,7 @@ export default function PublicLanding() {
       description: 'Time-series metrics collection and monitoring',
       icon: ChartBarIcon,
       iconImage: '/logos/prometheus-logo-icon.png',
-      url: 'https://prometheus.your-domain.com',
+      url: 'https://prometheus.unicorncommander.ai',
       color: 'from-orange-500 to-red-500',
       textColor: 'text-orange-100'
     },
@@ -403,7 +410,7 @@ export default function PublicLanding() {
       description: 'Multi-provider LLM routing and management',
       icon: ServerIcon,
       iconImage: '/logos/litellm-icon.jpg',
-      url: 'https://ai.your-domain.com',
+      url: 'https://ai.unicorncommander.ai',
       color: 'from-indigo-600 to-violet-600',
       textColor: 'text-indigo-100'
     },
@@ -412,7 +419,7 @@ export default function PublicLanding() {
       description: 'Privacy-focused website analytics platform',
       icon: ChartBarIcon,
       iconImage: '/logos/umami-logo.png',
-      url: 'https://analytics.your-domain.com',
+      url: 'https://analytics.unicorncommander.ai',
       color: 'from-cyan-600 to-blue-600',
       textColor: 'text-cyan-100'
     }
@@ -435,7 +442,21 @@ export default function PublicLanding() {
 
   // Get theme-specific styling
   const getThemeStyles = () => {
-    if (currentTheme === 'unicorn') {
+    if (currentTheme === 'underground') {
+      return {
+        background: 'min-h-screen bg-gradient-to-br from-black via-purple-950 to-slate-950',
+        headerText: 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400',
+        subText: 'text-purple-300/80',
+        searchBg: 'bg-purple-950/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-800/30',
+        searchInput: 'bg-black/30 border border-purple-800/30 text-white placeholder-purple-400 focus:ring-fuchsia-500',
+        searchIcon: 'text-fuchsia-400',
+        searchButton: 'bg-gradient-to-r from-purple-700 to-fuchsia-700 hover:from-purple-800 hover:to-fuchsia-800',
+        cardOverlay: 'bg-purple-950/50 backdrop-blur-xl border border-purple-800/30',
+        footerBg: 'bg-black/40 backdrop-blur-sm border-t border-purple-800/30',
+        logoText: 'text-purple-200',
+        footerText: 'text-purple-400/70'
+      };
+    } else if (currentTheme === 'unicorn') {
       return {
         background: 'min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900',
         headerText: 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400',
@@ -640,7 +661,7 @@ export default function PublicLanding() {
                       <button
                         onClick={() => {
                           setIsDropdownOpen(false);
-                          navigate('/admin/billing');
+                          navigate('/admin/subscription/plan');
                         }}
                         className={`w-full px-4 py-2.5 text-left flex items-center gap-3 transition-colors ${
                           currentTheme === 'unicorn'
@@ -714,59 +735,29 @@ export default function PublicLanding() {
           >
             {/* Logo and Title - Compact on Desktop */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-4">
-              <ColonelLogo className="w-20 h-20 md:w-24 md:h-24 drop-shadow-2xl animate-pulse" />
+              {/* Custom logo for this server - transparent background */}
+              <img
+                src="/logos/magicunicorn-special-projects.png"
+                alt="Magic Unicorn Special Projects"
+                className="w-24 h-24 md:w-28 md:h-28 drop-shadow-2xl"
+              />
               <div className="text-center md:text-left">
                 <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
-                  <h1 className={`text-4xl md:text-5xl font-bold ${styles.headerText} ${currentTheme === 'unicorn' ? 'animate-gradient' : ''}`}>
-                    Unicorn Commander
+                  <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold ${styles.headerText} ${currentTheme === 'unicorn' || currentTheme === 'underground' ? 'animate-gradient' : ''}`}>
+                    Magic Unicorn Special Projects
                   </h1>
-                  <div className={`text-2xl md:text-3xl ${styles.subText} font-bold tracking-widest ${currentTheme === 'unicorn' ? 'sparkle-text' : ''}`}>
-                    PRO
-                  </div>
                 </div>
-                <p className={`text-lg ${styles.subText} mt-1`}>
-                  Your AI Infrastructure Command Center
+                <p className={`text-base md:text-lg ${styles.subText} mt-2`}>
+                  Applied Research • Prototype Systems • Advanced Development
+                </p>
+                <p className={`text-sm ${styles.footerText} mt-1 italic`}>
+                  Where New Things Become Real
                 </p>
               </div>
             </div>
           </motion.div>
         </div>
       </header>
-
-      {/* Search Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12"
-      >
-        <div className={`${styles.searchBg} p-8 rounded-2xl`}>
-          <form onSubmit={handleSearch} className="relative">
-            <div className="relative">
-              <MagnifyingGlassIcon className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 ${styles.searchIcon}`} />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className={`w-full pl-12 pr-16 py-4 text-lg rounded-xl focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${styles.searchInput}`}
-                placeholder="Search the web with Center-Deep..."
-              />
-              <button
-                type="submit"
-                className={`absolute right-2 top-1/2 transform -translate-y-1/2 text-white px-6 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 ${styles.searchButton}`}
-              >
-                <span>Search</span>
-                <ArrowRightIcon className="h-4 w-4" />
-              </button>
-            </div>
-          </form>
-          <p className={`text-center text-sm mt-3 ${styles.footerText}`}>
-            Powered by Center-Deep • AI-Enhanced • Private • Secure
-          </p>
-        </div>
-      </motion.div>
 
       {/* Services Grid */}
       <motion.div
@@ -799,10 +790,11 @@ export default function PublicLanding() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => {
             const isLocked = !hasAccess(service.title);
             const requiredTier = serviceTiers[service.title];
+            const cardColor = getCardColor(index);
 
             return (
               <motion.div
@@ -818,11 +810,19 @@ export default function PublicLanding() {
                   className={`block group ${isLocked ? 'cursor-not-allowed' : ''}`}
                   onClick={(e) => handleServiceClick(e, service)}
                 >
-                  <div className={`bg-gradient-to-br ${service.color} rounded-3xl shadow-lg transition-all duration-300 border border-white/20 overflow-hidden relative h-full ${
-                    isLocked
-                      ? 'opacity-60 hover:opacity-70'
-                      : 'hover:shadow-2xl hover:-translate-y-1'
-                  }`}>
+                  <div
+                    className={`rounded-3xl shadow-lg transition-all duration-300 border border-white/20 overflow-hidden relative ${
+                      isLocked
+                        ? 'opacity-60 hover:opacity-70'
+                        : 'hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]'
+                    }`}
+                    style={{
+                      background: cardColor.gradient,
+                      height: '320px',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
                     {/* Lock Overlay */}
                     {isLocked && (
                       <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
@@ -836,56 +836,71 @@ export default function PublicLanding() {
                       </div>
                     )}
 
-                    <div className="p-8">
-                      {/* Logo/Icon Section */}
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex-shrink-0">
-                          {service.iconImage ? (
-                            <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm p-3 flex items-center justify-center border border-white/20 shadow-lg">
-                              <img
-                                src={service.iconImage}
-                                alt={service.title}
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                          ) : service.icon ? (
-                            <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-lg">
-                              <service.icon className="h-12 w-12 text-white" />
-                            </div>
-                          ) : (
-                            <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-lg">
-                              <ServerIcon className="h-12 w-12 text-white/50" />
-                            </div>
-                          )}
-                        </div>
-                        {!isLocked && (
-                          <div className="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <ArrowRightIcon className="h-6 w-6 text-white/80 group-hover:translate-x-1 transition-transform duration-300" />
-                          </div>
+                    {/* Icon Section - Top */}
+                    <div className="p-6 pt-8 flex justify-center">
+                      <div
+                        className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg p-3"
+                        style={{ backgroundColor: cardColor.iconBg }}
+                      >
+                        {service.iconImage ? (
+                          <img
+                            src={service.iconImage}
+                            alt={service.title}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : service.icon ? (
+                          <service.icon
+                            className="h-12 w-12"
+                            style={{ color: cardColor.iconBg === '#ffffff' ? '#667eea' : '#ffffff' }}
+                          />
+                        ) : (
+                          <ServerIcon
+                            className="h-12 w-12"
+                            style={{ color: cardColor.iconBg === '#ffffff' ? '#667eea' : '#ffffff' }}
+                          />
                         )}
-                      </div>
-
-                      {/* Content Section */}
-                      <div>
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="text-2xl font-bold text-white leading-tight flex-1">
-                            {service.title}
-                          </h3>
-                          {/* Access Type Badge */}
-                          {service.accessType === 'tier_included' && (
-                            <span className="ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-green-500/20 text-green-100 border border-green-400/30 whitespace-nowrap">
-                              ✓ Included
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-white/90 text-base leading-relaxed font-light">
-                          {service.description}
-                        </p>
                       </div>
                     </div>
 
-                    {/* Bottom Accent Bar */}
-                    <div className="h-1 bg-gradient-to-r from-white/0 via-white/30 to-white/0"></div>
+                    {/* Content Section - White Background Bottom */}
+                    <div
+                      className="flex-1 flex flex-col px-6 pb-6 pt-4 mt-auto"
+                      style={{
+                        background: 'rgba(255,255,255,0.95)',
+                        borderTopLeftRadius: '24px',
+                        borderTopRightRadius: '24px'
+                      }}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-xl font-bold text-gray-900 leading-tight flex-1 text-center">
+                          {service.title}
+                        </h3>
+                      </div>
+
+                      {/* Access Type Badge */}
+                      {service.accessType === 'tier_included' && (
+                        <div className="flex justify-center mb-2">
+                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700 border border-green-200">
+                            ✓ Included
+                          </span>
+                        </div>
+                      )}
+
+                      <p className="text-gray-600 text-sm leading-relaxed text-center flex-1 line-clamp-2">
+                        {service.description?.length > 80
+                          ? service.description.substring(0, 80) + '...'
+                          : service.description}
+                      </p>
+
+                      {/* Launch Button */}
+                      <button
+                        className="mt-3 w-full py-2 px-4 rounded-xl font-semibold text-white text-sm transition-all duration-200 flex items-center justify-center gap-2"
+                        style={{ background: cardColor.gradient }}
+                      >
+                        <span>Launch</span>
+                        <ArrowRightIcon className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </div>
                   </div>
                 </a>
               </motion.div>
@@ -965,66 +980,93 @@ export default function PublicLanding() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {adminServices.map((service, index) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                >
-                  <a
-                    href={service.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block group"
+              {adminServices.map((service, index) => {
+                // Offset admin cards by 5 to get different colors than user apps
+                const cardColor = getCardColor(index + 5);
+
+                return (
+                  <motion.div
+                    key={service.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 * index }}
                   >
-                    <div className={`bg-gradient-to-br ${service.color} rounded-3xl shadow-lg transition-all duration-300 border border-white/20 overflow-hidden h-full hover:shadow-2xl hover:-translate-y-1`}>
-                      <div className="p-8">
-                        {/* Logo/Icon Section */}
-                        <div className="flex items-start justify-between mb-6">
-                          <div className="flex-shrink-0">
+                    <a
+                      href={service.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group"
+                    >
+                      <div
+                        className="rounded-3xl shadow-lg transition-all duration-300 border border-white/20 overflow-hidden hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]"
+                        style={{
+                          background: cardColor.gradient,
+                          height: '320px',
+                          display: 'flex',
+                          flexDirection: 'column'
+                        }}
+                      >
+                        {/* Icon Section - Top */}
+                        <div className="p-6 pt-8 flex justify-center">
+                          <div
+                            className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg p-3"
+                            style={{ backgroundColor: cardColor.iconBg }}
+                          >
                             {service.iconImage ? (
-                              <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm p-3 flex items-center justify-center border border-white/20 shadow-lg">
-                                <img
-                                  src={service.iconImage}
-                                  alt={service.title}
-                                  className="w-full h-full object-contain"
-                                />
-                              </div>
+                              <img
+                                src={service.iconImage}
+                                alt={service.title}
+                                className="w-full h-full object-contain"
+                              />
                             ) : service.icon ? (
-                              <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-lg">
-                                <service.icon className="h-12 w-12 text-white" />
-                              </div>
+                              <service.icon
+                                className="h-12 w-12"
+                                style={{ color: cardColor.iconBg === '#ffffff' ? '#667eea' : '#ffffff' }}
+                              />
                             ) : (
-                              <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 shadow-lg">
-                                <ServerIcon className="h-12 w-12 text-white/50" />
-                              </div>
+                              <ServerIcon
+                                className="h-12 w-12"
+                                style={{ color: cardColor.iconBg === '#ffffff' ? '#667eea' : '#ffffff' }}
+                              />
                             )}
                           </div>
-                          <div className="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <ArrowRightIcon className="h-6 w-6 text-white/80 group-hover:translate-x-1 transition-transform duration-300" />
-                          </div>
                         </div>
 
-                        {/* Content Section */}
-                        <div>
-                          <h3 className="text-2xl font-bold text-white mb-3 leading-tight">
+                        {/* Content Section - White Background Bottom */}
+                        <div
+                          className="flex-1 flex flex-col px-6 pb-6 pt-4 mt-auto"
+                          style={{
+                            background: 'rgba(255,255,255,0.95)',
+                            borderTopLeftRadius: '24px',
+                            borderTopRightRadius: '24px'
+                          }}
+                        >
+                          <h3 className="text-xl font-bold text-gray-900 leading-tight text-center mb-2">
                             {service.title}
                           </h3>
-                          <p className="text-white/90 text-base leading-relaxed font-light">
-                            {service.description}
+
+                          <p className="text-gray-600 text-sm leading-relaxed text-center flex-1 line-clamp-2">
+                            {service.description?.length > 80
+                              ? service.description.substring(0, 80) + '...'
+                              : service.description}
                           </p>
+
+                          {/* Launch Button */}
+                          <button
+                            className="mt-3 w-full py-2 px-4 rounded-xl font-semibold text-white text-sm transition-all duration-200 flex items-center justify-center gap-2"
+                            style={{ background: cardColor.gradient }}
+                          >
+                            <span>Launch</span>
+                            <ArrowRightIcon className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                          </button>
                         </div>
                       </div>
-
-                      {/* Bottom Accent Bar */}
-                      <div className="h-1 bg-gradient-to-r from-white/0 via-white/30 to-white/0"></div>
-                    </div>
-                  </a>
-                </motion.div>
-              ))}
+                    </a>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           )}
         </motion.div>
@@ -1046,7 +1088,7 @@ export default function PublicLanding() {
           </div>
 
           <p className={`${styles.subText} mb-4`}>
-            Access the admin dashboard to manage your UC-1 Pro system
+            Access the admin dashboard to manage your Magic Unicorn services
           </p>
 
           <button
@@ -1063,18 +1105,29 @@ export default function PublicLanding() {
       {/* Footer */}
       <footer className={`${styles.footerBg} py-8 mt-16`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <MagicUnicornLogo className="w-8 h-8" />
+              <img
+                src="/logos/magicunicorn-special-projects.png"
+                alt="Magic Unicorn Special Projects"
+                className="w-10 h-10"
+              />
               <div className={styles.logoText}>
-                <div className="font-semibold">Magic Unicorn Unconventional Technology & Stuff Inc</div>
-                <div className={`text-sm ${styles.footerText}`}>UC-1 Pro v1.0.0</div>
+                <div className="font-semibold">Magic Unicorn Special Projects</div>
+                <div className={`text-sm ${styles.footerText}`}>Research-Backed • Production-Bound</div>
               </div>
             </div>
-            
-            <div className={`text-right text-sm ${styles.footerText}`}>
-              <div>Enterprise AI Infrastructure</div>
-              <div>Powered by NVIDIA RTX 5090</div>
+
+            <div className={`text-center md:text-right text-sm ${styles.footerText}`}>
+              <div className="flex items-center gap-2 justify-center md:justify-end mb-1">
+                <span>Experiments • Deployments • Breakthroughs</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center md:justify-end">
+                <img src="/logos/magicunicorn-special-projects.png" alt="" className="w-5 h-5" />
+                <a href="https://magicunicorn.tech" target="_blank" rel="noopener noreferrer" className="hover:text-fuchsia-400 underline">
+                  Magic Unicorn Unconventional Technology & Stuff Inc
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -28,17 +28,17 @@ import sys
 import os
 
 # Database connection
-DB_HOST = os.getenv("POSTGRES_HOST", "localhost")
+DB_HOST = os.getenv("POSTGRES_HOST", "unicorn-postgresql")
 DB_PORT = int(os.getenv("POSTGRES_PORT", 5432))
-DB_USER = os.getenv("POSTGRES_USER", "ops_user")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "change-me")
-DB_NAME = os.getenv("POSTGRES_DB", "ops_center_db")
+DB_USER = os.getenv("POSTGRES_USER", "unicorn")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "your-postgres-password")
+DB_NAME = os.getenv("POSTGRES_DB", "unicorn_db")
 
 # Test user configurations
 TEST_USERS = [
     {
         "user_id": "test-trial-user-00000000-0000-0000-0000-000000000001",
-        "email": "trial@test.example.com",
+        "email": "trial@test.unicorncommander.ai",
         "tier": "trial",
         "credits_allocated": Decimal("5.00"),
         "credits_remaining": Decimal("5.00"),
@@ -46,7 +46,7 @@ TEST_USERS = [
     },
     {
         "user_id": "test-starter-user-00000000-0000-0000-0000-000000000002",
-        "email": "starter@test.example.com",
+        "email": "starter@test.unicorncommander.ai",
         "tier": "starter",
         "credits_allocated": Decimal("20.00"),
         "credits_remaining": Decimal("20.00"),
@@ -54,7 +54,7 @@ TEST_USERS = [
     },
     {
         "user_id": "test-professional-user-00000000-0000-0000-0000-000000000003",
-        "email": "professional@test.example.com",
+        "email": "professional@test.unicorncommander.ai",
         "tier": "professional",
         "credits_allocated": Decimal("60.00"),
         "credits_remaining": Decimal("60.00"),
@@ -62,7 +62,7 @@ TEST_USERS = [
     },
     {
         "user_id": "test-enterprise-user-00000000-0000-0000-0000-000000000004",
-        "email": "enterprise@test.example.com",
+        "email": "enterprise@test.unicorncommander.ai",
         "tier": "enterprise",
         "credits_allocated": Decimal("999999.99"),
         "credits_remaining": Decimal("999999.99"),
@@ -173,7 +173,7 @@ async def create_test_users():
         print("="*70)
 
         # Save credentials to file
-        credentials_file = os.path.join(os.path.dirname(__file__), "..", "tests", "test_users.json")
+        credentials_file = "/opt/ops-center/backend/tests/test_users.json"
         os.makedirs(os.path.dirname(credentials_file), exist_ok=True)
 
         import json

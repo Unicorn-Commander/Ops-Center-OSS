@@ -105,12 +105,12 @@ The Ops-Center build process has **three distinct phases** that must be executed
 
 ### Phase 1: Backend Preparation
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/`
+**Location**: `/opt/ops-center/backend/`
 
 The backend doesn't need building (Python), but ensure all dependencies are installed:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install Python dependencies (inside Docker container)
 docker exec ops-center-direct pip install -r /app/requirements.txt
@@ -123,7 +123,7 @@ docker exec ops-center-direct pip install -r /app/requirements.txt
 
 ### Phase 2: Frontend Build
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 
 This is the **critical phase** where build errors typically occur.
 
@@ -186,7 +186,7 @@ ls -lh public/index.html public/assets/
 
 ### Phase 3: Docker Deployment
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 
 #### Step 1: Restart Container
 
@@ -208,7 +208,7 @@ docker ps | grep ops-center
 curl http://localhost:8084/api/v1/system/status
 
 # Access frontend
-# Navigate to: https://your-domain.com/admin
+# Navigate to: https://unicorncommander.ai/admin
 ```
 
 ---
@@ -240,7 +240,7 @@ grep "SubscriptionManagement" src/App.jsx
 **Fix** (if file missing):
 ```bash
 # File should exist at:
-# /home/muut/Production/UC-Cloud/services/ops-center/src/pages/admin/SubscriptionManagement.jsx
+# /opt/ops-center/src/pages/admin/SubscriptionManagement.jsx
 
 # If missing, restore from git:
 git checkout src/pages/admin/SubscriptionManagement.jsx
@@ -579,8 +579,8 @@ npx vite-bundle-visualizer
 
 ## Related Documentation
 
-- **UC-Cloud Main**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
-- **Ops-Center CLAUDE.md**: `/home/muut/Production/UC-Cloud/services/ops-center/CLAUDE.md`
+- **UC-Cloud Main**: `/opt/uc-cloud/CLAUDE.md`
+- **Ops-Center CLAUDE.md**: `/opt/ops-center/CLAUDE.md`
 - **Docker Compose**: `docker-compose.direct.yml`
 - **Vite Config**: `vite.config.js`
 - **Package Manifest**: `package.json`

@@ -40,7 +40,7 @@ POSTGRES_HOST = os.getenv("POSTGRES_HOST", "unicorn-postgresql")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
 POSTGRES_DB = os.getenv("POSTGRES_DB", "unicorn_db")
 
-REDIS_HOST = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+REDIS_HOST = os.getenv("REDIS_HOST", "unicorn-redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 
 LITELLM_PROXY_URL = os.getenv("LITELLM_PROXY_URL", "http://unicorn-litellm:4000")

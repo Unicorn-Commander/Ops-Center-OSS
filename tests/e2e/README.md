@@ -49,7 +49,7 @@ npm --version   # Should show 10.x.x
 Navigate to the ops-center directory:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 ```
 
 Install Playwright:
@@ -82,10 +82,10 @@ Create `.env.test` file:
 ```bash
 cat > .env.test << 'EOF'
 # Base URL for Ops-Center
-BASE_URL=https://your-domain.com
+BASE_URL=https://unicorncommander.ai
 
 # Test credentials (Keycloak SSO)
-TEST_USERNAME=aaron
+TEST_USERNAME=admin
 TEST_PASSWORD=your-admin-password
 
 # Optional: Override specific settings
@@ -259,8 +259,8 @@ The `playwright.config.js` file includes:
 
 ```bash
 # .env.test
-BASE_URL=https://your-domain.com
-TEST_USERNAME=aaron
+BASE_URL=https://unicorncommander.ai
+TEST_USERNAME=admin
 TEST_PASSWORD=your-admin-password
 PLAYWRIGHT_WORKERS=1
 PLAYWRIGHT_TIMEOUT=60000
@@ -304,10 +304,10 @@ npx playwright test --headed
 cat .env.test
 
 # Test login manually in browser
-open https://your-domain.com
+open https://unicorncommander.ai
 
 # Check Keycloak is accessible
-curl -I https://auth.your-domain.com
+curl -I https://auth.unicorncommander.ai
 ```
 
 #### 4. SSL Certificate Errors
@@ -335,7 +335,7 @@ CI=true npx playwright test
 grep -r "localhost" tests/
 
 # Use environment variables instead
-BASE_URL=${BASE_URL:-https://your-domain.com}
+BASE_URL=${BASE_URL:-https://unicorncommander.ai}
 ```
 
 ### Debug Commands
@@ -512,7 +512,7 @@ test.afterEach(async ({ page }, testInfo) => {
 
 ```bash
 # Use Playwright codegen to record actions
-npx playwright codegen https://your-domain.com
+npx playwright codegen https://unicorncommander.ai
 
 # This opens browser and generates test code
 ```

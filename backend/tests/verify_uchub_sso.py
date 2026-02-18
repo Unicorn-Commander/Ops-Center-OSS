@@ -4,18 +4,17 @@ Verify ops-center SSO configuration with uchub realm
 """
 import requests
 import json
-import os
 from urllib3.exceptions import InsecureRequestWarning
 
 # Suppress SSL warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-# Configuration - set via environment variables
-KEYCLOAK_URL = os.environ.get("KEYCLOAK_URL", "http://localhost:8080")
-ADMIN_USERNAME = os.environ.get("KEYCLOAK_ADMIN_USER", "admin")
-ADMIN_PASSWORD = os.environ.get("KEYCLOAK_ADMIN_PASSWORD", "change-me")
-REALM = os.environ.get("KEYCLOAK_REALM", "ops-center")
-CLIENT_ID = os.environ.get("KEYCLOAK_CLIENT_ID", "ops-center")
+# Configuration
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "your-admin-password"
+REALM = "uchub"
+CLIENT_ID = "ops-center"
 
 class KeycloakVerifier:
     def __init__(self):

@@ -22,7 +22,7 @@ source ../.env
 set +a
 
 # Set defaults if not in .env
-export KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.your-domain.com}"
+export KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.unicorncommander.ai}"
 export KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
 export KEYCLOAK_CLIENT_ID="${KEYCLOAK_CLIENT_ID:-admin-cli}"
 export KEYCLOAK_ADMIN_USERNAME="${KEYCLOAK_ADMIN_USERNAME:-admin}"

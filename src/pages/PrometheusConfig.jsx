@@ -13,7 +13,7 @@ import axios from 'axios';
  */
 export default function PrometheusConfig() {
   const [config, setConfig] = useState({
-    url: 'http://prometheus.your-domain.com:9090',
+    url: 'http://prometheus.unicorncommander.ai:9090',
     scrapeInterval: '15s',
     evaluationInterval: '15s',
     retentionTime: '15d',

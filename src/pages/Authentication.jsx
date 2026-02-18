@@ -120,7 +120,7 @@ const Authentication = () => {
   };
 
   const openManageUsers = () => {
-    window.location.href = '/admin/system/users';
+    window.location.href = '/admin/people/users';
   };
 
   const getProviderIcon = (providerName) => {

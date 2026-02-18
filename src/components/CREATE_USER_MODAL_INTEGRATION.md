@@ -11,7 +11,7 @@ This guide provides step-by-step instructions for integrating the enhanced multi
 The component requires the `zxcvbn` package for password strength validation:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install zxcvbn
 ```
 
@@ -19,7 +19,7 @@ npm install zxcvbn
 
 ### Step 1: Import the Component
 
-At the top of `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/UserManagement.jsx`, add the import:
+At the top of `/opt/ops-center/src/pages/UserManagement.jsx`, add the import:
 
 ```javascript
 // Add this import near the top with other imports
@@ -249,7 +249,7 @@ The component expects a comprehensive user creation endpoint:
 ### Backend Implementation Example (Python/FastAPI)
 
 ```python
-# File: /home/muut/Production/UC-Cloud/services/ops-center/backend/user_management_api.py
+# File: /opt/ops-center/backend/user_management_api.py
 
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, EmailStr

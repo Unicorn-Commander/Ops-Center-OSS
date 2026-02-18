@@ -298,7 +298,7 @@ GOOGLE_API_KEY=...
 ### 1. List All Providers with Key Status
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/llm/admin/system-keys \
+curl -X GET https://unicorncommander.ai/api/v1/llm/admin/system-keys \
   -H "Authorization: Bearer admin-token"
 ```
 
@@ -337,7 +337,7 @@ curl -X GET https://your-domain.com/api/v1/llm/admin/system-keys \
 ### 2. Set System API Key
 
 ```bash
-curl -X PUT https://your-domain.com/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000 \
+curl -X PUT https://unicorncommander.ai/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000 \
   -H "Authorization: Bearer admin-token" \
   -H "Content-Type: application/json" \
   -d '{
@@ -359,7 +359,7 @@ curl -X PUT https://your-domain.com/api/v1/llm/admin/system-keys/123e4567-e89b-1
 ### 3. Test System API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000/test \
+curl -X POST https://unicorncommander.ai/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000/test \
   -H "Authorization: Bearer admin-token"
 ```
 
@@ -392,7 +392,7 @@ curl -X POST https://your-domain.com/api/v1/llm/admin/system-keys/123e4567-e89b-
 ### 4. Delete System API Key
 
 ```bash
-curl -X DELETE https://your-domain.com/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000 \
+curl -X DELETE https://unicorncommander.ai/api/v1/llm/admin/system-keys/123e4567-e89b-12d3-a456-426614174000 \
   -H "Authorization: Bearer admin-token"
 ```
 
@@ -542,7 +542,7 @@ CREATE INDEX IF NOT EXISTS idx_llm_providers_type ON llm_providers(provider_type
 ### 3. Backend Deployment
 ```bash
 # Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Restart backend to load new code
 docker restart ops-center-direct
@@ -664,7 +664,7 @@ curl -X PUT http://localhost:8084/api/v1/llm/admin/system-keys/<provider-id> \
 **Implementation Status**: ✅ COMPLETE
 
 **Files Modified**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/litellm_api.py`
+- `/opt/ops-center/backend/litellm_api.py`
 
 **Lines Added**: ~270 lines
 

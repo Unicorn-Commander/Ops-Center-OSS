@@ -1,12 +1,10 @@
 name: Test Suite
 
-# Disabled automatic triggers - run manually when needed
 on:
-  workflow_dispatch:
-  # pull_request:
-  #   branches: [main, develop]
-  # push:
-  #   branches: [develop]
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [develop]
 
 jobs:
   backend-lint:

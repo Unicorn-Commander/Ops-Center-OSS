@@ -172,9 +172,18 @@ async def get_current_admin(request: Request) -> str:
     user = session_data.get("user", {})
     username = user.get("username") or user.get("email", "unknown")
 
-    # Check if user has admin role
-    roles = user.get("roles", [])
-    if "admin" not in roles:
+    # Check if user has admin role - check both singular role and roles array for compatibility
+    user_role = user.get("role", "")
+    user_roles = user.get("roles", [])
+
+    is_admin = (
+        user_role == "admin" or
+        user_role == "system_admin" or
+        "admin" in user_roles or
+        "system_admin" in user_roles
+    )
+
+    if not is_admin:
         raise HTTPException(status_code=403, detail="Admin access required")
 
     return username
@@ -207,9 +216,9 @@ async def list_tiers(
                 st.byok_enabled, st.priority_support,
                 st.lago_plan_code, st.stripe_price_monthly, st.stripe_price_yearly,
                 st.created_at, st.updated_at, st.created_by, st.updated_by,
-                COALESCE(COUNT(DISTINCT ta.id), 0) AS app_count
+                COALESCE(COUNT(DISTINCT ta.id), 0) AS feature_count
             FROM subscription_tiers st
-            LEFT JOIN tier_apps ta ON st.id = ta.tier_id AND ta.enabled = TRUE
+            LEFT JOIN tier_features ta ON st.id = ta.tier_id AND ta.enabled = TRUE
         """
 
         if active_only:
@@ -260,9 +269,9 @@ async def get_tier(
                 st.byok_enabled, st.priority_support,
                 st.lago_plan_code, st.stripe_price_monthly, st.stripe_price_yearly,
                 st.created_at, st.updated_at, st.created_by, st.updated_by,
-                COALESCE(COUNT(DISTINCT ta.id), 0) AS app_count
+                COALESCE(COUNT(DISTINCT ta.id), 0) AS feature_count
             FROM subscription_tiers st
-            LEFT JOIN tier_apps ta ON st.id = ta.tier_id AND ta.enabled = TRUE
+            LEFT JOIN tier_features ta ON st.id = ta.tier_id AND ta.enabled = TRUE
             WHERE st.id = $1
             GROUP BY st.id
         """
@@ -560,9 +569,9 @@ async def clone_tier(
 
             # Clone all tier-app associations
             clone_apps_query = """
-                INSERT INTO tier_apps (tier_id, app_key, enabled)
-                SELECT $1, app_key, enabled
-                FROM tier_apps
+                INSERT INTO tier_features (tier_id, feature_key, enabled)
+                SELECT $1, feature_key, enabled
+                FROM tier_features
                 WHERE tier_id = $2
             """
 
@@ -570,7 +579,7 @@ async def clone_tier(
 
             # Get app count
             app_count = await conn.fetchval(
-                "SELECT COUNT(*) FROM tier_apps WHERE tier_id = $1 AND enabled = TRUE",
+                "SELECT COUNT(*) FROM tier_features WHERE tier_id = $1 AND enabled = TRUE",
                 new_tier_id
             )
 
@@ -617,7 +626,7 @@ async def clone_tier(
 # ============================================
 
 @router.get("/{tier_id}/apps", response_model=List[TierFeature])
-async def get_tier_apps(
+async def get_tier_features(
     tier_id: int,
     conn = Depends(get_db_connection)
 ):
@@ -632,10 +641,10 @@ async def get_tier_apps(
     """
     try:
         query = """
-            SELECT app_key, app_value, enabled
-            FROM tier_apps
+            SELECT feature_key, feature_value, enabled
+            FROM tier_features
             WHERE tier_id = $1
-            ORDER BY app_key
+            ORDER BY feature_key
         """
 
         rows = await conn.fetch(query, tier_id)
@@ -648,7 +657,7 @@ async def get_tier_apps(
 
 
 @router.put("/{tier_id}/apps")
-async def update_tier_apps(
+async def update_tier_features(
     tier_id: int,
     apps: TierFeatureUpdate,
     admin: str = Depends(get_current_admin),
@@ -673,13 +682,13 @@ async def update_tier_apps(
         # Start transaction
         async with conn.transaction():
             # Delete existing apps
-            await conn.execute("DELETE FROM tier_apps WHERE tier_id = $1", tier_id)
+            await conn.execute("DELETE FROM tier_features WHERE tier_id = $1", tier_id)
 
             # Insert new apps
             for app in apps.features:
                 await conn.execute(
                     """
-                    INSERT INTO tier_apps (tier_id, app_key, app_value, enabled)
+                    INSERT INTO tier_features (tier_id, feature_key, feature_value, enabled)
                     VALUES ($1, $2, $3, $4)
                     """,
                     tier_id, app.feature_key, app.feature_value, app.enabled

@@ -10,28 +10,28 @@ October 9, 2025
 ## Files Created/Modified
 
 ### New Files
-1. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`** (551 lines)
+1. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`** (551 lines)
    - Core system management module
    - Network configuration (netplan)
    - User password management
    - Package update checking
    - Pydantic models for validation
 
-2. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_MANAGEMENT_API.md`**
+2. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_MANAGEMENT_API.md`**
    - Complete API documentation
    - Request/response schemas
    - Security guidelines
    - Integration examples
    - Best practices
 
-3. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_API_QUICK_REFERENCE.md`**
+3. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_API_QUICK_REFERENCE.md`**
    - Quick reference guide
    - curl examples
    - Python/JavaScript client code
    - Security checklist
 
 ### Modified Files
-1. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`**
+1. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`**
    - Added 4 new API endpoints (lines 2679-2878)
    - Added logging configuration (lines 95-97)
    - Added system_manager imports (lines 41-47)
@@ -173,7 +173,7 @@ pytest tests/test_system_api.py::test_package_management_flow
 ### Manual Testing
 ```bash
 # Start server
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 uvicorn server:app --host 0.0.0.0 --port 8084
 
 # Test endpoints (see SYSTEM_API_QUICK_REFERENCE.md)
@@ -210,7 +210,7 @@ Server process needs:
 ```python
 import requests
 
-BASE_URL = "https://your-domain.com/api/v1/system"
+BASE_URL = "https://unicorncommander.ai/api/v1/system"
 TOKEN = "your_admin_jwt_token"
 
 headers = {"Authorization": f"Bearer {TOKEN}"}
@@ -235,11 +235,11 @@ print(response.json())
 ### curl
 ```bash
 # Get network configuration
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $TOKEN"
 
 # Change password
-curl -X POST "https://your-domain.com/api/v1/system/user/password" \
+curl -X POST "https://unicorncommander.ai/api/v1/system/user/password" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -249,7 +249,7 @@ curl -X POST "https://your-domain.com/api/v1/system/user/password" \
   }'
 
 # Get package updates
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -321,7 +321,7 @@ curl -X GET "https://your-domain.com/api/v1/system/packages" \
 ### Documentation
 - Full API docs: `SYSTEM_MANAGEMENT_API.md`
 - Quick reference: `SYSTEM_API_QUICK_REFERENCE.md`
-- FastAPI Swagger UI: `https://your-domain.com/docs`
+- FastAPI Swagger UI: `https://unicorncommander.ai/docs`
 
 ### Troubleshooting
 1. Check server logs for detailed error messages
@@ -332,7 +332,7 @@ curl -X GET "https://your-domain.com/api/v1/system/packages" \
 
 ### Contact
 - GitHub Issues: https://github.com/Unicorn-Commander/UC-1-Pro/issues
-- Project: https://your-domain.com
+- Project: https://unicorncommander.ai
 
 ---
 

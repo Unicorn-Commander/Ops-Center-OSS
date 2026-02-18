@@ -105,7 +105,7 @@ GET /api/v1/admin/stats
 export KEYCLOAK_ADMIN_PASSWORD="your-admin-password"
 
 # Optional (use defaults if not set)
-export KEYCLOAK_URL="https://auth.your-domain.com"
+export KEYCLOAK_URL="https://auth.unicorncommander.ai"
 export KEYCLOAK_REALM="uchub"
 export KEYCLOAK_ADMIN_USERNAME="admin"
 ```
@@ -116,7 +116,7 @@ export KEYCLOAK_ADMIN_USERNAME="admin"
 
 ```bash
 # Run test script
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 export KEYCLOAK_ADMIN_PASSWORD="your-password"
 python3 test_admin_api.py
 ```
@@ -169,7 +169,7 @@ See `docs/ADMIN_API.md` for complete documentation with examples.
 docker logs unicorn-ops-center | grep "Admin"
 
 # Check Keycloak connectivity
-curl https://auth.your-domain.com/realms/uchub/.well-known/openid-configuration
+curl https://auth.unicorncommander.ai/realms/uchub/.well-known/openid-configuration
 
 # Test admin auth
 python3 -c "

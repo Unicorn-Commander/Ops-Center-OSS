@@ -527,7 +527,7 @@ class AuditLogger:
 {
   "timestamp": "2025-10-24T14:30:00.123456Z",
   "action": "create_route",
-  "user": "admin@your-domain.com",
+  "user": "admin@unicorncommander.ai",
   "success": true,
   "details": {
     "name": "api-route",
@@ -913,7 +913,7 @@ try {
 
 **Clone Repository**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 ```
 
 **Backend Setup**:
@@ -946,7 +946,7 @@ npm run dev
 
 **Start Ops-Center Container**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 docker compose -f docker-compose.direct.yml up -d
 ```
 
@@ -1043,10 +1043,10 @@ console.log('API response:', data);
 docker logs traefik --tail 100 -f
 
 # Check configuration files
-cat /home/muut/Production/UC-Cloud/traefik/dynamic/routes.yml
+cat /opt/uc-cloud/traefik/dynamic/routes.yml
 
 # Check ACME data
-cat /home/muut/Production/UC-Cloud/traefik/acme/acme.json | jq
+cat /opt/uc-cloud/traefik/acme/acme.json | jq
 ```
 
 ---
@@ -1103,7 +1103,7 @@ Lines 1220-1540: Dialog components (modals)
 
 **Traefik Directory Structure**:
 ```
-/home/muut/Production/UC-Cloud/traefik/
+/opt/uc-cloud/traefik/
 ├── traefik.yml               # Static configuration
 ├── dynamic/
 │   ├── routes.yml           # HTTP routers
@@ -1128,7 +1128,7 @@ Lines 1220-1540: Dialog components (modals)
 http:
   routers:
     ops-center:
-      rule: Host(`your-domain.com`)
+      rule: Host(`unicorncommander.ai`)
       service: ops-center-svc
       entryPoints:
         - websecure
@@ -1440,7 +1440,7 @@ def test_backup_and_restore(manager):
 
 **Run Tests**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_traefik_manager.py -v
 ```
 
@@ -1567,7 +1567,7 @@ describe('TraefikConfig Component', () => {
 
 **Run Tests**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm test
 ```
 
@@ -1648,7 +1648,7 @@ def test_complete_route_creation_workflow():
 
 **Frontend Build**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install dependencies (if needed)
 npm install
@@ -1710,7 +1710,7 @@ services:
     ports:
       - "8084:8084"
     volumes:
-      - /home/muut/Production/UC-Cloud/traefik:/traefik
+      - /opt/uc-cloud/traefik:/traefik
     networks:
       - unicorn-network
       - web
@@ -1723,7 +1723,7 @@ services:
 
 **Deploy**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Build frontend
 npm run build
@@ -1758,7 +1758,7 @@ TRAEFIK_DOCKER_CONTAINER=traefik
 **Traefik Volume Mount**:
 ```yaml
 volumes:
-  - /home/muut/Production/UC-Cloud/traefik:/traefik
+  - /opt/uc-cloud/traefik:/traefik
 ```
 
 This allows the Ops-Center container to read/write Traefik configuration files.
@@ -1792,7 +1792,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 **Automatic Backups**:
 - Backups created automatically before every configuration change
 - Last 10 backups retained (older ones deleted)
-- Location: `/home/muut/Production/UC-Cloud/traefik/backups/`
+- Location: `/opt/uc-cloud/traefik/backups/`
 
 **Manual Backups**:
 ```bash
@@ -1804,7 +1804,7 @@ curl -X POST http://localhost:8084/api/v1/traefik/config/backup \
 timestamp=$(date +%Y%m%d_%H%M%S)
 backup_dir="/backup/traefik_manual_$timestamp"
 mkdir -p "$backup_dir"
-cp -r /home/muut/Production/UC-Cloud/traefik/* "$backup_dir/"
+cp -r /opt/uc-cloud/traefik/* "$backup_dir/"
 ```
 
 **Archive Important Backups**:
@@ -1846,7 +1846,7 @@ curl http://localhost:8084/api/v1/traefik/health
 ## Appendix A: File Locations
 
 ```
-/home/muut/Production/UC-Cloud/
+/opt/uc-cloud/
 ├── services/ops-center/
 │   ├── backend/
 │   │   ├── traefik_manager.py        # Core business logic

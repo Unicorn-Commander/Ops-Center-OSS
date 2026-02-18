@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-BACKUP_DIR="/home/muut/backups/database"
+BACKUP_DIR="/opt/backups/database"
 CONTAINER_NAME="unicorn-postgresql"
 DB_USER="unicorn"
 DB_NAME="unicorn_db"

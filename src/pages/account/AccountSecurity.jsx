@@ -346,7 +346,7 @@ export default function AccountSecurity() {
             </p>
           </div>
           <button
-            onClick={() => window.open('https://auth.your-domain.com/if/user/', '_blank')}
+            onClick={() => window.open('https://auth.unicorncommander.ai/if/user/', '_blank')}
             className={`px-4 py-2 rounded-lg ${themeClasses.button}`}
           >
             Configure 2FA

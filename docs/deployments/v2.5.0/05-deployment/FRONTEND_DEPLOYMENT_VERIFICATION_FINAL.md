@@ -212,29 +212,29 @@ fetch('/api/v1/llm/usage/summary')               ✅ CORRECT
 
 ### Critical Pages to Test
 
-**Landing Page** (https://your-domain.com)
+**Landing Page** (https://unicorncommander.ai)
 - [ ] Page loads without errors
 - [ ] Service cards display
 - [ ] Links work
 
-**Admin Dashboard** (https://your-domain.com/admin)
+**Admin Dashboard** (https://unicorncommander.ai/admin)
 - [ ] Dashboard loads
 - [ ] Metrics display
 - [ ] Charts render
 
-**User Management** (https://your-domain.com/admin/system/users)
+**User Management** (https://unicorncommander.ai/admin/system/users)
 - [ ] User list loads
 - [ ] Analytics summary displays
 - [ ] Filters work
 - [ ] Click user → Detail page loads
 
-**Analytics Page** (https://your-domain.com/admin/llm/analytics)
+**Analytics Page** (https://unicorncommander.ai/admin/llm/analytics)
 - [ ] Overview tab loads
 - [ ] User analytics tab shows data
 - [ ] Billing analytics tab shows data
 - [ ] Charts render correctly
 
-**Billing Page** (https://your-domain.com/admin/billing)
+**Billing Page** (https://unicorncommander.ai/admin/billing)
 - [ ] Billing summary displays
 - [ ] Invoices list loads
 - [ ] Subscription data accurate
@@ -254,7 +254,7 @@ fetch('/api/v1/llm/usage/summary')               ✅ CORRECT
 
 ```bash
 # Open browser and test
-# 1. Navigate to https://your-domain.com/admin
+# 1. Navigate to https://unicorncommander.ai/admin
 # 2. Open Developer Tools (F12)
 # 3. Go to Console tab
 # 4. Click through all pages
@@ -302,7 +302,7 @@ The frontend is correctly configured and ready for user testing.
 ### Next Steps (In Order)
 
 1. **Browser Verification** (10 minutes)
-   - Login to https://your-domain.com/admin
+   - Login to https://unicorncommander.ai/admin
    - Navigate through all pages
    - Confirm 0 critical errors in console
 
@@ -417,7 +417,7 @@ $ curl http://localhost:8084/health
 ### Asset Deployment Verification
 
 ```bash
-$ ls -lh /home/muut/Production/UC-Cloud/services/ops-center/public/
+$ ls -lh /opt/ops-center/public/
 total 8.7M
 drwxrwxr-x 2 muut muut 112K Nov 26 05:09 assets/      # ✅ 1,045 files
 -rw-rw-r-- 1 muut muut 4.1K Nov 26 05:09 index.html   # ✅

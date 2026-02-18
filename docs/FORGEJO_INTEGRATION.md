@@ -10,7 +10,7 @@
 
 Ops-Center includes full integration with Forgejo, a self-hosted Git server. This integration provides centralized management of Git repositories, organizations, and development workflows directly from the Ops-Center dashboard.
 
-**Forgejo Instance**: https://git.your-domain.com
+**Forgejo Instance**: https://git.unicorncommander.ai
 
 ---
 
@@ -56,7 +56,7 @@ Ops-Center includes full integration with Forgejo, a self-hosted Git server. Thi
 
 **Quick Access**:
 ```
-https://your-domain.com/services → Click "Forgejo" card → Opens https://git.your-domain.com
+https://unicorncommander.ai/services → Click "Forgejo" card → Opens https://git.unicorncommander.ai
 ```
 
 ### For Administrators
@@ -90,7 +90,7 @@ GET /api/v1/forgejo/health
 ```json
 {
   "service": "Forgejo",
-  "url": "https://git.your-domain.com",
+  "url": "https://git.unicorncommander.ai",
   "online": true,
   "version": "8.0.0",
   "status": "healthy"
@@ -107,7 +107,7 @@ GET /api/v1/forgejo/stats
 {
   "total_organizations": 5,
   "total_repositories": 17,
-  "instance_url": "https://git.your-domain.com"
+  "instance_url": "https://git.unicorncommander.ai"
 }
 ```
 
@@ -125,7 +125,7 @@ GET /api/v1/forgejo/orgs
       "username": "UnicornCommander",
       "full_name": "Unicorn Commander Organization",
       "description": "Main UC-Cloud organization",
-      "website": "https://your-domain.com",
+      "website": "https://unicorncommander.ai",
       "location": "",
       "visibility": "public",
       "repo_admin_change_team_access": false
@@ -153,8 +153,8 @@ GET /api/v1/forgejo/orgs/{org_name}/repos
       "private": true,
       "fork": false,
       "size": 450000,
-      "html_url": "https://git.your-domain.com/UnicornCommander/UC-Cloud",
-      "clone_url": "https://git.your-domain.com/UnicornCommander/UC-Cloud.git",
+      "html_url": "https://git.unicorncommander.ai/UnicornCommander/UC-Cloud",
+      "clone_url": "https://git.unicorncommander.ai/UnicornCommander/UC-Cloud.git",
       "updated_at": "2025-11-08T10:30:00Z"
     }
   ],
@@ -170,9 +170,9 @@ GET /api/v1/forgejo/info
 **Response**:
 ```json
 {
-  "instance_url": "https://git.your-domain.com",
-  "api_base": "https://git.your-domain.com/api/v1",
-  "admin_url": "https://git.your-domain.com/admin",
+  "instance_url": "https://git.unicorncommander.ai",
+  "api_base": "https://git.unicorncommander.ai/api/v1",
+  "admin_url": "https://git.unicorncommander.ai/admin",
   "status": "healthy",
   "online": true,
   "version": "8.0.0",
@@ -201,24 +201,24 @@ All UC-Cloud repositories have been migrated from GitHub to Forgejo:
 
 | Repository | Forgejo URL | Description |
 |------------|-------------|-------------|
-| **UC-Cloud** | https://git.your-domain.com/UnicornCommander/UC-Cloud | Main platform repository |
-| **Ops-Center** | https://git.your-domain.com/UnicornCommander/Ops-Center | Operations dashboard (submodule) |
-| **Center-Deep-Pro** | https://git.your-domain.com/UnicornCommander/Center-Deep-Pro | AI metasearch engine (submodule) |
-| **Unicorn-Brigade** | https://git.your-domain.com/UnicornCommander/Unicorn-Brigade | Agent platform (submodule) |
-| **Bolt-DIY-Fork** | https://git.your-domain.com/UnicornCommander/Bolt-DIY-Fork | AI development environment |
-| **Presenton-Fork** | https://git.your-domain.com/UnicornCommander/Presenton-Fork | AI presentation generation |
+| **UC-Cloud** | https://git.unicorncommander.ai/UnicornCommander/UC-Cloud | Main platform repository |
+| **Ops-Center** | https://git.unicorncommander.ai/UnicornCommander/Ops-Center | Operations dashboard (submodule) |
+| **Center-Deep-Pro** | https://git.unicorncommander.ai/UnicornCommander/Center-Deep-Pro | AI metasearch engine (submodule) |
+| **Unicorn-Brigade** | https://git.unicorncommander.ai/UnicornCommander/Unicorn-Brigade | Agent platform (submodule) |
+| **Bolt-DIY-Fork** | https://git.unicorncommander.ai/UnicornCommander/Bolt-DIY-Fork | AI development environment |
+| **Presenton-Fork** | https://git.unicorncommander.ai/UnicornCommander/Presenton-Fork | AI presentation generation |
 
 ### Cloning Repositories
 
 **With Submodules** (Recommended):
 ```bash
-git clone --recurse-submodules https://git.your-domain.com/UnicornCommander/UC-Cloud.git
+git clone --recurse-submodules https://git.unicorncommander.ai/UnicornCommander/UC-Cloud.git
 cd UC-Cloud
 ```
 
 **Individual Repository**:
 ```bash
-git clone https://git.your-domain.com/UnicornCommander/Ops-Center.git
+git clone https://git.unicorncommander.ai/UnicornCommander/Ops-Center.git
 cd Ops-Center
 ```
 
@@ -233,7 +233,7 @@ Forgejo integration is configured in Ops-Center's backend:
 **File**: `backend/services/forgejo_client.py`
 
 ```python
-base_url = "https://git.your-domain.com"
+base_url = "https://git.unicorncommander.ai"
 admin_token = "4d79a6bef5c793c89b13400115188ea935fc31b5"  # Admin API token
 timeout = 10  # Request timeout in seconds
 ```
@@ -242,8 +242,8 @@ timeout = 10  # Request timeout in seconds
 
 **Instance**: Running in Docker container `unicorn-forgejo`
 **Port**: 3003 (internal), exposed via Traefik on HTTPS
-**Admin Access**: https://git.your-domain.com/admin
-**API Base**: https://git.your-domain.com/api/v1
+**Admin Access**: https://git.unicorncommander.ai/admin
+**API Base**: https://git.unicorncommander.ai/api/v1
 
 ---
 
@@ -334,7 +334,7 @@ docker ps | grep forgejo
 docker logs unicorn-forgejo --tail 50
 
 # Test API endpoint directly
-curl https://git.your-domain.com/api/v1/version
+curl https://git.unicorncommander.ai/api/v1/version
 ```
 
 **Common Causes**:
@@ -352,7 +352,7 @@ docker restart unicorn-forgejo
 docker logs traefik | grep forgejo
 
 # Verify DNS resolution
-nslookup git.your-domain.com
+nslookup git.unicorncommander.ai
 ```
 
 ### Statistics Show 0 Repositories
@@ -363,7 +363,7 @@ nslookup git.your-domain.com
 ```bash
 # Check Forgejo API directly
 curl -H "Authorization: token 4d79a6bef5c793c89b13400115188ea935fc31b5" \
-  https://git.your-domain.com/api/v1/orgs
+  https://git.unicorncommander.ai/api/v1/orgs
 
 # Check Ops-Center logs
 docker logs ops-center-direct | grep forgejo
@@ -379,10 +379,10 @@ docker logs ops-center-direct | grep forgejo
 ```bash
 # Verify admin token is valid
 curl -H "Authorization: token 4d79a6bef5c793c89b13400115188ea935fc31b5" \
-  https://git.your-domain.com/api/v1/user
+  https://git.unicorncommander.ai/api/v1/user
 
 # Check organization visibility settings in Forgejo admin panel
-# https://git.your-domain.com/admin/orgs
+# https://git.unicorncommander.ai/admin/orgs
 ```
 
 ### Admin Dashboard Not Loading
@@ -410,7 +410,7 @@ curl http://localhost:8084/api/v1/forgejo/health
 **Solution**:
 ```bash
 # Rebuild frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 
@@ -454,8 +454,8 @@ docker restart ops-center-direct
 ## Related Documentation
 
 - **Complete Integration Guide**: `/tmp/FORGEJO_INTEGRATION_COMPLETE.md`
-- **UC-Cloud Main README**: `/home/muut/Production/UC-Cloud/README.md`
-- **Ops-Center README**: `/home/muut/Production/UC-Cloud/services/ops-center/README.md`
+- **UC-Cloud Main README**: `/opt/uc-cloud/README.md`
+- **Ops-Center README**: `/opt/ops-center/README.md`
 - **Forgejo Official Docs**: https://forgejo.org/docs/latest/
 
 ---
@@ -463,16 +463,16 @@ docker restart ops-center-direct
 ## Support
 
 **Forgejo Instance Issues**:
-- Admin Panel: https://git.your-domain.com/admin
+- Admin Panel: https://git.unicorncommander.ai/admin
 - Forgejo Docs: https://forgejo.org/docs/latest/
 
 **Ops-Center Integration Issues**:
-- Ops-Center Issues: https://git.your-domain.com/UnicornCommander/Ops-Center/issues
-- UC-Cloud Issues: https://git.your-domain.com/UnicornCommander/UC-Cloud/issues
+- Ops-Center Issues: https://git.unicorncommander.ai/UnicornCommander/Ops-Center/issues
+- UC-Cloud Issues: https://git.unicorncommander.ai/UnicornCommander/UC-Cloud/issues
 
 **Contact**:
 - Email: support@magicunicorn.tech
-- Website: https://your-domain.com
+- Website: https://unicorncommander.ai
 
 ---
 

@@ -49,6 +49,7 @@ import {
   Tune as TuneIcon,
   DragIndicator as DragIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
 
 const AppManagement = () => {
   // State management
@@ -327,46 +328,22 @@ const AppManagement = () => {
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-          borderRadius: 2,
-          p: 3,
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <Box>
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
-            App Management
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Define available apps for subscription tiers
-          </Typography>
-        </Box>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            resetForm();
-            setCreateDialogOpen(true);
-          }}
-          sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            borderRadius: 2,
-            transition: 'all 0.2s',
-            '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: 4,
-              background: 'linear-gradient(135deg, #7e8fef 0%, #8a5bb2 100%)'
-            }
-          }}
-        >
-          Create App
-        </Button>
-      </Box>
+      <PageHeader
+        title="App Management"
+        subtitle="Define available apps for subscription tiers"
+        actions={(
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              resetForm();
+              setCreateDialogOpen(true);
+            }}
+          >
+            Create App
+          </Button>
+        )}
+      />
 
       {/* Alerts */}
       {error && (

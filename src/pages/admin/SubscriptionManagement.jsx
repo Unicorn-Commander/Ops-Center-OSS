@@ -59,6 +59,12 @@ import {
   LocalOffer as TagIcon,
   ContentCopy as CloneIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
+import AdminBreadcrumbs from '../../components/admin/AdminBreadcrumbs';
+import LoadingOverlay from '../../components/admin/LoadingOverlay';
+import EmptyState from '../../components/admin/EmptyState';
+import StatsCard from '../../components/admin/StatsCard';
+import { TagIcon as TagIconHero, UsersIcon, CurrencyDollarIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 const SubscriptionManagement = () => {
   // State management
@@ -511,90 +517,58 @@ const SubscriptionManagement = () => {
 
   if (loading && tiers.length === 0) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box sx={{ p: 3 }}>
+        <AdminBreadcrumbs />
+        <PageHeader
+          title="Subscription Management"
+          subtitle="Manage subscription tiers, apps, and user migrations"
+        />
+        <LoadingOverlay loading={true} message="Loading subscription tiers..." />
       </Box>
     );
   }
 
   return (
     <Box sx={{ p: 3 }}>
+      {/* Breadcrumbs */}
+      <AdminBreadcrumbs />
+
       {/* Header */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-          borderRadius: 2,
-          p: 3,
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <Box>
-          <Typography variant="h4" component="h1" sx={{ fontWeight: 700, mb: 0.5 }}>
-            Subscription Management
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Manage subscription tiers, apps, and user migrations
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="outlined"
-            startIcon={<HistoryIcon />}
-            onClick={() => {
-              fetchAuditLog();
-              setAuditLogDialogOpen(true);
-            }}
-            sx={{
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 2
-              }
-            }}
-          >
-            Audit Log
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<PeopleIcon />}
-            onClick={() => setMigrationDialogOpen(true)}
-            sx={{
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 2
-              }
-            }}
-          >
-            Migrate User
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              resetForm();
-              setCreateDialogOpen(true);
-            }}
-            sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: 2,
-              transition: 'all 0.2s',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: 4,
-                background: 'linear-gradient(135deg, #7e8fef 0%, #8a5bb2 100%)'
-              }
-            }}
-          >
-            Create Tier
-          </Button>
-        </Box>
-      </Box>
+      <PageHeader
+        title="Subscription Management"
+        subtitle="Manage subscription tiers, apps, and user migrations"
+        actions={(
+          <>
+            <Button
+              variant="outlined"
+              startIcon={<HistoryIcon />}
+              onClick={() => {
+                fetchAuditLog();
+                setAuditLogDialogOpen(true);
+              }}
+            >
+              Audit Log
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<PeopleIcon />}
+              onClick={() => setMigrationDialogOpen(true)}
+            >
+              Migrate User
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => {
+                resetForm();
+                setCreateDialogOpen(true);
+              }}
+            >
+              Create Tier
+            </Button>
+          </>
+        )}
+      />
 
       {/* Alerts */}
       {error && (
@@ -608,115 +582,43 @@ const SubscriptionManagement = () => {
         </Alert>
       )}
 
-      {/* Analytics Cards */}
+      {/* Analytics Cards - Using standardized StatsCard component */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={3}>
-          <Card
-            sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 12px 24px rgba(102, 126, 234, 0.3)'
-              }
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <Box>
-                  <Typography sx={{ opacity: 0.9, fontSize: '0.875rem', mb: 1 }}>
-                    Total Tiers
-                  </Typography>
-                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                    {tiers.length}
-                  </Typography>
-                </Box>
-                <TagIcon sx={{ fontSize: 48, opacity: 0.3 }} />
-              </Box>
-            </CardContent>
-          </Card>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatsCard
+            title="Total Tiers"
+            value={tiers.length}
+            subtitle="Subscription plans"
+            icon={TagIconHero}
+            color="primary"
+          />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card
-            sx={{
-              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-              color: 'white',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 12px 24px rgba(240, 147, 251, 0.3)'
-              }
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <Box>
-                  <Typography sx={{ opacity: 0.9, fontSize: '0.875rem', mb: 1 }}>
-                    Active Tiers
-                  </Typography>
-                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                    {tiers.filter(t => t.is_active).length}
-                  </Typography>
-                </Box>
-                <CheckIcon sx={{ fontSize: 48, opacity: 0.3 }} />
-              </Box>
-            </CardContent>
-          </Card>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatsCard
+            title="Active Tiers"
+            value={tiers.filter(t => t.is_active).length}
+            subtitle="Currently available"
+            icon={CheckCircleIcon}
+            color="success"
+          />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card
-            sx={{
-              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-              color: 'white',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 12px 24px rgba(79, 172, 254, 0.3)'
-              }
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <Box>
-                  <Typography sx={{ opacity: 0.9, fontSize: '0.875rem', mb: 1 }}>
-                    Total Users
-                  </Typography>
-                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                    {tiers.reduce((sum, t) => sum + t.active_user_count, 0)}
-                  </Typography>
-                </Box>
-                <PeopleIcon sx={{ fontSize: 48, opacity: 0.3 }} />
-              </Box>
-            </CardContent>
-          </Card>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatsCard
+            title="Total Users"
+            value={tiers.reduce((sum, t) => sum + t.active_user_count, 0).toLocaleString()}
+            subtitle="Across all tiers"
+            icon={UsersIcon}
+            color="info"
+          />
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Card
-            sx={{
-              background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-              color: 'white',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 12px 24px rgba(250, 112, 154, 0.3)'
-              }
-            }}
-          >
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <Box>
-                  <Typography sx={{ opacity: 0.9, fontSize: '0.875rem', mb: 1 }}>
-                    Monthly Revenue
-                  </Typography>
-                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                    {formatPrice(tiers.reduce((sum, t) => sum + t.monthly_revenue, 0))}
-                  </Typography>
-                </Box>
-                <MoneyIcon sx={{ fontSize: 48, opacity: 0.3 }} />
-              </Box>
-            </CardContent>
-          </Card>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatsCard
+            title="Monthly Revenue"
+            value={formatPrice(tiers.reduce((sum, t) => sum + t.monthly_revenue, 0))}
+            subtitle="Estimated total"
+            icon={CurrencyDollarIcon}
+            color="warning"
+          />
         </Grid>
       </Grid>
 

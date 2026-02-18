@@ -194,7 +194,7 @@ def valid_a_record():
     return {
         "type": "A",
         "name": "@",
-        "content": "YOUR_SERVER_IP",
+        "content": "your-server-ip",
         "proxied": True,
         "ttl": 1
     }
@@ -253,7 +253,7 @@ def bulk_dns_records():
     """Bulk DNS record creation data"""
     return {
         "records": [
-            {"type": "A", "name": "@", "content": "YOUR_SERVER_IP", "proxied": True},
+            {"type": "A", "name": "@", "content": "your-server-ip", "proxied": True},
             {"type": "CNAME", "name": "www", "content": "example.com", "proxied": True},
             {"type": "MX", "name": "@", "content": "mail.example.com", "priority": 10}
         ]
@@ -309,7 +309,7 @@ def mock_zone_response():
     """Mock Cloudflare zone response"""
     return {
         "zone_id": "zone_abc123",
-        "domain": "your-domain.com",
+        "domain": "unicorncommander.ai",
         "status": "active",
         "nameservers": ["vera.ns.cloudflare.com", "walt.ns.cloudflare.com"],
         "plan": "free",
@@ -324,8 +324,8 @@ def mock_dns_record_response():
     return {
         "id": "rec_xyz789",
         "type": "A",
-        "name": "your-domain.com",
-        "content": "YOUR_SERVER_IP",
+        "name": "unicorncommander.ai",
+        "content": "your-server-ip",
         "proxied": True,
         "ttl": 1,
         "created_at": "2025-10-22T10:00:00Z"
@@ -339,7 +339,7 @@ def mock_zone_list_response():
         "zones": [
             {
                 "zone_id": "zone_1",
-                "domain": "your-domain.com",
+                "domain": "unicorncommander.ai",
                 "status": "active",
                 "nameservers": ["vera.ns.cloudflare.com", "walt.ns.cloudflare.com"]
             },

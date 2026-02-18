@@ -37,7 +37,7 @@ INSERT INTO add_ons (
         "custom_prompts": "Save reusable templates",
         "team_features": "Share conversations",
         "api_access": "REST API for integrations",
-        "access_url": "https://chat.your-domain.com"
+        "access_url": "https://chat.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     TRUE,
@@ -68,7 +68,7 @@ INSERT INTO add_ons (
         "deep_search": "In-depth research mode",
         "reports": "Auto-generated reports",
         "api_access": "OpenAI-compatible API",
-        "access_url": "https://search.your-domain.com"
+        "access_url": "https://search.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     TRUE,
@@ -103,7 +103,7 @@ INSERT INTO add_ons (
         "export": ["PPTX", "PDF", "Google Slides"],
         "images": "Smart image search",
         "branding": "Custom themes and logos",
-        "access_url": "https://presentations.your-domain.com"
+        "access_url": "https://presentations.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     TRUE,
@@ -134,7 +134,7 @@ INSERT INTO add_ons (
         "frameworks": ["React", "Node.js", "Python", "Vue"],
         "git": "GitHub integration",
         "databases": "Auto-setup MongoDB, PostgreSQL",
-        "access_url": "https://bolt.your-domain.com"
+        "access_url": "https://bolt.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     TRUE,
@@ -165,7 +165,7 @@ INSERT INTO add_ons (
         "tools": "12+ built-in integrations",
         "monitoring": "Real-time performance tracking",
         "api": "Full REST API access",
-        "access_url": "https://brigade.your-domain.com"
+        "access_url": "https://brigade.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     FALSE,
@@ -196,7 +196,7 @@ INSERT INTO add_ons (
         "api": "OpenAI-compatible",
         "batch": "Bulk processing",
         "formats": ["MP3", "WAV", "M4A", "OGG"],
-        "access_url": "https://stt.your-domain.com"
+        "access_url": "https://stt.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     FALSE,
@@ -227,7 +227,7 @@ INSERT INTO add_ons (
         "api": "OpenAI-compatible",
         "export": ["MP3", "WAV"],
         "license": "Commercial use included",
-        "access_url": "https://tts.your-domain.com"
+        "access_url": "https://tts.unicorncommander.ai"
     }'::jsonb,
     TRUE,
     FALSE,

@@ -183,7 +183,7 @@ A complete end-to-end testing infrastructure has been delivered for the UC-1 Pro
                  ▼
 ┌─────────────────────────────────────────────────┐
 │         System Under Test                       │
-│  • Keycloak SSO (auth.your-domain.com)      │
+│  • Keycloak SSO (auth.unicorncommander.ai)      │
 │  • Ops-Center Backend (localhost:8084)          │
 │  • Lago Billing (webhooks)                      │
 │  • Stripe Payments (test mode)                  │
@@ -220,7 +220,7 @@ cp tests/.env.test.example tests/.env.test
 ```
 
 3. **Verify Services:**
-- Keycloak accessible at auth.your-domain.com
+- Keycloak accessible at auth.unicorncommander.ai
 - Ops-Center running on localhost:8084
 - Stripe test API keys configured
 
@@ -228,7 +228,7 @@ cp tests/.env.test.example tests/.env.test
 
 #### Quick Start (Recommended)
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/tests
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/tests
 ./run_all_tests.sh
 ```
 
@@ -597,7 +597,7 @@ All limitations have workarounds and don't block production deployment.
 
 All files located in:
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/tests/
+/home/deploy/Production/UC-1-Pro/services/ops-center/tests/
 ```
 
 ---
@@ -647,7 +647,7 @@ The billing system is **functionally complete and well-tested**. Core functional
 **Created By:** Claude Code (QA Specialist Agent)
 **Date:** October 11, 2025
 **Status:** ✅ COMPLETE
-**Location:** `/home/muut/Production/UC-1-Pro/services/ops-center/tests/`
+**Location:** `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/`
 
 **Deliverables:**
 - [x] E2E Test Suite (pytest)

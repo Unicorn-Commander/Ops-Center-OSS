@@ -3,7 +3,7 @@
 **Mission**: Enable subscription functionality in TierComparison.jsx
 
 **Files**:
-- Frontend: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/TierComparison.jsx`
+- Frontend: `/opt/ops-center/src/pages/TierComparison.jsx`
 - Backend: Already exists! (`/api/v1/subscriptions/plans`, `/api/v1/billing/subscriptions/checkout`)
 
 **Duration**: 6-8 hours (Backend already done, focus on frontend integration)
@@ -321,7 +321,7 @@ import { CircularProgress } from '@mui/material';
 
 ```bash
 # 1. Build and deploy
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct
@@ -331,7 +331,7 @@ curl http://localhost:8084/api/v1/subscriptions/plans
 # Should return plans data
 
 # 3. Test in browser (logged OUT)
-# Visit: https://your-domain.com/admin/subscription/plan
+# Visit: https://unicorncommander.ai/admin/subscription/plan
 # - Plans should load from API
 # - Click "Select Plan" → Should redirect to /signup or show login prompt
 

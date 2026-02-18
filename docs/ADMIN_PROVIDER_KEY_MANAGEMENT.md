@@ -78,7 +78,7 @@ POST   /api/v1/llm/byok/keys/{provider}/test  # Test user BYOK key
 ### 3. Frontend Pages Analysis
 
 #### Page 1: `LLMProviderSettings.jsx`
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/LLMProviderSettings.jsx`
+**Location**: `/opt/ops-center/src/pages/LLMProviderSettings.jsx`
 
 **What it does**:
 - **Two tabs**: "AI Servers" and "API Keys"
@@ -94,7 +94,7 @@ POST   /api/v1/llm/byok/keys/{provider}/test  # Test user BYOK key
 ---
 
 #### Page 2: `OpenRouterSettings.jsx`
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/OpenRouterSettings.jsx`
+**Location**: `/opt/ops-center/src/pages/OpenRouterSettings.jsx`
 
 **What it does**:
 - Single provider configuration page for **OpenRouter**
@@ -123,7 +123,7 @@ const saveApiKey = async () => {
 ---
 
 #### Page 3: `LLMProviderManagement.jsx`
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/LLMProviderManagement.jsx`
+**Location**: `/opt/ops-center/src/pages/LLMProviderManagement.jsx`
 
 **What it does**:
 - **Comprehensive multi-provider management UI**
@@ -245,7 +245,7 @@ if system_key:
 - ❌ Requires container restart
 
 **Current Documentation Location**:
-- Main `.env.auth` file in `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth`
+- Main `.env.auth` file in `/opt/ops-center/.env.auth`
 - Instructions in project README
 
 ---

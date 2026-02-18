@@ -221,7 +221,7 @@ All endpoints are **extremely fast** and well within acceptable limits. No perfo
 ### Authentication Mechanisms
 
 **Primary**: Keycloak SSO (uchub realm)
-**Admin Console**: https://auth.your-domain.com/admin/uchub/console
+**Admin Console**: https://auth.unicorncommander.ai/admin/uchub/console
 **Admin Credentials**: admin / your-admin-password
 
 ### Test Results
@@ -600,13 +600,13 @@ async def get_user_billing(...):
 - `/tmp/FINAL_FIX_REPORT.md` - Subscription management bug fix (from previous team)
 
 **Test Scripts**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/tests/security_test_billing.py` - Security test suite
+- `/opt/ops-center/tests/security_test_billing.py` - Security test suite
 - `/tmp/test_billing_apis.py` - API endpoint test suite
 - `/tmp/setup_billing_test_data.sql` - Test data setup script (from previous report)
 
 **Configuration Files**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth` - Environment variables
-- `/home/muut/Production/UC-Cloud/services/ops-center/docker-compose.direct.yml` - Docker configuration
+- `/opt/ops-center/.env.auth` - Environment variables
+- `/opt/ops-center/docker-compose.direct.yml` - Docker configuration
 
 ---
 

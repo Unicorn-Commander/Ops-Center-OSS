@@ -183,7 +183,7 @@ export const EnhancedServiceLogos = {
     description: 'AI agent builder and orchestration',
     hasGUI: true,
     guiPort: 8102,
-    externalUrl: 'https://brigade.your-domain.com'
+    externalUrl: 'https://brigade.unicorncommander.ai'
   },
   presenton: {
     functionIcon: '📊',
@@ -198,7 +198,7 @@ export const EnhancedServiceLogos = {
     description: 'AI-powered presentation generation',
     hasGUI: true,
     guiPort: 8091,
-    externalUrl: 'https://presentations.your-domain.com'
+    externalUrl: 'https://presentations.unicorncommander.ai'
   },
   portainer: {
     functionIcon: '🐳',
@@ -213,7 +213,7 @@ export const EnhancedServiceLogos = {
     description: 'Docker container management',
     hasGUI: true,
     guiPort: 9000,
-    externalUrl: 'https://containers.your-domain.com'
+    externalUrl: 'https://containers.unicorncommander.ai'
   },
   grafana: {
     functionIcon: '📈',
@@ -256,7 +256,7 @@ export const EnhancedServiceLogos = {
     description: 'Subscription and billing management',
     hasGUI: true,
     guiPort: 80,
-    externalUrl: 'https://billing.your-domain.com'
+    externalUrl: 'https://billing.unicorncommander.ai'
   },
   litellm: {
     functionIcon: '🔌',
@@ -285,7 +285,7 @@ export const EnhancedServiceLogos = {
     description: 'Self-hosted Git platform with CI/CD',
     hasGUI: true,
     guiPort: 3000,
-    externalUrl: 'https://git.your-domain.com'
+    externalUrl: 'https://git.unicorncommander.ai'
   },
   woodpecker: {
     functionIcon: '🔨',
@@ -300,7 +300,7 @@ export const EnhancedServiceLogos = {
     description: 'Continuous integration and deployment',
     hasGUI: true,
     guiPort: 8000,
-    externalUrl: 'https://ci.your-domain.com'
+    externalUrl: 'https://ci.unicorncommander.ai'
   }
 };
 

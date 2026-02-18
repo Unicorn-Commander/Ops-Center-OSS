@@ -342,6 +342,6 @@ Challenges:
 
 
 Generated: October 13, 2025
-Full Report: /home/muut/Production/UC-Cloud/services/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md
-Summary: /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/AUDIT-SUMMARY.md
-Checklist: /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/IMPLEMENTATION-CHECKLIST.md
+Full Report: /opt/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md
+Summary: /opt/ops-center/backend/tests/AUDIT-SUMMARY.md
+Checklist: /opt/ops-center/backend/tests/IMPLEMENTATION-CHECKLIST.md

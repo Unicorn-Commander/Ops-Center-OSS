@@ -308,7 +308,7 @@ Migration is successful when:
 
 **Implementation Branch**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 git checkout -b feature/standardize-tier-naming
 ```
 

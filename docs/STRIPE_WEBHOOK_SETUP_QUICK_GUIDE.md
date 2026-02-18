@@ -18,7 +18,7 @@ Click **"Add endpoint"** button
 ### 3. Enter Webhook URL
 
 ```
-https://your-domain.com/api/v1/billing/credits/webhook
+https://unicorncommander.ai/api/v1/billing/credits/webhook
 ```
 
 ### 4. Select Event
@@ -40,7 +40,7 @@ After creation:
 
 Edit the file:
 ```bash
-nano /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+nano /opt/ops-center/.env.auth
 ```
 
 Add this line at the end:
@@ -77,7 +77,7 @@ docker logs ops-center-direct --tail 50 | grep -i stripe
 
 ### Option 2: Test Purchase
 
-1. Login to Ops-Center: https://your-domain.com
+1. Login to Ops-Center: https://unicorncommander.ai
 2. Go to Credit Dashboard: `/admin/credits`
 3. Click "Purchase Credits" on Starter Pack
 4. Use test card: **4242 4242 4242 4242**
@@ -112,12 +112,12 @@ View webhook delivery logs in Stripe:
 
 **Check**:
 - Webhook is enabled in Stripe dashboard
-- URL is exactly: `https://your-domain.com/api/v1/billing/credits/webhook`
+- URL is exactly: `https://unicorncommander.ai/api/v1/billing/credits/webhook`
 - Event `checkout.session.completed` is selected
 
 **Fix**:
 - Verify URL has no typos
-- Make sure endpoint is reachable: `curl -X POST https://your-domain.com/api/v1/billing/credits/webhook`
+- Make sure endpoint is reachable: `curl -X POST https://unicorncommander.ai/api/v1/billing/credits/webhook`
 
 ### Invalid Signature Error
 

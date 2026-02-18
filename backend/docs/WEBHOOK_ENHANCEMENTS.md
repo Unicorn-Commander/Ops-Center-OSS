@@ -151,9 +151,9 @@ Add to `.env`:
 EMAIL_ENABLED=true
 EMAIL_PROVIDER=sendgrid
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxx
-EMAIL_FROM=noreply@your-domain.com
+EMAIL_FROM=noreply@unicorncommander.ai
 EMAIL_FROM_NAME=Unicorn Commander
-EMAIL_REPLY_TO=support@your-domain.com
+EMAIL_REPLY_TO=support@unicorncommander.ai
 ```
 
 See `EMAIL_SERVICE_SETUP.md` for full configuration options.
@@ -336,7 +336,7 @@ For questions or issues:
 1. Check logs first
 2. Review this documentation
 3. Test with console provider
-4. Contact: support@your-domain.com
+4. Contact: support@unicorncommander.ai
 
 ## Related Files
 

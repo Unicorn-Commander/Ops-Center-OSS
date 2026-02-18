@@ -48,7 +48,7 @@ This document outlines the comprehensive testing strategy for Phase 1 of the Ops
 
 **Setup**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pip install pytest pytest-cov pytest-asyncio httpx freezegun
 ```
 
@@ -74,7 +74,7 @@ asyncio_mode = auto
 
 **Setup**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install -D vitest @testing-library/react @testing-library/jest-dom \
   @testing-library/user-event jsdom @vitest/ui msw
 ```
@@ -124,7 +124,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'https://your-domain.com',
+    baseURL: 'https://unicorncommander.ai',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure'
   }

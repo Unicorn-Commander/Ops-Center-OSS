@@ -3,16 +3,16 @@
 
 from pathlib import Path
 
-filepath = Path("/home/muut/Production/UC-Cloud/services/ops-center/backend/user_analytics.py")
+filepath = Path("/opt/ops-center/backend/user_analytics.py")
 
 # Read the file
 with open(filepath, 'r') as f:
     content = f.read()
 
-# Fix 1: Change Redis URL from unicorn-redis to unicorn-lago-redis
+# Fix 1: Change Redis URL from unicorn-redis to unicorn-redis
 content = content.replace(
     'REDIS_URL = "redis://unicorn-redis:6379"',
-    'REDIS_URL = "redis://unicorn-lago-redis:6379"'
+    'REDIS_URL = "redis://unicorn-redis:6379"'
 )
 
 # Fix 2: Add error handling to compute_engagement
@@ -79,6 +79,6 @@ with open(filepath, 'w') as f:
     f.write(content)
 
 print("✅ Fixed user_analytics.py:")
-print("   1. Changed Redis URL to unicorn-lago-redis")
+print("   1. Changed Redis URL to unicorn-redis")
 print("   2. Added error handling to compute_engagement()")
 print("   3. Added error handling to compute_cohorts()")

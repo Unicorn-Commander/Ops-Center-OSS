@@ -49,7 +49,7 @@ Cookie: session_token={SESSION_TOKEN}
 ### Base URL
 
 ```
-https://your-domain.com/api/v1/credentials
+https://unicorncommander.ai/api/v1/credentials
 ```
 
 ---
@@ -634,7 +634,7 @@ Migration file: `alembic/versions/20251023_1230_create_service_credentials_table
 
 **Apply migration:**
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 alembic upgrade head
 ```
 
@@ -651,7 +651,7 @@ alembic downgrade -1
 
 **1. Create Cloudflare Credential:**
 ```bash
-curl -X POST "https://your-domain.com/api/v1/credentials" \
+curl -X POST "https://unicorncommander.ai/api/v1/credentials" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -664,13 +664,13 @@ curl -X POST "https://your-domain.com/api/v1/credentials" \
 
 **2. List Credentials:**
 ```bash
-curl "https://your-domain.com/api/v1/credentials" \
+curl "https://unicorncommander.ai/api/v1/credentials" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
 **3. Test Cloudflare Credential:**
 ```bash
-curl -X POST "https://your-domain.com/api/v1/credentials/cloudflare/test" \
+curl -X POST "https://unicorncommander.ai/api/v1/credentials/cloudflare/test" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{}'
@@ -678,7 +678,7 @@ curl -X POST "https://your-domain.com/api/v1/credentials/cloudflare/test" \
 
 **4. Update Credential:**
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/credentials/cloudflare/api_token" \
+curl -X PUT "https://unicorncommander.ai/api/v1/credentials/cloudflare/api_token" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -689,7 +689,7 @@ curl -X PUT "https://your-domain.com/api/v1/credentials/cloudflare/api_token" \
 
 **5. Delete Credential:**
 ```bash
-curl -X DELETE "https://your-domain.com/api/v1/credentials/cloudflare/api_token" \
+curl -X DELETE "https://unicorncommander.ai/api/v1/credentials/cloudflare/api_token" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 

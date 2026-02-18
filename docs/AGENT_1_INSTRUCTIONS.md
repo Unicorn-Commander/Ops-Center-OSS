@@ -2,7 +2,7 @@
 
 **Mission**: Remove ALL fake data fallbacks in LLMUsage.jsx
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/LLMUsage.jsx`
+**File**: `/opt/ops-center/src/pages/LLMUsage.jsx`
 
 **Duration**: 4-6 hours
 
@@ -252,13 +252,13 @@ Same pattern for power level chart.
 
 ```bash
 # Build and deploy
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct
 
 # Test in browser
-# 1. Visit: https://your-domain.com/admin/llm/usage
+# 1. Visit: https://unicorncommander.ai/admin/llm/usage
 # 2. Disable backend API (simulate failure)
 # 3. Verify error state appears with retry button
 # 4. Re-enable API and click retry

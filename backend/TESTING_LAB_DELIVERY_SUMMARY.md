@@ -608,7 +608,7 @@ docker exec unicorn-redis redis-cli
 
 ```bash
 # 1. Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # 2. Edit server.py
 vim backend/server.py

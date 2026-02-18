@@ -295,7 +295,7 @@ None at this time.
 
 ### Getting Help
 - Documentation: `/docs`
-- Support email: support@your-domain.com
+- Support email: support@unicorncommander.ai
 - GitHub Issues: UC-1-Pro repository
 
 ## Success Criteria Met

@@ -41,37 +41,37 @@ SERVICE_ACCESS_MATRIX = {
 PROTECTED_SERVICES = {
     "ops-center": {
         "name": "Operations Center",
-        "urls": ["https://your-domain.com", "/", "/admin", "/dashboard"],
+        "urls": ["https://unicorncommander.ai", "/", "/admin", "/dashboard"],
         "min_tier": "trial"
     },
     "chat": {
         "name": "Chat UI",
-        "urls": ["https://chat.your-domain.com", "/chat"],
+        "urls": ["https://chat.unicorncommander.ai", "/chat"],
         "min_tier": "trial"
     },
     "search": {
         "name": "Center-Deep Search",
-        "urls": ["https://search.your-domain.com", "/search"],
+        "urls": ["https://search.unicorncommander.ai", "/search"],
         "min_tier": "byok"
     },
     "billing": {
         "name": "Billing Dashboard",
-        "urls": ["https://billing.your-domain.com", "/billing"],
+        "urls": ["https://billing.unicorncommander.ai", "/billing"],
         "min_tier": "professional"
     },
     "litellm": {
         "name": "AI Gateway",
-        "urls": ["https://ai.your-domain.com", "/ai"],
+        "urls": ["https://ai.unicorncommander.ai", "/ai"],
         "min_tier": "professional"
     },
     "tts": {
         "name": "Text to Speech",
-        "urls": ["https://tts.your-domain.com", "/tts"],
+        "urls": ["https://tts.unicorncommander.ai", "/tts"],
         "min_tier": "professional"
     },
     "stt": {
         "name": "Speech to Text",
-        "urls": ["https://stt.your-domain.com", "/stt"],
+        "urls": ["https://stt.unicorncommander.ai", "/stt"],
         "min_tier": "professional"
     }
 }

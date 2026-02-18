@@ -72,7 +72,7 @@ docker ps | grep ops-center
 
 ```bash
 # Run all unit tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_traefik_manager.py -v
 
 # Run specific test class
@@ -120,7 +120,7 @@ pytest test_traefik_api.py -k "not_implemented" -v
 ./test_traefik_e2e.sh
 
 # Run with custom API URL
-API_URL=https://your-domain.com ./test_traefik_e2e.sh
+API_URL=https://unicorncommander.ai ./test_traefik_e2e.sh
 
 # Run with verbose output
 VERBOSE=1 ./test_traefik_e2e.sh
@@ -145,7 +145,7 @@ Tests Failed: 2
 
 ```bash
 # Run everything
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 
 # Unit tests
 pytest test_traefik_manager.py -v
@@ -338,10 +338,10 @@ jobs:
 **Solution**:
 ```bash
 # Set PYTHONPATH
-export PYTHONPATH=/home/muut/Production/UC-Cloud/services/ops-center/backend:$PYTHONPATH
+export PYTHONPATH=/opt/ops-center/backend:$PYTHONPATH
 
 # Or run from backend directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_traefik_manager.py -v
 ```
 
@@ -355,7 +355,7 @@ pytest tests/test_traefik_manager.py -v
 docker ps | grep ops-center
 
 # Start service
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 docker restart ops-center-direct
 
 # Wait for startup

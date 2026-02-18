@@ -142,7 +142,7 @@ Migrations are applied automatically with backup:
 ./scripts/database/run_migrations.sh
 
 # What happens:
-# 1. Creates backup in /home/muut/backups/database/
+# 1. Creates backup in /opt/backups/database/
 # 2. Shows pending migrations
 # 3. Asks for confirmation
 # 4. Applies migrations
@@ -151,7 +151,7 @@ Migrations are applied automatically with backup:
 
 **Automatic Backup**: Every migration run creates a timestamped backup:
 ```
-/home/muut/backups/database/unicorn_db_20251022_143025.sql
+/opt/backups/database/unicorn_db_20251022_143025.sql
 ```
 
 ### 3. Rolling Back Migrations
@@ -247,7 +247,7 @@ def downgrade() -> None:
 
 **Backup location**:
 ```
-/home/muut/backups/database/
+/opt/backups/database/
   ├── unicorn_db_20251022_143025.sql
   ├── unicorn_db_20251022_143025.metadata.json
   ├── unicorn_db_20251022_150000.sql
@@ -263,8 +263,8 @@ def downgrade() -> None:
 ./scripts/database/backup_database.sh
 
 # Output:
-# - Backup file: /home/muut/backups/database/unicorn_db_TIMESTAMP.sql
-# - Metadata: /home/muut/backups/database/unicorn_db_TIMESTAMP.metadata.json
+# - Backup file: /opt/backups/database/unicorn_db_TIMESTAMP.sql
+# - Metadata: /opt/backups/database/unicorn_db_TIMESTAMP.metadata.json
 # - Cleanup: Removes backups older than 7 days
 ```
 
@@ -275,7 +275,7 @@ def downgrade() -> None:
 ./scripts/database/restore_database.sh
 
 # Restore specific backup
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_20251022_143025.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_20251022_143025.sql
 
 # Safety features:
 # 1. Creates backup of current database first
@@ -376,7 +376,7 @@ docker logs ops-center-direct --tail 50
 cat alembic/versions/<failed_migration>.py
 
 # 3. Restore from backup
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_LATEST.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_LATEST.sql
 
 # 4. Fix the migration file
 vim alembic/versions/<failed_migration>.py

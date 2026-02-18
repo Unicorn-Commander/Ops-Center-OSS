@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 GRAFANA_URL="http://localhost:3102"
-GRAFANA_API_KEY="glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb"
+GRAFANA_API_KEY="your-grafana-api-key"
 PROMETHEUS_URL="http://localhost:9091"
 GPU_EXPORTER_PORT="9400"
 
@@ -151,9 +151,9 @@ echo "📊 Step 4: Updating Prometheus Configuration..."
 echo ""
 
 # Check if Prometheus config file exists
-PROMETHEUS_CONFIG="/home/muut/Production/UC-Cloud/monitoring/prometheus-config.yml"
+PROMETHEUS_CONFIG="/opt/uc-cloud/monitoring/prometheus-config.yml"
 if [ ! -f "$PROMETHEUS_CONFIG" ]; then
-    PROMETHEUS_CONFIG="/home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus-config.yml"
+    PROMETHEUS_CONFIG="/opt/ops-center/monitoring/prometheus-config.yml"
 fi
 
 if [ ! -f "$PROMETHEUS_CONFIG" ]; then

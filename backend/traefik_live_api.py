@@ -458,3 +458,73 @@ async def health_check():
         "version": "1.0.0",
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+class DomainStatus(BaseModel):
+    """Domain health status"""
+    domain: str
+    status: str  # up, down, unknown
+    response_time_ms: Optional[int] = None
+    status_code: Optional[int] = None
+    error: Optional[str] = None
+
+
+@router.get("/website-status", response_model=Dict[str, DomainStatus])
+async def get_website_status():
+    """
+    Quick health check for all domains from Traefik routes.
+    Returns status for each unique domain.
+
+    Note: This does quick HTTP HEAD requests with short timeouts.
+    For comprehensive monitoring, use the website-monitor API.
+    """
+    import httpx
+    import asyncio
+
+    containers_data = get_docker_containers_with_traefik()
+
+    # Extract unique domains from routes
+    domains = set()
+    for container in containers_data:
+        parsed = container["parsed"]
+        for router_config in parsed["routers"].values():
+            rule = router_config.get("rule", "")
+            # Extract domain from Host(`domain.com`)
+            match = re.search(r"Host\(`([^`]+)`\)", rule)
+            if match:
+                domains.add(match.group(1))
+
+    async def check_domain(domain: str) -> DomainStatus:
+        """Check a single domain's health"""
+        # Determine protocol based on common patterns
+        url = f"https://{domain}"
+
+        try:
+            async with httpx.AsyncClient(timeout=5.0, verify=False, follow_redirects=True) as client:
+                start = datetime.utcnow()
+                response = await client.head(url)
+                elapsed = (datetime.utcnow() - start).total_seconds() * 1000
+
+                return DomainStatus(
+                    domain=domain,
+                    status="up" if response.status_code < 500 else "down",
+                    response_time_ms=int(elapsed),
+                    status_code=response.status_code
+                )
+        except httpx.ConnectError:
+            return DomainStatus(domain=domain, status="down", error="Connection refused")
+        except httpx.TimeoutException:
+            return DomainStatus(domain=domain, status="down", error="Timeout")
+        except Exception as e:
+            return DomainStatus(domain=domain, status="unknown", error=str(e)[:100])
+
+    # Check all domains concurrently (limit concurrency to avoid overwhelming)
+    semaphore = asyncio.Semaphore(10)
+
+    async def limited_check(domain):
+        async with semaphore:
+            return await check_domain(domain)
+
+    results = await asyncio.gather(*[limited_check(d) for d in domains])
+
+    return {status.domain: status for status in results}

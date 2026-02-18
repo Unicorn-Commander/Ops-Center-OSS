@@ -18,39 +18,39 @@
 
 ### ✅ **Fully Integrated Services**
 
-#### 1. Open-WebUI (chat.your-domain.com:8080)
+#### 1. Open-WebUI (chat.unicorncommander.ai:8080)
 - **Auth Method**: Authentik OIDC
 - **Status**: ✅ Working
 - **Config Location**: docker-compose.yml lines 574-585
 - **Client ID**: `open-webui`
 - **Client Secret**: `openwebui_oauth_secret_2025`
-- **Redirect URI**: `https://chat.your-domain.com/oauth/oidc/callback`
+- **Redirect URI**: `https://chat.unicorncommander.ai/oauth/oidc/callback`
 - **Features**:
   - OAuth signup enabled
   - Account merging by email
   - Groups sync from Authentik
 - **Session Storage**: PostgreSQL + Redis
 
-#### 2. Center-Deep (search.your-domain.com:8890)
+#### 2. Center-Deep (search.unicorncommander.ai:8890)
 - **Auth Method**: Authentik OIDC
 - **Status**: ✅ Working
 - **Config Location**: docker-compose.yml lines 668-674
 - **Client ID**: `center-deep`
 - **Client Secret**: `centerdeep_oauth_secret_2025`
-- **Redirect URI**: `https://search.your-domain.com/auth/callback`
+- **Redirect URI**: `https://search.unicorncommander.ai/auth/callback`
 - **Features**:
   - SSO enabled
   - Local auth fallback enabled
   - Custom OIDC client without JWKS validation
 - **Session Storage**: Redis (db 2)
 
-#### 3. Ops Center (your-domain.com:8000)
+#### 3. Ops Center (unicorncommander.ai:8000)
 - **Auth Method**: Custom OAuth with Authentik
 - **Status**: ✅ Working (but needs verification)
 - **Config Location**: services/ops-center/docker-compose.direct.yml
 - **Client ID**: `ops-center`
 - **Client Secret**: `ops-center-secret-2025`
-- **Redirect URI**: `https://your-domain.com/auth/callback`
+- **Redirect URI**: `https://unicorncommander.ai/auth/callback`
 - **Features**:
   - Custom authentication module
   - Social login integration
@@ -62,14 +62,14 @@
 
 ### 🟡 **Partially Integrated Services**
 
-#### 4. LiteLLM (ai.your-domain.com:4000)
+#### 4. LiteLLM (ai.unicorncommander.ai:4000)
 - **Auth Method**: JWT validation from Authentik
 - **Status**: 🟡 Configured but not SSO-enabled
 - **Config Location**: billing/docker-compose.billing.yml lines 156-157
 - **Current Setup**:
   ```yaml
   LITELLM_JWT_AUTH_ENABLE=true
-  LITELLM_JWT_AUTH_PUBLIC_KEY_URL=https://auth.your-domain.com/application/o/litellm-proxy/.well-known/openid-configuration
+  LITELLM_JWT_AUTH_PUBLIC_KEY_URL=https://auth.unicorncommander.ai/application/o/litellm-proxy/.well-known/openid-configuration
   ```
 - **Issues**:
   - JWT validation configured
@@ -81,16 +81,16 @@
   - Configure Traefik forward auth middleware
   - Add session management
 
-#### 5. Lago Billing (billing.your-domain.com)
+#### 5. Lago Billing (billing.unicorncommander.ai)
 - **Auth Method**: OAuth configured but not working
 - **Status**: 🟡 Configured but broken
 - **Config Location**: billing/docker-compose.billing.yml lines 67-72
 - **Current Setup**:
   ```yaml
-  AUTHENTIK_URL=https://auth.your-domain.com
+  AUTHENTIK_URL=https://auth.unicorncommander.ai
   AUTHENTIK_CLIENT_ID=lago-billing
   AUTHENTIK_CLIENT_SECRET=lago_billing_secret_2025
-  AUTHENTIK_REDIRECT_URI=https://billing.your-domain.com/auth/callback
+  AUTHENTIK_REDIRECT_URI=https://billing.unicorncommander.ai/auth/callback
   ```
 - **Issues**:
   - Lago doesn't natively support Authentik OIDC
@@ -105,7 +105,7 @@
 
 ### ❌ **Not Integrated Services**
 
-#### 6. Usage Dashboard (usage.your-domain.com)
+#### 6. Usage Dashboard (usage.unicorncommander.ai)
 - **Service**: Metabase
 - **Auth Method**: None (internal login only)
 - **Status**: ❌ No SSO
@@ -177,7 +177,7 @@ Name: LiteLLM Proxy
 Slug: litellm-proxy
 Client ID: litellm-proxy
 Client Secret: [generate]
-Redirect URI: https://ai.your-domain.com/auth/callback
+Redirect URI: https://ai.unicorncommander.ai/auth/callback
 Scopes: openid, email, profile, groups
 ```
 
@@ -187,7 +187,7 @@ Name: Lago Billing
 Slug: lago-billing
 Client ID: lago-billing
 Client Secret: lago_billing_secret_2025
-Redirect URI: https://billing.your-domain.com/auth/callback
+Redirect URI: https://billing.unicorncommander.ai/auth/callback
 Scopes: openid, email, profile
 ```
 
@@ -227,7 +227,7 @@ User Login → Authentik
 Session Token → Redis (db 5)
   ↓
 Cookie: session_token
-  Domain: .your-domain.com
+  Domain: .unicorncommander.ai
   Secure: true
   HttpOnly: true
   SameSite: Lax
@@ -306,29 +306,29 @@ If not → Redirect to upgrade page
 
 ### Authentik Configuration
 
-**Base URL**: https://auth.your-domain.com
+**Base URL**: https://auth.unicorncommander.ai
 **Internal URL**: http://authentik-server:9000
-**Admin Token**: ak_f3c1ae010853720d0e37e3efa95d5afb51201285
+**Admin Token**: your-authentik-api-token
 
 **OAuth Applications**:
 1. **ops-center**
-   - Redirect: https://your-domain.com/auth/callback
+   - Redirect: https://unicorncommander.ai/auth/callback
    - Secret: ops-center-secret-2025
 
 2. **open-webui**
-   - Redirect: https://chat.your-domain.com/oauth/oidc/callback
+   - Redirect: https://chat.unicorncommander.ai/oauth/oidc/callback
    - Secret: openwebui_oauth_secret_2025
 
 3. **center-deep**
-   - Redirect: https://search.your-domain.com/auth/callback
+   - Redirect: https://search.unicorncommander.ai/auth/callback
    - Secret: centerdeep_oauth_secret_2025
 
 4. **litellm-proxy** (TO CREATE)
-   - Redirect: https://ai.your-domain.com/auth/callback
+   - Redirect: https://ai.unicorncommander.ai/auth/callback
    - Secret: [generate]
 
 5. **lago-billing** (TO FIX)
-   - Redirect: https://billing.your-domain.com/auth/callback
+   - Redirect: https://billing.unicorncommander.ai/auth/callback
    - Secret: lago_billing_secret_2025
 
 ### Redis Configuration
@@ -362,7 +362,7 @@ If not → Redirect to upgrade page
 
 ### Traefik Middleware
 
-**File**: /home/muut/Infrastructure/traefik/dynamic/middleware.yml
+**File**: /home/deploy/Infrastructure/traefik/dynamic/middleware.yml
 
 ```yaml
 http:
@@ -415,8 +415,8 @@ http:
 LITELLM_OAUTH_ENABLED=true
 LITELLM_OAUTH_CLIENT_ID=litellm-proxy
 LITELLM_OAUTH_CLIENT_SECRET=<generate>
-LITELLM_OAUTH_REDIRECT_URI=https://ai.your-domain.com/auth/callback
-LITELLM_AUTHENTIK_URL=https://auth.your-domain.com
+LITELLM_OAUTH_REDIRECT_URI=https://ai.unicorncommander.ai/auth/callback
+LITELLM_AUTHENTIK_URL=https://auth.unicorncommander.ai
 LITELLM_SESSION_REDIS_URL=redis://unicorn-redis:6379/5
 ```
 
@@ -452,7 +452,7 @@ Modify Lago frontend to handle OAuth flow
 - ✅ HttpOnly cookies (prevents XSS)
 - ✅ Secure flag (HTTPS only)
 - ✅ SameSite=Lax (CSRF protection)
-- ✅ Domain-wide: .your-domain.com
+- ✅ Domain-wide: .unicorncommander.ai
 - ✅ Expiration: 24 hours
 - ✅ Redis TTL: Auto-cleanup
 
@@ -539,7 +539,7 @@ Modify Lago frontend to handle OAuth flow
 2025-10-03 18:30:00 INFO [auth] User user@example.com logged in via Google
 2025-10-03 18:30:01 INFO [session] Created session abc123 in Redis db 5
 2025-10-03 18:30:02 INFO [tier] User has tier: professional
-2025-10-03 18:30:03 INFO [access] Allowed access to ai.your-domain.com
+2025-10-03 18:30:03 INFO [access] Allowed access to ai.unicorncommander.ai
 2025-10-03 18:30:10 INFO [nav] User navigated from chat → search (session valid)
 ```
 
@@ -556,8 +556,8 @@ Modify Lago frontend to handle OAuth flow
 **Long-term**: Consider alternative dashboard
 
 ### Issue 3: Cross-origin session cookies
-**Workaround**: Use domain=.your-domain.com
-**Requirement**: All services must use your-domain.com subdomains
+**Workaround**: Use domain=.unicorncommander.ai
+**Requirement**: All services must use unicorncommander.ai subdomains
 
 ### Issue 4: LiteLLM JWT validation conflicts with OAuth
 **Workaround**: Disable JWT validation, use session-based auth
@@ -602,10 +602,10 @@ Modify Lago frontend to handle OAuth flow
 - `/billing/docker-compose.billing.yml` - Billing services config
 
 ### Key Files
-- `/home/muut/Infrastructure/traefik/dynamic/domains.yml` - Service routing
-- `/home/muut/Production/UC-1-Pro/docker-compose.yml` - Main services
-- `/home/muut/Production/UC-1-Pro/services/authentik/docker-compose.yml` - Authentik config
-- `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml` - Billing config
+- `/home/deploy/Infrastructure/traefik/dynamic/domains.yml` - Service routing
+- `/home/deploy/Production/UC-1-Pro/docker-compose.yml` - Main services
+- `/home/deploy/Production/UC-1-Pro/services/authentik/docker-compose.yml` - Authentik config
+- `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml` - Billing config
 
 ---
 

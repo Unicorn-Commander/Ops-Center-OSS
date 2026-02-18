@@ -89,7 +89,7 @@ docker ps | grep litellm
 
 ### 2. Test User Creation
 
-Create test users in Keycloak admin console (https://auth.your-domain.com/admin/uchub/console):
+Create test users in Keycloak admin console (https://auth.unicorncommander.ai/admin/uchub/console):
 
 **Individual User**:
 - Username: `test_individual`
@@ -150,7 +150,7 @@ docker exec -it unicorn-postgresql psql -U unicorn -d unicorn_db
 ### Option 1: Run All Tests with Pytest
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Run all E2E tests
 pytest backend/tests/e2e/test_complete_credit_flow.py -v
@@ -165,7 +165,7 @@ pytest backend/tests/e2e/test_complete_credit_flow.py -vv -s
 ### Option 2: Run Standalone
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Run test suite directly
 python3 backend/tests/e2e/test_complete_credit_flow.py

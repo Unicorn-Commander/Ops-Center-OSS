@@ -268,10 +268,10 @@ POST   /api/v1/monitoring/grafana/query                     - Query metrics
 
 ## Access URLs
 
-- **Ops-Center Dashboard**: https://your-domain.com
-- **Admin Panel**: https://your-domain.com/admin
-- **Log Search**: https://your-domain.com/admin/logs (Log History tab)
-- **Grafana Viewer**: https://your-domain.com/admin/monitoring/grafana/dashboards
+- **Ops-Center Dashboard**: https://unicorncommander.ai
+- **Admin Panel**: https://unicorncommander.ai/admin
+- **Log Search**: https://unicorncommander.ai/admin/logs (Log History tab)
+- **Grafana Viewer**: https://unicorncommander.ai/admin/monitoring/grafana/dashboards
 - **Health Check**: http://localhost:8084/health
 
 ---

@@ -24,7 +24,7 @@ Ops-Center supports multiple landing page configurations for different deploymen
 - Branding: Unicorn Commander
 - Theme: Magic Unicorn preset with purple/pink gradients
 - Features: Organization management, billing dashboard, admin tools
-- Deployment: https://your-domain.com
+- Deployment: https://unicorncommander.ai
 
 ## How to Use Templates
 

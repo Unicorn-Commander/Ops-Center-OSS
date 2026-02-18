@@ -18,7 +18,7 @@ import { ContentCopy as CopyIcon, Check as CheckIcon } from '@mui/icons-material
  * Multi-language code examples for API endpoints
  * Supports cURL, JavaScript (Axios), Python (requests)
  */
-const CodeExampleTabs = ({ endpoint, baseUrl = 'https://your-domain.com' }) => {
+const CodeExampleTabs = ({ endpoint, baseUrl = 'https://unicorncommander.ai' }) => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState(0);
   const [copied, setCopied] = useState(false);

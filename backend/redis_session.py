@@ -16,7 +16,7 @@ class RedisSessionManager:
 
     def __init__(
         self,
-        host: str = "unicorn-lago-redis",
+        host: str = "unicorn-redis",
         port: int = 6379,
         db: int = 0,
         ttl: int = 7200,  # 2 hours in seconds
@@ -26,7 +26,7 @@ class RedisSessionManager:
         Initialize Redis session manager
 
         Args:
-            host: Redis host (default: unicorn-lago-redis)
+            host: Redis host (default: unicorn-redis)
             port: Redis port (default: 6379)
             db: Redis database number (default: 0)
             ttl: Session time-to-live in seconds (default: 7200 = 2 hours)
@@ -237,7 +237,7 @@ class RedisSessionManager:
 
 # Create global instance with environment-based configuration
 redis_session_manager = RedisSessionManager(
-    host=os.getenv("REDIS_HOST", "unicorn-lago-redis"),
+    host=os.getenv("REDIS_HOST", "unicorn-redis"),
     port=int(os.getenv("REDIS_PORT", "6379")),
     db=int(os.getenv("REDIS_DB", "0")),
     ttl=int(os.getenv("SESSION_TTL", "7200")),  # 2 hours

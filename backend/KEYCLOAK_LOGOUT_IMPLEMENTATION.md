@@ -8,7 +8,7 @@ The `/api/v1/auth/logout` endpoint has been updated to properly clear Keycloak S
 
 ### 1. Updated Logout Endpoint
 
-**File:** `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py` (line 2836)
+**File:** `/opt/ops-center/backend/server.py` (line 2836)
 
 **Before:**
 ```python
@@ -39,9 +39,9 @@ async def logout(request: Request, current_user: dict = Depends(get_current_user
         auth_manager.logout(current_user.get("session_id"))
 
         # Build Keycloak SSO logout URL
-        keycloak_url = os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com")
+        keycloak_url = os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai")
         keycloak_realm = os.getenv("KEYCLOAK_REALM", "master")
-        redirect_uri = os.getenv("FRONTEND_URL", "https://your-domain.com")
+        redirect_uri = os.getenv("FRONTEND_URL", "https://unicorncommander.ai")
 
         sso_logout_url = (
             f"{keycloak_url}/realms/{keycloak_realm}/protocol/openid-connect/logout"
@@ -61,15 +61,15 @@ async def logout(request: Request, current_user: dict = Depends(get_current_user
 Add these to your `.env` file if not already present:
 
 ```bash
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=master
-FRONTEND_URL=https://your-domain.com
+FRONTEND_URL=https://unicorncommander.ai
 ```
 
 **Defaults (if not set):**
-- `KEYCLOAK_URL`: https://auth.your-domain.com
+- `KEYCLOAK_URL`: https://auth.unicorncommander.ai
 - `KEYCLOAK_REALM`: master
-- `FRONTEND_URL`: https://your-domain.com
+- `FRONTEND_URL`: https://unicorncommander.ai
 
 ## API Response
 
@@ -78,7 +78,7 @@ FRONTEND_URL=https://your-domain.com
 ```json
 {
   "message": "Logged out successfully",
-  "sso_logout_url": "https://auth.your-domain.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://your-domain.com"
+  "sso_logout_url": "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout?redirect_uri=https://unicorncommander.ai"
 }
 ```
 
@@ -272,14 +272,14 @@ sessionStorage.clear();
 Run the test script:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ./tests/test_logout_simple.sh
 ```
 
 ### Manual Testing
 
 1. **Login:**
-   - Visit https://your-domain.com
+   - Visit https://unicorncommander.ai
    - Login via Keycloak
 
 2. **Test Logout:**
@@ -290,7 +290,7 @@ cd /home/muut/Production/UC-Cloud/services/ops-center/backend
 
 3. **Verify SSO Session Cleared:**
    - Open new tab
-   - Visit https://auth.your-domain.com
+   - Visit https://auth.unicorncommander.ai
    - Should not be logged in
    - Try to access other apps using same Keycloak realm
    - Should require login
@@ -312,18 +312,18 @@ cd /home/muut/Production/UC-Cloud/services/ops-center/backend
 
 ### Required Settings in Keycloak Admin Console
 
-1. **Navigate to:** https://auth.your-domain.com/admin
+1. **Navigate to:** https://auth.unicorncommander.ai/admin
 2. **Select Realm:** master
 3. **Go to:** Clients → ops-center
 4. **Configure:**
 
 ```
 Valid Redirect URIs:
-  https://your-domain.com
-  https://your-domain.com/*
+  https://unicorncommander.ai
+  https://unicorncommander.ai/*
 
 Valid Post Logout Redirect URIs:
-  https://your-domain.com
+  https://unicorncommander.ai
 
 Settings:
   Client ID: ops-center
@@ -338,7 +338,7 @@ Settings:
 Test the logout endpoint:
 
 ```bash
-curl -I "https://auth.your-domain.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://your-domain.com"
+curl -I "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout?redirect_uri=https://unicorncommander.ai"
 ```
 
 Expected: HTTP 200 or 302 (redirect)
@@ -352,7 +352,7 @@ Expected: HTTP 200 or 302 (redirect)
 **Solution:**
 1. Login to Keycloak Admin Console
 2. Go to Clients → ops-center
-3. Add `https://your-domain.com` to "Valid Post Logout Redirect URIs"
+3. Add `https://unicorncommander.ai` to "Valid Post Logout Redirect URIs"
 4. Save
 
 ### Issue: User stays logged in after logout
@@ -370,7 +370,7 @@ window.location.href = data.sso_logout_url;
 
 **Solution:** Update `.env`:
 ```bash
-FRONTEND_URL=https://your-domain.com
+FRONTEND_URL=https://unicorncommander.ai
 ```
 
 Restart backend:
@@ -421,7 +421,7 @@ docker restart unicorn-ops-center
 ## Files Modified
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/
+/opt/ops-center/backend/
 ├── server.py                               # Updated logout endpoint (line 2836)
 ├── tests/
 │   ├── test_keycloak_logout.py            # Detailed test script
@@ -435,8 +435,8 @@ docker restart unicorn-ops-center
 
 - [Keycloak OIDC Logout](https://www.keycloak.org/docs/latest/securing_apps/index.html#logout)
 - [OpenID Connect Session Management](https://openid.net/specs/openid-connect-session-1_0.html)
-- [Backend Server Code](/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py)
-- [Keycloak Integration Module](/home/muut/Production/UC-Cloud/services/ops-center/backend/keycloak_integration.py)
+- [Backend Server Code](/opt/ops-center/backend/server.py)
+- [Keycloak Integration Module](/opt/ops-center/backend/keycloak_integration.py)
 
 ## Summary
 
@@ -454,10 +454,10 @@ docker restart unicorn-ops-center
 4. Deploy to production
 
 **Keycloak Details:**
-- URL: https://auth.your-domain.com
+- URL: https://auth.unicorncommander.ai
 - Realm: master
 - Client: ops-center
-- Logout URL: https://auth.your-domain.com/realms/master/protocol/openid-connect/logout
+- Logout URL: https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout
 
 ---
 

@@ -22,7 +22,7 @@ The Organization Manager provides a complete multi-tenant organization managemen
 - Billing system integration (Lago & Stripe)
 - Comprehensive audit logging
 
-**Storage Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/data/`
+**Storage Location**: `/opt/ops-center/backend/data/`
 - `organizations.json` - Organization records
 - `org_users.json` - User-organization relationships
 
@@ -80,7 +80,7 @@ custom_manager = OrgManager(data_dir="/custom/path")
 ```
 
 **Parameters**:
-- `data_dir` (str): Directory for data files. Default: `/home/muut/Production/UC-Cloud/services/ops-center/backend/data`
+- `data_dir` (str): Directory for data files. Default: `/opt/ops-center/backend/data`
 
 ---
 

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="outreachGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Unicorn head silhouette -->
+  <path d="M75 65 Q85 60 88 50 Q90 40 80 35 L85 20 L78 30 Q70 25 60 30 Q50 35 45 45 Q40 55 42 65 Q40 70 35 72 Q30 75 32 80 Q35 85 45 82 Q55 85 65 82 Q75 80 78 75 Z" fill="url(#outreachGrad)" stroke="#581c87" stroke-width="1.5"/>
+  <!-- Eye -->
+  <circle cx="62" cy="45" r="4" fill="#1e1b4b"/>
+  <circle cx="63" cy="44" r="1.5" fill="white"/>
+  <!-- Mane -->
+  <path d="M70 35 Q75 28 72 22 Q78 30 75 38" stroke="#ec4899" stroke-width="2" fill="none"/>
+  <path d="M65 38 Q68 30 65 24 Q72 32 70 40" stroke="#7c3aed" stroke-width="2" fill="none"/>
+  <!-- Signal waves (outreach) -->
+  <path d="M20 50 Q25 45 20 40" stroke="#7c3aed" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M15 55 Q22 47 15 38" stroke="#a855f7" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M10 60 Q20 48 10 35" stroke="#c084fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Stars -->
+  <circle cx="25" cy="25" r="2" fill="#fbbf24"/>
+  <circle cx="18" cy="70" r="1.5" fill="#fbbf24"/>
+  <circle cx="30" cy="85" r="2" fill="#fbbf24"/>
+</svg>

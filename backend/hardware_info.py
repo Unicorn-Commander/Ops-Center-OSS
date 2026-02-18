@@ -70,49 +70,86 @@ class HardwareDetector:
                 "--format=csv,noheader,nounits"
             ]
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
-            
+
             if result.returncode == 0:
-                lines = result.stdout.strip().split('\n')
-                if lines and lines[0].strip():
-                    parts = [part.strip() for part in lines[0].split(',')]
-                    if len(parts) >= 3:
-                        vram_total_mb = int(parts[2]) if parts[2].isdigit() else 0
-                        vram_gb = vram_total_mb / 1024
-                        
+                lines = [l.strip() for l in result.stdout.strip().split('\n') if l.strip()]
+                if lines:
+                    # Parse all GPUs
+                    gpu_names = []
+                    total_vram_mb = 0
+                    driver = "N/A"
+                    for line in lines:
+                        parts = [part.strip() for part in line.split(',')]
+                        if len(parts) >= 3:
+                            gpu_names.append(parts[0])
+                            vram_mb = int(parts[2]) if parts[2].isdigit() else 0
+                            total_vram_mb += vram_mb
+                            driver = parts[1]
+
+                    if gpu_names:
+                        # Build model string: "2x NVIDIA Tesla P40" or "NVIDIA Tesla P40 + GTX 1070"
+                        from collections import Counter
+                        name_counts = Counter(gpu_names)
+                        model_parts = []
+                        for name, count in name_counts.items():
+                            model_parts.append(f"{count}x {name}" if count > 1 else name)
+                        model = " + ".join(model_parts)
+
+                        total_vram_gb = total_vram_mb / 1024
+                        per_gpu_vram = f" ({total_vram_mb // len(gpu_names) // 1024:.0f} GB each)" if len(gpu_names) > 1 else ""
+
                         return {
-                            "model": parts[0],
-                            "vram": f"{vram_gb:.0f} GB GDDR7" if vram_gb > 16 else f"{vram_gb:.0f} GB",
-                            "driver": parts[1],
-                            "cuda": self._get_cuda_version()
+                            "model": model,
+                            "vram": f"{total_vram_gb:.0f} GB{per_gpu_vram}",
+                            "driver": driver,
+                            "cuda": self._get_cuda_version(),
+                            "count": len(gpu_names)
                         }
-            
+
             # Fallback: try nvidia-ml-py if available
             try:
                 import pynvml
                 pynvml.nvmlInit()
-                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-                name = pynvml.nvmlDeviceGetName(handle).decode()
+                device_count = pynvml.nvmlDeviceGetCount()
+                gpu_names = []
+                total_vram = 0
                 driver = pynvml.nvmlSystemGetDriverVersion().decode()
-                memory_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
-                vram_gb = memory_info.total / (1024**3)
-                
-                return {
-                    "model": name,
-                    "vram": f"{vram_gb:.0f} GB",
-                    "driver": driver,
-                    "cuda": self._get_cuda_version()
-                }
+                for i in range(device_count):
+                    handle = pynvml.nvmlDeviceGetHandleByIndex(i)
+                    name = pynvml.nvmlDeviceGetName(handle).decode()
+                    gpu_names.append(name)
+                    memory_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                    total_vram += memory_info.total
+
+                if gpu_names:
+                    from collections import Counter
+                    name_counts = Counter(gpu_names)
+                    model_parts = []
+                    for name, count in name_counts.items():
+                        model_parts.append(f"{count}x {name}" if count > 1 else name)
+                    model = " + ".join(model_parts)
+                    total_vram_gb = total_vram / (1024**3)
+                    per_gpu_vram = f" ({total_vram / device_count / (1024**3):.0f} GB each)" if device_count > 1 else ""
+
+                    return {
+                        "model": model,
+                        "vram": f"{total_vram_gb:.0f} GB{per_gpu_vram}",
+                        "driver": driver,
+                        "cuda": self._get_cuda_version(),
+                        "count": device_count
+                    }
             except:
                 pass
-                
+
         except Exception as e:
             print(f"GPU detection error: {e}")
-        
+
         return {
             "model": "No NVIDIA GPU detected",
             "vram": "0 GB",
             "driver": "N/A",
-            "cuda": "N/A"
+            "cuda": "N/A",
+            "count": 0
         }
     
     def get_igpu_info(self) -> Dict[str, Any]:

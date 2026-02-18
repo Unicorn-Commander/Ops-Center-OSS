@@ -3,7 +3,7 @@
 **Reviewer**: Code Review Agent
 **Date**: October 20, 2025
 **Session ID**: swarm-local-users
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 
 ---
 
@@ -763,7 +763,7 @@ This feature adds significant security risk and maintenance burden. Evaluate car
 - **System Features Inventory**: `/services/ops-center/SYSTEM_FEATURES_INVENTORY.md`
 - **Master Section Checklist**: `/services/ops-center/MASTER_SECTION_CHECKLIST.md`
 - **Ops-Center Configuration**: `/services/ops-center/CLAUDE.md`
-- **UC-Cloud Overview**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **UC-Cloud Overview**: `/opt/uc-cloud/CLAUDE.md`
 
 ---
 

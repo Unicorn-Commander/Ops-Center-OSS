@@ -65,7 +65,7 @@ const AppMarketplace = () => {
       const url = new URL(launch_url);
       const host = url.hostname;
 
-      if (host.includes('your-domain.com')) {
+      if (host.includes('unicorncommander.ai')) {
         return { label: 'UC Hosted', icon: <BusinessIcon />, color: 'primary' };
       } else {
         return { label: 'Federated Service', icon: <PublicIcon />, color: 'secondary' };

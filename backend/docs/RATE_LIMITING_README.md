@@ -20,7 +20,7 @@ The rate limiting system provides Redis-based request throttling with support fo
 ### 1. Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 pip install -r requirements.txt
 ```
 
@@ -62,7 +62,7 @@ docker restart unicorn-ops-center
 RATE_LIMIT_ENABLED=true
 
 # Redis connection
-REDIS_URL=redis://unicorn-lago-redis:6379/0
+REDIS_URL=redis://unicorn-redis:6379/0
 
 # Strategy: sliding_window or token_bucket
 RATE_LIMIT_STRATEGY=sliding_window
@@ -205,7 +205,7 @@ curl -v http://localhost:8084/api/v1/services 2>&1 | grep -i "x-ratelimit"
 
 ```bash
 # Run test suite
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 pytest tests/test_rate_limiting.py -v
 
 # Run with coverage
@@ -218,7 +218,7 @@ pytest tests/test_rate_limiting.py --cov=rate_limiter --cov-report=html
 
 ```bash
 # Connect to Redis
-docker exec -it unicorn-lago-redis redis-cli
+docker exec -it unicorn-redis redis-cli
 
 # List all rate limit keys
 KEYS ratelimit:*
@@ -283,7 +283,7 @@ docker logs -f unicorn-ops-center | grep -i "rate limit exceeded"
 **Check 1: Redis Connection**
 ```bash
 docker ps | grep redis
-docker exec unicorn-lago-redis redis-cli ping
+docker exec unicorn-redis redis-cli ping
 ```
 
 **Check 2: Configuration**

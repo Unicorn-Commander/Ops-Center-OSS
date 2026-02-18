@@ -435,7 +435,7 @@ The UI automatically adapts to the current Ops-Center theme:
 
 **Documentation**:
 - Backend API: `/backend/docs/LOCAL_USER_API.md`
-- UC-Cloud Docs: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- UC-Cloud Docs: `/opt/uc-cloud/CLAUDE.md`
 - Ops-Center Docs: `/services/ops-center/CLAUDE.md`
 
 **For Issues**:

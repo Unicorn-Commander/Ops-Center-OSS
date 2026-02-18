@@ -31,7 +31,7 @@
 
 ### Problem Statement
 
-Currently, Traefik configuration in UC-Cloud is managed manually through YAML files in `/home/muut/Infrastructure/traefik/dynamic/`. This approach has several limitations:
+Currently, Traefik configuration in UC-Cloud is managed manually through YAML files in `/home/deploy/Infrastructure/traefik/dynamic/`. This approach has several limitations:
 
 - **No validation**: Configuration errors only discovered after applying changes
 - **No rollback**: Failed changes require manual file restoration
@@ -72,7 +72,7 @@ Epic 1.3 delivers a **web-based Traefik management interface** integrated into O
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                Ops-Center                                    │
-│                     https://your-domain.com                              │
+│                     https://unicorncommander.ai                              │
 └──────────────────────────────────┬──────────────────────────────────────────┘
                                    │
                     ┌──────────────┴───────────────┐
@@ -367,7 +367,7 @@ CREATE INDEX idx_conflicts_severity ON traefik_route_conflicts(severity);
 ### File System Structure
 
 ```
-/home/muut/Infrastructure/traefik/
+/home/deploy/Infrastructure/traefik/
 ├── traefik.yml                              # Static config (unchanged)
 ├── docker-compose.yml                       # Traefik container (unchanged)
 ├── acme/                                    # Let's Encrypt certificates
@@ -439,7 +439,7 @@ GET /api/v1/traefik/routes
         {
           "id": "uuid",
           "name": "unicorncommander-ai",
-          "rule": "Host(`your-domain.com`) || Host(`www.your-domain.com`)",
+          "rule": "Host(`unicorncommander.ai`) || Host(`www.unicorncommander.ai`)",
           "service_id": "uuid",
           "service_name": "ops-center",
           "priority": 0,
@@ -447,7 +447,7 @@ GET /api/v1/traefik/routes
           "tls": {
             "enabled": true,
             "cert_resolver": "letsencrypt",
-            "domains": ["your-domain.com", "www.your-domain.com"]
+            "domains": ["unicorncommander.ai", "www.unicorncommander.ai"]
           },
           "middlewares": ["security-headers", "compress"],
           "status": "active",
@@ -470,7 +470,7 @@ GET /api/v1/traefik/routes/{id}
     {
       "id": "uuid",
       "name": "unicorncommander-ai",
-      "rule": "Host(`your-domain.com`)",
+      "rule": "Host(`unicorncommander.ai`)",
       "service": {
         "id": "uuid",
         "name": "ops-center",
@@ -483,7 +483,7 @@ GET /api/v1/traefik/routes/{id}
         "enabled": true,
         "cert_resolver": "letsencrypt",
         "certificate": {
-          "domain": "your-domain.com",
+          "domain": "unicorncommander.ai",
           "status": "valid",
           "issued_at": "2025-09-23T00:00:00Z",
           "expires_at": "2025-12-22T00:00:00Z",
@@ -536,7 +536,7 @@ POST /api/v1/traefik/routes
   Request Body:
     {
       "name": "my-service",
-      "rule": "Host(`my-service.your-domain.com`)",
+      "rule": "Host(`my-service.unicorncommander.ai`)",
       "service_id": "uuid",  # OR create new service
       "service": {  # If service_id not provided
         "name": "my-service-backend",
@@ -777,7 +777,7 @@ GET /api/v1/traefik/certificates
       "certificates": [
         {
           "id": "uuid",
-          "domain": "your-domain.com",
+          "domain": "unicorncommander.ai",
           "type": "acme",
           "resolver": "letsencrypt",
           "status": "valid",
@@ -795,7 +795,7 @@ GET /api/v1/traefik/certificates/{id}
   Response:
     {
       "id": "uuid",
-      "domain": "your-domain.com",
+      "domain": "unicorncommander.ai",
       "type": "acme",
       "resolver": "letsencrypt",
       "status": "valid",
@@ -808,7 +808,7 @@ GET /api/v1/traefik/certificates/{id}
         {"id": "uuid", "name": "unicorncommander-ai"}
       ],
       "certificate_info": {
-        "subject": "CN=your-domain.com",
+        "subject": "CN=unicorncommander.ai",
         "issuer": "C=US, O=Let's Encrypt, CN=R10",
         "serial_number": "...",
         "signature_algorithm": "SHA256-RSA"
@@ -833,7 +833,7 @@ POST /api/v1/traefik/certificates/check-renewals
       "failed": 0,
       "results": [
         {
-          "domain": "your-domain.com",
+          "domain": "unicorncommander.ai",
           "action": "renewed",
           "success": true
         }
@@ -1020,7 +1020,7 @@ GET /api/v1/traefik/discovery/docker
           "traefik_enabled": true,
           "labels": {
             "traefik.enable": "true",
-            "traefik.http.routers.ops-center.rule": "Host(`your-domain.com`)",
+            "traefik.http.routers.ops-center.rule": "Host(`unicorncommander.ai`)",
             "traefik.http.services.ops-center.loadbalancer.server.port": "8000"
           },
           "managed_by_ops_center": true,
@@ -1087,7 +1087,7 @@ class RouteCreate(BaseModel):
         schema_extra = {
             "example": {
                 "name": "my-service",
-                "rule": "Host(`my-service.your-domain.com`)",
+                "rule": "Host(`my-service.unicorncommander.ai`)",
                 "service_id": "123e4567-e89b-12d3-a456-426614174000",
                 "priority": 0,
                 "entrypoints": ["https"],
@@ -1246,7 +1246,7 @@ class ValidationResponse(BaseModel):
 #### YAML Structure
 
 ```yaml
-# /home/muut/Infrastructure/traefik/dynamic/ops-center-routes.yml
+# /home/deploy/Infrastructure/traefik/dynamic/ops-center-routes.yml
 
 # This file is AUTO-GENERATED by Ops-Center
 # DO NOT EDIT MANUALLY - Changes will be overwritten
@@ -1259,7 +1259,7 @@ http:
     # Created: 2025-10-23 by admin@example.com
     # Status: active
     unicorncommander-ai:
-      rule: "Host(`your-domain.com`) || Host(`www.your-domain.com`)"
+      rule: "Host(`unicorncommander.ai`) || Host(`www.unicorncommander.ai`)"
       service: ops-center-service
       entryPoints:
         - https
@@ -1277,7 +1277,7 @@ http:
 class TraefikConfigWriter:
     """Writes Traefik configuration files with atomic operations"""
 
-    def __init__(self, config_dir: str = "/home/muut/Infrastructure/traefik/dynamic"):
+    def __init__(self, config_dir: str = "/home/deploy/Infrastructure/traefik/dynamic"):
         self.config_dir = Path(config_dir)
         self.lock_file = self.config_dir / ".ops-center.lock"
 
@@ -2571,9 +2571,9 @@ class TraefikHealthMonitor:
     async def check_routes_accessible(self) -> bool:
         """Sample check: Verify critical routes are accessible"""
         critical_routes = [
-            'https://your-domain.com',
-            'https://chat.your-domain.com',
-            'https://auth.your-domain.com'
+            'https://unicorncommander.ai',
+            'https://chat.unicorncommander.ai',
+            'https://auth.unicorncommander.ai'
         ]
 
         async with httpx.AsyncClient() as client:
@@ -2624,7 +2624,7 @@ from pathlib import Path
 class CertificateMonitor:
     """Monitor Let's Encrypt certificates from acme.json"""
 
-    def __init__(self, acme_file: str = "/home/muut/Infrastructure/traefik/acme/acme.json"):
+    def __init__(self, acme_file: str = "/home/deploy/Infrastructure/traefik/acme/acme.json"):
         self.acme_file = Path(acme_file)
 
     async def parse_acme_json(self) -> List[dict]:
@@ -2743,7 +2743,7 @@ async def upload_certificate(
         raise ValueError(f"Invalid certificate: {e}")
 
     # 2. Store certificate files
-    cert_dir = Path("/home/muut/Infrastructure/traefik/certs")
+    cert_dir = Path("/home/deploy/Infrastructure/traefik/certs")
     cert_dir.mkdir(exist_ok=True)
 
     cert_path = cert_dir / f"{domain}.crt"
@@ -2878,10 +2878,10 @@ async def upload_certificate(
 ### Current State Analysis
 
 **Existing Configuration Files**:
-- `/home/muut/Infrastructure/traefik/dynamic/domains.yml` - 15 routes
-- `/home/muut/Infrastructure/traefik/dynamic/middlewares.yml` - 8 middleware
-- `/home/muut/Infrastructure/traefik/dynamic/billing-routes.yml` - 5 routes
-- `/home/muut/Infrastructure/traefik/dynamic/api-domains.yml` - 8 routes
+- `/home/deploy/Infrastructure/traefik/dynamic/domains.yml` - 15 routes
+- `/home/deploy/Infrastructure/traefik/dynamic/middlewares.yml` - 8 middleware
+- `/home/deploy/Infrastructure/traefik/dynamic/billing-routes.yml` - 5 routes
+- `/home/deploy/Infrastructure/traefik/dynamic/api-domains.yml` - 8 routes
 
 **Total**: ~36 routes, 10 services, 8 middleware
 
@@ -2903,7 +2903,7 @@ python3 backend/scripts/traefik_inventory.py
 async def import_existing_config():
     """Import existing Traefik config to database"""
     # 1. Parse all YAML files
-    config_dir = Path("/home/muut/Infrastructure/traefik/dynamic")
+    config_dir = Path("/home/deploy/Infrastructure/traefik/dynamic")
     all_routes = []
     all_services = []
     all_middleware = []
@@ -2995,11 +2995,11 @@ async def import_existing_config():
 
 ```bash
 # Backup existing files
-cp /home/muut/Infrastructure/traefik/dynamic/domains.yml \
-   /home/muut/Infrastructure/traefik/dynamic/domains.yml.backup.migration
+cp /home/deploy/Infrastructure/traefik/dynamic/domains.yml \
+   /home/deploy/Infrastructure/traefik/dynamic/domains.yml.backup.migration
 
 # Ops-Center writes to separate files
-# /home/muut/Infrastructure/traefik/dynamic/ops-center-routes.yml
+# /home/deploy/Infrastructure/traefik/dynamic/ops-center-routes.yml
 ```
 
 #### Step 4: Cutover
@@ -3012,7 +3012,7 @@ cp /home/muut/Infrastructure/traefik/dynamic/domains.yml \
 
 ```bash
 # Archive old files
-cd /home/muut/Infrastructure/traefik/dynamic
+cd /home/deploy/Infrastructure/traefik/dynamic
 for f in domains.yml middlewares.yml api-domains.yml billing-routes.yml; do
     mv "$f" "$f.archived.$(date +%Y%m%d)"
 done

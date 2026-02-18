@@ -428,7 +428,7 @@ async def test_credential(...):
 ```bash
 # Attacker could spam test endpoint
 for i in {1..10000}; do
-  curl -X POST https://your-domain.com/api/v1/credentials/cloudflare/test \
+  curl -X POST https://unicorncommander.ai/api/v1/credentials/cloudflare/test \
     -H "Cookie: session=..." \
     -d '{"value": "fake_token_'$i'"}'
 done
@@ -629,7 +629,7 @@ timeout=5.0  # 5 seconds is sufficient for API calls
 **Test**:
 ```bash
 # Attempt SQL injection in service name
-curl -X POST https://your-domain.com/api/v1/credentials \
+curl -X POST https://unicorncommander.ai/api/v1/credentials \
   -H "Content-Type: application/json" \
   -H "Cookie: session=..." \
   -d '{
@@ -653,7 +653,7 @@ curl -X POST https://your-domain.com/api/v1/credentials \
 **Test**:
 ```bash
 # Attempt XSS payload in description
-curl -X POST https://your-domain.com/api/v1/credentials \
+curl -X POST https://unicorncommander.ai/api/v1/credentials \
   -H "Content-Type: application/json" \
   -H "Cookie: session=..." \
   -d '{
@@ -680,7 +680,7 @@ curl -X POST https://your-domain.com/api/v1/credentials \
 **Test**:
 ```bash
 # Attempt to list credentials without auth
-curl -X GET https://your-domain.com/api/v1/credentials
+curl -X GET https://unicorncommander.ai/api/v1/credentials
 
 # Expected: 401 Unauthorized
 # Actual: (to be tested)
@@ -697,7 +697,7 @@ curl -X GET https://your-domain.com/api/v1/credentials
 **Test**:
 ```bash
 # Create credential
-CRED_ID=$(curl -X POST https://your-domain.com/api/v1/credentials \
+CRED_ID=$(curl -X POST https://unicorncommander.ai/api/v1/credentials \
   -H "Content-Type: application/json" \
   -H "Cookie: session=..." \
   -d '{
@@ -707,7 +707,7 @@ CRED_ID=$(curl -X POST https://your-domain.com/api/v1/credentials \
   }' | jq -r '.id')
 
 # Retrieve credential
-curl -X GET https://your-domain.com/api/v1/credentials/cloudflare/api_token \
+curl -X GET https://unicorncommander.ai/api/v1/credentials/cloudflare/api_token \
   -H "Cookie: session=..."
 
 # Expected: Response includes "masked_value": "cf_SE***345", NOT plaintext
@@ -726,7 +726,7 @@ curl -X GET https://your-domain.com/api/v1/credentials/cloudflare/api_token \
 ```bash
 # Spam test endpoint
 for i in {1..100}; do
-  curl -X POST https://your-domain.com/api/v1/credentials/cloudflare/test \
+  curl -X POST https://unicorncommander.ai/api/v1/credentials/cloudflare/test \
     -H "Content-Type: application/json" \
     -H "Cookie: session=..." \
     -d '{"value": "fake_token"}' &
@@ -977,10 +977,10 @@ except Exception as e:
 docker exec ops-center-direct python3 -c "from backend.services.credential_manager import CredentialManager; print('Encryption OK')"
 
 # 2. Test API endpoints
-curl -I https://your-domain.com/api/v1/credentials/health
+curl -I https://unicorncommander.ai/api/v1/credentials/health
 
 # 3. Test authentication
-curl -X GET https://your-domain.com/api/v1/credentials
+curl -X GET https://unicorncommander.ai/api/v1/credentials
 # Expected: 401 Unauthorized
 
 # 4. Test credential masking

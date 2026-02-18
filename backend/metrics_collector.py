@@ -32,7 +32,7 @@ class MetricsCollector:
         self,
         collection_interval: int = 5,
         retention_hours: int = 24,
-        redis_host: str = 'unicorn-lago-redis',
+        redis_host: str = 'unicorn-redis',
         redis_port: int = 6379,
         redis_db: int = 1
     ):
@@ -42,7 +42,7 @@ class MetricsCollector:
         Args:
             collection_interval: Seconds between collections (default: 5)
             retention_hours: Hours to retain metrics (default: 24)
-            redis_host: Redis host (default: 'unicorn-lago-redis')
+            redis_host: Redis host (default: 'unicorn-redis')
             redis_port: Redis port (default: 6379)
             redis_db: Redis database number (default: 1)
         """

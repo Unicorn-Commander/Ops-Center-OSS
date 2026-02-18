@@ -117,7 +117,7 @@ async def list_payment_methods(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -175,7 +175,7 @@ async def create_setup_intent(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -235,7 +235,7 @@ async def set_default_payment_method(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -300,7 +300,7 @@ async def remove_payment_method(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -370,7 +370,7 @@ async def update_billing_address(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -433,7 +433,7 @@ async def get_upcoming_invoice(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -490,7 +490,7 @@ async def get_payment_method_details(
     """
     try:
         # Get user's email
-        user_email = user.get("email")
+        user_email = user.get("user", {}).get("email") or user.get("email")
         if not user_email:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

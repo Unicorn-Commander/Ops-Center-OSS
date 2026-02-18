@@ -29,7 +29,7 @@ POSTGRES_DB = os.getenv("POSTGRES_DB", "unicorn_db")
 BYOK_ENCRYPTION_KEY = os.getenv("BYOK_ENCRYPTION_KEY")
 
 # Ollama Cloud Configuration
-OLLAMA_CLOUD_API_KEY = "c19094f8ef024a37885f0fac1febdd1f.nfPbsr46Tw2OjY8brbcUo8ub"
+OLLAMA_CLOUD_API_KEY = "your-ollama-cloud-api-key"
 
 PROVIDER_CONFIG = {
     "name": "ollama-cloud",

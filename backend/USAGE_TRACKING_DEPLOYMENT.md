@@ -149,7 +149,7 @@ async def shutdown():
 ### 3. Frontend Build and Deploy
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Build frontend (includes updated SubscriptionUsage.jsx)
 npm run build
@@ -215,7 +215,7 @@ curl -s http://localhost:8084/api/v1/usage/current \
 ### Run Automated Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run usage tracking tests
 python3 tests/test_usage_tracking.py
@@ -298,7 +298,7 @@ done
 
 #### Test 4: Usage Dashboard
 
-1. Login to Ops-Center: https://your-domain.com
+1. Login to Ops-Center: https://unicorncommander.ai
 2. Navigate to **Subscription → Usage**
 3. Verify you see:
    - Current usage progress bar
@@ -352,14 +352,14 @@ print('Initialized successfully')
 docker ps | grep redis
 
 # Check Redis host in .env.auth
-grep REDIS_HOST /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+grep REDIS_HOST /opt/ops-center/.env.auth
 
 # Test Redis connection
 docker exec ops-center-direct python3 -c "
 import redis.asyncio as aioredis
 import asyncio
 async def test():
-    r = await aioredis.from_url('redis://unicorn-lago-redis:6379')
+    r = await aioredis.from_url('redis://unicorn-redis:6379')
     await r.ping()
     print('Redis OK')
 asyncio.run(test())

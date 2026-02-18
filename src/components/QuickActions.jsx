@@ -19,7 +19,7 @@ const quickActions = [
     description: 'Browse and download AI models',
     icon: CubeIcon,
     color: 'bg-blue-500 hover:bg-blue-600',
-    path: '/admin/models'
+    path: '/admin/ai/registry'
   },
   {
     id: 'services',
@@ -27,7 +27,7 @@ const quickActions = [
     description: 'Start, stop, and manage services',
     icon: CogIcon,
     color: 'bg-green-500 hover:bg-green-600',
-    path: '/admin/services'
+    path: '/admin/infra/services'
   },
   {
     id: 'system',
@@ -35,7 +35,7 @@ const quickActions = [
     description: 'View detailed system metrics',
     icon: ChartBarIcon,
     color: 'bg-purple-500 hover:bg-purple-600',
-    path: '/admin/system'
+    path: '/admin/infra/resources'
   },
   {
     id: 'network',
@@ -43,7 +43,7 @@ const quickActions = [
     description: 'Configure network and WiFi',
     icon: WifiIcon,
     color: 'bg-orange-500 hover:bg-orange-600',
-    path: '/admin/network'
+    path: '/admin/infra/network'
   },
   {
     id: 'logs',

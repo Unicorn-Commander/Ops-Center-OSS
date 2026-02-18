@@ -306,8 +306,8 @@ class OpenAPIGenerator:
                 "description": "Comprehensive API documentation for UC-Cloud Operations Center",
                 "contact": {
                     "name": "UC-Cloud Support",
-                    "url": "https://your-domain.com",
-                    "email": "support@example.com"
+                    "url": "https://unicorncommander.com",
+                    "email": "support@magicunicorn.tech"
                 },
                 "license": {
                     "name": "MIT",
@@ -316,7 +316,7 @@ class OpenAPIGenerator:
             },
             "servers": [
                 {
-                    "url": "https://your-domain.com",
+                    "url": "https://unicorncommander.ai",
                     "description": "Production server"
                 },
                 {
@@ -359,14 +359,14 @@ info:
 
   contact:
     name: UC-Cloud Support
-    url: https://your-domain.com
-    email: support@example.com
+    url: https://unicorncommander.com
+    email: support@magicunicorn.tech
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://your-domain.com
+  - url: https://unicorncommander.ai
     description: Production server
   - url: http://localhost:8084
     description: Development server

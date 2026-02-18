@@ -48,7 +48,7 @@ async def get_openapi_spec():
         All API endpoints require authentication via:
 
         1. **OAuth 2.0 Bearer Token** (preferred for web applications)
-           - Obtain from Keycloak SSO: `https://auth.your-domain.com`
+           - Obtain from Keycloak SSO: `https://auth.unicorncommander.ai`
            - Add to requests: `Authorization: Bearer <token>`
 
         2. **API Key** (for programmatic access)
@@ -65,14 +65,14 @@ async def get_openapi_spec():
 
         ## Base URL
 
-        - **Production**: `https://your-domain.com`
+        - **Production**: `https://unicorncommander.ai`
         - **Development**: `http://localhost:8084`
         """
 
         openapi_schema["info"]["contact"] = {
             "name": "UC-Cloud Support",
-            "url": "https://your-domain.com",
-            "email": "support@example.com"
+            "url": "https://unicorncommander.com",
+            "email": "support@magicunicorn.tech"
         }
 
         openapi_schema["info"]["license"] = {
@@ -106,7 +106,7 @@ async def get_openapi_spec():
         # Add servers
         openapi_schema["servers"] = [
             {
-                "url": "https://your-domain.com",
+                "url": "https://unicorncommander.ai",
                 "description": "Production server"
             },
             {

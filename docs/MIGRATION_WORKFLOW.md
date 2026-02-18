@@ -438,7 +438,7 @@ curl http://localhost:8084/api/v1/system/status
 docker logs ops-center-direct --tail 100
 
 # 5. If still broken, restore from backup
-./scripts/database/restore_database.sh /home/muut/backups/database/unicorn_db_LATEST.sql
+./scripts/database/restore_database.sh /opt/backups/database/unicorn_db_LATEST.sql
 
 # 6. Investigate issue
 cat alembic/versions/<failed_migration>.py

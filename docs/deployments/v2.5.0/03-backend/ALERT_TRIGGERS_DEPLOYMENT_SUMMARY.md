@@ -88,7 +88,7 @@ curl http://localhost:8084/api/v1/alerts/health
 ### Step 2: Apply Database Migration (1 min)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
   -f /app/migrations/alert_triggers_schema.sql
@@ -159,7 +159,7 @@ curl http://localhost:8084/api/v1/alert-triggers/statistics | jq
 
 ### Unit Tests
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_alert_triggers.py -v
 ```
 
@@ -257,7 +257,7 @@ Required in `.env.auth`:
 ```bash
 # Email Recipients
 ADMIN_EMAIL=admin@example.com
-SUPPORT_EMAIL=support@your-domain.com
+SUPPORT_EMAIL=support@unicorncommander.ai
 
 # Microsoft 365 OAuth (already configured)
 MS365_CLIENT_ID=...

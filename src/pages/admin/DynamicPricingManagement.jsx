@@ -60,6 +60,7 @@ import {
   Info as InfoIcon,
   Warning as WarningIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
 
 const DynamicPricingManagement = () => {
   // ============================================
@@ -1404,23 +1405,19 @@ const DynamicPricingManagement = () => {
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
-            Dynamic Pricing Management
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Configure BYOK markups, platform pricing tiers, and credit packages
-          </Typography>
-        </Box>
-        <Button
-          variant="contained"
-          startIcon={<CalculateIcon />}
-          onClick={() => setCalculatorOpen(true)}
-        >
-          Cost Calculator
-        </Button>
-      </Box>
+      <PageHeader
+        title="Dynamic Pricing Management"
+        subtitle="Configure BYOK markups, platform pricing tiers, and credit packages"
+        actions={(
+          <Button
+            variant="contained"
+            startIcon={<CalculateIcon />}
+            onClick={() => setCalculatorOpen(true)}
+          >
+            Cost Calculator
+          </Button>
+        )}
+      />
 
       {/* Alerts */}
       {error && (

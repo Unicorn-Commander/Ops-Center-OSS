@@ -1150,7 +1150,7 @@ class LLMConfigManager:
                 await self.add_api_key(
                     provider="openrouter",
                     key_name="Default OpenRouter Key",
-                    api_key="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",
+                    api_key="sk-or-v1-your-openrouter-key",
                     use_for_ops_center=True,
                     user_id="system",
                     metadata={"source": "pre-populated"}

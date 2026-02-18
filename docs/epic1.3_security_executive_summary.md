@@ -78,7 +78,7 @@ def require_admin(user_info: Dict = Depends(lambda: {"role": "admin", "username"
 # Currently allowed - exposes PostgreSQL to internet!
 route = RouteCreate(
     name="db-access",
-    rule="Host(`db.your-domain.com`)",
+    rule="Host(`db.unicorncommander.ai`)",
     service="unicorn-postgresql",  # Internal database!
     entryPoints=["https"]
 )
@@ -122,7 +122,7 @@ Before Epic 1.3 can be deployed, these MUST be implemented:
 
 3. **Input Validation**
    - ✅ Internal service protection (blacklist `unicorn-*` services)
-   - ✅ Domain ownership verification (only `*.your-domain.com`)
+   - ✅ Domain ownership verification (only `*.unicorncommander.ai`)
    - ✅ Internal IP blocking (no `10.*`, `172.*`, `192.168.*`)
 
 4. **Access Control**
@@ -296,7 +296,7 @@ This executive summary is accompanied by:
 **Product Owner**: [Name]
 **CTO/Security Lead**: [Name]
 
-**Questions or Concerns**: security@your-domain.com
+**Questions or Concerns**: security@unicorncommander.ai
 
 ---
 

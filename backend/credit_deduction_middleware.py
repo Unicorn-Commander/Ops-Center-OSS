@@ -43,6 +43,30 @@ from litellm_credit_system import CreditSystem
 
 logger = logging.getLogger(__name__)
 
+# =============================================================================
+# CONFIGURABLE BILLING SETTINGS
+# =============================================================================
+# These can be customized per deployment via environment variables.
+# Personal servers or internal company servers can disable billing entirely
+# by setting BILLING_ENABLED=false or by listing all tiers in CREDIT_EXEMPT_TIERS.
+
+# Tiers that are exempt from credit charges (comma-separated)
+# Default includes common "unlimited" tier names. Customize for your deployment.
+# Set to "*" to exempt ALL tiers (effectively disabling billing)
+CREDIT_EXEMPT_TIERS_ENV = os.getenv("CREDIT_EXEMPT_TIERS", "free,vip_founder,vip,founder,admin,unlimited,internal")
+CREDIT_EXEMPT_TIERS = set(t.strip() for t in CREDIT_EXEMPT_TIERS_ENV.split(",") if t.strip())
+
+# Master billing toggle - set to "false" to disable all credit checking
+BILLING_ENABLED = os.getenv("BILLING_ENABLED", "true").lower() == "true"
+
+def is_credit_exempt(user_tier: str) -> bool:
+    """Check if a user tier is exempt from credit charges."""
+    if not BILLING_ENABLED:
+        return True
+    if "*" in CREDIT_EXEMPT_TIERS:
+        return True
+    return user_tier in CREDIT_EXEMPT_TIERS
+
 
 class CreditDeductionMiddleware(BaseHTTPMiddleware):
     """
@@ -127,11 +151,32 @@ class CreditDeductionMiddleware(BaseHTTPMiddleware):
         return False
 
     async def _get_user_from_session(self, request: Request) -> Optional[dict]:
-        """Extract user data from session cookie OR service key + X-User-ID header"""
+        """Extract user data from session cookie OR service key OR API key + X-User-ID header"""
         try:
             # Check for service key pattern (for bolt.diy, presenton, brigade, etc.)
             x_user_id = request.headers.get('X-User-ID')
             auth_header = request.headers.get('Authorization', '')
+
+            # Check for user API key (uc_<hex>) - for remote API access
+            if auth_header.startswith('Bearer uc_'):
+                token = auth_header[7:]  # Remove "Bearer "
+                try:
+                    from api_key_manager import get_api_key_manager
+                    manager = get_api_key_manager()
+                    user_info = await manager.validate_api_key(token)
+
+                    if user_info:
+                        logger.info(f"API key authenticated user: {user_info['user_id']}")
+                        return {
+                            "user_id": user_info['user_id'],
+                            "subscription_tier": "vip_founder",  # VIP users get vip_founder tier
+                        }
+                    else:
+                        logger.warning(f"Invalid API key in credit middleware")
+                        return None
+                except Exception as e:
+                    logger.error(f"API key validation error in middleware: {e}")
+                    return None
 
             if auth_header.startswith('Bearer sk-'):
                 # Service key authentication - extract service name
@@ -143,25 +188,49 @@ class CreditDeductionMiddleware(BaseHTTPMiddleware):
                     'sk-presenton-service-key-2025': 'presenton-service',
                     'sk-brigade-service-key-2025': 'brigade-service',
                     'sk-centerdeep-service-key-2025': 'centerdeep-service',
-                    'sk-partnerpulse-service-key-2025': 'partnerpulse-service'
+                    'sk-partnerpulse-service-key-2025': 'partnerpulse-service',
+                    'sk-open-webui-service-key-2026': 'open-webui-service',
+                    'sk-colonel-service-key-2026': 'colonel-service'
                 }
+
+                # Map service names to organization UUIDs (matches litellm_api.py)
+                service_org_ids = {
+                    'bolt-diy-service': '3766e9ee-7cc1-472f-92ae-afec687f0d74',
+                    'presenton-service': '13587747-66e6-43df-b21d-4411c7373465',
+                    'brigade-service': 'e9b40f6b-b683-4bcf-b462-9fd526cfbb37',
+                    'centerdeep-service': '91d3b68e-e4c4-457e-80ce-de6997243c34',
+                    'partnerpulse-service': '8f5bf9a9-2e7c-4465-93d8-97f18bdac098',
+                    'open-webui-service': 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+                    'colonel-service': 'e9b40f6b-b683-4bcf-b462-9fd526cfbb37'
+                }
+
+                # Internal services exempt from billing
+                internal_services = {'colonel-service'}
 
                 service_name = service_keys.get(token)
                 if service_name:
+                    tier = "internal" if service_name in internal_services else "professional"
                     if x_user_id:
                         # Service key with user context - return user data
                         logger.info(f"Service key request with user context: {x_user_id}")
                         return {
                             "user_id": x_user_id,
-                            "subscription_tier": "professional",  # Default tier for service key users
+                            "subscription_tier": tier,
                         }
                     else:
-                        # Service key without user context - use service account
-                        logger.info(f"Service key request without user context: {service_name}")
-                        return {
-                            "user_id": service_name,
-                            "subscription_tier": "enterprise",  # Service accounts get enterprise tier
-                        }
+                        # Service key without user context - use org-prefixed ID for billing
+                        service_org_id = service_org_ids.get(service_name)
+                        if service_org_id:
+                            org_prefixed_id = f"org_{service_org_id}"
+                            logger.info(f"Service key request using org credits: {org_prefixed_id}")
+                            return {
+                                "user_id": org_prefixed_id,
+                                "subscription_tier": tier,
+                                "is_service_account": True
+                            }
+                        else:
+                            logger.error(f"Service org ID not configured for: {service_name}")
+                            return None
                 else:
                     # Unknown service key - let endpoint handle authentication
                     logger.warning(f"Unknown service key in credit middleware: {token[:20]}...")
@@ -174,7 +243,7 @@ class CreditDeductionMiddleware(BaseHTTPMiddleware):
             if not session_token:
                 return None
 
-            redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+            redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
             redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
             sessions = RedisSessionManager(host=redis_host, port=redis_port)
@@ -495,6 +564,21 @@ class CreditDeductionMiddleware(BaseHTTPMiddleware):
                 request._body = body
         except:
             pass
+
+        # Check if billing is disabled globally or user is in credit-exempt tier
+        # Configurable via BILLING_ENABLED and CREDIT_EXEMPT_TIERS env vars
+        if is_credit_exempt(user_tier):
+            exempt_reason = "billing disabled" if not BILLING_ENABLED else f"tier '{user_tier}' is credit-exempt"
+            logger.info(f"Credit exempt for user {user_id} - {exempt_reason}")
+
+            response = await call_next(request)
+
+            # Add exempt tier headers
+            response.headers["X-Credit-Exempt"] = "true"
+            response.headers["X-Credits-Used"] = "0.0"
+            response.headers["X-Credits-Remaining"] = "unlimited"
+
+            return response
 
         # Check if BYOK enabled for this user/model
         is_byok, byok_provider = await self._check_byok_enabled(user_id, model)

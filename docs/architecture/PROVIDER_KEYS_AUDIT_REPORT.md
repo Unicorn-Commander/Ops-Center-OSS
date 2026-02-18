@@ -3,7 +3,7 @@
 **Audit Date**: November 14, 2025
 **Auditor**: Claude Code (UC-Cloud Team Lead)
 **Scope**: Complete analysis of all provider key management systems in Ops-Center
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 
 ---
 
@@ -1509,7 +1509,7 @@ PROVIDER_TEST_CONFIGS = {
         'key_format': 'sk-or-v1-...',
         'validator': lambda k: k.startswith('sk-or-v1-'),
         'headers': {
-            'HTTP-Referer': 'https://your-domain.com',
+            'HTTP-Referer': 'https://unicorncommander.ai',
             'X-Title': 'UC-1 Pro Ops Center'
         }
     },

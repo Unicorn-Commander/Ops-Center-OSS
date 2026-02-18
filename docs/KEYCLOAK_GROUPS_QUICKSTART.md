@@ -9,7 +9,7 @@
 ### Step 1: Create Groups via Script
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 
 # Install httpx if not already installed
 pip3 install httpx
@@ -42,7 +42,7 @@ python3 scripts/add-user-to-group.py aaron uc1-admins
 ### Step 3: Configure Group Mapper in Keycloak UI
 
 1. **Login to Keycloak Admin:**
-   - URL: https://auth.your-domain.com/admin/uchub/console
+   - URL: https://auth.unicorncommander.ai/admin/uchub/console
    - Username: `admin`
    - Password: `your-admin-password`
 
@@ -72,7 +72,7 @@ python3 scripts/add-user-to-group.py aaron uc1-admins
 
 ### Step 4: Update Code
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
 
 **Add these lines to ROLE_MAPPINGS (around line 22):**
 
@@ -102,7 +102,7 @@ ROLE_MAPPINGS = {
 
 ```python
 # BEFORE:
-admin_identifiers = ["akadmin", "admin", "administrator", "aaron"]
+admin_identifiers = ["akadmin", "admin", "administrator"]
 
 # AFTER (keep only emergency access):
 admin_identifiers_legacy = ["akadmin"]  # Emergency only
@@ -133,7 +133,7 @@ INFO: User 'aaron' mapped to role 'admin' via group/role 'uc1-admins'
 
 ### Test 2: Login via Browser
 
-1. Visit https://your-domain.com
+1. Visit https://unicorncommander.ai
 2. Click "Sign In"
 3. Login with Keycloak credentials
 4. Should redirect to `/admin` dashboard
@@ -142,7 +142,7 @@ INFO: User 'aaron' mapped to role 'admin' via group/role 'uc1-admins'
 
 ```bash
 # Get your session token from browser cookies, then:
-curl https://your-domain.com/api/v1/auth/me \
+curl https://unicorncommander.ai/api/v1/auth/me \
   -H "Cookie: session_token=YOUR_SESSION_TOKEN" | jq .role
 
 # Expected output: "admin"
@@ -167,7 +167,7 @@ python3 scripts/add-user-to-group.py alice uc1-admins
 
 ```bash
 # Revert code changes
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 git checkout HEAD -- role_mapper.py
 
 # Restart
@@ -230,7 +230,7 @@ docker logs uchub-keycloak --tail 100
 ## Full Documentation
 
 See complete research and implementation guide:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
 
 ---
 

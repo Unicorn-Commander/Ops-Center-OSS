@@ -480,7 +480,7 @@ This comprehensive UX validation checklist ensures the subscription upgrade/down
 
 - [ ] **"Need help?" link** in footer
 - [ ] **Chat widget** accessible (if available)
-- [ ] **Support email** visible (support@your-domain.com)
+- [ ] **Support email** visible (support@unicorncommander.com)
 - [ ] **Billing issues** get priority support
 - [ ] **Error codes documented** (user can self-serve)
 

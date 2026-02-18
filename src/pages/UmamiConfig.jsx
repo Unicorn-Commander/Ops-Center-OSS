@@ -13,7 +13,7 @@ import axios from 'axios';
  */
 export default function UmamiConfig() {
   const [config, setConfig] = useState({
-    url: 'http://umami.your-domain.com:3000',
+    url: 'http://umami.unicorncommander.ai:3000',
     apiKey: '',
     trackingCode: 'xxxxx-xxxxx-xxxxx-xxxxx',
     privacyMode: 'strict',
@@ -364,7 +364,7 @@ export default function UmamiConfig() {
                   />
                   <input
                     type="text"
-                    placeholder="Domain (e.g., your-domain.com)"
+                    placeholder="Domain (e.g., unicorncommander.ai)"
                     value={newWebsite.domain}
                     onChange={(e) => setNewWebsite({...newWebsite, domain: e.target.value})}
                     className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500"

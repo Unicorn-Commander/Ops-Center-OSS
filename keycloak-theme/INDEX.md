@@ -101,7 +101,7 @@
 ## Quick Deploy Command
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 
@@ -131,17 +131,17 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center
 
 ### Theme Directory
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/
+/home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/uc-1-pro/
 ```
 
 ### Deployment Script
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/deploy-keycloak-theme.sh
+/home/deploy/Production/UC-1-Pro/services/ops-center/deploy-keycloak-theme.sh
 ```
 
 ### Documentation
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/keycloak-theme/
+/home/deploy/Production/UC-1-Pro/services/ops-center/keycloak-theme/
 ├── INDEX.md (this file)
 ├── QUICK-START.md
 ├── README.md
@@ -219,7 +219,7 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center
 ### Help
 - 🐛 GitHub Issues: https://github.com/Unicorn-Commander/UC-1-Pro/issues
 - 📧 Email: support@magicunicorn.tech
-- 📚 Docs: https://your-domain.com/docs
+- 📚 Docs: https://unicorncommander.com/docs
 
 ## Version Information
 
@@ -253,7 +253,7 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center
 
 ### Fastest Path
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./deploy-keycloak-theme.sh
 ```
 

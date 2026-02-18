@@ -232,7 +232,7 @@ class TestDNSRecordWorkflow:
             json={
                 "type": "A",
                 "name": "@",
-                "content": "YOUR_SERVER_IP",
+                "content": "your-server-ip",
                 "proxied": True
             }
         )
@@ -591,7 +591,7 @@ class TestTemplateWorkflow:
                     json={
                         "template_id": "web_server",
                         "variables": {
-                            "ip": "YOUR_SERVER_IP",
+                            "ip": "your-server-ip",
                             "domain": "example.com"
                         }
                     }

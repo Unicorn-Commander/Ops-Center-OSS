@@ -6,31 +6,31 @@
 
 ### Core Modules
 1. **Alert Trigger Manager**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/alert_triggers.py`
+   - Path: `/opt/ops-center/backend/alert_triggers.py`
    - Lines: 542
    - Purpose: Core trigger management with cooldown and deduplication
 
 2. **Alert Conditions**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/alert_conditions.py`
+   - Path: `/opt/ops-center/backend/alert_conditions.py`
    - Lines: 685
    - Purpose: 9 trigger condition functions (system, billing, security, usage)
 
 3. **API Router**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/alert_triggers_api.py`
+   - Path: `/opt/ops-center/backend/alert_triggers_api.py`
    - Lines: 380
    - Purpose: REST API with 8 endpoints
 
 ### Database
 
 4. **Database Schema**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/migrations/alert_triggers_schema.sql`
+   - Path: `/opt/ops-center/backend/migrations/alert_triggers_schema.sql`
    - Lines: 100
    - Purpose: Create alert_trigger_history and alert_trigger_config tables
 
 ### Scripts
 
 5. **Initialization Script**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/initialize_alert_triggers.py`
+   - Path: `/opt/ops-center/backend/scripts/initialize_alert_triggers.py`
    - Lines: 200
    - Purpose: Register 9 default triggers
    - Usage: `python3 scripts/initialize_alert_triggers.py [--test]`
@@ -38,7 +38,7 @@
 ## Testing
 
 6. **Test Suite**
-   - Path: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_alert_triggers.py`
+   - Path: `/opt/ops-center/backend/tests/test_alert_triggers.py`
    - Lines: 640
    - Purpose: 25+ test cases covering all functionality
    - Usage: `pytest tests/test_alert_triggers.py -v`
@@ -77,7 +77,7 @@
 
 ```bash
 # Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # List all alert trigger files
 ls -lh alert_*.py scripts/initialize_alert_triggers.py tests/test_alert_triggers.py migrations/alert_triggers_schema.sql

@@ -306,7 +306,7 @@ curl -X DELETE "http://localhost:8084/api/v1/audit/cleanup?days_to_keep=90"
 ### Initialize Database
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 init_audit_db.py
 ```
 
@@ -498,4 +498,4 @@ logging.basicConfig(level=logging.DEBUG)
 
 For issues or questions:
 - GitHub: https://github.com/Unicorn-Commander/UC-1-Pro/issues
-- Documentation: /home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/
+- Documentation: /home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/

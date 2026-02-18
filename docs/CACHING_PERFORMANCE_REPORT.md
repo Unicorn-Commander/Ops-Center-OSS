@@ -569,7 +569,7 @@ app.add_middleware(CompressionMiddleware)
 #### Performance Lighthouse Test
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run test:mobile:performance
 ```
 
@@ -657,7 +657,7 @@ cp /path/to/logo.png public/logos/uc-logo-512.png
 ### Step 1: Build Frontend
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install
 npm run build
 ```
@@ -726,7 +726,7 @@ Look for:
 ### Step 5: Verify Deployment
 
 1. **Service Worker**:
-   - Open https://your-domain.com/admin
+   - Open https://unicorncommander.ai/admin
    - DevTools → Application → Service Workers
    - Verify "activated and running"
 

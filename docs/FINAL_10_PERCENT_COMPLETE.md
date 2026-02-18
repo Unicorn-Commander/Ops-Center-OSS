@@ -128,14 +128,14 @@ The final 10% of Ops-Center development has been **successfully completed** usin
 ### ✅ DEPLOYED & OPERATIONAL
 
 1. **Subscription Management**
-   - URL: https://your-domain.com/admin/system/subscription-management
+   - URL: https://unicorncommander.ai/admin/system/subscription-management
    - Database: 3 tiers, 21 features configured
    - API: All 10 endpoints operational
 
 2. **Monitoring Pages**
-   - Grafana: https://your-domain.com/admin/monitoring/grafana
-   - Prometheus: https://your-domain.com/admin/monitoring/prometheus
-   - Umami: https://your-domain.com/admin/monitoring/umami
+   - Grafana: https://unicorncommander.ai/admin/monitoring/grafana
+   - Prometheus: https://unicorncommander.ai/admin/monitoring/prometheus
+   - Umami: https://unicorncommander.ai/admin/monitoring/umami
    - Status: Health checks working, data endpoints await service deployment
 
 3. **Frontend Build**
@@ -180,7 +180,7 @@ Queen (Product Owner)
 
 ### Atlas AI
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/atlas/
+/opt/ops-center/atlas/
 ├── tools/ (6 TypeScript files)
 ├── architecture/ (agent definition + spec)
 ├── docs/ (integration guide, tests, reference)
@@ -189,7 +189,7 @@ Queen (Product Owner)
 
 ### Monitoring Pages
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/src/pages/
+/opt/ops-center/src/pages/
 ├── GrafanaConfig.jsx
 ├── PrometheusConfig.jsx
 └── UmamiConfig.jsx
@@ -197,7 +197,7 @@ Queen (Product Owner)
 
 ### Subscription Management
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/
+/opt/ops-center/
 ├── backend/
 │   ├── subscription_tiers_api.py
 │   └── migrations/add_subscription_tiers.sql
@@ -296,8 +296,8 @@ Queen (Product Owner)
 
 ## 📞 Support & Maintenance
 
-**Production URL**: https://your-domain.com
-**Admin Dashboard**: https://your-domain.com/admin
+**Production URL**: https://unicorncommander.ai
+**Admin Dashboard**: https://unicorncommander.ai/admin
 **Documentation**: /services/ops-center/docs/
 **Issues**: GitHub Issues
 **Support**: admin@magicunicorn.tech

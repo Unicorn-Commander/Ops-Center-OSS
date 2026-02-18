@@ -36,7 +36,7 @@ If firewall_manager.py doesn't exist yet, wait for Backend Developer Agent to cr
 
 ### Step 2: Register Router in Main App
 
-Edit `/home/muut/Production/UC-Cloud/services/ops-center/backend/server_auth_integrated.py`:
+Edit `/opt/ops-center/backend/server_auth_integrated.py`:
 
 ```python
 # Add at top of file with other imports
@@ -105,7 +105,7 @@ Check that endpoints are registered:
 
 ```bash
 # Option 1: Visit Swagger docs
-# https://your-domain.com/docs
+# https://unicorncommander.ai/docs
 
 # Option 2: List endpoints via API
 curl http://localhost:8084/openapi.json | jq '.paths | keys[] | select(contains("firewall"))'
@@ -315,7 +315,7 @@ def test_list_rules_requires_auth():
 
 Run tests:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest test_firewall_api.py -v
 ```
 

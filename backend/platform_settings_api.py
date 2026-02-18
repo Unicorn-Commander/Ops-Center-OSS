@@ -142,7 +142,7 @@ PLATFORM_SETTINGS = {
 
     # Forgejo Settings
     "FORGEJO_API_URL": {
-        "description": "Forgejo API URL (e.g., https://git.example.com)",
+        "description": "Forgejo API URL (e.g., https://git.unicorncommander.ai)",
         "category": "forgejo",
         "is_secret": False,
         "required": False,

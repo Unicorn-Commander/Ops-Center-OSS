@@ -4,7 +4,7 @@
 
 ```bash
 # 1. Install dependency
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install zxcvbn
 
 # 2. Import in UserManagement.jsx

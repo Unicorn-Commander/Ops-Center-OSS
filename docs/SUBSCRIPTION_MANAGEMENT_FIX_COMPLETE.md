@@ -134,7 +134,7 @@ AppMatrix uses Material-UI icons for visual organization:
 
 ```bash
 # Navigate to ops-center
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Build frontend
 npm run build
@@ -167,7 +167,7 @@ docker restart ops-center-direct
 ### 🧪 Manual Testing Required
 
 **Admin Users** (must have admin role in Keycloak):
-1. [ ] Navigate to: https://your-domain.com/admin/subscription/
+1. [ ] Navigate to: https://unicorncommander.ai/admin/subscription/
 2. [ ] Verify "App Matrix" section loads without errors
 3. [ ] Check browser console for JavaScript errors
 4. [ ] Verify current tier is highlighted correctly
@@ -201,7 +201,7 @@ If issues occur, revert to FeatureMatrix:
 
 ```bash
 # Edit SubscriptionManagement.js
-cd /home/muut/Production/UC-Cloud/services/ops-center/frontend/src/components/billing
+cd /opt/ops-center/frontend/src/components/billing
 
 # Line 14: Change import back
 - import AppMatrix from './AppMatrix';
@@ -212,7 +212,7 @@ cd /home/muut/Production/UC-Cloud/services/ops-center/frontend/src/components/bi
 + <FeatureMatrix
 
 # Rebuild and deploy
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct

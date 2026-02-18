@@ -41,7 +41,7 @@ Ops-Center separates models into two categories:
 
 ```bash
 # Production
-https://your-domain.com/api/v1/llm
+https://unicorncommander.ai/api/v1/llm
 
 # Local Development
 http://localhost:8084/api/v1/llm
@@ -155,7 +155,7 @@ POST /image/generations
 #### OpenAI Connection
 
 ```yaml
-Base URL: https://your-domain.com/api/v1/llm
+Base URL: https://unicorncommander.ai/api/v1/llm
 API Key: uc_api_xxxxxxxxxxxxxx
 ```
 
@@ -163,7 +163,7 @@ API Key: uc_api_xxxxxxxxxxxxxx
 1. Login to Open-WebUI
 2. Go to **Admin Panel** → **Settings** → **Connections**
 3. Under **OpenAI API**:
-   - **API Base URL**: `https://your-domain.com/api/v1/llm`
+   - **API Base URL**: `https://unicorncommander.ai/api/v1/llm`
    - **API Key**: Your UC API key (generate at `/admin/account/api-keys`)
    - Click **Verify Connection**
 4. Save settings
@@ -186,7 +186,7 @@ Open-WebUI will automatically discover all available models via `/models` endpoi
 
 ```bash
 # Ops-Center LiteLLM Integration
-OPENAI_API_BASE=https://your-domain.com/api/v1/llm
+OPENAI_API_BASE=https://unicorncommander.ai/api/v1/llm
 OPENAI_API_KEY=uc_api_xxxxxxxxxxxxxx
 
 # Optional: Default model
@@ -200,7 +200,7 @@ services:
   bolt:
     image: your-bolt-image
     environment:
-      - OPENAI_API_BASE=https://your-domain.com/api/v1/llm
+      - OPENAI_API_BASE=https://unicorncommander.ai/api/v1/llm
       - OPENAI_API_KEY=uc_api_xxxxxxxxxxxxxx
       - DEFAULT_MODEL=openai/gpt-4-turbo
     ports:
@@ -212,7 +212,7 @@ services:
 ```bash
 # Test connection from Bolt container
 curl -H "Authorization: Bearer uc_api_xxxxxxxxxxxxxx" \
-  https://your-domain.com/api/v1/llm/models
+  https://unicorncommander.ai/api/v1/llm/models
 ```
 
 ---
@@ -225,14 +225,14 @@ curl -H "Authorization: Bearer uc_api_xxxxxxxxxxxxxx" \
 
 ```bash
 # Ops-Center LiteLLM Integration
-LLM_API_BASE_URL=https://your-domain.com/api/v1/llm/chat/completions
+LLM_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/chat/completions
 LLM_API_KEY=uc_api_xxxxxxxxxxxxxx
 
 # Optional: Model selection
 LLM_MODEL=openai/gpt-4-turbo
 
 # Optional: Image generation
-IMAGE_API_BASE_URL=https://your-domain.com/api/v1/llm/image/generations
+IMAGE_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/image/generations
 IMAGE_API_KEY=uc_api_xxxxxxxxxxxxxx
 ```
 
@@ -242,21 +242,21 @@ IMAGE_API_KEY=uc_api_xxxxxxxxxxxxxx
 services:
   presenton-frontend:
     environment:
-      - NEXT_PUBLIC_LLM_API_BASE=https://your-domain.com/api/v1/llm
+      - NEXT_PUBLIC_LLM_API_BASE=https://unicorncommander.ai/api/v1/llm
       - NEXT_PUBLIC_LLM_API_KEY=uc_api_xxxxxxxxxxxxxx
 
   presenton-backend:
     environment:
-      - LLM_API_BASE_URL=https://your-domain.com/api/v1/llm/chat/completions
+      - LLM_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/chat/completions
       - LLM_API_KEY=uc_api_xxxxxxxxxxxxxx
-      - IMAGE_API_BASE_URL=https://your-domain.com/api/v1/llm/image/generations
+      - IMAGE_API_BASE_URL=https://unicorncommander.ai/api/v1/llm/image/generations
 ```
 
 #### Testing
 
 ```bash
 # Test chat completions
-curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \
   -H "Authorization: Bearer uc_api_xxxxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -265,7 +265,7 @@ curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
   }'
 
 # Test image generation
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer uc_api_xxxxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -280,7 +280,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 
 ### Step 1: Add Your API Keys
 
-1. Login to Ops-Center: https://your-domain.com
+1. Login to Ops-Center: https://unicorncommander.ai
 2. Navigate to **Account** → **API Keys**
 3. Click **Add Provider Key**
 4. Select provider (OpenRouter, OpenAI, Anthropic, etc.)
@@ -521,7 +521,7 @@ data: [DONE]
 ### Usage Dashboard
 
 View your API usage at:
-- **Subscription → Usage**: https://your-domain.com/admin/subscription/usage
+- **Subscription → Usage**: https://unicorncommander.ai/admin/subscription/usage
 
 Shows:
 - Total requests by model
@@ -533,7 +533,7 @@ Shows:
 ### Real-time Logs
 
 View live API logs (admin only):
-- **System → Logs**: https://your-domain.com/admin/logs
+- **System → Logs**: https://unicorncommander.ai/admin/logs
 
 ---
 
@@ -543,7 +543,7 @@ View live API logs (admin only):
 
 **Check**:
 1. Environment variables are set correctly
-2. API key is valid: `curl -H "Authorization: Bearer YOUR_KEY" https://your-domain.com/api/v1/llm/models`
+2. API key is valid: `curl -H "Authorization: Bearer YOUR_KEY" https://unicorncommander.ai/api/v1/llm/models`
 3. Firewall allows outbound HTTPS
 4. Base URL doesn't have trailing slash
 
@@ -565,9 +565,9 @@ View live API logs (admin only):
 
 ## Support
 
-- **Documentation**: https://your-domain.com/docs
-- **API Reference**: https://your-domain.com/docs/api
-- **Status Page**: https://status.your-domain.com
+- **Documentation**: https://unicorncommander.ai/docs
+- **API Reference**: https://unicorncommander.ai/docs/api
+- **Status Page**: https://status.unicorncommander.ai
 
 ---
 

@@ -285,9 +285,9 @@ A: No, they trigger a warning but are not blocked. We believe in educating users
 
 For questions or issues with the password policy, please contact:
 
-- Technical Support: support@your-domain.com
-- Security Team: security@your-domain.com
-- Documentation: https://your-domain.com/docs
+- Technical Support: support@unicorncommander.ai
+- Security Team: security@unicorncommander.ai
+- Documentation: https://unicorncommander.ai/docs
 
 ---
 

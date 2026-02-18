@@ -62,7 +62,7 @@ class TestSingleDomainMigration:
 
         # Phase 2: Export DNS
         export_response = client.post(
-            '/api/v1/namecheap/domains/your-domain.com/dns/export',
+            '/api/v1/namecheap/domains/unicorncommander.ai/dns/export',
             headers=auth_headers,
             params={'format': 'json'}
         )
@@ -75,7 +75,7 @@ class TestSingleDomainMigration:
             headers=auth_headers,
             json={
                 'job_name': 'Single Domain Migration E2E Test',
-                'domains': ['your-domain.com'],
+                'domains': ['unicorncommander.ai'],
                 'priority': 'high'
             }
         )
@@ -104,7 +104,7 @@ class TestSingleDomainMigration:
 
         # Phase 5: Run health checks
         health_response = client.post(
-            f'/api/v1/migration/jobs/{job_id}/domains/your-domain.com/health-check',
+            f'/api/v1/migration/jobs/{job_id}/domains/unicorncommander.ai/health-check',
             headers=auth_headers
         )
         assert health_response.status_code == 200
@@ -141,7 +141,7 @@ class TestBatchMigration:
         - Process queue as slots become available
         """
         domains = [
-            'your-domain.com',
+            'unicorncommander.ai',
             'superiorbsolutions.com',
             'magicunicorn.tech'
         ]
@@ -229,7 +229,7 @@ class TestEmailServicePreservation:
             headers=auth_headers,
             json={
                 'job_name': 'Email Preservation E2E Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = migration_response.json()['id']
@@ -242,7 +242,7 @@ class TestEmailServicePreservation:
             '/api/v1/migration/health-check',
             headers=auth_headers,
             json={
-                'domain': 'your-domain.com',
+                'domain': 'unicorncommander.ai',
                 'checks': ['email']
             }
         )
@@ -290,7 +290,7 @@ class TestMigrationPauseResume:
         - Resume migration
         - Verify all domains complete
         """
-        domains = ['your-domain.com', 'superiorbsolutions.com']
+        domains = ['unicorncommander.ai', 'superiorbsolutions.com']
 
         # Start migration
         migration_response = client.post(
@@ -380,7 +380,7 @@ class TestMigrationRollback:
             headers=auth_headers,
             json={
                 'job_name': 'Rollback E2E Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = migration_response.json()['id']
@@ -399,7 +399,7 @@ class TestMigrationRollback:
 
         # Rollback domain
         rollback_response = client.post(
-            f'/api/v1/migration/jobs/{job_id}/domains/your-domain.com/rollback',
+            f'/api/v1/migration/jobs/{job_id}/domains/unicorncommander.ai/rollback',
             headers=auth_headers,
             json={
                 'reason': 'Testing rollback functionality'
@@ -417,7 +417,7 @@ class TestMigrationRollback:
         assert history_response.status_code == 200
         history = history_response.json()
         assert len(history) >= 1
-        assert any(r['domain'] == 'your-domain.com' for r in history)
+        assert any(r['domain'] == 'unicorncommander.ai' for r in history)
 
     @pytest.mark.asyncio
     @pytest.mark.e2e
@@ -434,7 +434,7 @@ class TestMigrationRollback:
         - Rollback all domains
         - Verify all nameservers restored
         """
-        domains = ['your-domain.com', 'superiorbsolutions.com']
+        domains = ['unicorncommander.ai', 'superiorbsolutions.com']
 
         # Migrate domains
         migration_response = client.post(
@@ -476,7 +476,7 @@ class TestMigrationRollback:
         )
         history = history_response.json()
         rolled_back_domains = {r['domain'] for r in history}
-        assert 'your-domain.com' in rolled_back_domains
+        assert 'unicorncommander.ai' in rolled_back_domains
         assert 'superiorbsolutions.com' in rolled_back_domains
 
 
@@ -511,7 +511,7 @@ class TestHealthVerification:
             headers=auth_headers,
             json={
                 'job_name': 'Health Check E2E Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = migration_response.json()['id']
@@ -533,7 +533,7 @@ class TestHealthVerification:
             '/api/v1/migration/health-check',
             headers=auth_headers,
             json={
-                'domain': 'your-domain.com',
+                'domain': 'unicorncommander.ai',
                 'checks': ['dns', 'ssl', 'email', 'website']
             }
         )
@@ -597,7 +597,7 @@ class TestDryRunMode:
             headers=auth_headers,
             json={
                 'job_name': 'Dry Run E2E Test',
-                'domains': ['your-domain.com'],
+                'domains': ['unicorncommander.ai'],
                 'dry_run': True  # Enable dry run mode
             }
         )

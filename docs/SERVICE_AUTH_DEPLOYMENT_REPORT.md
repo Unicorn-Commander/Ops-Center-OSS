@@ -226,7 +226,7 @@ If issues arise, rollback with:
 ```bash
 # Restore database backup
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < \
-  /home/muut/backups/ops-center-pre-service-auth-fix-20251129-011622.sql
+  /opt/backups/ops-center-pre-service-auth-fix-20251129-011622.sql
 
 # Restart container
 docker restart ops-center-direct
@@ -237,7 +237,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c \
 # Should return 0
 ```
 
-**Backup Location**: `/home/muut/backups/ops-center-pre-service-auth-fix-20251129-011622.sql` (856 KB)
+**Backup Location**: `/opt/backups/ops-center-pre-service-auth-fix-20251129-011622.sql` (856 KB)
 
 ---
 

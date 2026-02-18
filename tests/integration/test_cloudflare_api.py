@@ -409,7 +409,7 @@ class TestTemplatesAPI:
             json={
                 "template_id": "web_server",
                 "variables": {
-                    "ip": "YOUR_SERVER_IP",
+                    "ip": "your-server-ip",
                     "domain": "example.com"
                 }
             }

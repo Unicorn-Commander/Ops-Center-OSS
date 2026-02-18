@@ -2,14 +2,14 @@
 
 **Base URL**: `/api/v1/admin/system/local-users`
 **Authentication**: Admin role required
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/local_users_api.py`
+**File**: `/opt/ops-center/backend/local_users_api.py`
 
 ---
 
 ## Quick Integration
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ./INTEGRATE_LOCAL_USERS_API.sh
 docker restart ops-center-direct
 ```

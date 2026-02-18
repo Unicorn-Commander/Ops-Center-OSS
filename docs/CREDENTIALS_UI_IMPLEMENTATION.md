@@ -150,7 +150,7 @@ const CredentialsManagement = lazy(() => import('./pages/settings/CredentialsMan
 <Route path="platform/credentials" element={<CredentialsManagement />} />
 ```
 
-**Access URL**: `https://your-domain.com/admin/platform/credentials`
+**Access URL**: `https://unicorncommander.ai/admin/platform/credentials`
 
 ---
 
@@ -314,7 +314,7 @@ docker restart ops-center-direct
 ### Access URL
 
 ```
-https://your-domain.com/admin/platform/credentials
+https://unicorncommander.ai/admin/platform/credentials
 ```
 
 ---
@@ -685,7 +685,7 @@ All frontend requirements met:
 
 **Implementation**: Frontend Development Team Lead
 **Date**: October 23, 2025
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Location**: `/opt/ops-center`
 
 For backend integration questions, refer to:
 - Task description: Original implementation requirements

@@ -27,7 +27,7 @@
 - **Effort**: 8-12 hours
 
 ### 2. Unencrypted SSL Keys
-- **File**: `/home/muut/Infrastructure/traefik/acme/acme.json`
+- **File**: `/home/deploy/Infrastructure/traefik/acme/acme.json`
 - **Issue**: Private keys stored in plaintext
 - **Fix**: LUKS filesystem encryption or application-level encryption
 - **Effort**: 6-8 hours
@@ -134,7 +134,7 @@ Security team reviews implementation before deployment.
 
 ## File Locations
 
-All documentation in: `/home/muut/Production/UC-Cloud/services/ops-center/docs/`
+All documentation in: `/opt/ops-center/docs/`
 
 ```
 docs/
@@ -228,7 +228,7 @@ Epic 1.3 is ready for production when:
 
 ## Contact Information
 
-**Questions**: security@your-domain.com
+**Questions**: security@unicorncommander.ai
 **Audit Lead**: Security Auditor Agent
 **Documentation**: `/services/ops-center/docs/`
 

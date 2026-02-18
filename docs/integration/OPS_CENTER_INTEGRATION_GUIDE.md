@@ -1092,10 +1092,10 @@ requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected(
 ## Support & Documentation
 
 ### Internal Documentation
-- **Ops-Center Guide**: `/home/muut/Production/UC-Cloud/services/ops-center/CLAUDE.md`
-- **LiteLLM API Source**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/litellm_api.py`
-- **Organizational Billing**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/org_credit_integration.py`
-- **Usage Tracking**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/usage_tracking.py`
+- **Ops-Center Guide**: `/opt/ops-center/CLAUDE.md`
+- **LiteLLM API Source**: `/opt/ops-center/backend/litellm_api.py`
+- **Organizational Billing**: `/opt/ops-center/backend/org_credit_integration.py`
+- **Usage Tracking**: `/opt/ops-center/backend/usage_tracking.py`
 
 ### Container Information
 - **Container Name**: `ops-center-centerdeep`
@@ -1131,7 +1131,7 @@ docker exec unicorn-redis redis-cli KEYS "credit:*"
 
 ### Add New Service Key to Ops-Center
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/litellm_api.py`
+**File**: `/opt/ops-center/backend/litellm_api.py`
 
 **Location**: Line 566-570
 
@@ -1249,4 +1249,4 @@ For questions or issues, contact the Ops-Center team or check the internal docum
 
 **Version History**:
 - v2.0 (Nov 14, 2025): Complete integration guide for centerdeep.online deployment
-- v1.0 (Oct 29, 2025): Initial guide for your-domain.com deployment
+- v1.0 (Oct 29, 2025): Initial guide for unicorncommander.ai deployment

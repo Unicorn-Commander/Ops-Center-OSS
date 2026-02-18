@@ -37,9 +37,9 @@ Complete production monitoring infrastructure has been successfully implemented 
 - ✅ ops-center-postgres-exporter (PostgreSQL metrics)
 
 **URLs Configured**:
-- Grafana: https://monitoring.your-domain.com
-- Prometheus: https://metrics.your-domain.com
-- Alertmanager: https://alerts.your-domain.com
+- Grafana: https://monitoring.unicorncommander.ai
+- Prometheus: https://metrics.unicorncommander.ai
+- Alertmanager: https://alerts.unicorncommander.ai
 
 **Networks**: unicorn-network, web, uchub-network
 
@@ -406,7 +406,7 @@ docker logs ops-center-direct --tail 200
 # - Configuration errors
 
 # Step 5: If persistent, rebuild container
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 docker compose -f docker-compose.direct.yml build
 docker compose -f docker-compose.direct.yml up -d
 ```
@@ -466,7 +466,7 @@ docker exec ops-center-direct pip install prometheus-client==0.19.0 prometheus-f
 ## File Structure Summary
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/
+/opt/ops-center/
 ├── monitoring/
 │   ├── docker-compose.monitoring.yml          ✅ Created
 │   ├── prometheus/
@@ -554,7 +554,7 @@ async def startup_event():
 - [ ] Test metrics endpoint: `curl http://ops-center-direct:8084/metrics`
 
 ### Post-Deployment
-- [ ] Access Grafana: https://monitoring.your-domain.com
+- [ ] Access Grafana: https://monitoring.unicorncommander.ai
 - [ ] Import dashboards from grafana.com (IDs listed above)
 - [ ] Configure Slack webhook in alertmanager.yml
 - [ ] Configure PagerDuty integration key
@@ -737,7 +737,7 @@ All monitoring infrastructure has been successfully designed, implemented, and d
 
 ## Appendix A: File Locations
 
-All files created in `/home/muut/Production/UC-Cloud/services/ops-center/`:
+All files created in `/opt/ops-center/`:
 
 1. `monitoring/docker-compose.monitoring.yml` - 203 lines
 2. `monitoring/prometheus/prometheus.yml` - 204 lines
@@ -761,7 +761,7 @@ All files created in `/home/muut/Production/UC-Cloud/services/ops-center/`:
 
 ```bash
 # Deploy monitoring
-cd /home/muut/Production/UC-Cloud/services/ops-center/monitoring
+cd /opt/ops-center/monitoring
 docker compose -f docker-compose.monitoring.yml up -d
 
 # Check status
@@ -776,9 +776,9 @@ docker logs ops-center-alertmanager --tail 100
 curl http://ops-center-direct:8084/metrics
 
 # Access UIs
-# Grafana: https://monitoring.your-domain.com (admin/your-admin-password)
-# Prometheus: https://metrics.your-domain.com
-# Alertmanager: https://alerts.your-domain.com
+# Grafana: https://monitoring.unicorncommander.ai (admin/your-admin-password)
+# Prometheus: https://metrics.unicorncommander.ai
+# Alertmanager: https://alerts.unicorncommander.ai
 
 # Reload configurations
 curl -X POST http://ops-center-prometheus:9090/-/reload

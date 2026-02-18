@@ -8,7 +8,7 @@
 
 | Aspect | Details |
 |--------|---------|
-| **URL** | https://your-domain.com |
+| **URL** | https://unicorncommander.ai |
 | **Version** | 2.4.0 (Production Ready) |
 | **Backend** | FastAPI (Python) - 218 modules, 95,000+ lines |
 | **Frontend** | React 18 + Material-UI |
@@ -194,7 +194,7 @@ Built for high-volume AI workloads.
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         INTERNET                                     │
-│                    (your-domain.com)                            │
+│                    (unicorncommander.ai)                            │
 └───────────────────────────┬─────────────────────────────────────────┘
                             │
                    ┌────────▼────────┐
@@ -231,14 +231,14 @@ Built for high-volume AI workloads.
 
 | Service | URL | What It Does |
 |---------|-----|--------------|
-| **Open-WebUI** | chat.your-domain.com | ChatGPT-like interface |
-| **Center-Deep** | search.your-domain.com | AI metasearch (70+ engines) |
-| **Bolt.diy** | bolt.your-domain.com | AI coding assistant |
-| **Presenton** | presentations.your-domain.com | AI presentation generator |
-| **Forgejo** | git.your-domain.com | Self-hosted Git (GitHub alternative) |
-| **Brigade** | brigade.your-domain.com | AI agent platform (47+ agents) |
-| **PartnerPulse** | partnerpulse.your-domain.com | Partner management |
-| **Lago** | billing.your-domain.com | Billing admin (admin only) |
+| **Open-WebUI** | chat.unicorncommander.ai | ChatGPT-like interface |
+| **Center-Deep** | search.unicorncommander.ai | AI metasearch (70+ engines) |
+| **Bolt.diy** | bolt.unicorncommander.ai | AI coding assistant |
+| **Presenton** | presentations.unicorncommander.ai | AI presentation generator |
+| **Forgejo** | git.unicorncommander.ai | Self-hosted Git (GitHub alternative) |
+| **Brigade** | brigade.unicorncommander.ai | AI agent platform (47+ agents) |
+| **PartnerPulse** | partnerpulse.unicorncommander.ai | Partner management |
+| **Lago** | billing.unicorncommander.ai | Billing admin (admin only) |
 
 ---
 
@@ -347,10 +347,10 @@ All in one self-hosted, MIT-licensed platform that you fully control.
 
 **Project**: UC-Cloud / Ops-Center
 **Organization**: Magic Unicorn Unconventional Technology & Stuff Inc
-**Website**: https://your-domain.com
+**Website**: https://unicorncommander.com
 **License**: MIT
 
-**Repository**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Repository**: `/opt/ops-center/`
 **Documentation**: `/services/ops-center/docs/`
 
 ---

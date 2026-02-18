@@ -54,7 +54,7 @@ Create a comprehensive web-based GUI for managing Traefik reverse proxy configur
 
 Traefik uses a **hybrid configuration model**:
 
-#### Static Configuration (`/home/muut/Infrastructure/traefik/traefik.yml`)
+#### Static Configuration (`/home/deploy/Infrastructure/traefik/traefik.yml`)
 
 **Purpose**: Core Traefik settings that require restart to change
 
@@ -81,7 +81,7 @@ providers:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: admin@your-domain.com
+      email: admin@unicorncommander.ai
       storage: /acme/acme.json
       keyType: EC256
       httpChallenge:
@@ -96,7 +96,7 @@ certificatesResolvers:
 
 #### Dynamic Configuration (File Provider)
 
-**Location**: `/home/muut/Infrastructure/traefik/dynamic/*.yml`
+**Location**: `/home/deploy/Infrastructure/traefik/dynamic/*.yml`
 
 **Files**:
 1. `domains.yml` - Main service routing (314 lines)
@@ -143,7 +143,7 @@ http:
 labels:
   - "traefik.enable=true"
   - "traefik.http.routers.traefik.entrypoints=http"
-  - "traefik.http.routers.traefik.rule=Host(`traefik.your-domain.com`)"
+  - "traefik.http.routers.traefik.rule=Host(`traefik.unicorncommander.ai`)"
   - "traefik.http.routers.traefik-secure.entrypoints=https"
   - "traefik.http.routers.traefik-secure.tls=true"
   - "traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt"
@@ -155,21 +155,21 @@ labels:
 
 | Domain | Service | Backend | Port | SSL |
 |--------|---------|---------|------|-----|
-| your-domain.com | Ops-Center | ops-center-direct | 8000 | ✅ |
-| chat.your-domain.com | Open-WebUI | unicorn-open-webui | 8080 | ✅ |
-| search.your-domain.com | Center-Deep | unicorn-centerdeep | 8890 | ✅ |
-| auth.your-domain.com | Keycloak | uchub-keycloak | 8080 | ✅ |
-| billing.your-domain.com | Lago Frontend | unicorn-lago-front | 80 | ✅ |
-| billing-api.your-domain.com | Lago API | unicorn-lago-api | 3000 | ✅ |
-| ai.your-domain.com | LiteLLM Proxy | unicorn-litellm | 4000 | ✅ |
-| usage.your-domain.com | Metabase | unicorn-usage-dashboard | 3000 | ✅ |
-| brigade.your-domain.com | Brigade UI | unicorn-brigade-ui | 80 | ✅ |
-| api.brigade.your-domain.com | Brigade API | unicorn-brigade | 8112 | ✅ |
-| git.your-domain.com | Forgejo | unicorn-forgejo | 3003 | ✅ |
-| ci.your-domain.com | Woodpecker CI | unicorn-woodpecker-server | 8004 | ✅ |
-| code.your-domain.com | Bolt.DIY (OAuth2) | uchub-oauth2-proxy | 4180 | ✅ |
-| api2.your-domain.com | GPU Server (RunPod) | 174.171.202.141 | 8080 | ✅ |
-| gpu.your-domain.com | GPU Phone Home | gpu-ip-updater | 8082 | ✅ |
+| unicorncommander.ai | Ops-Center | ops-center-direct | 8000 | ✅ |
+| chat.unicorncommander.ai | Open-WebUI | unicorn-open-webui | 8080 | ✅ |
+| search.unicorncommander.ai | Center-Deep | unicorn-centerdeep | 8890 | ✅ |
+| auth.unicorncommander.ai | Keycloak | uchub-keycloak | 8080 | ✅ |
+| billing.unicorncommander.ai | Lago Frontend | unicorn-lago-front | 80 | ✅ |
+| billing-api.unicorncommander.ai | Lago API | unicorn-lago-api | 3000 | ✅ |
+| ai.unicorncommander.ai | LiteLLM Proxy | unicorn-litellm | 4000 | ✅ |
+| usage.unicorncommander.ai | Metabase | unicorn-usage-dashboard | 3000 | ✅ |
+| brigade.unicorncommander.ai | Brigade UI | unicorn-brigade-ui | 80 | ✅ |
+| api.brigade.unicorncommander.ai | Brigade API | unicorn-brigade | 8112 | ✅ |
+| git.unicorncommander.ai | Forgejo | unicorn-forgejo | 3003 | ✅ |
+| ci.unicorncommander.ai | Woodpecker CI | unicorn-woodpecker-server | 8004 | ✅ |
+| code.unicorncommander.ai | Bolt.DIY (OAuth2) | uchub-oauth2-proxy | 4180 | ✅ |
+| api2.unicorncommander.ai | GPU Server (RunPod) | 174.171.202.141 | 8080 | ✅ |
+| gpu.unicorncommander.ai | GPU Phone Home | gpu-ip-updater | 8082 | ✅ |
 
 **Total**: 15+ active routes
 
@@ -202,9 +202,9 @@ labels:
 ### 5. SSL/TLS Configuration
 
 **Certificate Resolver**: Let's Encrypt (HTTP-01 Challenge)
-**Storage**: `/home/muut/Infrastructure/traefik/acme/acme.json` (203KB)
+**Storage**: `/home/deploy/Infrastructure/traefik/acme/acme.json` (203KB)
 **Key Type**: EC256 (Elliptic Curve)
-**Email**: admin@your-domain.com
+**Email**: admin@unicorncommander.ai
 
 **Certificate Status**:
 - ✅ Automated renewal via ACME
@@ -656,13 +656,13 @@ Response: {
   "routes": [
     {
       "name": "chat-unicorncommander",
-      "rule": "Host(`chat.your-domain.com`)",
+      "rule": "Host(`chat.unicorncommander.ai`)",
       "service": "open-webui-service",
       "entryPoints": ["https"],
       "middlewares": ["security-headers"],
       "tls": {
         "certResolver": "letsencrypt",
-        "domains": [{"main": "chat.your-domain.com"}]
+        "domains": [{"main": "chat.unicorncommander.ai"}]
       },
       "priority": 100,
       "status": "enabled",
@@ -691,7 +691,7 @@ Response: {
 POST /api/v1/traefik/routes
 Body: {
   "name": "new-service",
-  "rule": "Host(`new.your-domain.com`)",
+  "rule": "Host(`new.unicorncommander.ai`)",
   "service": "new-service-backend",
   "entryPoints": ["https"],
   "middlewares": ["security-headers"],
@@ -887,7 +887,7 @@ GET /api/v1/traefik/certificates
 Response: {
   "certificates": [
     {
-      "domain": "chat.your-domain.com",
+      "domain": "chat.unicorncommander.ai",
       "sans": [],
       "issuer": "Let's Encrypt",
       "not_before": "2025-10-01T00:00:00Z",
@@ -918,7 +918,7 @@ Response: {
 # Get ACME configuration
 GET /api/v1/traefik/acme/config
 Response: {
-  "email": "admin@your-domain.com",
+  "email": "admin@unicorncommander.ai",
   "storage": "/acme/acme.json",
   "key_type": "EC256",
   "challenge": {
@@ -930,7 +930,7 @@ Response: {
 # Update ACME configuration (requires restart)
 PUT /api/v1/traefik/acme/config
 Body: {
-  "email": "admin@your-domain.com",
+  "email": "admin@unicorncommander.ai",
   "key_type": "EC256"
 }
 Response: {
@@ -1149,7 +1149,7 @@ import yaml
 from pathlib import Path
 
 TRAEFIK_API_URL = "http://traefik:8080/api"
-DYNAMIC_CONFIG_DIR = "/home/muut/Infrastructure/traefik/dynamic"
+DYNAMIC_CONFIG_DIR = "/home/deploy/Infrastructure/traefik/dynamic"
 
 async def get_routes():
     """Read routes from Traefik API"""
@@ -1361,7 +1361,7 @@ def sanitize_yaml(content: str) -> str:
 ### 3. File System Security
 
 **Requirements**:
-- Restrict file operations to `/home/muut/Infrastructure/traefik/dynamic/` directory
+- Restrict file operations to `/home/deploy/Infrastructure/traefik/dynamic/` directory
 - Prevent path traversal attacks
 - Validate file names
 - Set proper file permissions (644 for config files)
@@ -1370,7 +1370,7 @@ def sanitize_yaml(content: str) -> str:
 ```python
 from pathlib import Path
 
-DYNAMIC_CONFIG_DIR = Path("/home/muut/Infrastructure/traefik/dynamic")
+DYNAMIC_CONFIG_DIR = Path("/home/deploy/Infrastructure/traefik/dynamic")
 
 def safe_file_path(filename: str) -> Path:
     """Return safe file path or raise exception"""
@@ -1575,7 +1575,7 @@ Legend:
 │                                                               │
 │ ┌───────────────────────────────────────────────────────┐   │
 │ │ Domain *                                               │   │
-│ │ [____________________] .your-domain.com            │   │
+│ │ [____________________] .unicorncommander.ai            │   │
 │ │ Or full domain: [____________________]                 │   │
 │ └───────────────────────────────────────────────────────┘   │
 │                                                               │
@@ -1878,7 +1878,7 @@ def get_web_containers():
 ### 3. File System Integration
 
 **Requirements**:
-- Mount `/home/muut/Infrastructure/traefik` directory
+- Mount `/home/deploy/Infrastructure/traefik` directory
 - Read/write YAML files in `/dynamic` subdirectory
 - Monitor file changes
 - Create backups before modifications
@@ -1886,7 +1886,7 @@ def get_web_containers():
 **Docker Volume**:
 ```yaml
 volumes:
-  - /home/muut/Infrastructure/traefik:/traefik:rw
+  - /home/deploy/Infrastructure/traefik:/traefik:rw
 ```
 
 ### 4. Notification Integration
@@ -2025,7 +2025,7 @@ volumes:
 2. Clicks "+ Add Route" button
 3. Fills in form:
    - Route name: `api-new-service`
-   - Domain: `api.your-domain.com`
+   - Domain: `api.unicorncommander.ai`
    - Backend: Select from Docker containers dropdown → `new-service-container`
    - Entry Points: HTTPS
    - Enable TLS: Yes
@@ -2047,7 +2047,7 @@ volumes:
 9. Admin sees success toast: "Route created successfully"
 10. Admin clicks "Test" button
 11. System sends test request:
-    - `GET https://api.your-domain.com/health`
+    - `GET https://api.unicorncommander.ai/health`
     - Returns: 200 OK (12ms)
 12. SSL certificate auto-issued by Let's Encrypt within 60 seconds
 
@@ -2114,7 +2114,7 @@ volumes:
 
 **Preconditions**:
 - Admin is logged in
-- User reports issue with `chat.your-domain.com`
+- User reports issue with `chat.unicorncommander.ai`
 
 **Steps**:
 1. Admin navigates to "Traefik Management > Routes"
@@ -2161,18 +2161,18 @@ volumes:
 
 **Preconditions**:
 - Admin is logged in
-- Certificate for `billing.your-domain.com` expires in 15 days
+- Certificate for `billing.unicorncommander.ai` expires in 15 days
 - Email alert sent to admin
 
 **Steps**:
-1. Admin receives email: "SSL Certificate Expiring Soon: billing.your-domain.com (15 days)"
+1. Admin receives email: "SSL Certificate Expiring Soon: billing.unicorncommander.ai (15 days)"
 2. Admin logs into Ops-Center
 3. Navigates to "Traefik Management > SSL Certificates"
 4. Certificate list shows:
-   - ⚠️ `billing.your-domain.com` - Expires in 15 days
+   - ⚠️ `billing.unicorncommander.ai` - Expires in 15 days
 5. Admin clicks "ℹ️ View Details"
 6. Certificate detail modal shows:
-   - Domain: billing.your-domain.com
+   - Domain: billing.unicorncommander.ai
    - Issuer: Let's Encrypt
    - Issued: July 24, 2025
    - Expires: November 7, 2025
@@ -2801,10 +2801,10 @@ TRAEFIK_API_URL=http://traefik:8080/api
 TRAEFIK_API_AUTH_ENABLED=false
 
 # Dynamic Config Directory
-TRAEFIK_DYNAMIC_CONFIG_DIR=/home/muut/Infrastructure/traefik/dynamic
+TRAEFIK_DYNAMIC_CONFIG_DIR=/home/deploy/Infrastructure/traefik/dynamic
 
 # ACME Storage
-TRAEFIK_ACME_STORAGE=/home/muut/Infrastructure/traefik/acme/acme.json
+TRAEFIK_ACME_STORAGE=/home/deploy/Infrastructure/traefik/acme/acme.json
 
 # Docker Socket
 DOCKER_HOST=unix:///var/run/docker.sock

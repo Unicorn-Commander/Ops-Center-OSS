@@ -2,7 +2,7 @@
 """
 Fix all Redis connection issues in Ops-Center backend
 
-Replaces hardcoded 'unicorn-redis:6379' with correct 'unicorn-lago-redis:6379'
+Replaces hardcoded 'unicorn-redis:6379' with correct 'unicorn-redis:6379'
 or environment variable lookups.
 """
 
@@ -26,7 +26,7 @@ FILES_TO_FIX = [
 BACKEND_DIR = Path(__file__).parent
 
 # Correct Redis host (the actual container name)
-CORRECT_REDIS_HOST = "unicorn-lago-redis"
+CORRECT_REDIS_HOST = "unicorn-redis"
 
 def fix_redis_host_in_file(filepath: Path) -> bool:
     """Fix Redis host in a single file"""

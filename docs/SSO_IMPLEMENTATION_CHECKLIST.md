@@ -11,7 +11,7 @@
 **Priority**: High | **Status**: ⏳ Pending
 
 **Steps**:
-- [ ] Log in to Authentik admin: https://auth.your-domain.com/if/admin/
+- [ ] Log in to Authentik admin: https://auth.unicorncommander.ai/if/admin/
 - [ ] Navigate to Applications → Providers
 - [ ] Click "Create" → "OAuth2/OpenID Provider"
 - [ ] Configure:
@@ -21,19 +21,19 @@
   Client type: Confidential
   Client ID: litellm-proxy
   Client Secret: [GENERATE - Save to .env]
-  Redirect URIs: https://ai.your-domain.com/auth/callback
+  Redirect URIs: https://ai.unicorncommander.ai/auth/callback
   Scopes: openid, email, profile, groups
   ```
 - [ ] Click "Create" → Save provider
 - [ ] Create application linking provider
-- [ ] Test OAuth discovery URL: https://auth.your-domain.com/application/o/litellm-proxy/.well-known/openid-configuration
-- [ ] Update `/home/muut/Production/UC-1-Pro/billing/.env` with credentials
+- [ ] Test OAuth discovery URL: https://auth.unicorncommander.ai/application/o/litellm-proxy/.well-known/openid-configuration
+- [ ] Update `/home/deploy/Production/UC-1-Pro/billing/.env` with credentials
 
 **Environment Variables to Add**:
 ```env
 LITELLM_OAUTH_CLIENT_ID=litellm-proxy
 LITELLM_OAUTH_CLIENT_SECRET=<generated-secret>
-LITELLM_OAUTH_REDIRECT_URI=https://ai.your-domain.com/auth/callback
+LITELLM_OAUTH_REDIRECT_URI=https://ai.unicorncommander.ai/auth/callback
 LITELLM_OAUTH_ENABLED=true
 ```
 
@@ -49,17 +49,17 @@ LITELLM_OAUTH_ENABLED=true
   ```
   Client ID: lago-billing
   Client Secret: lago_billing_secret_2025
-  Redirect URI: https://billing.your-domain.com/auth/callback
+  Redirect URI: https://billing.unicorncommander.ai/auth/callback
   ```
 - [ ] If missing, create new OAuth provider (same steps as 1.1)
 - [ ] Test OAuth discovery URL
-- [ ] Verify configuration in `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml`
+- [ ] Verify configuration in `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml`
 
 **Current Config** (verify these match):
 ```yaml
 AUTHENTIK_CLIENT_ID=lago-billing
 AUTHENTIK_CLIENT_SECRET=lago_billing_secret_2025
-AUTHENTIK_REDIRECT_URI=https://billing.your-domain.com/auth/callback
+AUTHENTIK_REDIRECT_URI=https://billing.unicorncommander.ai/auth/callback
 ```
 
 ---
@@ -70,25 +70,25 @@ AUTHENTIK_REDIRECT_URI=https://billing.your-domain.com/auth/callback
 **Apps to Verify**:
 - [ ] **ops-center**
   - Client ID: ops-center
-  - Redirect: https://your-domain.com/auth/callback
+  - Redirect: https://unicorncommander.ai/auth/callback
   - Secret: ops-center-secret-2025
 
 - [ ] **open-webui**
   - Client ID: open-webui
-  - Redirect: https://chat.your-domain.com/oauth/oidc/callback
+  - Redirect: https://chat.unicorncommander.ai/oauth/oidc/callback
   - Secret: openwebui_oauth_secret_2025
 
 - [ ] **center-deep**
   - Client ID: center-deep
-  - Redirect: https://search.your-domain.com/auth/callback
+  - Redirect: https://search.unicorncommander.ai/auth/callback
   - Secret: centerdeep_oauth_secret_2025
 
 **Verification Commands**:
 ```bash
 # Test OAuth discovery for each app
-curl https://auth.your-domain.com/application/o/ops-center/.well-known/openid-configuration
-curl https://auth.your-domain.com/application/o/open-webui/.well-known/openid-configuration
-curl https://auth.your-domain.com/application/o/center-deep/.well-known/openid-configuration
+curl https://auth.unicorncommander.ai/application/o/ops-center/.well-known/openid-configuration
+curl https://auth.unicorncommander.ai/application/o/open-webui/.well-known/openid-configuration
+curl https://auth.unicorncommander.ai/application/o/center-deep/.well-known/openid-configuration
 ```
 
 ---
@@ -106,7 +106,7 @@ curl https://auth.your-domain.com/application/o/center-deep/.well-known/openid-c
   ```
   Name: Traefik Forward Auth
   Type: Forward auth (single application)
-  External host: https://auth.your-domain.com
+  External host: https://auth.unicorncommander.ai
   ```
 - [ ] Create application:
   ```
@@ -121,7 +121,7 @@ curl https://auth.your-domain.com/application/o/center-deep/.well-known/openid-c
 ### Task 2.2: Create Traefik Middleware Configuration
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Infrastructure/traefik/dynamic/middleware.yml`
+**File**: `/home/deploy/Infrastructure/traefik/dynamic/middleware.yml`
 
 **Steps**:
 - [ ] Create middleware.yml if doesn't exist
@@ -153,14 +153,14 @@ http:
 ### Task 2.3: Apply Middleware to LiteLLM
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml`
+**File**: `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml`
 
 **Steps**:
 - [ ] Update LiteLLM service labels (around line 179):
 ```yaml
 labels:
   - "traefik.enable=true"
-  - "traefik.http.routers.litellm.rule=Host(`ai.your-domain.com`)"
+  - "traefik.http.routers.litellm.rule=Host(`ai.unicorncommander.ai`)"
   - "traefik.http.routers.litellm.entrypoints=https"
   - "traefik.http.routers.litellm.tls.certresolver=letsencrypt"
   - "traefik.http.routers.litellm.middlewares=authentik@file"  # ADD THIS
@@ -168,7 +168,7 @@ labels:
 ```
 
 - [ ] Restart LiteLLM: `docker-compose -f billing/docker-compose.billing.yml restart litellm-proxy`
-- [ ] Test access: Navigate to https://ai.your-domain.com
+- [ ] Test access: Navigate to https://ai.unicorncommander.ai
 - [ ] Should redirect to Authentik login
 - [ ] After login, should access LiteLLM
 
@@ -177,14 +177,14 @@ labels:
 ### Task 2.4: Apply Middleware to Lago
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml`
+**File**: `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml`
 
 **Steps**:
 - [ ] Update Lago frontend labels (around line 78):
 ```yaml
 labels:
   - "traefik.enable=true"
-  - "traefik.http.routers.lago-front.rule=Host(`billing.your-domain.com`)"
+  - "traefik.http.routers.lago-front.rule=Host(`billing.unicorncommander.ai`)"
   - "traefik.http.routers.lago-front.entrypoints=https"
   - "traefik.http.routers.lago-front.tls.certresolver=letsencrypt"
   - "traefik.http.routers.lago-front.middlewares=authentik@file"  # ADD THIS
@@ -193,7 +193,7 @@ labels:
 ```
 
 - [ ] Restart Lago frontend: `docker-compose -f billing/docker-compose.billing.yml restart lago-front`
-- [ ] Test access: Navigate to https://billing.your-domain.com
+- [ ] Test access: Navigate to https://billing.unicorncommander.ai
 - [ ] Should redirect to Authentik login
 
 ---
@@ -201,14 +201,14 @@ labels:
 ### Task 2.5: Apply Middleware to Usage Dashboard
 **Priority**: Medium | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml`
+**File**: `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml`
 
 **Steps**:
 - [ ] Update Metabase labels (around line 214):
 ```yaml
 labels:
   - "traefik.enable=true"
-  - "traefik.http.routers.usage-dashboard.rule=Host(`usage.your-domain.com`)"
+  - "traefik.http.routers.usage-dashboard.rule=Host(`usage.unicorncommander.ai`)"
   - "traefik.http.routers.usage-dashboard.entrypoints=https"
   - "traefik.http.routers.usage-dashboard.tls.certresolver=letsencrypt"
   - "traefik.http.routers.usage-dashboard.middlewares=authentik@file"  # ADD THIS
@@ -216,7 +216,7 @@ labels:
 ```
 
 - [ ] Restart Usage Dashboard: `docker restart unicorn-usage-dashboard`
-- [ ] Test access: Navigate to https://usage.your-domain.com
+- [ ] Test access: Navigate to https://usage.unicorncommander.ai
 
 ---
 
@@ -226,7 +226,7 @@ labels:
 **Priority**: High | **Status**: ⏳ Pending
 
 **Steps**:
-- [ ] Create `/home/muut/Production/UC-1-Pro/services/ops-center/backend/session_manager.py`
+- [ ] Create `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/session_manager.py`
 - [ ] Define session schema:
 ```python
 from dataclasses import dataclass
@@ -271,7 +271,7 @@ class UserSession:
 ### Task 3.2: Create Session Manager Class
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/session_manager.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/session_manager.py`
 
 **Implementation**:
 ```python
@@ -334,7 +334,7 @@ class SessionManager:
 ### Task 3.3: Implement Session Middleware
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/middleware/session_middleware.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/middleware/session_middleware.py`
 
 **Implementation**:
 ```python
@@ -375,7 +375,7 @@ class SessionMiddleware(BaseHTTPMiddleware):
 ### Task 3.4: Update OAuth Callback to Create Session
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 **Steps**:
 - [ ] Locate OAuth callback endpoint (around line 300)
@@ -403,7 +403,7 @@ async def oauth_callback(code: str, state: str, response: Response):
     response.set_cookie(
         key="session_token",
         value=session_id,
-        domain=".your-domain.com",  # Domain-wide
+        domain=".unicorncommander.ai",  # Domain-wide
         httponly=True,
         secure=True,
         samesite="lax",
@@ -422,7 +422,7 @@ async def oauth_callback(code: str, state: str, response: Response):
 ### Task 3.5: Add Session Validation to Protected Routes
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
 
 **Steps**:
 - [ ] Create dependency for session validation:
@@ -461,7 +461,7 @@ async def pro_route(session: UserSession = Depends(require_tier('professional'))
 ### Task 4.1: Create Tier Validation Middleware
 **Priority**: High | **Status**: ⏳ Pending
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/service_access.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/service_access.py`
 
 **Steps**:
 - [ ] Review existing code (already exists)
@@ -542,7 +542,7 @@ async def stripe_webhook(request: Request):
 - [ ] API key encryption
 - [ ] OAuth flow
 
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/tests/test_session.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/tests/test_session.py`
 
 ---
 

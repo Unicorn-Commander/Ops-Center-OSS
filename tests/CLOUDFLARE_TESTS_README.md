@@ -53,7 +53,7 @@ This test suite provides comprehensive coverage for the Cloudflare DNS managemen
 ### 1. Install Test Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 
 # Install all testing dependencies
 pip install -r requirements-test.txt
@@ -212,7 +212,7 @@ REDIS_PORT=6379
 
 ```bash
 # Navigate to ops-center tests directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 
 # Run all Cloudflare tests
 ./run_cloudflare_tests.sh
@@ -340,7 +340,7 @@ pytest -v --timeout=30 --asyncio-mode=auto
 ```
 ============================= test session starts ==============================
 platform linux -- Python 3.10.12, pytest-7.4.3, pluggy-1.3.0
-rootdir: /home/muut/Production/UC-Cloud/services/ops-center/tests
+rootdir: /opt/ops-center/tests
 plugins: asyncio-0.21.1, cov-4.1.0, timeout-2.1.0, xdist-3.3.1
 collected 154 items
 
@@ -377,13 +377,13 @@ TOTAL                                  945     66    93%
 ### Valid Test Data
 
 **Domains**:
-- `your-domain.com` - Primary production domain
+- `unicorncommander.ai` - Primary production domain
 - `test-{timestamp}.com` - Temporary test domain
 - `superiorbsolutions.com` - Production domain #2
 - `magicunicorn.tech` - Production domain #3
 
 **IP Addresses**:
-- `YOUR_SERVER_IP` - Production IP (Vultr)
+- `your-server-ip` - Production IP (Vultr)
 - `192.168.1.100` - Private IP (test)
 - `10.0.0.0/8` - Private CIDR
 - `2001:db8::1` - IPv6 (test)
@@ -443,7 +443,7 @@ curl http://localhost:8084/api/v1/system/status
 **Solution**:
 ```bash
 # Verify test users exist in Keycloak
-# Admin Console: https://auth.your-domain.com/admin/uchub/console
+# Admin Console: https://auth.unicorncommander.ai/admin/uchub/console
 
 # Check credentials in .env.test
 cat .env.test | grep TEST_

@@ -48,7 +48,7 @@ It automatically:
 ### Step 1: Generate Encryption Key (one-time)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 python3 backend/scripts/generate_encryption_key.py
 ```
 
@@ -146,7 +146,7 @@ The integration comes with **OpenRouter** pre-configured:
 - **API Key ID**: 1
 - **Provider**: openrouter
 - **Status**: Active for "chat" purpose
-- **API Key**: `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`
+- **API Key**: `sk-or-v1-your-openrouter-key`
 
 This means **inference works out-of-the-box** with no additional setup!
 

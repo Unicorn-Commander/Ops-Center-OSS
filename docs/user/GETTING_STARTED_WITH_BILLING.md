@@ -53,7 +53,7 @@ This guide will help you understand how billing works, how to view your credits,
 
 ### Step 1: Login
 
-1. Go to https://your-domain.com
+1. Go to https://unicorncommander.ai
 2. Click **Login** in the top right
 3. Authenticate via Keycloak SSO (Google, GitHub, Microsoft, or email)
 
@@ -66,7 +66,7 @@ Once logged in:
 2. View your credit balance on the dashboard
 
 **Option B: Direct URL**
-- Go to https://your-domain.com/admin/credits
+- Go to https://unicorncommander.ai/admin/credits
 
 ### Step 3: Understanding the Dashboard
 
@@ -618,7 +618,7 @@ Download PDF from **Billing** → **Invoices**.
 ## Need Help?
 
 **📧 Email Support:** support@magicunicorn.tech
-**📚 Documentation:** https://your-domain.com/docs
+**📚 Documentation:** https://unicorncommander.ai/docs
 **💬 Community:** https://discord.gg/unicorncommander
 
 **For Billing Issues:**

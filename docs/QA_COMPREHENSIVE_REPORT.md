@@ -1,7 +1,7 @@
 # Ops-Center Comprehensive QA Report
 
 **Report Date**: November 12, 2025
-**Test Environment**: Production (your-domain.com)
+**Test Environment**: Production (unicorncommander.ai)
 **Database**: unicorn_db @ uchub-postgres
 **Application Version**: Ops-Center v2.3.0
 **Tester**: QA & Testing Team Lead
@@ -226,7 +226,7 @@ SET feature_count = (
 **Recommended Fix**:
 ```bash
 # Check Keycloak user attributes via Admin API
-curl -s https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com \
+curl -s https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   | jq '.[0].attributes'
 
@@ -391,7 +391,7 @@ docker exec ops-center-direct python3 /app/backend/scripts/quick_populate_users.
 
 1. **Run Frontend Component Search**
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    find src/pages -name "*Subscription*.jsx" -o -name "*App*.jsx" -o -name "*InviteCode*.jsx"
    grep -r "subscription-management\|app-management\|invite-codes" src/
    ```
@@ -410,7 +410,7 @@ docker exec ops-center-direct python3 /app/backend/scripts/quick_populate_users.
 4. **Verify User in Keycloak**
    ```bash
    # Requires admin token
-   curl https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com
+   curl https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com
    ```
 
 ---
@@ -470,12 +470,12 @@ docker exec ops-center-direct python3 /app/backend/scripts/quick_populate_users.
 
 **System Admin**:
 - Email: `admin@example.com`
-- Keycloak: https://auth.your-domain.com
+- Keycloak: https://auth.unicorncommander.ai
 - Expected Tier: VIP Founder
 - Expected Access: 4+ apps
 
 **Keycloak Admin**:
-- Console: https://auth.your-domain.com/admin/uchub/console
+- Console: https://auth.unicorncommander.ai/admin/uchub/console
 - Username: `admin`
 - Password: `your-admin-password`
 

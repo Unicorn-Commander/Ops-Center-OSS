@@ -74,7 +74,7 @@ pending    - Payment or activation pending
 
 ## Web UI Configuration (One-Time Setup)
 
-1. **Login**: https://auth.your-domain.com/admin/uchub/console
+1. **Login**: https://auth.unicorncommander.ai/admin/uchub/console
    - User: `admin` / Pass: `your-admin-password`
 
 2. **Navigate**: Realm Settings → User Profile
@@ -202,23 +202,23 @@ User Profile may need manual configuration via Keycloak Admin Console.
 ## Files Reference
 
 **Configuration Scripts**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/configure_keycloak_user_profile.py`
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/verify_user_attributes.py`
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/quick_populate_users.py`
+- `/opt/ops-center/backend/scripts/configure_keycloak_user_profile.py`
+- `/opt/ops-center/backend/scripts/verify_user_attributes.py`
+- `/opt/ops-center/backend/scripts/quick_populate_users.py`
 
 **Documentation**:
-- Full Guide: `/home/muut/Production/UC-Cloud/services/ops-center/docs/KEYCLOAK_USER_PROFILE_SETUP.md`
-- Quick Ref: `/home/muut/Production/UC-Cloud/services/ops-center/docs/KEYCLOAK_USER_PROFILE_QUICK_REF.md`
+- Full Guide: `/opt/ops-center/docs/KEYCLOAK_USER_PROFILE_SETUP.md`
+- Quick Ref: `/opt/ops-center/docs/KEYCLOAK_USER_PROFILE_QUICK_REF.md`
 
 **Backend Integration**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/keycloak_integration.py`
+- `/opt/ops-center/backend/keycloak_integration.py`
 - Lines 352-417: Tier-specific helper functions
 
 ---
 
 ## Next Steps After Configuration
 
-1. **Verify Metrics**: Go to https://your-domain.com/admin/system/users
+1. **Verify Metrics**: Go to https://unicorncommander.ai/admin/system/users
    - Should show correct user counts, tier distribution
 
 2. **Test User Journey**:

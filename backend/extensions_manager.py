@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 
 # Stripe Configuration
 STRIPE_SECRET_KEY = get_credential("STRIPE_SECRET_KEY")
-STRIPE_SUCCESS_URL = get_credential("STRIPE_SUCCESS_URL", "https://your-domain.com/extensions/success")
-STRIPE_CANCEL_URL = get_credential("STRIPE_CANCEL_URL", "https://your-domain.com/extensions/cancel")
+STRIPE_SUCCESS_URL = get_credential("STRIPE_SUCCESS_URL", "https://unicorncommander.ai/extensions/success")
+STRIPE_CANCEL_URL = get_credential("STRIPE_CANCEL_URL", "https://unicorncommander.ai/extensions/cancel")
 
 stripe.api_key = STRIPE_SECRET_KEY
 

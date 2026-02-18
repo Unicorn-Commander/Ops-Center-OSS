@@ -342,7 +342,7 @@ When you make an LLM request, UC-Cloud follows this priority:
 
 #### 1. Navigate to API Keys
 
-- **URL**: https://your-domain.com/admin/account/api-keys
+- **URL**: https://unicorncommander.ai/admin/account/api-keys
 - **Menu**: Account Settings → API Keys
 - **Description**: You'll see a list of your configured API keys (empty if first time)
 
@@ -401,7 +401,7 @@ When you make an LLM request, UC-Cloud follows this priority:
 
 ### View All Keys
 
-**URL**: https://your-domain.com/admin/account/api-keys
+**URL**: https://unicorncommander.ai/admin/account/api-keys
 
 **Displays**:
 - Provider icon and name
@@ -554,7 +554,7 @@ When you make an LLM request, UC-Cloud follows this priority:
 
 **Example Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \
   -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -718,7 +718,7 @@ curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
 #### 3. View Response Metadata
 ```bash
 # Check x-using-byok header
-curl -i https://your-domain.com/api/v1/llm/chat/completions ...
+curl -i https://unicorncommander.ai/api/v1/llm/chat/completions ...
 
 # If x-using-byok: false, check logs:
 docker logs ops-center-direct | grep "User {your-email}"
@@ -1126,10 +1126,10 @@ savings = platform - byok  # $150/month
 - Google: https://ai.google.dev/docs
 
 **UC-Cloud Support**:
-- Email: support@your-domain.com
+- Email: support@unicorncommander.com
 - Discord: https://discord.gg/unicorncommander
-- Docs: https://docs.your-domain.com
-- Status Page: https://status.your-domain.com
+- Docs: https://docs.unicorncommander.ai
+- Status Page: https://status.unicorncommander.ai
 
 **Provider Support**:
 - OpenRouter: support@openrouter.ai

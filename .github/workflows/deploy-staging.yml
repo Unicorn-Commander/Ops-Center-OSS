@@ -1,10 +1,9 @@
 name: Deploy to Staging
 
-# Disabled automatic triggers - run manually when needed
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
-  # push:
-  #   branches: [main]
 
 env:
   REGISTRY: ghcr.io
@@ -15,8 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: staging
-      # Configure your staging URL in GitHub repository variables
-      url: ${{ vars.STAGING_URL }}
+      url: https://staging.your-domain.com
 
     steps:
       - name: Checkout code
@@ -90,19 +88,18 @@ jobs:
       - name: Run smoke tests
         run: |
           # Test basic endpoints
-          # Configure STAGING_URL in GitHub repository variables
-          curl -f ${{ vars.STAGING_URL }}/api/v1/system/status || exit 1
-          curl -f ${{ vars.STAGING_URL }}/api/v1/health || exit 1
+          curl -f https://staging.your-domain.com/api/v1/system/status || exit 1
+          curl -f https://staging.your-domain.com/api/v1/health || exit 1
 
-          echo "Smoke tests passed"
+          echo "✅ Smoke tests passed"
 
       - name: Notify deployment success
         if: success()
         run: |
-          echo "### Staging Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Staging Deployment Successful" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment**: staging" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL**: ${{ vars.STAGING_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://staging.your-domain.com" >> $GITHUB_STEP_SUMMARY
 
       - name: Rollback on failure
         if: failure()

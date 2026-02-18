@@ -36,7 +36,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="/home/muut/Production/UC-Cloud/services/ops-center"
+PROJECT_ROOT="/opt/ops-center"
 REPORT_DIR="/tmp/credit_flow_reports"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 

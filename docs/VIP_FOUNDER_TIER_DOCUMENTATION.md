@@ -82,7 +82,7 @@ The VIP Founder tier includes access to **4 premium applications**:
   - Real-time streaming responses
 
 ### 3. Bolt.diy (UC Fork)
-- **URL**: https://bolt.your-domain.com
+- **URL**: https://bolt.unicorncommander.ai
 - **Description**: AI-powered development environment
 - **Features**:
   - Code generation with AI assistance
@@ -91,7 +91,7 @@ The VIP Founder tier includes access to **4 premium applications**:
   - Project scaffolding and templates
 
 ### 4. Presenton (UC Fork)
-- **URL**: https://presentations.your-domain.com
+- **URL**: https://presentations.unicorncommander.ai
 - **Description**: AI presentation generation platform
 - **Features**:
   - Generate slides from prompts
@@ -188,12 +188,12 @@ ORDER BY ta.app_key;
 ```
 app_key          | app_value                                | enabled | tier_name
 -----------------+------------------------------------------+---------+-------------
-bolt_diy         | https://bolt.your-domain.com         | true    | VIP Founder
+bolt_diy         | https://bolt.unicorncommander.ai         | true    | VIP Founder
 center_deep_pro  | https://centerdeep.online                | true    | VIP Founder
 chat_access      | true                                     | true    | VIP Founder
 litellm_access   | true                                     | true    | VIP Founder
 open_webui       | http://localhost:8080                    | true    | VIP Founder
-presenton        | https://presentations.your-domain.com| true    | VIP Founder
+presenton        | https://presentations.unicorncommander.ai| true    | VIP Founder
 priority_support | true                                     | true    | VIP Founder
 search_enabled   | true                                     | true    | VIP Founder
 ```
@@ -287,7 +287,7 @@ GET /api/v1/admin/tiers/1/features
 [
   {
     "feature_key": "bolt_diy",
-    "feature_value": "https://bolt.your-domain.com",
+    "feature_value": "https://bolt.unicorncommander.ai",
     "enabled": true
   },
   {
@@ -302,7 +302,7 @@ GET /api/v1/admin/tiers/1/features
   },
   {
     "feature_key": "presenton",
-    "feature_value": "https://presentations.your-domain.com",
+    "feature_value": "https://presentations.unicorncommander.ai",
     "enabled": true
   }
 ]
@@ -356,7 +356,7 @@ Content-Type: application/json
 **Via API** (Programmatic):
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/admin/tiers/users/USER_ID/migrate-tier \
+curl -X POST https://unicorncommander.ai/api/v1/admin/tiers/users/USER_ID/migrate-tier \
   -H "Content-Type: application/json" \
   -H "Cookie: session_token=YOUR_SESSION_TOKEN" \
   -d '{
@@ -438,10 +438,10 @@ NOTICE:  Successfully associated 4 apps with VIP Founder tier (ID: 1)
 
  id |  tier_code  |  tier_name  |     app_key      |                 app_value                 | enabled
 ----+-------------+-------------+------------------+-------------------------------------------+---------
- 24 | vip_founder | VIP Founder | bolt_diy         | https://bolt.your-domain.com          | t
+ 24 | vip_founder | VIP Founder | bolt_diy         | https://bolt.unicorncommander.ai          | t
  22 | vip_founder | VIP Founder | center_deep_pro  | https://centerdeep.online                 | t
  23 | vip_founder | VIP Founder | open_webui       | http://localhost:8080                     | t
- 25 | vip_founder | VIP Founder | presenton        | https://presentations.your-domain.com | t
+ 25 | vip_founder | VIP Founder | presenton        | https://presentations.unicorncommander.ai | t
 ...
 
 COMMIT
@@ -548,7 +548,7 @@ docker restart ops-center-direct
 
 **Solution**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Rebuild frontend
 npm run build
@@ -579,8 +579,8 @@ BEGIN
     VALUES
       (v_tier_id, 'center_deep_pro', 'https://centerdeep.online', TRUE),
       (v_tier_id, 'open_webui', 'http://localhost:8080', TRUE),
-      (v_tier_id, 'bolt_diy', 'https://bolt.your-domain.com', TRUE),
-      (v_tier_id, 'presenton', 'https://presentations.your-domain.com', TRUE)
+      (v_tier_id, 'bolt_diy', 'https://bolt.unicorncommander.ai', TRUE),
+      (v_tier_id, 'presenton', 'https://presentations.unicorncommander.ai', TRUE)
     ON CONFLICT (tier_id, app_key) DO UPDATE SET
       app_value = EXCLUDED.app_value,
       enabled = EXCLUDED.enabled;

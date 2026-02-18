@@ -2,14 +2,14 @@
 
 ## Prerequisites
 
-1. **Keycloak running** at `https://auth.your-domain.com/realms/uchub`
+1. **Keycloak running** at `https://auth.unicorncommander.ai/realms/uchub`
 2. **Admin credentials** configured in environment
 3. **Test user** created in Keycloak with email address
 
 ## Environment Setup
 
 ```bash
-export KEYCLOAK_URL=https://auth.your-domain.com
+export KEYCLOAK_URL=https://auth.unicorncommander.ai
 export KEYCLOAK_REALM=uchub
 export KEYCLOAK_ADMIN_USERNAME=admin
 export KEYCLOAK_ADMIN_PASSWORD=your_password
@@ -21,7 +21,7 @@ export TIER_ENFORCEMENT_ENABLED=true
 ### Test 1: Python Integration Test
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 
 # Run test suite
 python3 tests/test_tier_enforcement.py your@email.com
@@ -47,15 +47,15 @@ Failed: 0
 
 ```bash
 # Step 1: Login and save session
-curl -c /tmp/session.txt -X POST https://your-domain.com/api/v1/auth/login \
+curl -c /tmp/session.txt -X POST https://unicorncommander.ai/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"your@email.com","password":"yourpass"}'
 
 # Step 2: Check current usage
-curl -b /tmp/session.txt https://your-domain.com/api/v1/usage/current | jq
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/usage/current | jq
 
 # Step 3: Make API call with headers
-curl -b /tmp/session.txt https://your-domain.com/api/v1/services -v 2>&1 | grep X-
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services -v 2>&1 | grep X-
 ```
 
 **Expected Headers**:
@@ -72,7 +72,7 @@ X-API-Calls-Remaining: 99
 ```bash
 # Run comprehensive bash tests
 SESSION_FILE=/tmp/session.txt \
-  /home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.sh
+  /home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.sh
 ```
 
 **Expected Output**:
@@ -113,7 +113,7 @@ SESSION_FILE=/tmp/session.txt \
 ```bash
 # Get admin token
 TOKEN=$(curl -s -X POST \
-  "https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token" \
+  "https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" \
   -d "username=$KEYCLOAK_ADMIN_USERNAME" \
@@ -121,7 +121,7 @@ TOKEN=$(curl -s -X POST \
 
 # Get user attributes
 curl -s -H "Authorization: Bearer $TOKEN" \
-  "https://auth.your-domain.com/admin/realms/uchub/users?email=your@email.com" \
+  "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=your@email.com" \
   | jq '.[] | .attributes'
 ```
 
@@ -143,7 +143,7 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 # Set tier to trial (100 calls/day)
 # Make 100+ API calls
 for i in {1..105}; do
-  curl -b /tmp/session.txt https://your-domain.com/api/v1/services -s -o /dev/null -w "Call $i: %{http_code}\n"
+  curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services -s -o /dev/null -w "Call $i: %{http_code}\n"
   sleep 0.1
 done
 ```
@@ -165,7 +165,7 @@ asyncio.run(test())
 "
 
 # Test API call
-curl -b /tmp/session.txt https://your-domain.com/api/v1/services
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services
 ```
 
 **Expected**: `403 Forbidden` with subscription_inactive error.
@@ -186,7 +186,7 @@ asyncio.run(test())
 "
 
 # Verify new limit
-curl -b /tmp/session.txt https://your-domain.com/api/v1/usage/current | jq '.usage.api_calls.daily_limit'
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/usage/current | jq '.usage.api_calls.daily_limit'
 ```
 
 **Expected**: `333` (professional tier limit)
@@ -229,7 +229,7 @@ asyncio.run(test())
 env | grep KEYCLOAK
 
 # Test direct connection
-curl https://auth.your-domain.com/realms/uchub/.well-known/openid-configuration
+curl https://auth.unicorncommander.ai/realms/uchub/.well-known/openid-configuration
 ```
 
 ### Issue: Attributes not updating
@@ -252,7 +252,7 @@ asyncio.run(test())
 
 ```bash
 # Check if path is exempt
-curl -b /tmp/session.txt https://your-domain.com/api/v1/services -v 2>&1 | grep X-Tier
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services -v 2>&1 | grep X-Tier
 
 # If no headers, check if tier enforcement enabled
 docker exec unicorn-ops-center env | grep TIER_ENFORCEMENT_ENABLED

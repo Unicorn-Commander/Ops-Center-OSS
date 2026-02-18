@@ -18,7 +18,7 @@ Successfully implemented a comprehensive database schema migration system using 
 
 ### 1. Alembic Framework Setup ✅
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 
 **Files Created**:
 - `alembic.ini` - Configuration file (192 lines)
@@ -99,7 +99,7 @@ Successfully implemented a comprehensive database schema migration system using 
 - Automatic cleanup of old backups
 - Verification after backup creation
 
-**Backup Location**: `/home/muut/backups/database/`
+**Backup Location**: `/opt/backups/database/`
 
 **Backup Format**:
 ```
@@ -262,13 +262,13 @@ ops-center/
 POSTGRES_HOST=unicorn-postgresql
 POSTGRES_PORT=5432
 POSTGRES_USER=unicorn
-POSTGRES_PASSWORD=CCCzgFZlaDb0JSL1xdPAzwGO
+POSTGRES_PASSWORD=your-postgres-password
 POSTGRES_DB=unicorn_db
 ```
 
 **Connection String**:
 ```
-postgresql://unicorn:CCCzgFZlaDb0JSL1xdPAzwGO@unicorn-postgresql:5432/unicorn_db
+postgresql://unicorn:your-postgres-password@unicorn-postgresql:5432/unicorn_db
 ```
 
 ### Migration Flow
@@ -413,7 +413,7 @@ If tables need to be created in the database:
 docker exec ops-center-direct bash -c "
   cd /app && \
   export POSTGRES_HOST=unicorn-postgresql && \
-  export POSTGRES_PASSWORD='CCCzgFZlaDb0JSL1xdPAzwGO' && \
+  export POSTGRES_PASSWORD='your-postgres-password' && \
   alembic upgrade head
 "
 
@@ -497,7 +497,7 @@ psycopg2-binary==2.9.9   # PostgreSQL driver
 | Documentation Lines | 2,216 lines |
 | Total Code/Docs | 3,364 lines |
 | Backup Size | 1.2 KB (empty DB) |
-| Backup Location | /home/muut/backups/database/ |
+| Backup Location | /opt/backups/database/ |
 | Retention Period | 7 days |
 | Development Time | ~4 hours |
 
@@ -565,7 +565,7 @@ All success criteria met:
 
 ## Contact & Support
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 
 **Documentation**:
 - Main Guide: `docs/DATABASE_MIGRATIONS.md`
@@ -577,7 +577,7 @@ All success criteria met:
 
 **Migration Files**: `alembic/versions/`
 
-**Backup Location**: `/home/muut/backups/database/`
+**Backup Location**: `/opt/backups/database/`
 
 ---
 

@@ -16,7 +16,7 @@
 
 ## Primary Fix: ThemeContext.jsx
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/contexts/ThemeContext.jsx`
+**File**: `/opt/ops-center/src/contexts/ThemeContext.jsx`
 
 **Action**: Replace with `ThemeContext.jsx.NEW`
 
@@ -106,7 +106,7 @@ status: {
 
 ### Step 1: Backup Current File
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/src/contexts
+cd /opt/ops-center/src/contexts
 cp ThemeContext.jsx ThemeContext.jsx.BACKUP_$(date +%Y%m%d_%H%M%S)
 ```
 
@@ -117,7 +117,7 @@ cp ThemeContext.jsx.NEW ThemeContext.jsx
 
 ### Step 3: Rebuild Frontend
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 ```
@@ -128,7 +128,7 @@ docker restart ops-center-direct
 ```
 
 ### Step 5: Verify Changes
-1. Open https://your-domain.com
+1. Open https://unicorncommander.ai
 2. Navigate to Theme Selector (Settings)
 3. Test each theme:
    - **Dark Theme**: Check error messages are visible
@@ -281,9 +281,9 @@ If issues are discovered after deployment:
 
 ### Immediate Rollback
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/src/contexts
+cd /opt/ops-center/src/contexts
 cp ThemeContext.jsx.BACKUP_* ThemeContext.jsx
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build && cp -r dist/* public/
 docker restart ops-center-direct
 ```

@@ -75,7 +75,7 @@ if curl -s -f http://localhost:8084/api/v1/services/discovery > /dev/null; then
     echo ""
 else
     echo -e "${YELLOW}⚠ Server not running - skipping API tests${NC}"
-    echo "  Start server with: cd /home/muut/Production/UC-1-Pro/services/ops-center && python3 backend/server.py"
+    echo "  Start server with: cd /home/deploy/Production/UC-1-Pro/services/ops-center && python3 backend/server.py"
 fi
 echo ""
 

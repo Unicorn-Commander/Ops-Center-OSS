@@ -20,7 +20,7 @@
 ## H20: Platform Settings Backend Verification
 
 ### Backend File Location
-- **File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/platform_settings_api.py`
+- **File**: `/opt/ops-center/backend/platform_settings_api.py`
 - **Status**: ✅ EXISTS
 - **Router**: Properly imported in `server.py` (line 83, 497)
 - **Prefix**: `/api/v1/platform`
@@ -41,7 +41,7 @@
   "settings": [
     {
       "key": "STRIPE_PUBLISHABLE_KEY",
-      "value": "pk_test_51Qwx...",
+      "value": "pk_test_your_stripe_publishable_key",
       "description": "Stripe publishable key (pk_test_... or pk_live_...)",
       "category": "stripe",
       "is_secret": false,
@@ -96,7 +96,7 @@
 ## H21: Local Users Backend Verification
 
 ### Backend File Location
-- **File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/local_users_api.py`
+- **File**: `/opt/ops-center/backend/local_users_api.py`
 - **Status**: ✅ EXISTS
 - **Router**: Properly imported in `server.py` (line 82, 491)
 - **Prefix**: `/api/v1/admin/system/local-users`
@@ -189,7 +189,7 @@ async def remove_ssh_key(username: str, key_id: str, ...):
 ## H22: BYOK API Backend Verification
 
 ### Backend File Location
-- **File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py`
+- **File**: `/opt/ops-center/backend/byok_api.py`
 - **Status**: ✅ EXISTS
 - **Router**: Properly imported in `server.py` (line 64, 423)
 - **Prefix**: `/api/v1/byok`  ⚠️ **(Issue: Frontend expects `/api/v1/auth/byok`)**
@@ -321,7 +321,7 @@ const response = await fetch('/api/v1/byok/keys');  // ✅ CORRECT
 
 **Usage**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 bash scripts/test_backend_apis.sh
 ```
 
@@ -438,7 +438,7 @@ $ curl http://localhost:8084/api/v1/platform/settings
   "settings": [
     {
       "key": "STRIPE_PUBLISHABLE_KEY",
-      "value": "pk_test_51QwxFKDzk9HqAZnHg2c2Ly...",
+      "value": "pk_test_your_stripe_publishable_key",
       "description": "Stripe publishable key (pk_test_... or pk_live_...)",
       "category": "stripe",
       "is_secret": false,
@@ -513,5 +513,5 @@ $ curl http://localhost:8084/api/v1/byok/providers
 ---
 
 **Report Generated**: October 25, 2025 22:30 UTC
-**Test Script**: `/home/muut/Production/UC-Cloud/services/ops-center/scripts/test_backend_apis.sh`
+**Test Script**: `/opt/ops-center/scripts/test_backend_apis.sh`
 **Full Test Results**: `/tmp/backend_api_test_results_20251025_222643.txt`

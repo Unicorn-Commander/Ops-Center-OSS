@@ -28,7 +28,7 @@ echo ""
 
 # Step 1: Backup current database
 echo -e "${YELLOW}Step 1: Creating database backup...${NC}"
-BACKUP_DIR="/home/muut/backups"
+BACKUP_DIR="/opt/backups"
 BACKUP_FILE="$BACKUP_DIR/ops-center-pre-service-auth-fix-$(date +%Y%m%d-%H%M%S).sql"
 
 mkdir -p "$BACKUP_DIR"

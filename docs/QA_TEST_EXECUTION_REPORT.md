@@ -2,7 +2,7 @@
 
 **Test Date**: November 12, 2025
 **Tester**: QA & Testing Team Lead
-**Environment**: Production (your-domain.com)
+**Environment**: Production (unicorncommander.ai)
 **Database**: unicorn_db (PostgreSQL)
 **Services Tested**: Ops-Center v2.3.0
 
@@ -54,7 +54,7 @@ Container: unicorn-redis              Status: ✅ Running
 
 ### 1.1 Subscription Management Page
 
-**URL**: https://your-domain.com/admin/system/subscription-management
+**URL**: https://unicorncommander.ai/admin/system/subscription-management
 
 #### Test Cases
 
@@ -113,7 +113,7 @@ WHERE st.tier_code = 'vip_founder';
 
 ### 1.3 App Management Interface
 
-**URL**: https://your-domain.com/admin/system/app-management
+**URL**: https://unicorncommander.ai/admin/system/app-management
 
 #### Test Cases
 
@@ -146,25 +146,25 @@ GET  /api/v1/admin/apps/{app_id}/tiers       # Get tiers for app
 
 | Test ID | Test Case | Command | Expected Result | Status |
 |---------|-----------|---------|----------------|--------|
-| IC-001 | List invite codes | `curl https://your-domain.com/api/v1/admin/invite-codes/` | JSON array of codes | 🔄 PENDING |
-| IC-002 | Validate code | `curl https://your-domain.com/api/v1/invite-codes/validate/VIP-FOUNDER-EARLY100` | `{"valid": true, "tier": "vip_founder"}` | 🔄 PENDING |
-| IC-003 | Generate new code | `curl -X POST https://your-domain.com/api/v1/admin/invite-codes/` | New code created | 🔄 PENDING |
-| IC-004 | Redeem code | `curl -X POST https://your-domain.com/api/v1/invite-codes/redeem/{code}` | User tier updated | 🔄 PENDING |
+| IC-001 | List invite codes | `curl https://unicorncommander.ai/api/v1/admin/invite-codes/` | JSON array of codes | 🔄 PENDING |
+| IC-002 | Validate code | `curl https://unicorncommander.ai/api/v1/invite-codes/validate/VIP-FOUNDER-EARLY100` | `{"valid": true, "tier": "vip_founder"}` | 🔄 PENDING |
+| IC-003 | Generate new code | `curl -X POST https://unicorncommander.ai/api/v1/admin/invite-codes/` | New code created | 🔄 PENDING |
+| IC-004 | Redeem code | `curl -X POST https://unicorncommander.ai/api/v1/invite-codes/redeem/{code}` | User tier updated | 🔄 PENDING |
 
 **Test Scripts**:
 ```bash
 # Test 1: List all invite codes (requires admin session)
 SESSION_TOKEN="<get from browser DevTools>"
-curl -s https://your-domain.com/api/v1/admin/invite-codes/ \
+curl -s https://unicorncommander.ai/api/v1/admin/invite-codes/ \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   | jq '.[] | {code: .code, tier: .tier_code, uses: .uses_remaining}'
 
 # Test 2: Validate VIP Founder code
-curl -s https://your-domain.com/api/v1/invite-codes/validate/VIP-FOUNDER-EARLY100 \
+curl -s https://unicorncommander.ai/api/v1/invite-codes/validate/VIP-FOUNDER-EARLY100 \
   | jq '{valid: .valid, tier: .tier_code, message: .message}'
 
 # Test 3: Generate new code (requires admin session)
-curl -X POST https://your-domain.com/api/v1/admin/invite-codes/ \
+curl -X POST https://unicorncommander.ai/api/v1/admin/invite-codes/ \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -188,23 +188,23 @@ curl -X POST https://your-domain.com/api/v1/admin/invite-codes/ \
 **Test Scripts**:
 ```bash
 # Test 1: List credit packages (public endpoint)
-curl -s https://your-domain.com/api/v1/billing/credits/packages \
+curl -s https://unicorncommander.ai/api/v1/billing/credits/packages \
   | jq '.[] | {name: .name, credits: .credits, price: .price_usd, bonus: .bonus_credits}'
 
 # Test 2: Purchase history (requires user session)
 SESSION_TOKEN="<get from browser>"
-curl -s https://your-domain.com/api/v1/billing/credits/history \
+curl -s https://unicorncommander.ai/api/v1/billing/credits/history \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   | jq '.[] | {date: .created_at, credits: .credits_purchased, price: .amount_paid}'
 
 # Test 3: Initiate purchase (test mode)
-curl -X POST https://your-domain.com/api/v1/billing/credits/purchase \
+curl -X POST https://unicorncommander.ai/api/v1/billing/credits/purchase \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "package_id": "pro",
-    "success_url": "https://your-domain.com/admin/credits?success=true",
-    "cancel_url": "https://your-domain.com/admin/credits?canceled=true"
+    "success_url": "https://unicorncommander.ai/admin/credits?success=true",
+    "cancel_url": "https://unicorncommander.ai/admin/credits?canceled=true"
   }' | jq '{checkout_url: .checkout_url}'
 ```
 
@@ -222,11 +222,11 @@ curl -X POST https://your-domain.com/api/v1/billing/credits/purchase \
 **Test Scripts**:
 ```bash
 # Test 1: Get apps for all tiers (public endpoint)
-curl -s https://your-domain.com/api/v1/tiers/apps \
+curl -s https://unicorncommander.ai/api/v1/tiers/apps \
   | jq 'to_entries | .[] | {tier: .key, apps: .value | map(.app_name)}'
 
 # Test 2: Get VIP Founder tier details
-curl -s https://your-domain.com/api/v1/admin/tiers/vip_founder \
+curl -s https://unicorncommander.ai/api/v1/admin/tiers/vip_founder \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   | jq '{
     name: .tier_name,
@@ -237,7 +237,7 @@ curl -s https://your-domain.com/api/v1/admin/tiers/vip_founder \
   }'
 
 # Test 3: Update VIP Founder apps (add "presenton")
-curl -X PUT https://your-domain.com/api/v1/admin/tiers/vip_founder/apps \
+curl -X PUT https://unicorncommander.ai/api/v1/admin/tiers/vip_founder/apps \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -245,7 +245,7 @@ curl -X PUT https://your-domain.com/api/v1/admin/tiers/vip_founder/apps \
   }' | jq '{message: .message, updated: .apps_updated}'
 
 # Test 4: Clone VIP Founder tier
-curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
+curl -X POST https://unicorncommander.ai/api/v1/admin/tiers/vip_founder/clone \
   -H "Cookie: session_token=$SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -260,7 +260,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
 
 ### 3.1 Invite Codes UI
 
-**URL**: https://your-domain.com/admin/system/invite-codes
+**URL**: https://unicorncommander.ai/admin/system/invite-codes
 
 #### Test Cases
 
@@ -275,7 +275,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
 
 ### 3.2 Credit Purchase UI
 
-**URL**: https://your-domain.com/admin/credits/purchase
+**URL**: https://unicorncommander.ai/admin/credits/purchase
 
 #### Test Cases
 
@@ -290,7 +290,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
 
 ### 3.3 Dynamic Pricing UI
 
-**URL**: https://your-domain.com/admin/system/dynamic-pricing
+**URL**: https://unicorncommander.ai/admin/system/dynamic-pricing
 
 #### Test Cases
 
@@ -324,7 +324,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
 #### Test Steps
 
 1. **Register New Account**
-   - Navigate to: https://your-domain.com/auth/signup
+   - Navigate to: https://unicorncommander.ai/auth/signup
    - Fill in: Email, Password
    - Submit form
    - **Expected**: Email verification sent
@@ -354,8 +354,8 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
    - Dashboard shows 4 apps:
      - Center Deep Pro (https://centerdeep.online)
      - Open-WebUI
-     - Bolt.diy (https://bolt.your-domain.com)
-     - Presenton (https://presentations.your-domain.com)
+     - Bolt.diy (https://bolt.unicorncommander.ai)
+     - Presenton (https://presentations.unicorncommander.ai)
    - Click each app link
    - **Expected**: SSO auto-login, no additional auth required
 
@@ -383,7 +383,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
 
 3. **Stripe Webhook Fires**
    - Stripe sends `invoice.paid` event to:
-     - `https://your-domain.com/api/v1/billing/webhooks/stripe`
+     - `https://unicorncommander.ai/api/v1/billing/webhooks/stripe`
    - Backend processes webhook
    - **Expected**: Webhook returns 200 OK
 
@@ -395,7 +395,7 @@ curl -X POST https://your-domain.com/api/v1/admin/tiers/vip_founder/clone \
    - **Expected**: Credit balance increases by 12,000
 
 5. **User Redirected Back**
-   - Redirect URL: `https://your-domain.com/admin/credits?success=true`
+   - Redirect URL: `https://unicorncommander.ai/admin/credits?success=true`
    - Dashboard shows updated balance
    - Transaction appears in history
    - **Expected**: Success message displayed
@@ -598,7 +598,7 @@ cat /tmp/qa_api_results.txt
 ### Step 3: Frontend Component Discovery (AFTER API TESTS)
 ```bash
 # Search for components
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 find src/pages -name "*.jsx" | grep -i "invite\|credit\|pricing\|subscription"
 find src/components -name "*.jsx" | grep -i "invite\|credit\|pricing\|tier"
 ```
@@ -626,5 +626,5 @@ This QA test plan covers 50+ test cases across 4 testing phases:
 ---
 
 **Report Generated**: November 12, 2025
-**Test Environment**: Production (your-domain.com)
+**Test Environment**: Production (unicorncommander.ai)
 **Prepared By**: QA & Testing Team Lead

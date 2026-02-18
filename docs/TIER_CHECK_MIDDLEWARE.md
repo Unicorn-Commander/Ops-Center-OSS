@@ -21,7 +21,7 @@ Protected Service (Lago, Admin Panel, etc.)
 
 ### Flow Details
 
-1. **User requests resource** (e.g., `https://billing.your-domain.com`)
+1. **User requests resource** (e.g., `https://billing.unicorncommander.ai`)
 2. **Traefik intercepts** the request
 3. **OAuth2 Proxy** checks authentication:
    - If not authenticated → Redirect to Keycloak
@@ -37,7 +37,7 @@ Protected Service (Lago, Admin Panel, etc.)
 
 ### 1. Tier Check Endpoint
 
-**Location**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tier_check_middleware.py`
+**Location**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tier_check_middleware.py`
 
 **Endpoints**:
 - `GET /api/v1/tier-check/health` - Health check
@@ -62,7 +62,7 @@ X-Tier-Required: professional
 
 ### 2. Traefik Middleware Configuration
 
-**Location**: `/home/muut/Infrastructure/traefik/dynamic/middlewares.yml`
+**Location**: `/home/deploy/Infrastructure/traefik/dynamic/middlewares.yml`
 
 **Middleware Definitions**:
 
@@ -99,7 +99,7 @@ http:
 
 ### 3. Docker Compose Integration
 
-**Location**: `/home/muut/Production/UC-1-Pro/billing/docker-compose.billing.yml`
+**Location**: `/home/deploy/Production/UC-1-Pro/billing/docker-compose.billing.yml`
 
 **Lago Frontend Configuration**:
 ```yaml
@@ -137,7 +137,7 @@ Note the `@file` suffix - this tells Traefik to use the middleware defined in `m
 TIER_ENFORCEMENT_ENABLED=true
 
 # Keycloak connection (for tier lookup)
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
@@ -145,7 +145,7 @@ KEYCLOAK_ADMIN_PASSWORD=your-admin-password
 
 ### Service Tier Requirements
 
-Tier requirements are defined in `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tier_check_middleware.py`:
+Tier requirements are defined in `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tier_check_middleware.py`:
 
 ```python
 SERVICE_TIER_REQUIREMENTS = {
@@ -172,7 +172,7 @@ services:
 
 **Option 2: Create Custom Middleware**
 
-In `/home/muut/Infrastructure/traefik/dynamic/middlewares.yml`:
+In `/home/deploy/Infrastructure/traefik/dynamic/middlewares.yml`:
 ```yaml
 http:
   middlewares:
@@ -221,7 +221,7 @@ When a user lacks the required tier, they receive:
   "message": "This feature requires Professional tier or higher",
   "current_tier": "starter",
   "required_tier": "professional",
-  "upgrade_url": "https://your-domain.com/subscription"
+  "upgrade_url": "https://unicorncommander.ai/subscription"
 }
 ```
 
@@ -253,7 +253,7 @@ Subscription tiers are stored in Keycloak user attributes as **arrays**:
 
 ```bash
 # Using Keycloak Admin API
-curl -X PUT "https://auth.your-domain.com/admin/realms/uchub/users/{user-id}" \
+curl -X PUT "https://auth.unicorncommander.ai/admin/realms/uchub/users/{user-id}" \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -277,7 +277,7 @@ docker restart unicorn-ops-center
 
 ### Step 3: Reload Traefik Configuration
 
-Traefik automatically watches `/home/muut/Infrastructure/traefik/dynamic/` for changes. If not:
+Traefik automatically watches `/home/deploy/Infrastructure/traefik/dynamic/` for changes. If not:
 
 ```bash
 docker restart traefik
@@ -300,7 +300,7 @@ Replace `{tier-check-middleware}` with:
 ### Step 5: Restart Services
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/billing
+cd /home/deploy/Production/UC-1-Pro/billing
 docker compose -f docker-compose.billing.yml up -d
 ```
 
@@ -375,7 +375,7 @@ Track tier enforcement metrics:
 3. Check tier requirement for service:
    ```bash
    # Look at middleware definition
-   cat /home/muut/Infrastructure/traefik/dynamic/middlewares.yml
+   cat /home/deploy/Infrastructure/traefik/dynamic/middlewares.yml
    ```
 
 ### Issue: Tier Check Not Being Called
@@ -391,7 +391,7 @@ Track tier enforcement metrics:
 
 2. Verify middleware file exists:
    ```bash
-   ls -l /home/muut/Infrastructure/traefik/dynamic/middlewares.yml
+   ls -l /home/deploy/Infrastructure/traefik/dynamic/middlewares.yml
    ```
 
 3. Restart Traefik to reload configuration:
@@ -406,7 +406,7 @@ Track tier enforcement metrics:
 **Solution**:
 1. Add Keycloak credentials to `.env`:
    ```bash
-   echo "KEYCLOAK_URL=https://auth.your-domain.com" >> /home/muut/Production/UC-1-Pro/services/ops-center/.env
+   echo "KEYCLOAK_URL=https://auth.unicorncommander.ai" >> /home/deploy/Production/UC-1-Pro/services/ops-center/.env
    echo "KEYCLOAK_REALM=uchub" >> .env
    echo "KEYCLOAK_ADMIN_USER=admin" >> .env
    echo "KEYCLOAK_ADMIN_PASSWORD=your-admin-password" >> .env
@@ -499,7 +499,7 @@ No cache invalidation needed since we don't cache.
 - **Traefik ForwardAuth**: https://doc.traefik.io/traefik/middlewares/http/forwardauth/
 - **OAuth2 Proxy**: https://oauth2-proxy.github.io/oauth2-proxy/
 - **Keycloak Admin API**: https://www.keycloak.org/docs-api/latest/rest-api/
-- **UC-1 Pro Billing System**: `/home/muut/Production/UC-1-Pro/docs/BILLING-SYSTEM-COMPLETE.md`
+- **UC-1 Pro Billing System**: `/home/deploy/Production/UC-1-Pro/docs/BILLING-SYSTEM-COMPLETE.md`
 
 ## Support
 

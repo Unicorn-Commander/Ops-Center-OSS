@@ -68,7 +68,7 @@ Successfully implemented encrypted API key storage in Authentik user attributes 
 Added three new environment variables:
 ```bash
 ENCRYPTION_KEY=pXfS-0VwQPilpOvRaQOivJIBFUOrgT9toMtjyr2NZqo=
-AUTHENTIK_API_TOKEN=ak_f3c1ae010853720d0e37e3efa95d5afb51201285
+AUTHENTIK_API_TOKEN=your-authentik-api-token
 AUTHENTIK_URL=http://authentik-server:9000
 ```
 
@@ -277,7 +277,7 @@ DELETE /api/v1/user/api-keys/openai
 ### Step 1: Restart Services
 
 ```bash
-cd /home/muut/Production/UC-1-Pro
+cd /home/deploy/Production/UC-1-Pro
 
 # Restart ops-center to load new code
 docker-compose restart unicorn-ops-center
@@ -295,7 +295,7 @@ docker logs unicorn-ops-center --tail 50
 
 ```bash
 # Check dist folder was created
-ls -lh /home/muut/Production/UC-1-Pro/services/ops-center/dist/
+ls -lh /home/deploy/Production/UC-1-Pro/services/ops-center/dist/
 
 # Should see:
 # index.html
@@ -305,7 +305,7 @@ ls -lh /home/muut/Production/UC-1-Pro/services/ops-center/dist/
 
 ### Step 3: Test via UI
 
-1. Open: https://your-domain.com/admin/settings
+1. Open: https://unicorncommander.ai/admin/settings
 2. Click "API Keys (BYOK)" tab
 3. Click "+ Add API Key" button
 4. Select provider: OpenAI
@@ -318,7 +318,7 @@ ls -lh /home/muut/Production/UC-1-Pro/services/ops-center/dist/
 
 ### Step 4: Verify in Authentik
 
-1. Open: https://auth.your-domain.com/if/admin/#/core/users
+1. Open: https://auth.unicorncommander.ai/if/admin/#/core/users
 2. Click your user (aaron)
 3. Click "Attributes" tab
 4. Look for `byok_api_keys` field
@@ -355,8 +355,8 @@ ls -lh /home/muut/Production/UC-1-Pro/services/ops-center/dist/
 ENCRYPTION_KEY=pXfS-0VwQPilpOvRaQOivJIBFUOrgT9toMtjyr2NZqo=
 
 # Authentik API token for managing user attributes (API key storage)
-# Generate from Authentik admin panel: https://auth.your-domain.com/if/admin/#/core/tokens
-AUTHENTIK_API_TOKEN=ak_f3c1ae010853720d0e37e3efa95d5afb51201285
+# Generate from Authentik admin panel: https://auth.unicorncommander.ai/if/admin/#/core/tokens
+AUTHENTIK_API_TOKEN=your-authentik-api-token
 
 # Authentik URL (internal Docker network)
 AUTHENTIK_URL=http://authentik-server:9000

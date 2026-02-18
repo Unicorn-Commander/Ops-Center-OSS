@@ -3,13 +3,13 @@
 
 -- Update Unicorn Amanuensis (Speech-to-Text)
 UPDATE add_ons
-SET launch_url = 'https://stt.your-domain.com'
+SET launch_url = 'https://stt.unicorncommander.ai'
 WHERE name = 'Unicorn Amanuensis'
   AND (launch_url IS NULL OR launch_url = '');
 
 -- Update Unicorn Orator (Text-to-Speech)
 UPDATE add_ons
-SET launch_url = 'https://tts.your-domain.com'
+SET launch_url = 'https://tts.unicorncommander.ai'
 WHERE name = 'Unicorn Orator'
   AND (launch_url IS NULL OR launch_url = '');
 

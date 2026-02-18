@@ -37,7 +37,7 @@ router = APIRouter(prefix="/v1", tags=["anthropic-proxy"])
 # Configuration
 BRIGADE_URL = os.environ.get("BRIGADE_URL", "http://unicorn-brigade:8112")
 LITELLM_URL = os.environ.get("LITELLM_URL", "http://localhost:4000")
-KEYCLOAK_URL = os.environ.get("KEYCLOAK_URL", "https://auth.your-domain.com")
+KEYCLOAK_URL = os.environ.get("KEYCLOAK_URL", "https://auth.unicorncommander.ai")
 
 # ===================================================================
 # Anthropic API Models (Request/Response Schemas)

@@ -127,7 +127,7 @@ git push origin main
 
 **Trigger**: Merge to `main` branch, or manual dispatch
 
-**Environment**: `staging` (https://staging.your-domain.com)
+**Environment**: `staging` (https://staging.unicorncommander.ai)
 
 **Steps**:
 
@@ -178,7 +178,7 @@ gh workflow run deploy-staging.yml
 
 **Trigger**: Manual dispatch only (requires input)
 
-**Environment**: `production` (https://your-domain.com)
+**Environment**: `production` (https://unicorncommander.ai)
 
 **Required Input**: Version/tag to deploy
 
@@ -299,7 +299,7 @@ Required GitHub Secrets:
 ```bash
 # Via GitHub CLI
 gh secret set STAGING_SSH_KEY < ~/.ssh/id_rsa_staging
-gh secret set STAGING_HOST --body "staging.your-domain.com"
+gh secret set STAGING_HOST --body "staging.unicorncommander.ai"
 
 # Or via GitHub UI:
 # Settings → Secrets and variables → Actions → New repository secret
@@ -385,7 +385,7 @@ docker build -f docker/Dockerfile.frontend -t test .
 **Solution**:
 ```bash
 # SSH to server
-ssh user@staging.your-domain.com
+ssh user@staging.unicorncommander.ai
 
 # Check logs
 docker logs ops-center-direct --tail 100
@@ -405,7 +405,7 @@ cd /opt/ops-center/deployment
 **Solution**:
 ```bash
 # SSH to server
-ssh user@production.your-domain.com
+ssh user@production.unicorncommander.ai
 
 # List available backups
 ls -lh /opt/ops-center/backups/

@@ -72,7 +72,7 @@ Expected existing tables (if Epic 3.1 was completed):
 
 ```bash
 # Navigate to migrations directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 
 # Review forward migration
 less create_llm_management_tables.sql
@@ -91,7 +91,7 @@ less rollback_llm_management_tables.sql
 
 ```bash
 # Navigate to migrations directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 
 # Run full test suite
 ./test_migration.sh
@@ -135,7 +135,7 @@ cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
 
 ```bash
 # Navigate to migrations directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 
 # Apply forward migration
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < create_llm_management_tables.sql
@@ -318,7 +318,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "
 ### Step 1: Apply Rollback Migration
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < rollback_llm_management_tables.sql
 ```
@@ -499,7 +499,7 @@ chmod +x test_migration.sh
 
 ## Support & Questions
 
-**Documentation Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/migrations/`
+**Documentation Location**: `/opt/ops-center/backend/migrations/`
 
 **Related Epic**: Epic 3.2 - Unified LLM Management System
 

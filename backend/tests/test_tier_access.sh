@@ -28,7 +28,7 @@ NC='\033[0m' # No Color
 API_BASE="http://localhost:8084/api/v1"
 
 # Test users file
-TEST_USERS_FILE="/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_users.json"
+TEST_USERS_FILE="/opt/ops-center/backend/tests/test_users.json"
 
 echo -e "${BLUE}═══════════════════════════════════════════════════════════${NC}"
 echo -e "${BLUE}  Testing Tier-Based Model Access                          ${NC}"

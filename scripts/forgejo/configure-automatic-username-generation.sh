@@ -1,64 +1,61 @@
 #!/bin/bash
 set -e
 
-# Configuration - Override with environment variables
-KEYCLOAK_URL="${KEYCLOAK_URL:-http://localhost:8080}"
-KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
-KEYCLOAK_ADMIN_USER="${KEYCLOAK_ADMIN_USER:-admin}"
-KEYCLOAK_ADMIN_PASSWORD="${KEYCLOAK_ADMIN_PASSWORD:-change-me}"
-
 echo "=== Configuring Automatic Username Generation for Forgejo ==="
 
 # Get admin token
-TOKEN=$(curl -s -X POST "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+TOKEN=$(curl -s -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=${KEYCLOAK_ADMIN_USER}" \
-  -d "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+  -d "username=admin" \
+  -d "password=your-admin-password" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" | jq -r '.access_token')
 
-# Step 1: Update existing user usernames (requires USER_ID environment variables)
+# Step 1: Update Shafen's username in Keycloak
 echo "Step 1: Updating existing user usernames..."
-# NOTE: Set USER_ID_1 and USER_ID_2 environment variables to update specific users
-# Example: USER_ID_1="fc8e520d-32d2-401f-bdf7-2c3d38bcfd60" USER_USERNAME_1="testuser" ./script.sh
+SHAFEN_ID="fc8e520d-32d2-401f-bdf7-2c3d38bcfd60"
 
-if [ -n "${USER_ID_1:-}" ] && [ -n "${USER_USERNAME_1:-}" ]; then
-  curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/users/${USER_ID_1}" \
-    -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "{\"username\": \"${USER_USERNAME_1}\"}"
-  echo "Updated user ${USER_ID_1} username to '${USER_USERNAME_1}'"
-fi
+curl -s -X PUT "https://auth.unicorncommander.ai/admin/realms/uchub/users/$SHAFEN_ID" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "shafen"
+  }'
 
-if [ -n "${USER_ID_2:-}" ] && [ -n "${USER_USERNAME_2:-}" ]; then
-  curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/users/${USER_ID_2}" \
-    -H "Authorization: Bearer $TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "{\"username\": \"${USER_USERNAME_2}\"}"
-  echo "Updated user ${USER_ID_2} username to '${USER_USERNAME_2}'"
-fi
+echo "✓ Updated Shafen's username to 'shafen'"
+
+# Also update admin
+ADMIN_ID="ecde32ba-65c6-4fdd-9f22-2d4c1c8d8b8e"
+curl -s -X PUT "https://auth.unicorncommander.ai/admin/realms/uchub/users/$ADMIN_ID" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "aaron"
+  }'
+
+echo "✓ Updated admin username to 'aaron'"
 
 # Step 2: Configure Forgejo client mapper
 echo ""
 echo "Step 2: Configuring Forgejo username mapper..."
 
-FORGEJO_CLIENT_ID=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/clients" \
+CLIENT_ID=$(curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub/clients" \
   -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.clientId=="forgejo") | .id')
 
 # Delete old mapper
-OLD_MAPPER=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/clients/$FORGEJO_CLIENT_ID/protocol-mappers/models" \
+OLD_MAPPER=$(curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub/clients/$CLIENT_ID/protocol-mappers/models" \
   -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name | contains("username") or contains("email")) | .id')
 
 if [ -n "$OLD_MAPPER" ]; then
   for MAPPER in $OLD_MAPPER; do
-    curl -s -X DELETE "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/clients/$FORGEJO_CLIENT_ID/protocol-mappers/models/$MAPPER" \
+    curl -s -X DELETE "https://auth.unicorncommander.ai/admin/realms/uchub/clients/$CLIENT_ID/protocol-mappers/models/$MAPPER" \
       -H "Authorization: Bearer $TOKEN"
   done
-  echo "Deleted old mappers"
+  echo "✓ Deleted old mappers"
 fi
 
 # Create new mapper using username attribute
-curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}/clients/$FORGEJO_CLIENT_ID/protocol-mappers/models" \
+curl -s -X POST "https://auth.unicorncommander.ai/admin/realms/uchub/clients/$CLIENT_ID/protocol-mappers/models" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

@@ -49,7 +49,7 @@ async def get_current_user_from_request(request: Request):
     import os
 
     # Get Redis connection (same as server.py)
-    redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+    redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
     # Initialize session manager
@@ -676,7 +676,7 @@ async def redeem_coupon(
                 user_id=current_user["user_id"],
                 coupon_code=request.code,
                 credits_added=redemption["credits_awarded"],
-                new_balance=balance["credits_remaining"]
+                new_balance=balance["balance"]  # credit_system returns 'balance' not 'credits_remaining'
             )
             logger.info(f"Coupon redemption confirmation sent to user {current_user['user_id']}")
         except Exception as e:

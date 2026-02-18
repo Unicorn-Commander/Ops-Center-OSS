@@ -143,16 +143,13 @@ class UsageMeter:
                 """
                 INSERT INTO usage_events (
                     user_id, service, model, tokens_used,
-                    provider_cost, platform_markup, total_cost,
-                    is_free_tier, metadata, event_type
+                    cost, is_free, metadata
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                VALUES ($1, $2, $3, $4, $5, $6, $7)
                 RETURNING id, created_at
                 """,
                 user_id, service, model, tokens,
-                provider_cost, markup, cost,
-                is_free, json.dumps(metadata) if metadata else None,
-                'api_call'  # event_type is required, default to 'api_call'
+                cost, is_free, json.dumps(metadata) if metadata else None
             )
 
         logger.debug(f"Tracked usage for {user_id}: {service}/{model} - {cost} credits")
@@ -210,9 +207,9 @@ class UsageMeter:
                 SELECT
                     COUNT(*) as total_events,
                     COALESCE(SUM(tokens_used), 0) as total_tokens,
-                    COALESCE(SUM(total_cost), 0) as total_cost,
-                    COALESCE(SUM(CASE WHEN is_free_tier THEN 1 ELSE 0 END), 0) as free_tier_events,
-                    COALESCE(SUM(CASE WHEN NOT is_free_tier THEN 1 ELSE 0 END), 0) as paid_tier_events
+                    COALESCE(SUM(cost), 0) as total_cost,
+                    COALESCE(SUM(CASE WHEN is_free THEN 1 ELSE 0 END), 0) as free_tier_events,
+                    COALESCE(SUM(CASE WHEN NOT is_free THEN 1 ELSE 0 END), 0) as paid_tier_events
                 FROM usage_events
                 WHERE user_id = $1
                   AND created_at >= $2
@@ -228,7 +225,7 @@ class UsageMeter:
                     service,
                     COUNT(*) as event_count,
                     COALESCE(SUM(tokens_used), 0) as tokens,
-                    COALESCE(SUM(total_cost), 0) as cost
+                    COALESCE(SUM(cost), 0) as cost
                 FROM usage_events
                 WHERE user_id = $1
                   AND created_at >= $2
@@ -292,16 +289,16 @@ class UsageMeter:
                     model,
                     COUNT(*) as event_count,
                     COALESCE(SUM(tokens_used), 0) as total_tokens,
-                    COALESCE(SUM(total_cost), 0) as total_cost,
+                    COALESCE(SUM(cost), 0) as total_cost,
                     COALESCE(AVG(tokens_used), 0) as avg_tokens,
-                    COALESCE(SUM(CASE WHEN is_free_tier THEN 1 ELSE 0 END), 0) as free_events
+                    COALESCE(SUM(CASE WHEN is_free THEN 1 ELSE 0 END), 0) as free_events
                 FROM usage_events
                 WHERE user_id = $1
                   AND created_at >= $2
                   AND created_at <= $3
                   AND model IS NOT NULL
                 GROUP BY service, model
-                ORDER BY total_cost DESC
+                ORDER BY cost DESC
                 """,
                 user_id, start_date, end_date
             )
@@ -351,15 +348,15 @@ class UsageMeter:
                     service,
                     COUNT(*) as event_count,
                     COALESCE(SUM(tokens_used), 0) as total_tokens,
-                    COALESCE(SUM(total_cost), 0) as total_cost,
+                    COALESCE(SUM(cost), 0) as total_cost,
                     COUNT(DISTINCT model) as unique_models,
-                    COALESCE(SUM(CASE WHEN is_free_tier THEN 1 ELSE 0 END), 0) as free_events
+                    COALESCE(SUM(CASE WHEN is_free THEN 1 ELSE 0 END), 0) as free_events
                 FROM usage_events
                 WHERE user_id = $1
                   AND created_at >= $2
                   AND created_at <= $3
                 GROUP BY service
-                ORDER BY total_cost DESC
+                ORDER BY cost DESC
                 """,
                 user_id, start_date, end_date
             )
@@ -410,7 +407,7 @@ class UsageMeter:
                     COUNT(DISTINCT model) as free_models_used
                 FROM usage_events
                 WHERE user_id = $1
-                  AND is_free_tier = true
+                  AND is_free = true
                   AND created_at >= $2
                   AND created_at <= $3
                 """,
@@ -426,7 +423,7 @@ class UsageMeter:
                     COALESCE(SUM(tokens_used), 0) as tokens
                 FROM usage_events
                 WHERE user_id = $1
-                  AND is_free_tier = true
+                  AND is_free = true
                   AND created_at >= $2
                   AND created_at <= $3
                   AND model IS NOT NULL
@@ -479,8 +476,8 @@ class UsageMeter:
                 SELECT
                     COUNT(*) as total_events,
                     COALESCE(SUM(tokens_used), 0) as total_tokens,
-                    COALESCE(SUM(total_cost), 0) as total_cost,
-                    COALESCE(SUM(CASE WHEN is_free_tier THEN 1 ELSE 0 END), 0) as free_events
+                    COALESCE(SUM(cost), 0) as total_cost,
+                    COALESCE(SUM(CASE WHEN is_free THEN 1 ELSE 0 END), 0) as free_events
                 FROM usage_events
                 WHERE user_id = $1
                   AND created_at >= $2

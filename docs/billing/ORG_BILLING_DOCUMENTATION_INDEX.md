@@ -643,7 +643,7 @@ WHERE org_id = 'ORG_ID';
 Documentation feedback and improvement suggestions:
 - Open issue on GitHub
 - Slack: #ops-center-dev channel
-- Email: ops-center-team@your-domain.com
+- Email: ops-center-team@unicorncommander.ai
 
 ---
 
@@ -651,7 +651,7 @@ Documentation feedback and improvement suggestions:
 
 ### Related Documentation
 
-- **UC-Cloud Main**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **UC-Cloud Main**: `/opt/uc-cloud/CLAUDE.md`
 - **Ops-Center Main**: `/services/ops-center/CLAUDE.md`
 - **Lago Integration**: `backend/docs/LAGO_ORG_BILLING_INTEGRATION.md`
 - **LiteLLM Credit API**: `backend/docs/LITELLM_CREDIT_API.md`
@@ -665,8 +665,8 @@ Documentation feedback and improvement suggestions:
 
 ### Code Repositories
 
-- **Ops-Center**: https://git.your-domain.com/UnicornCommander/Ops-Center
-- **UC-Cloud**: https://git.your-domain.com/UnicornCommander/UC-Cloud
+- **Ops-Center**: https://git.unicorncommander.ai/UnicornCommander/Ops-Center
+- **UC-Cloud**: https://git.unicorncommander.ai/UnicornCommander/UC-Cloud
 
 ---
 

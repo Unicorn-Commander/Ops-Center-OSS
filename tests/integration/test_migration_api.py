@@ -34,9 +34,9 @@ class TestNameCheapAccountManagement:
             headers=auth_headers,
             json={
                 'account_label': 'My Business Account',
-                'api_username': 'SkyBehind',
+                'api_username': 'your-namecheap-username',
                 'api_key': 'test_api_key_123',
-                'client_ip': 'YOUR_SERVER_IP',
+                'client_ip': 'your-server-ip',
                 'sandbox_mode': False
             }
         )
@@ -44,7 +44,7 @@ class TestNameCheapAccountManagement:
         assert response.status_code == 201
         data = response.json()
         assert data['account_label'] == 'My Business Account'
-        assert data['api_username'] == 'SkyBehind'
+        assert data['api_username'] == 'your-namecheap-username'
         assert 'id' in data
 
     def test_get_namecheap_accounts(self, client: TestClient, auth_headers):
@@ -158,7 +158,7 @@ class TestDNSExport:
             })
 
             response = client.get(
-                '/api/v1/namecheap/domains/your-domain.com/dns',
+                '/api/v1/namecheap/domains/unicorncommander.ai/dns',
                 headers=auth_headers
             )
 
@@ -169,7 +169,7 @@ class TestDNSExport:
     def test_export_dns_json(self, client: TestClient, auth_headers, mock_namecheap_client):
         """Test POST /api/v1/namecheap/domains/{domain}/dns/export - JSON format"""
         response = client.post(
-            '/api/v1/namecheap/domains/your-domain.com/dns/export',
+            '/api/v1/namecheap/domains/unicorncommander.ai/dns/export',
             headers=auth_headers,
             params={'format': 'json'}
         )
@@ -182,7 +182,7 @@ class TestDNSExport:
     def test_export_dns_csv(self, client: TestClient, auth_headers):
         """Test POST /api/v1/namecheap/domains/{domain}/dns/export - CSV format"""
         response = client.post(
-            '/api/v1/namecheap/domains/your-domain.com/dns/export',
+            '/api/v1/namecheap/domains/unicorncommander.ai/dns/export',
             headers=auth_headers,
             params={'format': 'csv'}
         )
@@ -193,7 +193,7 @@ class TestDNSExport:
     def test_export_dns_bind(self, client: TestClient, auth_headers):
         """Test POST /api/v1/namecheap/domains/{domain}/dns/export - BIND format"""
         response = client.post(
-            '/api/v1/namecheap/domains/your-domain.com/dns/export',
+            '/api/v1/namecheap/domains/unicorncommander.ai/dns/export',
             headers=auth_headers,
             params={'format': 'bind'}
         )
@@ -216,7 +216,7 @@ class TestMigrationJobManagement:
             headers=auth_headers,
             json={
                 'job_name': 'Test Migration',
-                'domains': ['your-domain.com', 'superiorbsolutions.com'],
+                'domains': ['unicorncommander.ai', 'superiorbsolutions.com'],
                 'priority': 'high'
             }
         )
@@ -244,7 +244,7 @@ class TestMigrationJobManagement:
             headers=auth_headers,
             json={
                 'job_name': 'Test Migration',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -268,7 +268,7 @@ class TestMigrationJobManagement:
             headers=auth_headers,
             json={
                 'job_name': 'To Cancel',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -290,7 +290,7 @@ class TestMigrationJobManagement:
             headers=auth_headers,
             json={
                 'job_name': 'To Pause',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -312,7 +312,7 @@ class TestMigrationJobManagement:
             headers=auth_headers,
             json={
                 'job_name': 'To Resume',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -363,20 +363,20 @@ class TestMigrationQueue:
             headers=auth_headers,
             json={
                 'job_name': 'Retry Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
 
         # Retry domain
         response = client.post(
-            f'/api/v1/migration/jobs/{job_id}/queue/your-domain.com/retry',
+            f'/api/v1/migration/jobs/{job_id}/queue/unicorncommander.ai/retry',
             headers=auth_headers
         )
 
         assert response.status_code == 200
         data = response.json()
-        assert data['domain'] == 'your-domain.com'
+        assert data['domain'] == 'unicorncommander.ai'
 
     def test_update_domain_priority(self, client: TestClient, auth_headers):
         """Test PUT /api/v1/migration/jobs/{job_id}/queue/{domain}/priority"""
@@ -386,14 +386,14 @@ class TestMigrationQueue:
             headers=auth_headers,
             json={
                 'job_name': 'Priority Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
 
         # Update priority
         response = client.put(
-            f'/api/v1/migration/jobs/{job_id}/queue/your-domain.com/priority',
+            f'/api/v1/migration/jobs/{job_id}/queue/unicorncommander.ai/priority',
             headers=auth_headers,
             json={'priority': 'critical'}
         )
@@ -414,7 +414,7 @@ class TestProgressTracking:
             headers=auth_headers,
             json={
                 'job_name': 'Progress Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -439,20 +439,20 @@ class TestProgressTracking:
             headers=auth_headers,
             json={
                 'job_name': 'Status Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
 
         # Get domain status
         response = client.get(
-            f'/api/v1/migration/jobs/{job_id}/domains/your-domain.com/status',
+            f'/api/v1/migration/jobs/{job_id}/domains/unicorncommander.ai/status',
             headers=auth_headers
         )
 
         assert response.status_code == 200
         data = response.json()
-        assert data['domain'] == 'your-domain.com'
+        assert data['domain'] == 'unicorncommander.ai'
         assert 'phase' in data
         assert 'status' in data
 
@@ -470,7 +470,7 @@ class TestHealthChecks:
             '/api/v1/migration/health-check',
             headers=auth_headers,
             json={
-                'domain': 'your-domain.com',
+                'domain': 'unicorncommander.ai',
                 'checks': ['dns', 'ssl', 'email', 'website']
             }
         )
@@ -490,7 +490,7 @@ class TestHealthChecks:
             headers=auth_headers,
             json={
                 'job_name': 'Health Check Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -513,14 +513,14 @@ class TestHealthChecks:
             headers=auth_headers,
             json={
                 'job_name': 'Domain Health Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
 
         # Run health check
         response = client.post(
-            f'/api/v1/migration/jobs/{job_id}/domains/your-domain.com/health-check',
+            f'/api/v1/migration/jobs/{job_id}/domains/unicorncommander.ai/health-check',
             headers=auth_headers
         )
 
@@ -544,7 +544,7 @@ class TestRollback:
             headers=auth_headers,
             json={
                 'job_name': 'Rollback Test',
-                'domains': ['your-domain.com']
+                'domains': ['unicorncommander.ai']
             }
         )
         job_id = create_response.json()['id']
@@ -570,14 +570,14 @@ class TestRollback:
             headers=auth_headers,
             json={
                 'job_name': 'Domain Rollback Test',
-                'domains': ['your-domain.com', 'superiorbsolutions.com']
+                'domains': ['unicorncommander.ai', 'superiorbsolutions.com']
             }
         )
         job_id = create_response.json()['id']
 
         # Rollback single domain
         response = client.post(
-            f'/api/v1/migration/jobs/{job_id}/domains/your-domain.com/rollback',
+            f'/api/v1/migration/jobs/{job_id}/domains/unicorncommander.ai/rollback',
             headers=auth_headers,
             json={
                 'reason': 'Email not working'
@@ -586,7 +586,7 @@ class TestRollback:
 
         assert response.status_code == 200
         data = response.json()
-        assert data['domain'] == 'your-domain.com'
+        assert data['domain'] == 'unicorncommander.ai'
 
     def test_get_rollback_history(self, client: TestClient, auth_headers):
         """Test GET /api/v1/migration/rollback-history"""

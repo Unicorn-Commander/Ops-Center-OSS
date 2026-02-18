@@ -149,11 +149,11 @@ Required: Admin role
       "traefik_enabled": true,
       "traefik_labels": {
         "traefik.enable": "true",
-        "traefik.http.routers.ops-center.rule": "Host(`your-domain.com`)"
+        "traefik.http.routers.ops-center.rule": "Host(`unicorncommander.ai`)"
       },
       "suggested_config": {
         "route_name": "ops-center-direct-route",
-        "rule": "Host(`your-domain.com`)",
+        "rule": "Host(`unicorncommander.ai`)",
         "service": "ops-center-direct-service",
         "backend_url": "http://ops-center-direct:8084",
         "entrypoints": ["websecure"],
@@ -192,22 +192,22 @@ Renew a single SSL certificate by domain name. Revokes the old certificate and r
 Required: Admin role
 
 ### Path Parameters
-- `certificate_id`: Certificate domain name (e.g., `your-domain.com`)
+- `certificate_id`: Certificate domain name (e.g., `unicorncommander.ai`)
 
 ### Response Format
 ```json
 {
   "success": true,
-  "message": "Certificate renewal initiated for your-domain.com",
-  "domain": "your-domain.com",
+  "message": "Certificate renewal initiated for unicorncommander.ai",
+  "domain": "unicorncommander.ai",
   "status": "pending",
   "revoke_result": {
     "success": true,
-    "message": "Certificate revoked for your-domain.com"
+    "message": "Certificate revoked for unicorncommander.ai"
   },
   "renewal_result": {
     "success": true,
-    "message": "Certificate request initiated for your-domain.com"
+    "message": "Certificate request initiated for unicorncommander.ai"
   },
   "note": "Certificate will be automatically issued when ACME challenge is completed",
   "timestamp": "2025-10-25T12:34:56.789Z"
@@ -216,7 +216,7 @@ Required: Admin role
 
 ### Testing
 ```bash
-curl -X POST http://localhost:8084/api/v1/traefik/ssl/renew/your-domain.com
+curl -X POST http://localhost:8084/api/v1/traefik/ssl/renew/unicorncommander.ai
 ```
 
 ---
@@ -276,7 +276,7 @@ Required: Admin role
 ```bash
 curl -X POST http://localhost:8084/api/v1/traefik/ssl/renew/bulk \
   -H "Content-Type: application/json" \
-  -d '["your-domain.com", "auth.your-domain.com"]'
+  -d '["unicorncommander.ai", "auth.unicorncommander.ai"]'
 ```
 
 ---
@@ -436,7 +436,7 @@ Unexpected server error with error details in `detail` field.
 Run the comprehensive test script:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ./TEST_NEW_ENDPOINTS.sh
 ```
 
@@ -457,13 +457,13 @@ export ADMIN_API_TOKEN="your-admin-token"
 
 ### Traefik Endpoints (C10, C11, C12, C13)
 - All use `TraefikManager` class from `traefik_manager.py`
-- Configuration files in `/home/muut/Production/UC-Cloud/traefik/`
+- Configuration files in `/opt/uc-cloud/traefik/`
 - Rate limiting enforced (5 changes per 60 seconds per user)
 - Automatic backups created before destructive operations
 - Audit logging to `/var/log/traefik_audit.log`
 
 ### Brigade Endpoints (H23)
-- Proxy to `https://api.brigade.your-domain.com`
+- Proxy to `https://api.brigade.unicorncommander.ai`
 - Use `httpx.AsyncClient` for async HTTP requests
 - Timeout: 30 seconds
 - No caching (direct proxy to Brigade API)

@@ -169,7 +169,7 @@ Clears all cached log search results.
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Content-Type: application/json" \
   -d '{
     "query": "failed",
@@ -210,7 +210,7 @@ curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Content-Type: application/json" \
   -d '{
     "severity": ["ERROR", "WARN"],
@@ -240,7 +240,7 @@ curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Content-Type: application/json" \
   -d '{
     "regex": "user.*failed",
@@ -275,7 +275,7 @@ curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
 
 **Request (Page 1)**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Content-Type: application/json" \
   -d '{
     "severity": ["ERROR"],
@@ -286,7 +286,7 @@ curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
 
 **Request (Page 2)**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Content-Type: application/json" \
   -d '{
     "severity": ["ERROR"],
@@ -383,7 +383,7 @@ Standard Python regex syntax:
 **When to Clear Cache**:
 ```bash
 # After deploying new services
-curl -X DELETE https://your-domain.com/api/v1/logs/cache
+curl -X DELETE https://unicorncommander.ai/api/v1/logs/cache
 
 # After significant log volume changes
 # After server restart
@@ -531,7 +531,7 @@ docker exec unicorn-redis redis-cli ping
 
 **Future**: Add JWT token authentication:
 ```bash
-curl -X POST https://your-domain.com/api/v1/logs/search/advanced \
+curl -X POST https://unicorncommander.ai/api/v1/logs/search/advanced \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{...}'
@@ -608,7 +608,7 @@ import requests
 
 def search_logs(query=None, severity=None, services=None,
                 start_date=None, end_date=None, limit=100, offset=0):
-    url = "https://your-domain.com/api/v1/logs/search/advanced"
+    url = "https://unicorncommander.ai/api/v1/logs/search/advanced"
 
     payload = {
         "query": query,

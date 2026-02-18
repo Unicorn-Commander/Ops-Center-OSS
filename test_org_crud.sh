@@ -94,7 +94,7 @@ echo ""
 
 # Test 6: Check org_manager file storage
 echo -e "${YELLOW}Test 6: Check File-Based Storage${NC}"
-DATA_DIR="/home/muut/Production/UC-Cloud/services/ops-center/backend/data"
+DATA_DIR="/opt/ops-center/backend/data"
 
 if [ -d "$DATA_DIR" ]; then
     print_result 0 "Data directory exists: $DATA_DIR"
@@ -130,12 +130,12 @@ echo "  ✓ Backend restarted successfully"
 echo ""
 echo "AUTHENTICATION REQUIRED:"
 echo "  To test organization creation with real authentication:"
-echo "  1. Login via Keycloak SSO at https://your-domain.com"
+echo "  1. Login via Keycloak SSO at https://unicorncommander.ai"
 echo "  2. Use browser DevTools to get session_token cookie"
 echo "  3. Test with: curl -b 'session_token=YOUR_TOKEN' ..."
 echo ""
 echo "NEXT STEPS:"
-echo "  1. Login to https://your-domain.com/admin/organization"
+echo "  1. Login to https://unicorncommander.ai/admin/organization"
 echo "  2. Click 'Create Organization' button"
 echo "  3. Fill in organization name and tier"
 echo "  4. Submit - should now work without 500 error!"

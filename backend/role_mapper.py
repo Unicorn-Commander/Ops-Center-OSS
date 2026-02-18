@@ -9,7 +9,6 @@ Maps Keycloak/Authentik user groups and roles to ops-center role hierarchy:
 """
 
 import logging
-import os
 from typing import Dict, Optional, List
 
 # Configure logging
@@ -126,15 +125,12 @@ def map_keycloak_role(user_info: Dict) -> str:
     username = user_info.get("preferred_username") or user_info.get("username") or user_info.get("email", "unknown")
 
     # Special handling for admin usernames and emails
-    # Configure via ADMIN_USERNAMES and ADMIN_EMAILS environment variables (comma-separated)
-    admin_identifiers = os.getenv("ADMIN_USERNAMES", "akadmin,admin,administrator").split(",")
-    admin_identifiers = [a.strip().lower() for a in admin_identifiers if a.strip()]
-    admin_emails = os.getenv("ADMIN_EMAILS", "").split(",")
-    admin_emails = [e.strip().lower() for e in admin_emails if e.strip()]
+    admin_identifiers = ["akadmin", "admin", "administrator"]
+    admin_emails = ["admin@example.com"]
 
     email = user_info.get("email", "").lower()
 
-    if username.lower() in admin_identifiers or (admin_emails and email in admin_emails):
+    if username.lower() in admin_identifiers or email in admin_emails:
         logger.info(f"User '{username}' ({email}) is a special admin account, granting admin role")
         return "admin"
 

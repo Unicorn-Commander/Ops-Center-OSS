@@ -21,29 +21,38 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/system/keycloak", tags=["keycloak-status"])
 
-# Keycloak container name
-KEYCLOAK_CONTAINER = "keycloak"
+# Keycloak container name - supports both naming conventions
+# UC-Cloud production uses "unicorn-keycloak", uchub uses "uchub-keycloak"
+KEYCLOAK_CONTAINER_NAMES = ["unicorn-keycloak", "uchub-keycloak"]
 
 
 async def check_keycloak_container() -> Dict[str, Any]:
-    """Check if Keycloak container is running"""
+    """Check if Keycloak container is running - tries multiple container names"""
     try:
         import docker
         client = docker.from_env()
 
-        try:
-            container = client.containers.get(KEYCLOAK_CONTAINER)
-            return {
-                "running": container.status == "running",
-                "status": container.status,
-                "health": getattr(container.health, "status", "unknown") if hasattr(container, "health") else "unknown"
-            }
-        except docker.errors.NotFound:
-            return {
-                "running": False,
-                "status": "not_found",
-                "health": "unknown"
-            }
+        # Try each possible container name
+        for container_name in KEYCLOAK_CONTAINER_NAMES:
+            try:
+                container = client.containers.get(container_name)
+                # Health status is in container.attrs['State']['Health']['Status']
+                health_status = container.attrs.get('State', {}).get('Health', {}).get('Status', 'unknown')
+                return {
+                    "running": container.status == "running",
+                    "status": container.status,
+                    "health": health_status,
+                    "container_name": container_name
+                }
+            except docker.errors.NotFound:
+                continue  # Try next container name
+
+        # No container found with any of the expected names
+        return {
+            "running": False,
+            "status": "not_found",
+            "health": "unknown"
+        }
     except Exception as e:
         logger.error(f"Error checking Keycloak container: {e}")
         return {
@@ -267,7 +276,7 @@ async def get_api_credentials():
         # These should match what's in .env.auth
         return {
             "client_id": "ops-center-api",
-            "client_secret": os.getenv("KEYCLOAK_API_CLIENT_SECRET", "your-client-secret"),
+            "client_secret": os.getenv("KEYCLOAK_API_CLIENT_SECRET", "OpsCenterAPIKey2025MagicUnicorn"),
             "service_account": "ops-center-api",
             "permissions": ["manage-clients", "view-users", "manage-users"],
             "token_endpoint": f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token",
@@ -322,7 +331,7 @@ async def get_ssl_status():
     try:
         # Check if using Cloudflare (based on EXTERNAL_PROTOCOL)
         external_protocol = os.getenv("EXTERNAL_PROTOCOL", "https")
-        external_host = os.getenv("EXTERNAL_HOST", "your-domain.com")
+        external_host = os.getenv("EXTERNAL_HOST", "unicorncommander.ai")
 
         # Determine SSL mode
         if external_protocol == "https":

@@ -7,9 +7,9 @@ echo "========================================================"
 
 # Configuration
 API_URL="${API_URL:-http://localhost:8084}"
-KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.your-domain.com}"
+KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.unicorncommander.ai}"
 KEYCLOAK_REALM="${KEYCLOAK_REALM:-master}"
-FRONTEND_URL="${FRONTEND_URL:-https://your-domain.com}"
+FRONTEND_URL="${FRONTEND_URL:-https://unicorncommander.ai}"
 
 echo ""
 echo "Configuration:"

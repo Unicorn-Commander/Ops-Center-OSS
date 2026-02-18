@@ -35,7 +35,7 @@ The Ops-Center currently has a **robust encryption and credential management sys
 
 ### 1.1 Encryption Infrastructure
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/key_encryption.py` (92 lines)
+**File**: `/opt/ops-center/backend/key_encryption.py` (92 lines)
 
 ```python
 class KeyEncryption:
@@ -70,7 +70,7 @@ class KeyEncryption:
 
 ### 1.2 Secret Manager
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/secret_manager.py` (512 lines)
+**File**: `/opt/ops-center/backend/secret_manager.py` (512 lines)
 
 ```python
 class SecretManager:
@@ -146,9 +146,9 @@ class SecretType:
 ### 1.3 BYOK (Bring Your Own Key) System
 
 **Files**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_service.py` (354 lines)
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_manager.py` (400 lines)
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py` (512 lines)
+- `/opt/ops-center/backend/byok_service.py` (354 lines)
+- `/opt/ops-center/backend/byok_manager.py` (400 lines)
+- `/opt/ops-center/backend/byok_api.py` (512 lines)
 
 **BYOK Service** (`byok_service.py`):
 ```python
@@ -195,7 +195,7 @@ class BYOKManager:
 
 ### 1.4 BYOK API Router
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py` (512 lines)
+**File**: `/opt/ops-center/backend/byok_api.py` (512 lines)
 
 ```python
 # Endpoints:
@@ -243,7 +243,7 @@ async def get_byok_stats(request: Request):
 
 ### 2.1 Cloudflare Credentials
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth` (56 lines)
+**File**: `/opt/ops-center/.env.auth` (56 lines)
 
 ```bash
 # === Cloudflare DNS Management (Epic 1.6) ===
@@ -270,14 +270,14 @@ cloudflare_manager = CloudflareManager(api_token=CLOUDFLARE_API_TOKEN) if CLOUDF
 
 ### 2.2 NameCheap Credentials
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth` (39-49)
+**File**: `/opt/ops-center/.env.auth` (39-49)
 
 ```bash
 # === NameCheap Migration (Epic 1.7) ===
-NAMECHEAP_API_USERNAME=SkyBehind
-NAMECHEAP_API_KEY=your-example-api-key
-NAMECHEAP_USERNAME=SkyBehind
-NAMECHEAP_CLIENT_IP=YOUR_SERVER_IP
+NAMECHEAP_API_USERNAME=your-namecheap-username
+NAMECHEAP_API_KEY=your-namecheap-api-key
+NAMECHEAP_USERNAME=your-namecheap-username
+NAMECHEAP_CLIENT_IP=your-server-ip
 NAMECHEAP_SANDBOX=false
 
 # ⚠️ SECURITY WARNING: Current API credentials are exposed
@@ -292,7 +292,7 @@ NAMECHEAP_SANDBOX=false
 
 ### 3.1 BYOK API Keys Component
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/account/AccountAPIKeys.jsx` (17,000+ lines)
+**File**: `/opt/ops-center/src/pages/account/AccountAPIKeys.jsx` (17,000+ lines)
 
 **Features Implemented**:
 - List of configured API keys (masked display)
@@ -328,7 +328,7 @@ POST /api/v1/auth/byok/keys/{key_id}/test
 
 ### 3.2 APIKeyCard Component
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/APIKeyCard.jsx` (332 lines)
+**File**: `/opt/ops-center/src/components/llm/APIKeyCard.jsx` (332 lines)
 
 **Features**:
 - Beautiful card UI with gradient background
@@ -340,7 +340,7 @@ POST /api/v1/auth/byok/keys/{key_id}/test
 
 ### 3.3 AddAPIKeyModal Component
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/AddAPIKeyModal.jsx` (partial, 80+ lines)
+**File**: `/opt/ops-center/src/components/llm/AddAPIKeyModal.jsx` (partial, 80+ lines)
 
 **Features**:
 - Modal dialog with provider selection
@@ -354,7 +354,7 @@ POST /api/v1/auth/byok/keys/{key_id}/test
 
 ### 4.1 BYOK Router Registration
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py`
+**File**: `/opt/ops-center/backend/server.py`
 
 ```python
 # Line 63

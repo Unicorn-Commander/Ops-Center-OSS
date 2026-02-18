@@ -27,7 +27,7 @@ A **web-based Traefik management interface** in Ops-Center to replace manual YAM
 **Before** (Current):
 ```bash
 # Admin edits YAML files manually
-vim /home/muut/Infrastructure/traefik/dynamic/domains.yml
+vim /home/deploy/Infrastructure/traefik/dynamic/domains.yml
 # Hopes there are no syntax errors
 # No validation until Traefik reloads
 # No audit trail

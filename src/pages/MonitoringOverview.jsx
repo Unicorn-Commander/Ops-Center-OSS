@@ -25,7 +25,7 @@ export default function MonitoringOverview() {
       description: 'Visualization dashboards for metrics and logs',
       icon: ChartBarIcon,
       link: '/admin/monitoring/grafana',
-      external: 'http://grafana.your-domain.com:3000',
+      external: 'http://grafana.unicorncommander.ai:3000',
       status: 'planned',
       color: 'from-orange-500 to-red-500'
     },
@@ -34,7 +34,7 @@ export default function MonitoringOverview() {
       description: 'Time-series metrics collection and alerting',
       icon: CircleStackIcon,
       link: '/admin/monitoring/prometheus',
-      external: 'http://prometheus.your-domain.com:9090',
+      external: 'http://prometheus.unicorncommander.ai:9090',
       status: 'planned',
       color: 'from-red-500 to-pink-500'
     },
@@ -43,7 +43,7 @@ export default function MonitoringOverview() {
       description: 'Privacy-focused web analytics tracking',
       icon: ChartPieIcon,
       link: '/admin/monitoring/umami',
-      external: 'http://umami.your-domain.com:3000',
+      external: 'http://umami.unicorncommander.ai:3000',
       status: 'planned',
       color: 'from-blue-500 to-indigo-500'
     },

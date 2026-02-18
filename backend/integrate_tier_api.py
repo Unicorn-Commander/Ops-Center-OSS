@@ -11,7 +11,7 @@ import sys
 def integrate_tier_api():
     """Add tier check API router to server.py"""
     
-    server_path = "/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py"
+    server_path = "/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py"
     
     # Read the existing server.py
     with open(server_path, 'r') as f:

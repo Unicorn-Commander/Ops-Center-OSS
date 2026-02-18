@@ -6,7 +6,7 @@
 
 **From Main Dashboard:**
 ```
-1. Navigate to: https://your-domain.com
+1. Navigate to: https://unicorncommander.ai
 2. Look for footer navigation buttons:
    - "Subscription" button (white/translucent)
    - "Billing" button (white/translucent)
@@ -15,8 +15,8 @@
 
 **Direct URLs:**
 ```
-https://your-domain.com/subscription.html
-https://your-domain.com/billing.html
+https://unicorncommander.ai/subscription.html
+https://unicorncommander.ai/billing.html
 ```
 
 ### 2. Test Authentication
@@ -289,8 +289,8 @@ GET /api/v1/subscriptions/my-access
 **Test Command:**
 ```bash
 # Open in different browsers
-google-chrome https://your-domain.com/subscription.html
-firefox https://your-domain.com/subscription.html
+google-chrome https://unicorncommander.ai/subscription.html
+firefox https://unicorncommander.ai/subscription.html
 # Safari on Mac
 ```
 
@@ -475,5 +475,5 @@ After testing passes:
 
 Questions about testing?
 - Developer: See SUBSCRIPTION_UI_IMPLEMENTATION.md
-- Support: support@your-domain.com
+- Support: support@unicorncommander.ai
 - Issues: GitHub UC-1-Pro repository

@@ -7,6 +7,8 @@ from fastapi import APIRouter, HTTPException, Request
 from typing import List, Dict, Optional
 from datetime import datetime
 import logging
+import os
+import sys
 
 # Import Lago integration
 from lago_integration import (
@@ -73,21 +75,28 @@ SUBSCRIPTION_PLANS = [
 
 
 async def get_user_org_id(request: Request) -> str:
-    """Get organization ID from user session"""
+    """Get organization ID from user session (Redis-backed)"""
+    if '/app' not in sys.path:
+        sys.path.insert(0, '/app')
+
+    from redis_session import RedisSessionManager
+
     session_token = request.cookies.get("session_token")
     if not session_token:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
-    sessions = getattr(request.app.state, "sessions", {})
+    redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
+    redis_port = int(os.getenv("REDIS_PORT", "6379"))
+
+    sessions = RedisSessionManager(host=redis_host, port=redis_port)
     session_data = sessions.get(session_token)
     if not session_data:
         raise HTTPException(status_code=401, detail="Invalid session")
 
-    user = session_data.get("user", {})
-    org_id = user.get("org_id")
+    # org_id is at the top level of the session data
+    org_id = session_data.get("org_id")
 
     if not org_id:
-        # No fallback generation - user must be assigned to organization
         raise HTTPException(status_code=400, detail="User not assigned to organization. Please contact support.")
 
     return org_id
@@ -245,26 +254,6 @@ async def get_billing_cycle(request: Request):
             "message": f"Error: {str(e)}"
         }
 
-
-@router.get("/payment-methods")
-async def get_payment_methods(request: Request):
-    """
-    Get stored payment methods (Stripe).
-
-    Returns:
-        List of payment methods
-    """
-    org_id = await get_user_org_id(request)
-
-    logger.info(f"Fetching payment methods for org {org_id}")
-
-    # TODO: Integrate with Stripe to get actual payment methods
-    # For now, return placeholder
-    return {
-        "payment_methods": [],
-        "default_method": None,
-        "message": "Stripe payment methods integration coming soon"
-    }
 
 
 @router.post("/download-invoice/{invoice_id}")

@@ -20,7 +20,7 @@ sys.path.append('/app/services')
 from credential_manager import CredentialManager
 
 # Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://ops_user:change-me@localhost:5432/ops_center_db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://unicorn:your-postgres-password@unicorn-postgresql:5432/unicorn_db")
 
 # Test data
 TEST_USER_ID = "test-admin-user-123"

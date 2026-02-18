@@ -167,8 +167,8 @@ export default function MarketplaceLanding() {
             <div className="text-center text-gray-400">
               <p>&copy; 2025 Magic Unicorn Unconventional Technology & Stuff Inc. All rights reserved.</p>
               <p className="mt-2">
-                <a href="https://your-domain.com" className="text-purple-400 hover:text-purple-300 transition-colors">
-                  your-domain.com
+                <a href="https://unicorncommander.com" className="text-purple-400 hover:text-purple-300 transition-colors">
+                  unicorncommander.com
                 </a>
               </p>
             </div>

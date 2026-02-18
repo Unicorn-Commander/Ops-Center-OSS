@@ -3,7 +3,7 @@
 ## Directory Layout
 
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/
+/home/deploy/Production/UC-1-Pro/services/ops-center/
 │
 ├── TIER_ENFORCEMENT_COMPLETE.md          # Main summary (this was the mission)
 │
@@ -248,7 +248,7 @@ docker logs unicorn-ops-center | grep -E "Tier|Keycloak|usage"
 
 ```bash
 # Go to backend directory
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 
 # View main implementation
 less keycloak_integration.py

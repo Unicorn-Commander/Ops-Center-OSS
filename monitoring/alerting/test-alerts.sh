@@ -86,7 +86,7 @@ test_endpoint "Grafana Login" "http://localhost:3000/login" 302
 # Test datasource
 TESTS_RUN=$((TESTS_RUN + 1))
 echo -n "Testing Grafana Datasource... "
-datasource=$(curl -s -u "${GRAFANA_ADMIN_USER:-admin}:${GRAFANA_ADMIN_PASSWORD:-admin}" http://localhost:3000/api/datasources 2>&1 || echo "[]")
+datasource=$(curl -s -u admin:your-admin-password http://localhost:3000/api/datasources 2>&1 || echo "[]")
 if echo "$datasource" | grep -q "Prometheus"; then
     echo -e "${GREEN}✓ PASS${NC} (Prometheus datasource configured)"
     TESTS_PASSED=$((TESTS_PASSED + 1))
@@ -239,8 +239,8 @@ if [ $TESTS_FAILED -eq 0 ]; then
     echo -e "${GREEN}✓ All tests passed!${NC}"
     echo ""
     echo "Next steps:"
-    echo "1. Access Grafana: https://monitoring.your-domain.com"
-    echo "2. Login with your configured admin credentials"
+    echo "1. Access Grafana: https://monitoring.unicorncommander.ai"
+    echo "2. Login with: admin / your-admin-password"
     echo "3. Import dashboards from grafana.com"
     echo "4. Configure Slack webhook in alertmanager.yml"
     echo "5. Configure PagerDuty integration key"

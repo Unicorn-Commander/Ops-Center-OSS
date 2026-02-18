@@ -35,9 +35,9 @@ Built a production-ready email alert notification system for Ops-Center using Mi
 ```python
 # Environment Variables (or database)
 EMAIL_FROM=admin@example.com
-MS365_CLIENT_ID=cd34bbf2-898b-47f2-9007-c716a00bd704
-MS365_TENANT_ID=059b7dec-5304-4fc7-922e-39ed5dff710e
-MS365_CLIENT_SECRET=Im68Q~RFGNAjPMpsaJk4aScjMRsrfWc6RAyw5bSd
+MS365_CLIENT_ID=your-ms365-client-id
+MS365_TENANT_ID=your-ms365-tenant-id
+MS365_CLIENT_SECRET=your-ms365-client-secret
 ```
 
 **Microsoft Graph API Endpoint**:
@@ -476,7 +476,7 @@ from email_alerts import email_alert_service
 await email_alert_service.send_critical_alert(
     subject="Server Down - ops-center-direct",
     message="The ops-center-direct container has stopped responding.",
-    recipients=["admin@your-domain.com"],
+    recipients=["admin@unicorncommander.ai"],
     details={
         "server_name": "ops-center-direct",
         "error_message": "Connection timeout after 30 seconds"

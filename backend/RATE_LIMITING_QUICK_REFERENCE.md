@@ -20,7 +20,7 @@ python scripts/integrate_rate_limiting.py
 RATE_LIMIT_ENABLED=true
 
 # Redis
-REDIS_URL=redis://unicorn-lago-redis:6379/0
+REDIS_URL=redis://unicorn-redis:6379/0
 
 # Limits (format: "count/period")
 RATE_LIMIT_AUTH=5/minute      # Auth endpoints
@@ -124,7 +124,7 @@ Retry-After: 42
 
 ```bash
 # Check Redis
-docker exec -it unicorn-lago-redis redis-cli
+docker exec -it unicorn-redis redis-cli
 KEYS ratelimit:*
 ZRANGE ratelimit:read:192.168.1.100 0 -1 WITHSCORES
 
@@ -139,7 +139,7 @@ docker logs -f unicorn-ops-center | grep -i "exceeded"
 ```bash
 # Check Redis
 docker ps | grep redis
-docker exec unicorn-lago-redis redis-cli ping
+docker exec unicorn-redis redis-cli ping
 
 # Check config
 cat .env.ratelimit | grep ENABLED
@@ -195,7 +195,7 @@ docker restart unicorn-ops-center
 
 # Monitor
 docker logs -f unicorn-ops-center
-docker exec -it unicorn-lago-redis redis-cli MONITOR
+docker exec -it unicorn-redis redis-cli MONITOR
 ```
 
 ## Need More?

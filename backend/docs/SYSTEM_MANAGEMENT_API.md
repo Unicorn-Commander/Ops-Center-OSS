@@ -53,7 +53,7 @@ All system management endpoints require:
 #### Example Request
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -133,7 +133,7 @@ curl -X GET "https://your-domain.com/api/v1/system/network" \
 #### Example Request: Static IP
 
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -149,7 +149,7 @@ curl -X PUT "https://your-domain.com/api/v1/system/network" \
 #### Example Request: DHCP
 
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -227,7 +227,7 @@ The new password must meet these requirements:
 #### Example Request
 
 ```bash
-curl -X POST "https://your-domain.com/api/v1/system/user/password" \
+curl -X POST "https://unicorncommander.ai/api/v1/system/user/password" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -314,7 +314,7 @@ curl -X POST "https://your-domain.com/api/v1/system/user/password" \
 #### Example Request
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -447,7 +447,7 @@ All system management operations are logged with the following information:
 ```python
 import requests
 
-BASE_URL = "https://your-domain.com/api/v1/system"
+BASE_URL = "https://unicorncommander.ai/api/v1/system"
 JWT_TOKEN = "your_jwt_token_here"
 
 headers = {
@@ -482,7 +482,7 @@ for pkg in packages['packages']:
 ### JavaScript/TypeScript Example
 
 ```typescript
-const BASE_URL = "https://your-domain.com/api/v1/system";
+const BASE_URL = "https://unicorncommander.ai/api/v1/system";
 const JWT_TOKEN = "your_jwt_token_here";
 
 const headers = {
@@ -542,7 +542,7 @@ async function getAvailableUpdates() {
 
 ### Using FastAPI Interactive Docs
 
-Navigate to `https://your-domain.com/docs` to access the interactive Swagger UI documentation where you can:
+Navigate to `https://unicorncommander.ai/docs` to access the interactive Swagger UI documentation where you can:
 - View all endpoints and their schemas
 - Test endpoints directly in the browser
 - See request/response examples
@@ -555,17 +555,17 @@ Navigate to `https://your-domain.com/docs` to access the interactive Swagger UI 
 export JWT_TOKEN="your_jwt_token_here"
 
 # Get network configuration
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN"
 
 # Update to DHCP
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"dhcp": true}'
 
 # Get available updates
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
@@ -584,7 +584,7 @@ curl -X GET "https://your-domain.com/api/v1/system/packages" \
 
 For issues or questions:
 - GitHub: https://github.com/Unicorn-Commander/UC-1-Pro/issues
-- Documentation: https://your-domain.com/docs
+- Documentation: https://unicorncommander.ai/docs
 
 ---
 

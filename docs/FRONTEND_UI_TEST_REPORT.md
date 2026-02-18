@@ -12,7 +12,7 @@
 The UC-1 Pro billing system has **TWO COMPLETELY DIFFERENT FRONTEND IMPLEMENTATIONS** in two separate locations, which creates significant deployment and maintenance issues. The production version differs substantially from the /tmp build version.
 
 ### Key Findings:
-1. Files exist in BOTH `/tmp/bolt-diy-build/services/ops-center/` AND `/home/muut/Production/UC-1-Pro/services/ops-center/public/`
+1. Files exist in BOTH `/tmp/bolt-diy-build/services/ops-center/` AND `/home/deploy/Production/UC-1-Pro/services/ops-center/public/`
 2. The versions are **SIGNIFICANTLY DIFFERENT** in structure, styling, and functionality
 3. CSS and JS files from `/tmp` location DO NOT exist in production
 4. Production files use inline styles and scripts, lacking modular organization
@@ -39,7 +39,7 @@ The UC-1 Pro billing system has **TWO COMPLETELY DIFFERENT FRONTEND IMPLEMENTATI
 
 ### Production Location (CURRENTLY DEPLOYED)
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/public/
+/home/deploy/Production/UC-1-Pro/services/ops-center/public/
 ├── subscription.html (33,862 bytes - includes ALL inline CSS/JS)
 ├── billing.html (44,600 bytes - includes ALL inline CSS/JS)
 └── [No separate CSS or JS files]
@@ -230,7 +230,7 @@ animation: galaxyShift 20s ease infinite;
 
 **Problem**: Two completely different frontend implementations exist:
 - `/tmp/bolt-diy-build/` - Modern, modular design NOT in production
-- `/home/muut/Production/UC-1-Pro/services/ops-center/public/` - Current production with inline code
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/public/` - Current production with inline code
 
 **Recommendation**:
 1. Decide which version is the canonical implementation
@@ -315,11 +315,11 @@ animation: galaxyShift 20s ease infinite;
    ```bash
    # Copy static assets to production
    cp -r /tmp/bolt-diy-build/services/ops-center/static/* \
-         /home/muut/Production/UC-1-Pro/services/ops-center/public/static/
+         /home/deploy/Production/UC-1-Pro/services/ops-center/public/static/
 
    # Update HTML templates
    cp /tmp/bolt-diy-build/services/ops-center/templates/*.html \
-      /home/muut/Production/UC-1-Pro/services/ops-center/public/
+      /home/deploy/Production/UC-1-Pro/services/ops-center/public/
    ```
 
 3. **IF USING PRODUCTION VERSION**:

@@ -329,7 +329,7 @@ export default function TierComparison({ currentTier = null, onSelectTier }) {
         </Typography>
         <Button
           variant="text"
-          href="/admin/credits/tiers"
+          href="/admin/billing/tiers/compare"
           sx={{ mt: 1 }}
         >
           View Detailed Feature Comparison →

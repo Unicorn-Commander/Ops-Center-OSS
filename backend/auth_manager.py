@@ -201,10 +201,10 @@ class AuthManager:
         
         if not has_admin:
             # Create default admin user
-            admin_password = os.getenv("ADMIN_PASSWORD", "your-admin-password")
+            admin_password = os.getenv("ADMIN_PASSWORD", "MagicUnicorn!8-)")
             admin_user = UserCreate(
                 username="ucadmin",
-                email="admin@your-domain.com",
+                email="admin@unicorncommander.com",
                 password=admin_password,
                 full_name="UC-1 Admin",
                 role="admin"

@@ -271,7 +271,7 @@ After all agents complete their work:
 
 1. **Build Frontend**:
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    npm run build
    cp -r dist/* public/
    ```
@@ -289,9 +289,9 @@ After all agents complete their work:
    ```
 
 4. **Test in Browser**:
-   - LLM Usage: https://your-domain.com/admin/llm/usage
-   - Subscription: https://your-domain.com/admin/subscription/plan
-   - Monitoring: https://your-domain.com/admin/system/monitoring
+   - LLM Usage: https://unicorncommander.ai/admin/llm/usage
+   - Subscription: https://unicorncommander.ai/admin/subscription/plan
+   - Monitoring: https://unicorncommander.ai/admin/system/monitoring
 
 5. **Git Commit**:
    ```bash

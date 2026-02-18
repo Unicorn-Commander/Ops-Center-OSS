@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/monitoring/prometheus", tags=["Monitoring"])
 
 # Prometheus Configuration
-PROMETHEUS_URL = "http://prometheus.your-domain.com:9090"
+PROMETHEUS_URL = "http://prometheus.unicorncommander.ai:9090"
 PROMETHEUS_TIMEOUT = 30.0
 
 # Pre-defined scrape targets
@@ -26,7 +26,7 @@ DEFAULT_TARGETS = [
     },
     {
         "name": "Keycloak",
-        "endpoint": "http://keycloak:8080/metrics",
+        "endpoint": "http://uchub-keycloak:8080/metrics",
         "interval": "30s",
         "enabled": False
     },

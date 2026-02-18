@@ -104,25 +104,25 @@ export default function BottomNavBar({ currentPath, userRole }) {
         ...baseItems,
         {
           label: 'Users',
-          value: '/admin/system/users',
+          value: '/admin/people/users',
           icon: <PeopleIcon />,
           visible: true
         },
         {
           label: 'Billing',
-          value: '/admin/system/billing',
+          value: '/admin/billing/system',
           icon: <PaymentIcon />,
           visible: true
         },
         {
           label: 'Analytics',
-          value: '/admin/system/analytics',
+          value: '/admin/monitoring/analytics',
           icon: <AnalyticsIcon />,
           visible: true
         },
         {
           label: 'Settings',
-          value: '/admin/platform/settings',
+          value: '/admin/integrations/credentials',
           icon: <SettingsIcon />,
           visible: true
         }

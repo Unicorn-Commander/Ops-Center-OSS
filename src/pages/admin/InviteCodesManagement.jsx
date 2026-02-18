@@ -40,6 +40,7 @@ import {
   HourglassEmpty as ExpiringIcon,
   Group as GroupIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
 
 const InviteCodesManagement = () => {
   const [codes, setCodes] = useState([]);
@@ -247,16 +248,19 @@ const InviteCodesManagement = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4">Invite Code Management</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenDialog(true)}
-        >
-          Generate New Code
-        </Button>
-      </Box>
+      <PageHeader
+        title="Invite Code Management"
+        subtitle="Generate and manage invite codes for subscription tiers"
+        actions={(
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenDialog(true)}
+          >
+            Generate New Code
+          </Button>
+        )}
+      />
 
       {/* Summary Statistics */}
       <Grid container spacing={2} sx={{ mb: 3 }}>

@@ -447,7 +447,7 @@ const LocalUserManagement = () => {
             ]}
             link={{
               text: "View Application Users →",
-              href: "/admin/system/users"
+              href: "/admin/people/users"
             }}
             position="right"
           />
@@ -484,7 +484,7 @@ const LocalUserManagement = () => {
                       For Application Users:
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      Go to <Link to="/admin/system/users" style={{ textDecoration: 'underline' }}>
+                      Go to <Link to="/admin/people/users" style={{ textDecoration: 'underline' }}>
                         User Management
                       </Link> (Keycloak SSO users)
                     </Typography>

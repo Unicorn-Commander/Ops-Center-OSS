@@ -48,7 +48,7 @@ PROVIDER_CONFIGS = {
         'test_method': 'GET',
         'auth_type': 'bearer',
         'headers': {
-            'HTTP-Referer': 'https://your-domain.com',
+            'HTTP-Referer': 'https://unicorncommander.ai',
             'X-Title': 'UC-1 Pro Ops Center'
         },
         'key_format': 'sk-or-v1-...',

@@ -7,7 +7,7 @@ Get started with Ops-Center E2E testing in 5 minutes on Mac Studio.
 ### 1. Install Playwright (One-Time Setup)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install Playwright browsers
 npm run playwright:install
@@ -22,8 +22,8 @@ Create `.env.test` file:
 
 ```bash
 cat > .env.test << 'EOF'
-BASE_URL=https://your-domain.com
-TEST_USERNAME=aaron
+BASE_URL=https://unicorncommander.ai
+TEST_USERNAME=admin
 TEST_PASSWORD=your-admin-password
 EOF
 ```
@@ -128,7 +128,7 @@ timeout: 120 * 1000  # 2 minutes
 cat .env.test
 
 # Test manually in browser
-open https://your-domain.com
+open https://unicorncommander.ai
 ```
 
 ### Browser not found

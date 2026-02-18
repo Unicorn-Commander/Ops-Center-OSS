@@ -409,11 +409,11 @@ export default LLMManagement;
 
 ## File Locations
 
-**Component**: `/home/muut/Production/UC-Cloud/services/ops-center/src/components/ProviderKeysSection.jsx`
+**Component**: `/opt/ops-center/src/components/ProviderKeysSection.jsx`
 
 **Backend APIs**:
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/llm_provider_keys_api.py` (assumed)
-- `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py` (main FastAPI app)
+- `/opt/ops-center/backend/llm_provider_keys_api.py` (assumed)
+- `/opt/ops-center/backend/server.py` (main FastAPI app)
 
 **Database**: `unicorn_db` (PostgreSQL)
 - Table: `llm_provider_keys` (assumed)
@@ -465,7 +465,7 @@ export default LLMManagement;
 MIT License - Part of UC-Cloud Ops-Center
 
 **Company**: Magic Unicorn Unconventional Technology & Stuff Inc
-**Website**: https://your-domain.com
+**Website**: https://unicorncommander.com
 
 ---
 

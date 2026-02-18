@@ -23,7 +23,7 @@ services:
       - uchub-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ops-prometheus.rule=Host(`${PROMETHEUS_HOST:-metrics.your-domain.com}`)"
+      - "traefik.http.routers.ops-prometheus.rule=Host(`metrics.your-domain.com`)"
       - "traefik.http.routers.ops-prometheus.entrypoints=https"
       - "traefik.http.routers.ops-prometheus.tls.certresolver=letsencrypt"
       - "traefik.http.services.ops-prometheus.loadbalancer.server.port=9090"
@@ -43,9 +43,9 @@ services:
     container_name: ops-center-grafana
     restart: unless-stopped
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-change-me-in-production}
-      - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-https://monitoring.your-domain.com}
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=your-admin-password
+      - GF_SERVER_ROOT_URL=https://monitoring.your-domain.com
       - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_AUTH_ANONYMOUS_ENABLED=false
@@ -61,7 +61,7 @@ services:
       - ops-center-prometheus
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ops-grafana.rule=Host(`${GRAFANA_HOST:-monitoring.your-domain.com}`)"
+      - "traefik.http.routers.ops-grafana.rule=Host(`monitoring.your-domain.com`)"
       - "traefik.http.routers.ops-grafana.entrypoints=https"
       - "traefik.http.routers.ops-grafana.tls.certresolver=letsencrypt"
       - "traefik.http.services.ops-grafana.loadbalancer.server.port=3000"
@@ -80,7 +80,7 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--storage.path=/alertmanager'
-      - '--web.external-url=${ALERTMANAGER_EXTERNAL_URL:-https://alerts.your-domain.com}'
+      - '--web.external-url=https://alerts.your-domain.com'
     volumes:
       - ./alerting/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - ./alerting/templates:/etc/alertmanager/templates:ro
@@ -90,7 +90,7 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ops-alertmanager.rule=Host(`${ALERTMANAGER_HOST:-alerts.your-domain.com}`)"
+      - "traefik.http.routers.ops-alertmanager.rule=Host(`alerts.your-domain.com`)"
       - "traefik.http.routers.ops-alertmanager.entrypoints=https"
       - "traefik.http.routers.ops-alertmanager.tls.certresolver=letsencrypt"
       - "traefik.http.services.ops-alertmanager.loadbalancer.server.port=9093"
@@ -160,7 +160,7 @@ services:
     container_name: ops-center-postgres-exporter
     restart: unless-stopped
     environment:
-      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-change-me}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-ops_center_db}?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://unicorn:unicorn@unicorn-postgresql:5432/unicorn_db?sslmode=disable
       - PG_EXPORTER_EXTEND_QUERY_PATH=/etc/postgres_exporter/queries.yaml
     volumes:
       - ./prometheus/postgres-queries.yaml:/etc/postgres_exporter/queries.yaml:ro

@@ -207,7 +207,7 @@ DEFAULT_LLM_BASE_URL=https://openrouter.ai/api/v1
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ops_center
 
 # Keycloak for BYOK storage
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 ```
 
@@ -216,7 +216,7 @@ KEYCLOAK_REALM=uchub
 ### Add OpenAI API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/byok/keys/add \
+curl -X POST https://unicorncommander.ai/api/v1/byok/keys/add \
   -H "Content-Type: application/json" \
   -H "Cookie: session=..." \
   -d '{
@@ -229,7 +229,7 @@ curl -X POST https://your-domain.com/api/v1/byok/keys/add \
 ### Add SSH Execution Server
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/execution-servers \
+curl -X POST https://unicorncommander.ai/api/v1/execution-servers \
   -H "Content-Type: application/json" \
   -H "Cookie: session=..." \
   -d '{
@@ -250,14 +250,14 @@ curl -X POST https://your-domain.com/api/v1/execution-servers \
 ### Test API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/byok/keys/test/openai \
+curl -X POST https://unicorncommander.ai/api/v1/byok/keys/test/openai \
   -H "Cookie: session=..."
 ```
 
 ### Test Execution Server
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/execution-servers/{server_id}/test \
+curl -X POST https://unicorncommander.ai/api/v1/execution-servers/{server_id}/test \
   -H "Cookie: session=..."
 ```
 
@@ -277,7 +277,7 @@ The frontend UI should:
 To apply the database migration:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 psql -U postgres -d ops_center -f migrations/007_user_execution_servers.sql
 ```
 

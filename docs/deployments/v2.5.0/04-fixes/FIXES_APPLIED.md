@@ -148,7 +148,7 @@ curl http://localhost:8084/api/v1/alerts/health
 
 ### 1. Rebuild Container
 ```bash
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 
 # Rebuild with --no-cache to ensure changes are picked up
 docker build -t uc-1-pro-ops-center --no-cache services/ops-center/
@@ -174,7 +174,7 @@ curl -X POST http://localhost:8084/api/v1/logs/search/advanced \
 
 ### 3. Run Test Suite
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 -m pytest tests/test_email_alerts.py -v
 python3 -m pytest tests/test_logs_search.py -v
 ```

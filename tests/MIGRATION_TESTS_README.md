@@ -263,7 +263,7 @@ tests/
 
 ```bash
 # Run all tests with coverage
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 ./run_migration_tests.sh
 ```
 
@@ -418,7 +418,7 @@ All tests use mocked API responses to avoid real API calls:
 ### Sample Domains
 
 **Test domains used throughout tests**:
-1. `your-domain.com` - Active domain with Microsoft 365 email
+1. `unicorncommander.ai` - Active domain with Microsoft 365 email
 2. `superiorbsolutions.com` - Active domain with Microsoft 365 email
 3. `magicunicorn.tech` - Active domain with NameCheap Private Email
 4. `expired-domain.com` - Expired domain (migration should fail)
@@ -522,7 +522,7 @@ jobs:
 
 **Fix**:
 ```bash
-export PYTHONPATH="${PYTHONPATH}:/home/muut/Production/UC-Cloud/services/ops-center"
+export PYTHONPATH="${PYTHONPATH}:/opt/ops-center"
 ```
 
 #### 2. Async Test Warnings

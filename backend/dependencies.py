@@ -61,7 +61,7 @@ async def require_admin(request: Request) -> bool:
     if not session_token:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
-    redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+    redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
     sessions = RedisSessionManager(host=redis_host, port=redis_port)
@@ -98,7 +98,7 @@ async def get_current_user(request: Request) -> dict:
     if not session_token:
         raise HTTPException(status_code=401, detail="Not authenticated")
 
-    redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+    redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
     sessions = RedisSessionManager(host=redis_host, port=redis_port)

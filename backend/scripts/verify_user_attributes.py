@@ -19,9 +19,9 @@ import sys
 from datetime import datetime
 
 # Configuration
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "ops-center")
-KEYCLOAK_ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://uchub-keycloak:8080")
+KEYCLOAK_REALM = "uchub"
+KEYCLOAK_ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "your-admin-password")
 
 # Test user configuration
 TEST_USER_EMAIL = "test-persistence@example.com"
@@ -305,7 +305,7 @@ async def main():
             print("✗ FAILURE: Attributes not persisting correctly")
             print("="*80)
             print("\nUser Profile may need manual configuration via Keycloak Admin Console.")
-            print("See: https://auth.your-domain.com/admin/uchub/console")
+            print("See: https://auth.unicorncommander.ai/admin/uchub/console")
             print("Navigate to: Realm Settings → User Profile")
 
         # Cleanup

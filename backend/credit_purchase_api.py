@@ -186,7 +186,7 @@ async def create_purchase_checkout(
                 raise HTTPException(status_code=404, detail=f"Package '{request.package_code}' not found or inactive")
 
             # Determine URLs
-            base_url = os.getenv("EXTERNAL_URL", "https://your-domain.com")
+            base_url = os.getenv("EXTERNAL_URL", "https://unicorncommander.ai")
             success_url = request.success_url or f"{base_url}/admin/credits?purchase=success"
             cancel_url = request.cancel_url or f"{base_url}/admin/credits?purchase=cancelled"
 

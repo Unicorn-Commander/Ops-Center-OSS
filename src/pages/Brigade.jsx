@@ -41,7 +41,7 @@ export default function Brigade() {
 
     setLoading(true);
     try {
-      const response = await fetch('https://brigade.your-domain.com/api/v1/agents/execute', {
+      const response = await fetch('https://brigade.unicorncommander.ai/api/v1/agents/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -65,7 +65,7 @@ export default function Brigade() {
   };
 
   const openFullUI = () => {
-    window.open('https://brigade.your-domain.com', '_blank', 'noopener,noreferrer');
+    window.open('https://brigade.unicorncommander.ai', '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -125,7 +125,7 @@ export default function Brigade() {
         {showIframe && (
           <div className="p-0">
             <iframe
-              src="https://brigade.your-domain.com"
+              src="https://brigade.unicorncommander.ai"
               title="Unicorn Brigade Dashboard"
               className="w-full border-0"
               style={{

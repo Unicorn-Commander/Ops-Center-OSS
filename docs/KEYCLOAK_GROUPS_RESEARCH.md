@@ -11,9 +11,9 @@
 This document provides comprehensive research on migrating UC-1 Pro Ops Center from hardcoded username/email-based role assignment to proper Keycloak group-based role management. The current system uses a hardcoded list of admin identifiers in `role_mapper.py` which is not scalable or secure.
 
 **Current State:**
-- Hardcoded admin list: `["akadmin", "admin", "administrator", "aaron"]`
+- Hardcoded admin list: `["akadmin", "admin", "administrator"]`
 - Email whitelist: `["admin@example.com"]`
-- Keycloak at: `https://auth.your-domain.com`
+- Keycloak at: `https://auth.unicorncommander.ai`
 - Realm: `uchub`
 - Admin credentials: `admin` / `your-admin-password`
 
@@ -47,14 +47,14 @@ This document provides comprehensive research on migrating UC-1 Pro Ops Center f
 **Container:** `uchub-keycloak` (Running, but unhealthy status)
 **Image:** Keycloak 26.0.8 on Quarkus 3.15.1
 **Database:** PostgreSQL (`uchub-postgres:5432/keycloak_db`)
-**URL:** https://auth.your-domain.com
+**URL:** https://auth.unicorncommander.ai
 **Realm:** `uchub`
 
 **Environment Configuration:**
 ```bash
 KEYCLOAK_ADMIN=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
-KC_HOSTNAME_URL=https://auth.your-domain.com
+KC_HOSTNAME_URL=https://auth.unicorncommander.ai
 KC_DB=postgres
 KC_DB_URL=jdbc:postgresql://uchub-postgres:5432/keycloak_db
 KC_FEATURES=token-exchange,admin-fine-grained-authz
@@ -67,13 +67,13 @@ KC_METRICS_ENABLED=true
 - Client ID: `ops-center`
 - Client Type: Confidential (server-side)
 - Redirect URIs:
-  - `https://your-domain.com/auth/callback`
+  - `https://unicorncommander.ai/auth/callback`
   - `http://localhost:8000/auth/callback`
 - Default Scopes: `openid`, `email`, `profile`, `roles`
 
 ### Current Role Mapper Implementation
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
 
 **Current Logic:**
 1. Check hardcoded username list (lines 124-131)
@@ -117,7 +117,7 @@ KC_METRICS_ENABLED=true
 **With Groups:**
 ```json
 {
-  "sub": "00a665e2-8703-4c06-a6b1-ec25cfcb98ef",
+  "sub": "your-keycloak-user-id",
   "email": "admin@example.com",
   "preferred_username": "aaron",
   "groups": [
@@ -130,7 +130,7 @@ KC_METRICS_ENABLED=true
 **With Realm Roles:**
 ```json
 {
-  "sub": "00a665e2-8703-4c06-a6b1-ec25cfcb98ef",
+  "sub": "your-keycloak-user-id",
   "email": "admin@example.com",
   "preferred_username": "aaron",
   "realm_access": {
@@ -181,7 +181,7 @@ When you create groups in Keycloak and assign users to them, the groups appear i
 
 ```json
 {
-  "sub": "00a665e2-8703-4c06-a6b1-ec25cfcb98ef",
+  "sub": "your-keycloak-user-id",
   "email": "admin@example.com",
   "email_verified": true,
   "preferred_username": "aaron",
@@ -317,7 +317,7 @@ docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh \
 **REST API Authentication:**
 ```bash
 # Get admin token
-curl -X POST https://auth.your-domain.com/realms/master/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" \
@@ -328,7 +328,7 @@ curl -X POST https://auth.your-domain.com/realms/master/protocol/openid-connect/
 ### Available Admin Scripts
 
 **1. Client Setup Script (VERIFIED):**
-File: `/home/muut/Production/UC-1-Pro/services/ops-center/setup-keycloak-client.py`
+File: `/home/deploy/Production/UC-1-Pro/services/ops-center/setup-keycloak-client.py`
 
 **Features:**
 - Uses `httpx` for REST API calls
@@ -338,7 +338,7 @@ File: `/home/muut/Production/UC-1-Pro/services/ops-center/setup-keycloak-client.
 - Already has KeycloakAdmin class
 
 **2. Admin API Test Script (VERIFIED):**
-File: `/home/muut/Production/UC-1-Pro/services/ops-center/test_admin_api.py`
+File: `/home/deploy/Production/UC-1-Pro/services/ops-center/test_admin_api.py`
 
 **Features:**
 - Tests admin authentication
@@ -375,7 +375,7 @@ File: `/home/muut/Production/UC-1-Pro/services/ops-center/test_admin_api.py`
 **Step 1.1: Create Groups in Keycloak UI**
 
 1. Login to Keycloak Admin Console
-   - URL: https://auth.your-domain.com/admin/uchub/console
+   - URL: https://auth.unicorncommander.ai/admin/uchub/console
    - Username: `admin`
    - Password: `your-admin-password`
 
@@ -458,7 +458,7 @@ If not → Check group mapper configuration
 
 **Step 2.1: Update role_mapper.py**
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/role_mapper.py`
 
 **Changes:**
 
@@ -506,7 +506,7 @@ ROLE_MAPPINGS = {
 **BEFORE:**
 ```python
 # Special handling for admin usernames and emails
-admin_identifiers = ["akadmin", "admin", "administrator", "aaron"]
+admin_identifiers = ["akadmin", "admin", "administrator"]
 admin_emails = ["admin@example.com"]
 
 email = user_info.get("email", "").lower()
@@ -579,7 +579,7 @@ Update `ROLE_MAPPING.md` to reflect new group-based approach.
 
 **Script 1: Create Groups via API**
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/create-keycloak-groups.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/create-keycloak-groups.py`
 
 ```python
 #!/usr/bin/env python3
@@ -589,7 +589,7 @@ Create UC-1 Pro role groups in Keycloak
 import httpx
 import sys
 
-KEYCLOAK_URL = "https://auth.your-domain.com"
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
 REALM = "uchub"
 ADMIN_USER = "admin"
 ADMIN_PASS = "your-admin-password"
@@ -683,7 +683,7 @@ python3 scripts/create-keycloak-groups.py
 
 **Script 2: Add User to Group via API**
 
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/add-user-to-group.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/add-user-to-group.py`
 
 ```python
 #!/usr/bin/env python3
@@ -694,7 +694,7 @@ Usage: python3 add-user-to-group.py <username> <groupname>
 import httpx
 import sys
 
-KEYCLOAK_URL = "https://auth.your-domain.com"
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
 REALM = "uchub"
 ADMIN_USER = "admin"
 ADMIN_PASS = "your-admin-password"
@@ -802,7 +802,7 @@ python3 scripts/add-user-to-group.py john uc1-users
 
 **Setup:**
 1. User `aaron` is added to `uc1-admins` group in Keycloak
-2. Login to https://your-domain.com
+2. Login to https://unicorncommander.ai
 
 **Expected Results:**
 - User redirected to Keycloak login
@@ -824,7 +824,7 @@ docker logs ops-center-direct 2>&1 | grep "mapped to role"
 **Setup:**
 1. Create test user in Keycloak (e.g., `testuser`)
 2. Add user to `uc1-users` group
-3. Login to https://your-domain.com
+3. Login to https://unicorncommander.ai
 
 **Expected Results:**
 - User role: `"role": "user"`
@@ -834,7 +834,7 @@ docker logs ops-center-direct 2>&1 | grep "mapped to role"
 **Verification:**
 ```bash
 # Try to access admin endpoint
-curl -H "Cookie: session_token=..." https://your-domain.com/api/v1/auth/users
+curl -H "Cookie: session_token=..." https://unicorncommander.ai/api/v1/auth/users
 
 # Expected: 403 Forbidden
 ```
@@ -843,7 +843,7 @@ curl -H "Cookie: session_token=..." https://your-domain.com/api/v1/auth/users
 
 **Setup:**
 1. Create user in Keycloak without any group assignment
-2. Login to https://your-domain.com
+2. Login to https://unicorncommander.ai
 
 **Expected Results:**
 - User role: `"role": "viewer"`
@@ -854,7 +854,7 @@ curl -H "Cookie: session_token=..." https://your-domain.com/api/v1/auth/users
 
 **Setup:**
 1. User is in both `uc1-users` AND `uc1-admins` groups
-2. Login to https://your-domain.com
+2. Login to https://unicorncommander.ai
 
 **Expected Results:**
 - User role: `"role": "admin"` (admin has higher priority)
@@ -865,7 +865,7 @@ curl -H "Cookie: session_token=..." https://your-domain.com/api/v1/auth/users
 **Setup:**
 1. User `akadmin` (legacy admin)
 2. NOT in any groups
-3. Login to https://your-domain.com
+3. Login to https://unicorncommander.ai
 
 **Expected Results:**
 - User role: `"role": "admin"` (from legacy hardcoded list)
@@ -889,7 +889,7 @@ curl -H "Cookie: session_token=..." https://your-domain.com/api/v1/auth/users
 **Verification:**
 ```bash
 # Decode JWT token
-curl -s https://auth.your-domain.com/realms/uchub/protocol/openid-connect/userinfo \
+curl -s https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/userinfo \
   -H "Authorization: Bearer <ACCESS_TOKEN>" | jq .groups
 ```
 
@@ -1025,7 +1025,7 @@ curl -s https://auth.your-domain.com/realms/uchub/protocol/openid-connect/userin
 
 **Step 1: Revert Code Changes**
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 git checkout HEAD -- role_mapper.py
 # Or restore from backup
 cp role_mapper.py.backup role_mapper.py
@@ -1035,14 +1035,14 @@ cp role_mapper.py.backup role_mapper.py
 ```bash
 docker restart ops-center-direct
 # Or
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 docker-compose -f docker-compose.direct.yml restart
 ```
 
 **Step 3: Verify Rollback**
 ```bash
 # Test admin login
-curl -I https://your-domain.com
+curl -I https://unicorncommander.ai
 
 # Check logs
 docker logs ops-center-direct --tail 50 | grep "mapped to role"
@@ -1155,7 +1155,7 @@ async def require_admin(current_user: dict = Depends(get_current_user), request:
 
 ```bash
 # Get admin token
-curl -X POST https://auth.your-domain.com/realms/master/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" \
@@ -1167,21 +1167,21 @@ curl -X POST https://auth.your-domain.com/realms/master/protocol/openid-connect/
 
 ```bash
 # List all groups
-curl https://auth.your-domain.com/admin/realms/uchub/groups \
+curl https://auth.unicorncommander.ai/admin/realms/uchub/groups \
   -H "Authorization: Bearer $TOKEN"
 
 # Create group
-curl -X POST https://auth.your-domain.com/admin/realms/uchub/groups \
+curl -X POST https://auth.unicorncommander.ai/admin/realms/uchub/groups \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"name": "uc1-admins"}'
 
 # Get group by name
-curl "https://auth.your-domain.com/admin/realms/uchub/groups?search=uc1-admins" \
+curl "https://auth.unicorncommander.ai/admin/realms/uchub/groups?search=uc1-admins" \
   -H "Authorization: Bearer $TOKEN"
 
 # Delete group
-curl -X DELETE https://auth.your-domain.com/admin/realms/uchub/groups/$GROUP_ID \
+curl -X DELETE https://auth.unicorncommander.ai/admin/realms/uchub/groups/$GROUP_ID \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1189,27 +1189,27 @@ curl -X DELETE https://auth.your-domain.com/admin/realms/uchub/groups/$GROUP_ID 
 
 ```bash
 # List users
-curl https://auth.your-domain.com/admin/realms/uchub/users \
+curl https://auth.unicorncommander.ai/admin/realms/uchub/users \
   -H "Authorization: Bearer $TOKEN"
 
 # Search user by username
-curl "https://auth.your-domain.com/admin/realms/uchub/users?username=aaron&exact=true" \
+curl "https://auth.unicorncommander.ai/admin/realms/uchub/users?username=aaron&exact=true" \
   -H "Authorization: Bearer $TOKEN"
 
 # Get user by ID
-curl https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID \
+curl https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID \
   -H "Authorization: Bearer $TOKEN"
 
 # Add user to group
-curl -X PUT https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
+curl -X PUT https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
   -H "Authorization: Bearer $TOKEN"
 
 # Remove user from group
-curl -X DELETE https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
+curl -X DELETE https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
   -H "Authorization: Bearer $TOKEN"
 
 # Get user's groups
-curl https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups \
+curl https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID/groups \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1227,7 +1227,7 @@ curl https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups \
 **Diagnosis:**
 ```bash
 # Check token content
-curl -s https://auth.your-domain.com/realms/uchub/protocol/openid-connect/userinfo \
+curl -s https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/userinfo \
   -H "Authorization: Bearer $ACCESS_TOKEN" | jq .
 
 # Look for "groups" field
@@ -1297,7 +1297,7 @@ docker logs uchub-keycloak 2>&1 | grep "CODE_TO_TOKEN_ERROR"
 **Diagnosis:**
 ```bash
 # Check user's role in session
-curl https://your-domain.com/api/v1/auth/me \
+curl https://unicorncommander.ai/api/v1/auth/me \
   -H "Cookie: session_token=$SESSION_TOKEN" | jq .role
 
 # Should return: "admin"
@@ -1345,7 +1345,7 @@ docker logs uchub-keycloak --tail 100
 ```bash
 # === Keycloak Admin Token ===
 export KC_ADMIN_TOKEN=$(curl -s -X POST \
-  https://auth.your-domain.com/realms/master/protocol/openid-connect/token \
+  https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token \
   -d "grant_type=password" \
   -d "client_id=admin-cli" \
   -d "username=admin" \
@@ -1353,24 +1353,24 @@ export KC_ADMIN_TOKEN=$(curl -s -X POST \
   | jq -r .access_token)
 
 # === List Groups ===
-curl -s https://auth.your-domain.com/admin/realms/uchub/groups \
+curl -s https://auth.unicorncommander.ai/admin/realms/uchub/groups \
   -H "Authorization: Bearer $KC_ADMIN_TOKEN" | jq .
 
 # === Find User ===
-export USER_ID=$(curl -s "https://auth.your-domain.com/admin/realms/uchub/users?username=aaron&exact=true" \
+export USER_ID=$(curl -s "https://auth.unicorncommander.ai/admin/realms/uchub/users?username=aaron&exact=true" \
   -H "Authorization: Bearer $KC_ADMIN_TOKEN" | jq -r '.[0].id')
 
 # === Find Group ===
-export GROUP_ID=$(curl -s "https://auth.your-domain.com/admin/realms/uchub/groups?search=uc1-admins" \
+export GROUP_ID=$(curl -s "https://auth.unicorncommander.ai/admin/realms/uchub/groups?search=uc1-admins" \
   -H "Authorization: Bearer $KC_ADMIN_TOKEN" | jq -r '.[0].id')
 
 # === Add User to Group ===
 curl -X PUT \
-  https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
+  https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID/groups/$GROUP_ID \
   -H "Authorization: Bearer $KC_ADMIN_TOKEN"
 
 # === Get User's Groups ===
-curl -s https://auth.your-domain.com/admin/realms/uchub/users/$USER_ID/groups \
+curl -s https://auth.unicorncommander.ai/admin/realms/uchub/users/$USER_ID/groups \
   -H "Authorization: Bearer $KC_ADMIN_TOKEN" | jq .
 
 # === Test Login and Get Token ===
@@ -1427,4 +1427,4 @@ docker logs uchub-keycloak --tail 100 | grep -E "ERROR|WARN"
 **Document Version:** 1.0
 **Last Updated:** October 9, 2025
 **Author:** Claude (Research Agent)
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`

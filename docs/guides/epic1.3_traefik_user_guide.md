@@ -833,7 +833,7 @@ Every configuration change triggers an automatic backup.
 
 1. Click **"Create Backup"** button
 2. Backup saved with timestamp: `traefik_backup_20251023_143052.yml`
-3. Stored in `/home/muut/Production/UC-Cloud/services/ops-center/backups/traefik/`
+3. Stored in `/opt/ops-center/backups/traefik/`
 4. Confirmation message appears
 
 #### Restoring from Backup
@@ -1605,7 +1605,7 @@ If troubleshooting doesn't resolve your issue:
    - Steps to reproduce
 
 4. **Contact Support**
-   - Email: ops-support@your-domain.com
+   - Email: ops-support@unicorncommander.ai
    - Include: logs, config, documentation
    - Response time: 24 hours (business days)
 
@@ -1812,7 +1812,7 @@ This guide covered:
 - **API Reference**: `/docs/epic1.3_api_reference.md` - Programmatic access
 - **Traefik Documentation**: https://doc.traefik.io/traefik/
 - **Let's Encrypt**: https://letsencrypt.org/docs/
-- **Ops-Center Support**: ops-support@your-domain.com
+- **Ops-Center Support**: ops-support@unicorncommander.ai
 
 ---
 

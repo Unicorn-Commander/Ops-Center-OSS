@@ -97,7 +97,7 @@ ls -lh /tmp/unicorn_db_backup_*.sql
 **ALWAYS run dry-run first** to verify migration without making changes:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run dry-run (changes will be rolled back)
 docker exec ops-center-direct python3 /app/scripts/migrate_tiers.py --dry-run --verbose
@@ -414,7 +414,7 @@ If migration fails or causes issues, rollback immediately:
 ### Method 1: Automated Rollback Script
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run rollback
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -f \
@@ -678,9 +678,9 @@ Migration is considered successful when:
 ## Support & Contact
 
 **Migration Scripts Location**:
-- SQL: `/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/`
-- Python: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/`
-- Docs: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/`
+- SQL: `/opt/ops-center/backend/sql/`
+- Python: `/opt/ops-center/backend/scripts/`
+- Docs: `/opt/ops-center/backend/docs/`
 
 **Documentation**:
 - Architecture: See system-architect agent output

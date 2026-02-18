@@ -7,7 +7,7 @@ All code has been implemented and is ready to deploy. The integration is complet
 ## What Was Implemented
 
 ### 1. Keycloak Integration Module
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
 
 - Admin token management with caching
 - User lookup by email
@@ -16,7 +16,7 @@ All code has been implemented and is ready to deploy. The integration is complet
 - Health check endpoint
 
 ### 2. Updated Lago Webhook Handler
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py`
 
 **Changes Made:**
 - ✅ Replaced Authentik integration with Keycloak
@@ -29,7 +29,7 @@ All code has been implemented and is ready to deploy. The integration is complet
 - ✅ Updated health check to report Keycloak status
 
 ### 3. Fixed FastAPI Route Handling
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py` (line 3763)
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py` (line 3763)
 
 **Problem:** Catch-all route was intercepting API endpoints
 **Solution:** Added API path exclusion to catch-all handler
@@ -42,8 +42,8 @@ if full_path.startswith("api/"):
 
 ### 4. Documentation
 **Files Created:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_SUBSCRIPTION_SYNC.md` - Complete integration guide
-- `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/test_keycloak_webhook.sh` - Comprehensive test suite
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_SUBSCRIPTION_SYNC.md` - Complete integration guide
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/test_keycloak_webhook.sh` - Comprehensive test suite
 
 ## Architecture Flow
 
@@ -61,7 +61,7 @@ Add these to your `.env` file or docker-compose environment:
 
 ```bash
 # Keycloak Configuration
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
@@ -82,7 +82,7 @@ Edit your docker-compose file for ops-center and add the environment variables a
 Since backend code is baked into the image, rebuild is required:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 
 # Stop current container
 docker stop ops-center-direct
@@ -100,7 +100,7 @@ docker-compose up -d ops-center
 
 ```bash
 # Test webhook health
-curl https://your-domain.com/api/v1/webhooks/lago/health
+curl https://unicorncommander.ai/api/v1/webhooks/lago/health
 
 # Expected response:
 {
@@ -109,7 +109,7 @@ curl https://your-domain.com/api/v1/webhooks/lago/health
   "signature_verification": true,
   "keycloak": {
     "status": "healthy",
-    "keycloak_url": "https://auth.your-domain.com",
+    "keycloak_url": "https://auth.unicorncommander.ai",
     "realm": "uchub",
     "authenticated": true,
     "timestamp": "2025-10-10T..."
@@ -121,7 +121,7 @@ curl https://your-domain.com/api/v1/webhooks/lago/health
 
 In Lago admin panel:
 1. Go to **Settings** → **Integrations** → **Webhooks**
-2. Set webhook URL: `https://your-domain.com/api/v1/webhooks/lago`
+2. Set webhook URL: `https://unicorncommander.ai/api/v1/webhooks/lago`
 3. Copy the webhook secret and set as `LAGO_WEBHOOK_SECRET` environment variable
 4. Enable these events:
    - subscription.created
@@ -134,7 +134,7 @@ In Lago admin panel:
 ### Step 5: Run Test Suite
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./scripts/test_keycloak_webhook.sh
 ```
 
@@ -176,7 +176,7 @@ Plan codes are automatically mapped to tiers:
 ### Manual Test: Create Subscription
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/webhooks/lago \
+curl -X POST https://unicorncommander.ai/api/v1/webhooks/lago \
   -H "Content-Type: application/json" \
   -d '{
     "webhook_type": "subscription.created",
@@ -196,14 +196,14 @@ curl -X POST https://your-domain.com/api/v1/webhooks/lago \
 ```bash
 # Get admin token
 TOKEN=$(curl -sk -X POST \
-  "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+  "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -d "username=admin" \
   -d "password=your-admin-password" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" | jq -r '.access_token')
 
 # Get user attributes
-curl -sk "https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com&exact=true" \
+curl -sk "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com&exact=true" \
   -H "Authorization: Bearer $TOKEN" | jq '.[0].attributes'
 ```
 
@@ -245,7 +245,7 @@ Expected output:
 1. Verify `KEYCLOAK_ADMIN_PASSWORD` is correct
 2. Test authentication manually:
    ```bash
-   curl -X POST "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+   curl -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
      -d "username=admin" \
      -d "password=your-admin-password" \
      -d "grant_type=password" \

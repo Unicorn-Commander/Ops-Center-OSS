@@ -50,7 +50,7 @@ class HealthChecker:
         self.redis_client: Optional[Any] = None
 
         # External service URLs
-        self.keycloak_url = os.getenv("KEYCLOAK_URL", "http://keycloak:8080")
+        self.keycloak_url = os.getenv("KEYCLOAK_URL", "http://uchub-keycloak:8080")
         self.litellm_url = os.getenv("LITELLM_PROXY_URL", "http://unicorn-litellm:4000")
         self.lago_url = os.getenv("LAGO_API_URL", "http://unicorn-lago-api:3000")
 

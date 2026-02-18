@@ -349,7 +349,7 @@ class TestSecretEncryption:
     def test_namecheap_key_encryption(self):
         """Test encryption of NameCheap API key"""
         manager = SecretManager()
-        api_key = "your-example-api-key"
+        api_key = "your-namecheap-api-key"
 
         encrypted = manager.encrypt_secret(api_key, secret_type="namecheap_api_key")
         decrypted = manager.decrypt_secret(encrypted["encrypted_value"])

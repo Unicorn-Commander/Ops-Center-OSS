@@ -12,24 +12,24 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/monitoring/umami", tags=["Monitoring"])
 
 # Umami Configuration
-UMAMI_URL = "http://umami.your-domain.com:3000"
+UMAMI_URL = "http://umami.unicorncommander.ai:3000"
 UMAMI_TIMEOUT = 30.0
 
 # Pre-defined websites to track
 DEFAULT_WEBSITES = [
     {
         "name": "Ops Center",
-        "domain": "your-domain.com",
+        "domain": "unicorncommander.ai",
         "enabled": False
     },
     {
         "name": "Brigade",
-        "domain": "brigade.your-domain.com",
+        "domain": "brigade.unicorncommander.ai",
         "enabled": False
     },
     {
         "name": "Center-Deep",
-        "domain": "search.your-domain.com",
+        "domain": "search.unicorncommander.ai",
         "enabled": False
     }
 ]

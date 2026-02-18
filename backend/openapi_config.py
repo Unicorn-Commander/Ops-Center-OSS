@@ -3,7 +3,6 @@ OpenAPI Configuration for UC-Cloud Ops-Center API
 Enhanced metadata and documentation for auto-generated API docs
 """
 
-import os
 from typing import Dict, List
 
 # OpenAPI Metadata
@@ -32,7 +31,7 @@ All endpoints require JWT Bearer token authentication via Keycloak SSO.
 
 **To authenticate:**
 
-1. Navigate to your Keycloak SSO authentication server
+1. Navigate to [https://auth.unicorncommander.ai](https://auth.unicorncommander.ai)
 2. Login with credentials or OAuth provider (Google, GitHub, Microsoft)
 3. Extract the `access_token` from the response
 4. Include in API requests: `Authorization: Bearer <token>`
@@ -79,9 +78,9 @@ API endpoints are rate-limited based on subscription tier:
 
 ## Support
 
-- **Documentation**: See project README
-- **Email**: Configure via SUPPORT_EMAIL environment variable
-- **GitHub**: [ops-center Repository](https://github.com/your-org/ops-center)
+- **Documentation**: [https://unicorncommander.com](https://unicorncommander.com)
+- **Email**: support@magicunicorn.tech
+- **GitHub**: [UC-Cloud Repository](https://github.com/Unicorn-Commander/UC-Cloud)
 
 ## Version History
 
@@ -90,15 +89,15 @@ API endpoints are rate-limited based on subscription tier:
 - **v1.0.0** (August 2025): Initial release with user management and LLM proxy
 """,
     "contact": {
-        "name": "Ops-Center Support",
-        "url": os.getenv("DOCS_URL", "http://localhost:8084/docs"),
-        "email": os.getenv("SUPPORT_EMAIL", "support@example.com")
+        "name": "UC-Cloud Support",
+        "url": "https://unicorncommander.com",
+        "email": "support@magicunicorn.tech"
     },
     "license_info": {
         "name": "MIT License",
         "url": "https://opensource.org/licenses/MIT"
     },
-    "terms_of_service": os.getenv("TERMS_URL", ""),
+    "terms_of_service": "https://unicorncommander.com/terms",
     "openapi_tags": [
         {
             "name": "authentication",
@@ -211,8 +210,12 @@ API endpoints are rate-limited based on subscription tier:
     ],
     "servers": [
         {
-            "url": os.getenv("APP_URL", "http://localhost:8084"),
-            "description": "API server"
+            "url": "https://unicorncommander.ai",
+            "description": "Production server"
+        },
+        {
+            "url": "http://localhost:8084",
+            "description": "Development server"
         }
     ]
 }
@@ -228,7 +231,7 @@ JWT token obtained from Keycloak SSO authentication.
 
 **To obtain a token:**
 
-1. Navigate to your Keycloak SSO authentication server
+1. Navigate to https://auth.unicorncommander.ai
 2. Login with credentials or OAuth provider (Google, GitHub, Microsoft)
 3. Retrieve `access_token` from response
 4. Include in Authorization header: `Bearer <token>`

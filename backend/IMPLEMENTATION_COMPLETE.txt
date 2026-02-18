@@ -70,7 +70,7 @@ INTEGRATION STEPS (5 minutes)
 ================================================================================
 
 1. Review Configuration
-   $ cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+   $ cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
    $ cat .env.ratelimit
 
 2. Install Dependencies

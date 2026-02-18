@@ -55,8 +55,8 @@ class EmailNotificationService:
     def __init__(self):
         self.db_pool: Optional[asyncpg.Pool] = None
         self.template_dir = os.path.join(os.path.dirname(__file__), "email_templates")
-        self.dashboard_url = os.getenv("APP_URL", "http://localhost:8084")
-        self.support_email = os.getenv("SUPPORT_EMAIL", "support@example.com")
+        self.dashboard_url = os.getenv("APP_URL", "https://unicorncommander.ai")
+        self.support_email = os.getenv("SUPPORT_EMAIL", "support@unicorncommander.ai")
         self._rate_limit = {}  # Rate limiting dictionary
 
     async def initialize(self):

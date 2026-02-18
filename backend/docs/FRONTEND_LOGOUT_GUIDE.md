@@ -37,7 +37,7 @@ No request body needed.
 ```json
 {
   "message": "Logged out successfully",
-  "sso_logout_url": "https://auth.your-domain.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://your-domain.com"
+  "sso_logout_url": "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout?redirect_uri=https://unicorncommander.ai"
 }
 ```
 
@@ -399,13 +399,13 @@ export class LogoutButtonComponent {
 
 ```
 1. Browser redirects to:
-   https://auth.your-domain.com/realms/master/protocol/openid-connect/logout?redirect_uri=https://your-domain.com
+   https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/logout?redirect_uri=https://unicorncommander.ai
 
 2. Keycloak:
    - Validates redirect_uri
    - Ends SSO session
    - Clears cookies
-   - Redirects back to: https://your-domain.com
+   - Redirects back to: https://unicorncommander.ai
 
 3. User lands on homepage, fully logged out
 ```
@@ -484,7 +484,7 @@ Always have a fallback if logout fails:
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["https://your-domain.com"]
+    allow_origins=["https://unicorncommander.ai"]
 )
 ```
 
@@ -517,16 +517,16 @@ window.location.href = data.sso_logout_url;
 | **Request Body** | None |
 | **Response Field** | `sso_logout_url` |
 | **Frontend Action** | `window.location.href = url` |
-| **Keycloak URL** | https://auth.your-domain.com |
+| **Keycloak URL** | https://auth.unicorncommander.ai |
 | **Realm** | master |
-| **Redirect Back** | https://your-domain.com |
+| **Redirect Back** | https://unicorncommander.ai |
 
 ## Need Help?
 
 - Backend Documentation: `/backend/docs/KEYCLOAK_SSO_LOGOUT.md`
 - Full Implementation Guide: `/backend/KEYCLOAK_LOGOUT_IMPLEMENTATION.md`
 - Test Script: `/backend/tests/test_logout_simple.sh`
-- Keycloak Admin: https://auth.your-domain.com/admin
+- Keycloak Admin: https://auth.unicorncommander.ai/admin
 
 ---
 

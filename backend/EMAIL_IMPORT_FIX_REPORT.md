@@ -111,7 +111,7 @@ async def get_current_user_id(request: Request) -> Optional[str]:
 
 All files compiled successfully:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 -m py_compile keycloak_integration.py
 python3 -m py_compile email_notifications.py
 python3 -m py_compile email_notification_api.py

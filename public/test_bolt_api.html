@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bolt API Test</title>
+</head>
+<body>
+    <h1>Bolt API Test</h1>
+    <button onclick="testWorkingModel()">Test Working Model (GPT-4o Mini)</button>
+    <button onclick="testRateLimitedModel()">Test Rate-Limited Model (Gemini)</button>
+    <button onclick="testInvalidModel()">Test Invalid Model</button>
+    <pre id="output"></pre>
+
+    <script>
+        const API_URL = 'https://bolt.your-domain.com/api/llmcall';
+        const AUTH_TOKEN = 'sk-bolt-diy-service-key-2025';
+
+        async function testAPI(model, description) {
+            const output = document.getElementById('output');
+            output.textContent = `Testing ${description}...\n\n`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AUTH_TOKEN}`
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: [{role: 'user', content: 'Say hello'}],
+                        max_tokens: 10
+                    })
+                });
+
+                output.textContent += `Status: ${response.status} ${response.statusText}\n`;
+                output.textContent += `Headers:\n`;
+                for (let [key, value] of response.headers) {
+                    output.textContent += `  ${key}: ${value}\n`;
+                }
+
+                const text = await response.text();
+                output.textContent += `\nRaw Response:\n${text}\n\n`;
+
+                try {
+                    const json = JSON.parse(text);
+                    output.textContent += `Parsed JSON:\n${JSON.stringify(json, null, 2)}\n`;
+                } catch (e) {
+                    output.textContent += `Failed to parse JSON: ${e.message}\n`;
+                }
+
+            } catch (error) {
+                output.textContent += `Error: ${error.message}\n`;
+                output.textContent += `Stack: ${error.stack}\n`;
+            }
+        }
+
+        function testWorkingModel() {
+            testAPI('openai/gpt-4o-mini', 'Working Model (GPT-4o Mini)');
+        }
+
+        function testRateLimitedModel() {
+            testAPI('google/gemini-2.0-flash-exp:free', 'Rate-Limited Model (Gemini)');
+        }
+
+        function testInvalidModel() {
+            testAPI('invalid-model-xyz', 'Invalid Model');
+        }
+    </script>
+</body>
+</html>

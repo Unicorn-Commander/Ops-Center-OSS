@@ -1,7 +1,7 @@
 # Extensions Marketplace - Manual Testing Checklist
 
 **Date**: November 1, 2025
-**Environment**: https://your-domain.com
+**Environment**: https://unicorncommander.ai
 **Test User**: test-user-123
 **Admin User**: admin-user-123
 

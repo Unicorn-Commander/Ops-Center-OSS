@@ -174,7 +174,7 @@ All API endpoints require **JWT Bearer token** authentication via Keycloak SSO.
 
 ### Getting a Token
 
-1. **Navigate**: https://auth.your-domain.com
+1. **Navigate**: https://auth.unicorncommander.ai
 2. **Login**: Use credentials or OAuth (Google, GitHub, Microsoft)
 3. **Extract**: Get `access_token` from response
 4. **Use**: Add to requests:
@@ -193,7 +193,7 @@ All API endpoints require **JWT Bearer token** authentication via Keycloak SSO.
 
 ```bash
 curl -X GET \
-  https://your-domain.com/api/v1/admin/users \
+  https://unicorncommander.ai/api/v1/admin/users \
   -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -403,7 +403,7 @@ Over 50 languages supported:
    - Paste: `http://localhost:8084/openapi.json`
 
 2. Configure environment:
-   - Base URL: `https://your-domain.com`
+   - Base URL: `https://unicorncommander.ai`
    - Auth Token: `<your_jwt_token>`
 
 3. Test endpoints
@@ -428,7 +428,7 @@ TOKEN="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # Test endpoint
 curl -H "Authorization: Bearer $TOKEN" \
-  https://your-domain.com/api/v1/admin/users
+  https://unicorncommander.ai/api/v1/admin/users
 ```
 
 ---
@@ -498,7 +498,7 @@ swagger-cli validate docs/openapi.yaml
 ### Contact
 
 - **Email**: support@magicunicorn.tech
-- **Website**: https://your-domain.com
+- **Website**: https://unicorncommander.com
 - **GitHub**: https://github.com/Unicorn-Commander/UC-Cloud
 
 ---

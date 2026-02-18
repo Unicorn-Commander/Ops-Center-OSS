@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-PROJECT_DIR="/home/muut/Production/UC-Cloud/services/ops-center"
+PROJECT_DIR="/opt/ops-center"
 CONTAINER_NAME="ops-center-direct"
 
 # Colors for output

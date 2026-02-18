@@ -10,7 +10,7 @@ from urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 # Configuration
-KEYCLOAK_URL = "https://auth.your-domain.com"
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "Cmon Widja2626"
 REALM = "uchub"
@@ -137,14 +137,14 @@ class KeycloakAdmin:
                 "saml.onetimeuse.condition": "false"
             },
             "redirectUris": [
-                "https://your-domain.com/*",
-                "https://your-domain.com/auth/callback"
+                "https://unicorncommander.ai/*",
+                "https://unicorncommander.ai/auth/callback"
             ],
             "webOrigins": [
-                "https://your-domain.com"
+                "https://unicorncommander.ai"
             ],
-            "rootUrl": "https://your-domain.com",
-            "baseUrl": "https://your-domain.com",
+            "rootUrl": "https://unicorncommander.ai",
+            "baseUrl": "https://unicorncommander.ai",
             "adminUrl": "",
             "surrogateAuthRequired": False,
             "fullScopeAllowed": True,

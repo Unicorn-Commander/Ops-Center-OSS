@@ -45,7 +45,7 @@ class RateLimitConfig:
         self.enabled = os.environ.get("RATE_LIMIT_ENABLED", "true").lower() == "true"
 
         # Redis connection
-        self.redis_url = os.environ.get("REDIS_URL", "redis://unicorn-lago-redis:6379/0")
+        self.redis_url = os.environ.get("REDIS_URL", "redis://unicorn-redis:6379/0")
 
         # Rate limit configurations (format: "count/period")
         self.limits = {

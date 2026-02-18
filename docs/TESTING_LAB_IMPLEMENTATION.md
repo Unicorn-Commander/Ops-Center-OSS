@@ -343,7 +343,7 @@ const handleTestModel = async () => {
 
 **Commands Used**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct
@@ -358,7 +358,7 @@ curl http://localhost:8084/api/v1/llm/test/templates
 curl http://localhost:8084/api/v1/llm/models?limit=5
 
 # Access UI
-# https://your-domain.com/admin (navigate to LLM → Testing Lab)
+# https://unicorncommander.ai/admin (navigate to LLM → Testing Lab)
 ```
 
 ---
@@ -501,4 +501,4 @@ docker logs ops-center-direct 2>&1 | grep -i "event-stream"
 
 ---
 
-**Status**: ✅ PRODUCTION READY - Deployed to https://your-domain.com/admin
+**Status**: ✅ PRODUCTION READY - Deployed to https://unicorncommander.ai/admin

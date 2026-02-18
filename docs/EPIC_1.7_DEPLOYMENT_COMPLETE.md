@@ -68,7 +68,7 @@ GET    /api/v1/migration/health
 
 **Access URL**:
 - Local: `http://localhost:8084/admin/infrastructure/migration`
-- Production: `https://your-domain.com/admin/infrastructure/migration`
+- Production: `https://unicorncommander.ai/admin/infrastructure/migration`
 
 **Build Output**:
 ```
@@ -82,10 +82,10 @@ dist/assets/MigrationWizard-C59Vvou_.js    41.99 kB │ gzip:  12.05 kB
 **Added Variables**:
 ```bash
 # === NameCheap Migration (Epic 1.7) ===
-NAMECHEAP_API_USERNAME=SkyBehind
-NAMECHEAP_API_KEY=your-example-api-key
-NAMECHEAP_USERNAME=SkyBehind
-NAMECHEAP_CLIENT_IP=YOUR_SERVER_IP
+NAMECHEAP_API_USERNAME=your-namecheap-username
+NAMECHEAP_API_KEY=your-namecheap-api-key
+NAMECHEAP_USERNAME=your-namecheap-username
+NAMECHEAP_CLIENT_IP=your-server-ip
 NAMECHEAP_SANDBOX=false
 ```
 
@@ -122,7 +122,7 @@ docker restart ops-center-direct
 **Container Status**: Running (46 seconds uptime as of deployment)
 
 **Traefik Routing**: Configured via labels
-- External URL: `https://your-domain.com`
+- External URL: `https://unicorncommander.ai`
 - Internal Port: 8084
 - SSL/TLS: Let's Encrypt (via Traefik)
 
@@ -169,7 +169,7 @@ ls -lh public/index.html
 ```
 
 #### Route Test (Manual)
-- **URL**: `https://your-domain.com/admin/infrastructure/migration`
+- **URL**: `https://unicorncommander.ai/admin/infrastructure/migration`
 - **Status**: Pending manual verification (requires browser login)
 - **Expected**: 5-step wizard interface loads
 
@@ -228,7 +228,7 @@ ls -lh public/index.html
 
 ### API Documentation
 
-**Swagger UI**: `https://your-domain.com/docs`
+**Swagger UI**: `https://unicorncommander.ai/docs`
 
 **Migration Endpoints Section**:
 - Tag: `migration`, `namecheap`, `dns`
@@ -236,7 +236,7 @@ ls -lh public/index.html
 
 ### Frontend Access
 
-**URL**: `https://your-domain.com/admin/infrastructure/migration`
+**URL**: `https://unicorncommander.ai/admin/infrastructure/migration`
 
 **Authentication**: Requires Keycloak SSO login
 - Admin role required for infrastructure management
@@ -388,7 +388,7 @@ docker exec ops-center-direct curl -s http://localhost:8084/api/v1/migration/hea
    - Verify health status
 
 2. **Manual E2E Testing**
-   - Login to `https://your-domain.com/admin`
+   - Login to `https://unicorncommander.ai/admin`
    - Navigate to `/admin/infrastructure/migration`
    - Verify wizard loads
    - Test domain discovery
@@ -521,7 +521,7 @@ docker logs ops-center-direct -f | grep -i migration
 
 **Health Check**:
 ```bash
-curl https://your-domain.com/api/v1/migration/health
+curl https://unicorncommander.ai/api/v1/migration/health
 ```
 
 **Support**: See UC-Cloud documentation for troubleshooting and maintenance procedures.

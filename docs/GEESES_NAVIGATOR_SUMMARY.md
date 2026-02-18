@@ -83,7 +83,7 @@
 ## 📁 File Structure
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/geeses/
+/opt/ops-center/geeses/
 ├── tools/                          # 6 TypeScript tools
 │   ├── ops_center_api_query.ts    (290 lines)
 │   ├── get_system_status.ts       (385 lines)
@@ -177,11 +177,11 @@ Geeses: "Analyzing flight recorder data...
 - API: http://localhost:8084/api/geeses/*
 
 **Production**:
-- Chat UI: https://your-domain.com/admin/geeses
-- API: https://your-domain.com/api/geeses/*
+- Chat UI: https://unicorncommander.ai/admin/geeses
+- API: https://unicorncommander.ai/api/geeses/*
 
 **Brigade** (after deployment):
-- Agent Card: https://api.brigade.your-domain.com/api/agents/navigator-geeses/card
+- Agent Card: https://api.brigade.unicorncommander.ai/api/agents/navigator-geeses/card
 - Chat: Via Brigade chat interface
 
 ---

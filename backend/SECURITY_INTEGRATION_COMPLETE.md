@@ -99,7 +99,7 @@ RATE_LIMIT_READ=200/minute                 # Read operations limit
 RATE_LIMIT_WRITE=50/minute                 # Write operations limit
 RATE_LIMIT_ADMIN_BYPASS=true               # Allow admin to bypass limits
 RATE_LIMIT_FAIL_OPEN=true                  # Allow requests on Redis failure
-REDIS_URL=redis://unicorn-lago-redis:6379/0  # Redis connection
+REDIS_URL=redis://unicorn-redis:6379/0  # Redis connection
 ```
 
 **Rate Limit Categories:**
@@ -161,7 +161,7 @@ AUDIT_FAIL_OPEN=true                      # Continue on audit failure
 
 **Database Location:**
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/data/ops_center.db
+/home/deploy/Production/UC-1-Pro/services/ops-center/data/ops_center.db
 ```
 
 **Log Files:**
@@ -285,7 +285,7 @@ RATE_LIMIT_READ=200/minute
 RATE_LIMIT_WRITE=50/minute
 RATE_LIMIT_ADMIN_BYPASS=true
 RATE_LIMIT_FAIL_OPEN=true
-REDIS_URL=redis://unicorn-lago-redis:6379/0
+REDIS_URL=redis://unicorn-redis:6379/0
 
 # Audit Configuration
 AUDIT_FAIL_OPEN=true
@@ -303,7 +303,7 @@ pydantic>=2.0.0
 ### Service Dependencies
 
 **Required Services:**
-- Redis (for rate limiting) - `unicorn-lago-redis:6379`
+- Redis (for rate limiting) - `unicorn-redis:6379`
 
 **Optional Services:**
 - PostgreSQL (for centralized audit log storage - currently using SQLite)
@@ -405,7 +405,7 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
   "http://localhost:8084/api/v1/audit/stats"
 
 # Check database
-sqlite3 /home/muut/Production/UC-1-Pro/services/ops-center/data/ops_center.db \
+sqlite3 /home/deploy/Production/UC-1-Pro/services/ops-center/data/ops_center.db \
   "SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 10;"
 
 # Check log file
@@ -480,7 +480,7 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
 
 3. **Test Redis connection:**
    ```bash
-   redis-cli -u redis://unicorn-lago-redis:6379/0 PING
+   redis-cli -u redis://unicorn-redis:6379/0 PING
    ```
 
 4. **Restart service:**
@@ -526,7 +526,7 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
 **Check Rate Limiting:**
 ```bash
 # Redis rate limit keys
-redis-cli -u redis://unicorn-lago-redis:6379/0 KEYS "ratelimit:*"
+redis-cli -u redis://unicorn-redis:6379/0 KEYS "ratelimit:*"
 
 # Check for rate-limited IPs
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \

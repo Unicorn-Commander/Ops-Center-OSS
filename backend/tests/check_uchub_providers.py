@@ -6,7 +6,7 @@ import json
 
 # Get admin token
 token_response = requests.post(
-    "https://auth.your-domain.com/realms/master/protocol/openid-connect/token",
+    "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token",
     data={
         "client_id": "admin-cli",
         "username": "admin",
@@ -30,7 +30,7 @@ print("="*80)
 
 # Get identity providers
 idp_response = requests.get(
-    "https://auth.your-domain.com/admin/realms/uchub/identity-provider/instances",
+    "https://auth.unicorncommander.ai/admin/realms/uchub/identity-provider/instances",
     headers=headers,
     verify=False
 )
@@ -53,7 +53,7 @@ print("="*80)
 
 # Get clients
 clients_response = requests.get(
-    "https://auth.your-domain.com/admin/realms/uchub/clients",
+    "https://auth.unicorncommander.ai/admin/realms/uchub/clients",
     headers=headers,
     verify=False
 )

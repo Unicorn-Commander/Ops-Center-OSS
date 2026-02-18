@@ -77,7 +77,7 @@ LAGO_API_KEY=your_lago_api_key
 
 ```bash
 # Test module import
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 -c "from billing import StripeClient; print('✓ OK')"
 
 # Test user subscription endpoint

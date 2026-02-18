@@ -27,10 +27,10 @@ import sys
 from datetime import datetime
 
 # Keycloak Configuration
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "ops-center")
-KEYCLOAK_ADMIN_USER = os.getenv("KEYCLOAK_ADMIN_USER", "admin")
-KEYCLOAK_ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://uchub-keycloak:8080")
+KEYCLOAK_REALM = "uchub"
+KEYCLOAK_ADMIN_USER = "admin"
+KEYCLOAK_ADMIN_PASSWORD = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "your-admin-password")
 
 # User Profile Attribute Configuration
 USER_ATTRIBUTES = [
@@ -383,9 +383,9 @@ async def main():
 The User Profile API is not available or configuration failed.
 Please configure manually via Keycloak Admin Console:
 
-1. Login to: <YOUR_KEYCLOAK_URL>/admin/<YOUR_REALM>/console
+1. Login to: https://auth.unicorncommander.ai/admin/uchub/console
    Username: admin
-   Password: <KEYCLOAK_ADMIN_PASSWORD from environment>
+   Password: your-admin-password
 
 2. Navigate to: Realm Settings → User Profile
 

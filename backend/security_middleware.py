@@ -15,7 +15,6 @@ Author: Security Team Lead
 Date: October 22, 2025
 """
 
-import os
 import time
 import logging
 from typing import Callable
@@ -290,7 +289,7 @@ class SecureCORSMiddleware(BaseHTTPMiddleware):
     Usage:
         app.add_middleware(
             SecureCORSMiddleware,
-            allowed_origins=["https://your-domain.com"],
+            allowed_origins=["https://unicorncommander.ai"],
             allow_credentials=True
         )
     """
@@ -316,7 +315,7 @@ class SecureCORSMiddleware(BaseHTTPMiddleware):
             max_age: Preflight cache duration in seconds
         """
         super().__init__(app)
-        self.allowed_origins = allowed_origins or os.getenv("CORS_ORIGINS", "http://localhost:8084").split(",")
+        self.allowed_origins = allowed_origins or ["https://unicorncommander.ai"]
         self.allowed_methods = allowed_methods or ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
         self.allowed_headers = allowed_headers or ["Content-Type", "Authorization"]
         self.allow_credentials = allow_credentials
@@ -506,7 +505,7 @@ if __name__ == "__main__":
     app.add_middleware(RequestLoggingMiddleware)
     app.add_middleware(
         SecureCORSMiddleware,
-        allowed_origins=os.getenv("CORS_ORIGINS", "http://localhost:8084").split(",")
+        allowed_origins=["https://unicorncommander.ai"]
     )
     app.add_middleware(BasicRateLimitMiddleware, requests_per_minute=100)
     """)

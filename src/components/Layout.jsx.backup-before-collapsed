@@ -545,7 +545,7 @@ export default function Layout({ children }) {
                       />
                       <NavigationItem
                         name="Center-Deep Search"
-                        href="https://search.your-domain.com"
+                        href="https://search.unicorncommander.ai"
                         icon={iconMap.MagnifyingGlassIcon}
                         indent={true}
                         external={true}

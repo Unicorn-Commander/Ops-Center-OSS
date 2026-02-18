@@ -55,7 +55,7 @@
 
 ### Login Credentials
 
-**URL**: https://billing.your-domain.com
+**URL**: https://billing.unicorncommander.ai
 
 **Admin Account**:
 - Email: `admin@example.com`
@@ -131,14 +131,14 @@ Lago Admin Dashboard
 
 ```bash
 # Get JWT token first
-TOKEN=$(curl -X POST https://billing-api.your-domain.com/graphql \
+TOKEN=$(curl -X POST https://billing-api.unicorncommander.ai/graphql \
   -H "Content-Type: application/json" \
   -d '{
     "query": "mutation { loginUser(input: {email: \"admin@example.com\", password: \"your-admin-password\"}) { token user { id } } }"
   }' | jq -r '.data.loginUser.token')
 
 # Create plan
-curl -X POST https://billing-api.your-domain.com/graphql \
+curl -X POST https://billing-api.unicorncommander.ai/graphql \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -H "X-Lago-Organization: 2e82bd29-924d-49fe-ae05-658f8e8971fa" \
@@ -263,7 +263,7 @@ Billable metrics define **what you measure** for billing purposes.
 
 ```bash
 # Create billable metric
-curl -X POST https://billing-api.your-domain.com/graphql \
+curl -X POST https://billing-api.unicorncommander.ai/graphql \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -H "X-Lago-Organization: 2e82bd29-924d-49fe-ae05-658f8e8971fa" \
@@ -411,7 +411,7 @@ Fixed fee: $0.30
 
 ```bash
 # Add charge to plan
-curl -X POST https://billing-api.your-domain.com/graphql \
+curl -X POST https://billing-api.unicorncommander.ai/graphql \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -H "X-Lago-Organization: 2e82bd29-924d-49fe-ae05-658f8e8971fa" \
@@ -1006,7 +1006,7 @@ if usage >= limit * 0.8:
 ### Quick Reference
 
 **To manage subscriptions**:
-1. Login to https://billing.your-domain.com
+1. Login to https://billing.unicorncommander.ai
 2. Go to Plans section
 3. Create/edit plans and charges
 

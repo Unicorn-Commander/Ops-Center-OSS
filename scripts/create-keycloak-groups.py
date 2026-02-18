@@ -8,23 +8,16 @@ This script creates the four UC-1 Pro role groups in Keycloak:
 - uc1-users
 - uc1-viewers
 
-Environment Variables:
-    KEYCLOAK_URL - Keycloak server URL (default: http://localhost:8080)
-    KEYCLOAK_REALM - Keycloak realm (default: uchub)
-    KEYCLOAK_ADMIN_USER - Admin username (default: admin)
-    KEYCLOAK_ADMIN_PASSWORD - Admin password (required)
-
 Usage:
-    KEYCLOAK_ADMIN_PASSWORD=secret python3 scripts/create-keycloak-groups.py
+    python3 scripts/create-keycloak-groups.py
 """
 import httpx
 import sys
-import os
 
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-REALM = os.getenv("KEYCLOAK_REALM", "uchub")
-ADMIN_USER = os.getenv("KEYCLOAK_ADMIN_USER", "admin")
-ADMIN_PASS = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
+KEYCLOAK_URL = "https://auth.unicorncommander.ai"
+REALM = "uchub"
+ADMIN_USER = "admin"
+ADMIN_PASS = "your-admin-password"
 
 GROUPS = [
     {

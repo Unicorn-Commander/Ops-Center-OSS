@@ -27,7 +27,7 @@ All API requests require authentication via Bearer token obtained from Keycloak 
 #### cURL
 ```bash
 # Login and get token
-curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
   -d "client_id=ops-center" \
@@ -39,7 +39,7 @@ curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/t
 #### JavaScript (fetch)
 ```javascript
 async function getAuthToken(username, password) {
-  const response = await fetch('https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token', {
+  const response = await fetch('https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -68,7 +68,7 @@ import requests
 
 def get_auth_token(username: str, password: str) -> str:
     """Get authentication token from Keycloak"""
-    url = 'https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token'
+    url = 'https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token'
 
     data = {
         'grant_type': 'password',
@@ -95,7 +95,7 @@ token = get_auth_token('user@example.com', 'password')
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/admin/users \
+curl -X GET https://unicorncommander.ai/api/v1/admin/users \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -133,7 +133,7 @@ import requests
 
 def get_all_users(token: str) -> list:
     """Get all users from Ops-Center"""
-    url = 'https://your-domain.com/api/v1/admin/users'
+    url = 'https://unicorncommander.ai/api/v1/admin/users'
 
     headers = {
         'Authorization': f'Bearer {token}'
@@ -154,7 +154,7 @@ print(f"Found {len(users)} users")
 #### cURL
 ```bash
 # Filter users by tier, role, and status
-curl -X GET "https://your-domain.com/api/v1/admin/users?tier=professional&role=admin&status=enabled&limit=50" \
+curl -X GET "https://unicorncommander.ai/api/v1/admin/users?tier=professional&role=admin&status=enabled&limit=50" \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -211,7 +211,7 @@ async def filter_users(
     offset: int = 0
 ) -> dict:
     """Filter users with advanced criteria"""
-    url = 'https://your-domain.com/api/v1/admin/users'
+    url = 'https://unicorncommander.ai/api/v1/admin/users'
 
     params = {
         'limit': limit,
@@ -251,7 +251,7 @@ users = asyncio.run(filter_users(
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/admin/users/USER_ID \
+curl -X GET https://unicorncommander.ai/api/v1/admin/users/USER_ID \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -278,7 +278,7 @@ console.log(`User: ${user.username}, Tier: ${user.subscription_tier}`);
 ```python
 def get_user_details(token: str, user_id: str) -> dict:
     """Get detailed user information"""
-    url = f'https://your-domain.com/api/v1/admin/users/{user_id}'
+    url = f'https://unicorncommander.ai/api/v1/admin/users/{user_id}'
 
     headers = {
         'Authorization': f'Bearer {token}'
@@ -298,7 +298,7 @@ print(f"User: {user['username']}, Tier: {user.get('subscription_tier', 'none')}"
 
 #### cURL
 ```bash
-curl -X POST https://your-domain.com/api/v1/admin/users/comprehensive \
+curl -X POST https://unicorncommander.ai/api/v1/admin/users/comprehensive \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -361,7 +361,7 @@ console.log(`Created user: ${newUser.id}`);
 ```python
 def create_user(token: str, user_data: dict) -> dict:
     """Create a new user with full provisioning"""
-    url = 'https://your-domain.com/api/v1/admin/users/comprehensive'
+    url = 'https://unicorncommander.ai/api/v1/admin/users/comprehensive'
 
     headers = {
         'Authorization': f'Bearer {token}',
@@ -401,7 +401,7 @@ print(f"Created user: {new_user['id']}")
 
 #### cURL
 ```bash
-curl -X PUT https://your-domain.com/api/v1/admin/users/USER_ID \
+curl -X PUT https://unicorncommander.ai/api/v1/admin/users/USER_ID \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -440,7 +440,7 @@ const updated = await updateUser('USER_ID', {
 ```python
 def update_user(token: str, user_id: str, updates: dict) -> dict:
     """Update user details"""
-    url = f'https://your-domain.com/api/v1/admin/users/{user_id}'
+    url = f'https://unicorncommander.ai/api/v1/admin/users/{user_id}'
 
     headers = {
         'Authorization': f'Bearer {token}',
@@ -492,7 +492,7 @@ console.log(`Imported ${result.successful} users, ${result.failed} failed`);
 ```python
 def bulk_assign_roles(token: str, user_ids: list, role: str) -> dict:
     """Assign role to multiple users at once"""
-    url = 'https://your-domain.com/api/v1/admin/users/bulk/assign-roles'
+    url = 'https://unicorncommander.ai/api/v1/admin/users/bulk/assign-roles'
 
     headers = {
         'Authorization': f'Bearer {token}',
@@ -526,7 +526,7 @@ print(f"Updated {result['updated_count']} users")
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/organizations \
+curl -X GET https://unicorncommander.ai/api/v1/organizations \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -549,7 +549,7 @@ async function getOrganizations() {
 
 #### cURL
 ```bash
-curl -X POST https://your-domain.com/api/v1/organizations \
+curl -X POST https://unicorncommander.ai/api/v1/organizations \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -592,7 +592,7 @@ const org = await createOrganization({
 ```python
 def create_organization(token: str, name: str, slug: str, description: str = '') -> dict:
     """Create a new organization"""
-    url = 'https://your-domain.com/api/v1/organizations'
+    url = 'https://unicorncommander.ai/api/v1/organizations'
 
     headers = {
         'Authorization': f'Bearer {token}',
@@ -618,7 +618,7 @@ org = create_organization(token, 'Acme Corporation', 'acme-corp', 'Enterprise cu
 
 #### cURL
 ```bash
-curl -X POST https://your-domain.com/api/v1/organizations/ORG_ID/invite \
+curl -X POST https://unicorncommander.ai/api/v1/organizations/ORG_ID/invite \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -653,7 +653,7 @@ async function inviteMember(orgId, email, role = 'member') {
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/billing/plans \
+curl -X GET https://unicorncommander.ai/api/v1/billing/plans \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -682,7 +682,7 @@ plans.forEach(plan => {
 ```python
 def get_subscription_plans(token: str) -> list:
     """Get all available subscription plans"""
-    url = 'https://your-domain.com/api/v1/billing/plans'
+    url = 'https://unicorncommander.ai/api/v1/billing/plans'
 
     headers = {
         'Authorization': f'Bearer {token}'
@@ -703,7 +703,7 @@ for plan in plans:
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/billing/subscriptions/current \
+curl -X GET https://unicorncommander.ai/api/v1/billing/subscriptions/current \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -732,7 +732,7 @@ console.log(`Next billing: ${subscription.next_billing_date}`);
 
 #### cURL
 ```bash
-curl -X POST https://your-domain.com/api/v1/billing/subscriptions/create \
+curl -X POST https://unicorncommander.ai/api/v1/billing/subscriptions/create \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -773,7 +773,7 @@ const subscription = await createSubscription('professional', 'pm_1234567890');
 
 #### cURL
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -828,7 +828,7 @@ def chat_completion(
     max_tokens: int = 150
 ) -> dict:
     """Send chat completion request to LiteLLM proxy"""
-    url = 'https://your-domain.com/api/v1/llm/chat/completions'
+    url = 'https://unicorncommander.ai/api/v1/llm/chat/completions'
 
     headers = {
         'Authorization': f'Bearer {token}',
@@ -859,7 +859,7 @@ print(result['choices'][0]['message']['content'])
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/llm/models \
+curl -X GET https://unicorncommander.ai/api/v1/llm/models \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -892,7 +892,7 @@ models.data.forEach(model => {
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/system/status \
+curl -X GET https://unicorncommander.ai/api/v1/system/status \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -921,7 +921,7 @@ console.log(`Services: ${status.services.running}/${status.services.total}`);
 
 #### cURL
 ```bash
-curl -X GET https://your-domain.com/api/v1/admin/users/analytics/summary \
+curl -X GET https://unicorncommander.ai/api/v1/admin/users/analytics/summary \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -1078,7 +1078,7 @@ def safe_api_call(
 
 # Usage
 try:
-    users = safe_api_call('https://your-domain.com/api/v1/admin/users', token)
+    users = safe_api_call('https://unicorncommander.ai/api/v1/admin/users', token)
 except OpsApiError as e:
     if e.status_code == 401:
         print('Authentication required')
@@ -1152,7 +1152,7 @@ async function apiCallWithRetry(url, options = {}, maxRetries = 3) {
 
 ```javascript
 const token = localStorage.getItem('authToken');
-const ws = new WebSocket(`wss://your-domain.com/ws?token=${token}`);
+const ws = new WebSocket(`wss://unicorncommander.ai/ws?token=${token}`);
 
 ws.onopen = () => {
   console.log('Connected to real-time updates');
@@ -1194,7 +1194,7 @@ ws.onclose = () => {
 ## Additional Resources
 
 - **OpenAPI Specification**: `/docs/api/openapi.yaml`
-- **Interactive API Explorer**: https://your-domain.com/admin/platform/api-docs
+- **Interactive API Explorer**: https://unicorncommander.ai/admin/platform/api-docs
 - **Full API Reference**: `/docs/api/API_REFERENCE.md`
 - **Quick Start Guide**: `/docs/API_QUICK_START.md`
 - **Security Best Practices**: `/docs/README_SECURITY.md`
@@ -1202,6 +1202,6 @@ ws.onclose = () => {
 ---
 
 **Need Help?**
-- 📚 Documentation: https://your-domain.com:8086
-- 💬 Support: support@your-domain.com
+- 📚 Documentation: https://unicorncommander.ai:8086
+- 💬 Support: support@unicorncommander.com
 - 🐛 Report Issues: https://github.com/Unicorn-Commander/UC-Cloud/issues

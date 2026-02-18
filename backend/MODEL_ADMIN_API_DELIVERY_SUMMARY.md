@@ -223,7 +223,7 @@ Successfully implemented a complete CRUD API for LLM model management with advan
 SESSION_COOKIE="session_token=your_session_token_here"
 
 # Edit in script then run
-bash /home/muut/Production/UC-Cloud/services/ops-center/backend/test_model_admin_api.sh
+bash /opt/ops-center/backend/test_model_admin_api.sh
 ```
 
 **Test Coverage**:

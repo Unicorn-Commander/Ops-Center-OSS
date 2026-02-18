@@ -717,7 +717,7 @@ curl http://localhost:8084/api/v1/system/services/status
 ### 1. Verify Files
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Check new files exist
 ls -lh system_metrics_api.py

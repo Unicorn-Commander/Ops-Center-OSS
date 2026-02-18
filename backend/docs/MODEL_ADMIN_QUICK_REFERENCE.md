@@ -213,7 +213,7 @@ All operations logged to `audit_logs` table:
 export SESSION_COOKIE="session_token=your_token_here"
 
 # Run tests
-bash /home/muut/Production/UC-Cloud/services/ops-center/backend/test_model_admin_api.sh
+bash /opt/ops-center/backend/test_model_admin_api.sh
 ```
 
 ---

@@ -10,7 +10,7 @@
 
 ### 1. Route Configuration File ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/config/routes.js`
+**File**: `/opt/ops-center/src/config/routes.js`
 **Size**: 14KB
 **Purpose**: Centralized route definitions with hierarchical structure
 
@@ -41,7 +41,7 @@ routes = {
 
 ### 2. Migration Documentation ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/ROUTE-MIGRATION-MAP.md`
+**File**: `/opt/ops-center/docs/ROUTE-MIGRATION-MAP.md`
 **Size**: 19KB
 **Purpose**: Complete migration guide with detailed route mappings
 
@@ -58,7 +58,7 @@ routes = {
 
 ### 3. Quick Reference Guide ✅
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/docs/ROUTES-QUICK-REFERENCE.md`
+**File**: `/opt/ops-center/docs/ROUTES-QUICK-REFERENCE.md`
 **Size**: 13KB
 **Purpose**: Developer reference for using routes.js
 

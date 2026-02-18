@@ -20,7 +20,7 @@ docker logs unicorn-ops-center | grep "API Keys router"
 ```
 
 ### 3. Test UI
-1. Open: https://your-domain.com/admin/settings
+1. Open: https://unicorncommander.ai/admin/settings
 2. Click "API Keys (BYOK)" tab
 3. Click "+ Add API Key"
 4. Add a test key
@@ -65,7 +65,7 @@ DELETE /api/v1/user/api-keys/{provider}
 Required in `.env`:
 ```bash
 ENCRYPTION_KEY=pXfS-0VwQPilpOvRaQOivJIBFUOrgT9toMtjyr2NZqo=
-AUTHENTIK_API_TOKEN=ak_f3c1ae010853720d0e37e3efa95d5afb51201285
+AUTHENTIK_API_TOKEN=your-authentik-api-token
 AUTHENTIK_URL=http://authentik-server:9000
 ```
 

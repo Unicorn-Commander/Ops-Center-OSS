@@ -4,6 +4,7 @@ venv/
 
 # Build outputs
 dist/
+build/
 *.log
 
 # OS files
@@ -16,35 +17,42 @@ Thumbs.db
 *.swp
 *.swo
 
-# Environment variables (keep .example files)
+# Environment variables (NEVER commit real .env files)
 .env
-.env.local
 .env.auth
+.env.local
+.env.development
+.env.centerdeep
 .env.development.local
 .env.test.local
 .env.production.local
-.env.keycloak
-tests/.env.test
+backend/.env.byok
+backend/.env.stripe
+backend/.env.ratelimit
 keycloak-theme/.env.keycloak
+tests/.env.test
+config/production.env
+config/development.env
+config/staging.env
+
+# Allow .example templates
+!.env.example
+!.env.test.example
+!backend/.env.*.example
+
+# Encryption keys
+backend/data/*.key
+*.key
 
 # Database files
 *.db
 *.sqlite
 *.sqlite3
-.swarm/memory.db
 
-# Swarm/agent state (regenerated at runtime)
-.swarm/
-.claude-flow/
-
-# Data files (may contain sensitive info)
-data/
-# But allow source code data files (service configs are not sensitive)
-!src/data/
-!src/data/*.js
-backend.log
-dev.log
-vite.logNVIDIA-Linux-x86_64-*.run
+# Backup files
+*.backup
+public.backup-*/
+REMOVED_PAGES_*/
 
 # Python cache
 __pycache__/
@@ -53,18 +61,19 @@ __pycache__/
 *.so
 .Python
 
-# Build artifacts
-dist/
-build/
+# Data files (may contain sensitive info)
+data/
+# But allow source code data files
+!src/data/
+!src/data/*.js
 
-# Environment
-.env.local
-.env.*.local
+# Logs
+backend.log
+dev.log
 
-# IDE
-.vscode/
-.idea/
+# NVIDIA drivers (if downloaded)
+NVIDIA-Linux-x86_64-*.run
 
-# OS
-.DS_Store
-Thumbs.db
+# Old build artifacts
+backend/dist.old/
+backend/archive/

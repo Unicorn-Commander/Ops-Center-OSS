@@ -71,22 +71,22 @@ Authorization: Bearer <JWT_TOKEN>
 
 1. **Authorization Code Flow** (Web Applications):
 ```http
-GET https://auth.your-domain.com/realms/uchub/protocol/openid-connect/auth
+GET https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/auth
   ?client_id=ops-center
-  &redirect_uri=https://your-domain.com/auth/callback
+  &redirect_uri=https://unicorncommander.ai/auth/callback
   &response_type=code
   &scope=openid profile email
 ```
 
 2. **Exchange Code for Token**:
 ```bash
-curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=authorization_code" \
   -d "client_id=ops-center" \
   -d "client_secret=your-keycloak-client-secret" \
   -d "code=AUTH_CODE" \
-  -d "redirect_uri=https://your-domain.com/auth/callback"
+  -d "redirect_uri=https://unicorncommander.ai/auth/callback"
 ```
 
 **Response**:
@@ -136,7 +136,7 @@ Content-Type: application/json
 
 ### 3.1 Base URL
 
-**Production**: `https://your-domain.com/api/v1/traefik`
+**Production**: `https://unicorncommander.ai/api/v1/traefik`
 **Development**: `http://localhost:8084/api/v1/traefik`
 
 ### 3.2 Endpoint Summary
@@ -188,7 +188,7 @@ Check if the Traefik Management API is operational.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/health
+curl -X GET https://unicorncommander.ai/api/v1/traefik/health
 ```
 
 **Response** (200 OK):
@@ -211,7 +211,7 @@ Get overall Traefik operational status and statistics.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/status \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/status \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -252,7 +252,7 @@ Retrieve all SSL/TLS certificates managed by Traefik.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/certificates \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/certificates \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -261,8 +261,8 @@ curl -X GET https://your-domain.com/api/v1/traefik/certificates \
 {
   "certificates": [
     {
-      "domain": "your-domain.com",
-      "sans": ["www.your-domain.com"],
+      "domain": "unicorncommander.ai",
+      "sans": ["www.unicorncommander.ai"],
       "resolver": "letsencrypt",
       "status": "active",
       "not_after": "2025-01-20T12:00:00Z",
@@ -270,7 +270,7 @@ curl -X GET https://your-domain.com/api/v1/traefik/certificates \
       "private_key_present": true
     },
     {
-      "domain": "chat.your-domain.com",
+      "domain": "chat.unicorncommander.ai",
       "sans": [],
       "resolver": "letsencrypt",
       "status": "active",
@@ -308,11 +308,11 @@ Retrieve detailed information for a specific certificate.
 **Authentication**: Required
 
 **Path Parameters**:
-- `domain`: Domain name (e.g., `your-domain.com`)
+- `domain`: Domain name (e.g., `unicorncommander.ai`)
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/certificates/your-domain.com \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/certificates/unicorncommander.ai \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -320,8 +320,8 @@ curl -X GET https://your-domain.com/api/v1/traefik/certificates/your-domain.com 
 ```json
 {
   "certificate": {
-    "domain": "your-domain.com",
-    "sans": ["www.your-domain.com"],
+    "domain": "unicorncommander.ai",
+    "sans": ["www.unicorncommander.ai"],
     "resolver": "letsencrypt",
     "status": "active",
     "not_after": "2025-01-20T12:00:00Z",
@@ -349,9 +349,9 @@ Request a new SSL certificate from Let's Encrypt.
 **Request Body**:
 ```json
 {
-  "domain": "example.your-domain.com",
-  "email": "admin@your-domain.com",
-  "sans": ["www.example.your-domain.com"]
+  "domain": "example.unicorncommander.ai",
+  "email": "admin@unicorncommander.ai",
+  "sans": ["www.example.unicorncommander.ai"]
 }
 ```
 
@@ -362,12 +362,12 @@ Request a new SSL certificate from Let's Encrypt.
 
 **Request Example**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/certificates \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/certificates \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "domain": "example.your-domain.com",
-    "email": "admin@your-domain.com"
+    "domain": "example.unicorncommander.ai",
+    "email": "admin@unicorncommander.ai"
   }'
 ```
 
@@ -375,8 +375,8 @@ curl -X POST https://your-domain.com/api/v1/traefik/certificates \
 ```json
 {
   "success": true,
-  "message": "Certificate request initiated for example.your-domain.com",
-  "domain": "example.your-domain.com",
+  "message": "Certificate request initiated for example.unicorncommander.ai",
+  "domain": "example.unicorncommander.ai",
   "sans": [],
   "status": "pending",
   "note": "Certificate will be automatically issued when DNS is properly configured"
@@ -403,7 +403,7 @@ Revoke an SSL certificate (removes from Traefik storage).
 
 **Request**:
 ```bash
-curl -X DELETE https://your-domain.com/api/v1/traefik/certificates/example.com \
+curl -X DELETE https://unicorncommander.ai/api/v1/traefik/certificates/example.com \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -434,7 +434,7 @@ Get ACME (Let's Encrypt) configuration status.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/acme/status \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/acme/status \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -448,11 +448,11 @@ curl -X GET https://your-domain.com/api/v1/traefik/acme/status \
       {
         "name": "letsencrypt",
         "certificates": 8,
-        "email": "admin@your-domain.com",
+        "email": "admin@unicorncommander.ai",
         "ca_server": "https://acme-v02.api.letsencrypt.org/directory"
       }
     ],
-    "acme_file": "/home/muut/Production/UC-Cloud/traefik/acme/acme.json",
+    "acme_file": "/opt/uc-cloud/traefik/acme/acme.json",
     "file_size": 45678,
     "last_modified": "2025-10-24T10:15:30.123456Z"
   }
@@ -477,7 +477,7 @@ List all HTTP/HTTPS routing rules.
 
 **Request**:
 ```bash
-curl -X GET "https://your-domain.com/api/v1/traefik/routes?limit=50&offset=0" \
+curl -X GET "https://unicorncommander.ai/api/v1/traefik/routes?limit=50&offset=0" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -487,7 +487,7 @@ curl -X GET "https://your-domain.com/api/v1/traefik/routes?limit=50&offset=0" \
   "routes": [
     {
       "name": "ops-center",
-      "rule": "Host(`your-domain.com`)",
+      "rule": "Host(`unicorncommander.ai`)",
       "service": "ops-center-svc",
       "entrypoints": ["websecure"],
       "middlewares": ["rate-limit", "security-headers"],
@@ -498,7 +498,7 @@ curl -X GET "https://your-domain.com/api/v1/traefik/routes?limit=50&offset=0" \
     },
     {
       "name": "brigade-api",
-      "rule": "Host(`api.brigade.your-domain.com`)",
+      "rule": "Host(`api.brigade.unicorncommander.ai`)",
       "service": "brigade-backend-svc",
       "entrypoints": ["websecure"],
       "middlewares": [],
@@ -535,7 +535,7 @@ Create a new routing rule.
 ```json
 {
   "name": "my-service-route",
-  "rule": "Host(`example.your-domain.com`)",
+  "rule": "Host(`example.unicorncommander.ai`)",
   "service": "my-service-svc",
   "entrypoints": ["websecure"],
   "middlewares": ["rate-limit"],
@@ -557,7 +557,7 @@ Create a new routing rule.
 
 **Request Example**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/routes \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/routes \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -621,7 +621,7 @@ Update an existing route.
 
 **Request Example**:
 ```bash
-curl -X PUT https://your-domain.com/api/v1/traefik/routes/api-route \
+curl -X PUT https://unicorncommander.ai/api/v1/traefik/routes/api-route \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -661,7 +661,7 @@ Delete a routing rule.
 
 **Request**:
 ```bash
-curl -X DELETE https://your-domain.com/api/v1/traefik/routes/api-route \
+curl -X DELETE https://unicorncommander.ai/api/v1/traefik/routes/api-route \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -695,7 +695,7 @@ List all middleware components.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/middleware \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/middleware \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -764,7 +764,7 @@ Create a new middleware component.
 
 **Request Example**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/middleware \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/middleware \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -827,7 +827,7 @@ Update an existing middleware.
 
 **Request Example**:
 ```bash
-curl -X PUT https://your-domain.com/api/v1/traefik/middleware/api-rate-limit \
+curl -X PUT https://unicorncommander.ai/api/v1/traefik/middleware/api-rate-limit \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -868,7 +868,7 @@ Delete a middleware component.
 
 **Request**:
 ```bash
-curl -X DELETE https://your-domain.com/api/v1/traefik/middleware/api-rate-limit \
+curl -X DELETE https://unicorncommander.ai/api/v1/traefik/middleware/api-rate-limit \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -895,7 +895,7 @@ List all backend service definitions.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/services \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/services \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -928,14 +928,14 @@ Retrieve current Traefik configuration.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/config \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/config \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response** (200 OK):
 ```json
 {
-  "config": "http:\n  routers:\n    ops-center:\n      rule: Host(`your-domain.com`)\n      service: ops-center-svc\n      entryPoints:\n        - websecure\n      tls:\n        certResolver: letsencrypt\n  services:\n    ops-center-svc:\n      loadBalancer:\n        servers:\n          - url: http://ops-center-direct:8084\n  middlewares:\n    rate-limit:\n      rateLimit:\n        average: 100\n        period: 1m\n"
+  "config": "http:\n  routers:\n    ops-center:\n      rule: Host(`unicorncommander.ai`)\n      service: ops-center-svc\n      entryPoints:\n        - websecure\n      tls:\n        certResolver: letsencrypt\n  services:\n    ops-center-svc:\n      loadBalancer:\n        servers:\n          - url: http://ops-center-direct:8084\n  middlewares:\n    rate-limit:\n      rateLimit:\n        average: 100\n        period: 1m\n"
 }
 ```
 
@@ -959,7 +959,7 @@ Update Traefik configuration.
 
 **Request Example**:
 ```bash
-curl -X PUT https://your-domain.com/api/v1/traefik/config \
+curl -X PUT https://unicorncommander.ai/api/v1/traefik/config \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1000,7 +1000,7 @@ Validate configuration without saving.
 
 **Request Example**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/validate \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/validate \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1033,7 +1033,7 @@ Get a summary of current configuration.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/config/summary \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/config/summary \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1058,7 +1058,7 @@ Create a timestamped backup of all configurations.
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/backup \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/backup \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1088,7 +1088,7 @@ List all available configuration backups.
 
 **Request**:
 ```bash
-curl -X GET https://your-domain.com/api/v1/traefik/backups \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/backups \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1118,7 +1118,7 @@ Restore configuration from a backup.
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/restore/traefik_backup_20251024_153000 \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/restore/traefik_backup_20251024_153000 \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1144,7 +1144,7 @@ Trigger Traefik configuration reload.
 
 **Request**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/reload \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/reload \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1320,18 +1320,18 @@ async function createRouteWithRetry(routeData) {
 
 **Step 1: Request SSL Certificate**
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/certificates \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/certificates \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "domain": "myapp.your-domain.com",
-    "email": "admin@your-domain.com"
+    "domain": "myapp.unicorncommander.ai",
+    "email": "admin@unicorncommander.ai"
   }'
 ```
 
 **Step 2: Create Rate Limit Middleware**
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/middleware \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/middleware \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1347,12 +1347,12 @@ curl -X POST https://your-domain.com/api/v1/traefik/middleware \
 
 **Step 3: Create Route**
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/routes \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/routes \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "myapp-route",
-    "rule": "Host(`myapp.your-domain.com`)",
+    "rule": "Host(`myapp.unicorncommander.ai`)",
     "service": "myapp-backend-svc",
     "middlewares": ["myapp-rate-limit"],
     "tls_enabled": true
@@ -1362,7 +1362,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/routes \
 **Step 4: Verify Route**
 ```bash
 # Test the route
-curl -I https://myapp.your-domain.com
+curl -I https://myapp.unicorncommander.ai
 
 # Should return 200 OK with SSL certificate
 ```
@@ -1371,13 +1371,13 @@ curl -I https://myapp.your-domain.com
 
 ```bash
 # Get current routes
-curl -X GET https://your-domain.com/api/v1/traefik/routes \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/routes \
   -H "Authorization: Bearer $TOKEN" > routes.json
 
 # Modify routes.json (add new middleware)
 
 # Update via configuration API
-curl -X PUT https://your-domain.com/api/v1/traefik/config \
+curl -X PUT https://unicorncommander.ai/api/v1/traefik/config \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d @updated-config.json
@@ -1387,7 +1387,7 @@ curl -X PUT https://your-domain.com/api/v1/traefik/config \
 
 **Create Backup Before Major Changes**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/backup \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/backup \
   -H "Authorization: Bearer $TOKEN"
 
 # Returns backup ID: traefik_backup_20251024_153000
@@ -1400,7 +1400,7 @@ curl -X POST https://your-domain.com/api/v1/traefik/config/backup \
 
 **Restore if Something Goes Wrong**:
 ```bash
-curl -X POST https://your-domain.com/api/v1/traefik/config/restore/traefik_backup_20251024_153000 \
+curl -X POST https://unicorncommander.ai/api/v1/traefik/config/restore/traefik_backup_20251024_153000 \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -1408,13 +1408,13 @@ curl -X POST https://your-domain.com/api/v1/traefik/config/restore/traefik_backu
 
 ```bash
 # Get all certificates
-curl -X GET https://your-domain.com/api/v1/traefik/certificates \
+curl -X GET https://unicorncommander.ai/api/v1/traefik/certificates \
   -H "Authorization: Bearer $TOKEN" \
   | jq '.certificates[] | {domain, status, not_after}'
 
 # Output:
 # {
-#   "domain": "your-domain.com",
+#   "domain": "unicorncommander.ai",
 #   "status": "active",
 #   "not_after": "2025-01-20T12:00:00Z"
 # }
@@ -1485,7 +1485,7 @@ class TraefikAPI:
 
 # Usage
 api = TraefikAPI(
-    base_url='https://your-domain.com/api/v1/traefik',
+    base_url='https://unicorncommander.ai/api/v1/traefik',
     token='YOUR_JWT_TOKEN'
 )
 
@@ -1554,7 +1554,7 @@ class TraefikAPI {
 
 // Usage
 const api = new TraefikAPI(
-  'https://your-domain.com/api/v1/traefik',
+  'https://unicorncommander.ai/api/v1/traefik',
   'YOUR_JWT_TOKEN'
 );
 
@@ -1706,7 +1706,7 @@ Import this collection into Postman for quick API testing:
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://your-domain.com/api/v1/traefik"
+      "value": "https://unicorncommander.ai/api/v1/traefik"
     },
     {
       "key": "JWT_TOKEN",
@@ -1775,5 +1775,5 @@ Import this collection into Postman for quick API testing:
 
 **Document Version**: 1.0.0
 **Last Updated**: October 24, 2025
-**API Endpoint**: https://your-domain.com/api/v1/traefik
+**API Endpoint**: https://unicorncommander.ai/api/v1/traefik
 **Support**: support@magicunicorn.tech

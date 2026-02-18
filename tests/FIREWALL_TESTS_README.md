@@ -33,7 +33,7 @@ This test suite provides comprehensive coverage for the firewall management func
 ### 1. Install Test Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 
 # Install all testing dependencies
 pip install -r requirements-test.txt
@@ -177,7 +177,7 @@ REDIS_PORT=6379
 
 ```bash
 # Navigate to ops-center tests directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 
 # Run all firewall tests
 pytest unit/test_firewall_manager.py integration/test_firewall_api.py -v
@@ -267,7 +267,7 @@ pytest -v --timeout=5
 ```
 ============================= test session starts ==============================
 platform linux -- Python 3.10.12, pytest-7.4.3, pluggy-1.3.0
-rootdir: /home/muut/Production/UC-Cloud/services/ops-center/tests
+rootdir: /opt/ops-center/tests
 plugins: asyncio-0.21.1, cov-4.1.0, timeout-2.1.0, xdist-3.3.1
 collected 51 items
 

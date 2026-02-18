@@ -45,7 +45,7 @@ This document explains the complete end-to-end flow of authentication and API me
 ### User Registration Flow
 
 ```
-User visits: https://your-domain.com
+User visits: https://unicorncommander.ai
    │
    ├── Option A: Email/Password (Keycloak local account)
    │   └── Creates account in Keycloak uchub realm
@@ -66,7 +66,7 @@ Example: 7a6bfd31-0120-4a30-9e21-0fc3b8006579
 ### What Happens Behind the Scenes
 
 1. **User clicks "Sign Up"** on Ops-Center landing page
-2. **Redirected to Keycloak** login page at `auth.your-domain.com`
+2. **Redirected to Keycloak** login page at `auth.unicorncommander.ai`
 3. **User chooses authentication method**:
    - Email/Password: Keycloak validates and stores credentials
    - OAuth (Google/GitHub/Microsoft): Keycloak initiates OAuth flow
@@ -109,7 +109,7 @@ Contains user information for the client application:
     "roles": ["admin", "default-roles-uchub"]
   },
   "email_verified": true,
-  "iss": "https://auth.your-domain.com/realms/uchub",
+  "iss": "https://auth.unicorncommander.ai/realms/uchub",
   "aud": "ops-center",
   "exp": 1730318400,
   "iat": 1730314800
@@ -135,7 +135,7 @@ Used for authorizing API requests:
   },
   "exp": 1730318400,
   "iat": 1730314800,
-  "iss": "https://auth.your-domain.com/realms/uchub",
+  "iss": "https://auth.unicorncommander.ai/realms/uchub",
   "aud": ["ops-center", "account"]
 }
 ```
@@ -165,7 +165,7 @@ Tokens are stored in two locations:
 1. **Browser Cookies** (Ops-Center, Brigade, Center-Deep):
    ```
    session_token=<uuid>
-   Domain: .your-domain.com  (note the leading dot!)
+   Domain: .unicorncommander.ai  (note the leading dot!)
    Secure: true
    HttpOnly: true
    SameSite: Lax
@@ -185,23 +185,23 @@ Tokens are stored in two locations:
 
 ### Cross-Domain Authentication with Cookies
 
-**The Magic of Cookie Domain: `.your-domain.com`**
+**The Magic of Cookie Domain: `.unicorncommander.ai`**
 
-When Ops-Center sets a cookie with domain `.your-domain.com` (note the leading dot), the browser **automatically sends this cookie to ALL subdomains**:
+When Ops-Center sets a cookie with domain `.unicorncommander.ai` (note the leading dot), the browser **automatically sends this cookie to ALL subdomains**:
 
 ```
 Ops-Center Sets Cookie
    │
    │  Set-Cookie: session_token=abc123;
-   │              Domain=.your-domain.com;
+   │              Domain=.unicorncommander.ai;
    │              Secure; HttpOnly; SameSite=Lax
    │
    └── Browser automatically sends cookie to:
-       ├── your-domain.com ✅
-       ├── brigade.your-domain.com ✅
-       ├── chat.your-domain.com ✅ (Open-WebUI)
-       ├── search.your-domain.com ✅ (Center-Deep)
-       └── api.your-domain.com ✅ (Brigade API)
+       ├── unicorncommander.ai ✅
+       ├── brigade.unicorncommander.ai ✅
+       ├── chat.unicorncommander.ai ✅ (Open-WebUI)
+       ├── search.unicorncommander.ai ✅ (Center-Deep)
+       └── api.unicorncommander.ai ✅ (Brigade API)
 
 Result: Single Sign-On (SSO) across all subdomains!
 ```
@@ -212,16 +212,16 @@ These apps receive the session cookie automatically:
 
 | App | URL | Authentication Method |
 |-----|-----|----------------------|
-| Ops-Center | https://your-domain.com | Session cookie (auto) |
-| Brigade | https://brigade.your-domain.com | Session cookie (auto) |
-| Brigade API | https://api.brigade.your-domain.com | Session cookie (auto) |
-| Open-WebUI | https://chat.your-domain.com | Session cookie (auto) |
-| Center-Deep | https://search.your-domain.com | Session cookie (auto) |
+| Ops-Center | https://unicorncommander.ai | Session cookie (auto) |
+| Brigade | https://brigade.unicorncommander.ai | Session cookie (auto) |
+| Brigade API | https://api.brigade.unicorncommander.ai | Session cookie (auto) |
+| Open-WebUI | https://chat.unicorncommander.ai | Session cookie (auto) |
+| Center-Deep | https://search.unicorncommander.ai | Session cookie (auto) |
 
 **How it works**:
 1. User logs in to Ops-Center once
-2. Cookie is set for `.your-domain.com`
-3. User visits `brigade.your-domain.com`
+2. Cookie is set for `.unicorncommander.ai`
+3. User visits `brigade.unicorncommander.ai`
 4. Browser automatically sends the cookie
 5. Brigade validates the session with Keycloak
 6. User is authenticated without re-login!
@@ -250,7 +250,7 @@ For apps hosted on different domains or localhost, users must generate API keys:
 // Frontend (Bolt.DIY, Presenton, etc.)
 const API_KEY = 'uc_1234567890abcdef...';
 
-fetch('https://your-domain.com/api/v1/llm/chat/completions', {
+fetch('https://unicorncommander.ai/api/v1/llm/chat/completions', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${API_KEY}`,
@@ -276,7 +276,7 @@ fetch('https://your-domain.com/api/v1/llm/chat/completions', {
 
 Frontend (Open-WebUI, Bolt.DIY, Brigade, etc.)
    │
-   │  POST https://your-domain.com/api/v1/llm/chat/completions
+   │  POST https://unicorncommander.ai/api/v1/llm/chat/completions
    │  Headers:
    │    Authorization: Bearer <session-token OR api-key>
    │    Content-Type: application/json
@@ -472,7 +472,7 @@ User has OpenRouter account with own API key
    │   POST https://openrouter.ai/api/v1/chat/completions
    │   Headers:
    │     Authorization: Bearer sk-or-v1-1234567890abcdef...
-   │     HTTP-Referer: https://your-domain.com
+   │     HTTP-Referer: https://unicorncommander.ai
    │     X-Title: UC-1 Pro Ops Center
    │   Body: <user's request>
    │
@@ -536,7 +536,7 @@ User does NOT have OpenRouter key (or has it disabled)
    │   POST https://openrouter.ai/api/v1/chat/completions
    │   Headers:
    │     Authorization: Bearer sk-or-v1-system-key...
-   │     HTTP-Referer: https://your-domain.com
+   │     HTTP-Referer: https://unicorncommander.ai
    │     X-Title: UC-1 Pro Ops Center
    │   Body: <user's request>
    │
@@ -612,7 +612,7 @@ else:
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://your-domain.com",
+        "HTTP-Referer": "https://unicorncommander.ai",
         "X-Title": "UC-1 Pro Ops Center"
     }
 ```
@@ -624,7 +624,7 @@ OpenRouter requires two custom headers for tracking and attribution:
 ```python
 headers = {
     'Authorization': f'Bearer {api_key}',
-    'HTTP-Referer': 'https://your-domain.com',  # REQUIRED
+    'HTTP-Referer': 'https://unicorncommander.ai',  # REQUIRED
     'X-Title': 'UC-1 Pro Ops Center'  # REQUIRED
 }
 ```
@@ -910,7 +910,7 @@ PROVIDER_CONFIGS = {
         'base_url': 'https://openrouter.ai/api/v1',
         'model_prefixes': [],  # Accepts all models (universal proxy)
         'default_headers': {
-            'HTTP-Referer': 'https://your-domain.com',
+            'HTTP-Referer': 'https://unicorncommander.ai',
             'X-Title': 'UC-1 Pro Ops Center'
         }
     },
@@ -999,7 +999,7 @@ System benefits:
 
 1. User signs up → Keycloak creates account with UUID
 2. User logs in → Keycloak issues JWT tokens (ID, access, refresh)
-3. JWT stored in cookie (.your-domain.com domain)
+3. JWT stored in cookie (.unicorncommander.ai domain)
 4. Cookie automatically sent to all subdomains
 5. User makes LLM request → Ops-Center validates JWT or API key
 6. Ops-Center checks:
@@ -1024,11 +1024,11 @@ System benefits:
 
 | App | URL | Auth Method |
 |-----|-----|-------------|
-| Ops-Center | https://your-domain.com | Session cookie ✅ |
-| Brigade | https://brigade.your-domain.com | Session cookie ✅ |
-| Brigade API | https://api.brigade.your-domain.com | Session cookie ✅ |
-| Open-WebUI | https://chat.your-domain.com | Session cookie ✅ |
-| Center-Deep | https://search.your-domain.com | Session cookie ✅ |
+| Ops-Center | https://unicorncommander.ai | Session cookie ✅ |
+| Brigade | https://brigade.unicorncommander.ai | Session cookie ✅ |
+| Brigade API | https://api.brigade.unicorncommander.ai | Session cookie ✅ |
+| Open-WebUI | https://chat.unicorncommander.ai | Session cookie ✅ |
+| Center-Deep | https://search.unicorncommander.ai | Session cookie ✅ |
 
 ### Apps That Need API Keys (Different Domains)
 

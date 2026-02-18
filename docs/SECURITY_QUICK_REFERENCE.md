@@ -16,7 +16,7 @@
 ## Running Security Tests
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Run billing security tests
 python3 tests/security_test_billing.py
@@ -127,9 +127,9 @@ docker logs ops-center-direct | grep "\[a1b2c3d4-"
 
 ```python
 allowed_origins = [
-    "https://your-domain.com",
-    "https://api.your-domain.com",
-    "https://auth.your-domain.com",
+    "https://unicorncommander.ai",
+    "https://api.unicorncommander.ai",
+    "https://auth.unicorncommander.ai",
     "http://localhost:8084",
     "http://localhost:3000",
     "http://localhost:5173",  # Vite dev server
@@ -148,7 +148,7 @@ ADDITIONAL_CORS_ORIGINS=https://new-domain.com,https://another-domain.com
 ```python
 # In server.py
 allowed_origins = [
-    "https://your-domain.com",
+    "https://unicorncommander.ai",
     "https://new-domain.com",  # ← Add here
 ]
 ```

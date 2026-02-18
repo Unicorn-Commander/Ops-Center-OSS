@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-PROJECT_DIR="/home/muut/Production/UC-Cloud/services/ops-center"
+PROJECT_DIR="/opt/ops-center"
 CONTAINER_NAME="ops-center-direct"
 BACKUP_SCRIPT="$PROJECT_DIR/scripts/database/backup_database.sh"
 
@@ -88,7 +88,7 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Migrations applied successfully${NC}"
 else
     echo -e "${RED}ERROR: Migration failed${NC}"
-    echo -e "${YELLOW}Database backup is available in /home/muut/backups/database/${NC}"
+    echo -e "${YELLOW}Database backup is available in /opt/backups/database/${NC}"
     echo -e "${YELLOW}To rollback: ./scripts/rollback_migration.sh${NC}"
     exit 1
 fi

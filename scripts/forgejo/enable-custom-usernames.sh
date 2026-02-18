@@ -1,25 +1,19 @@
 #!/bin/bash
 set -e
 
-# Configuration - Override with environment variables
-KEYCLOAK_URL="${KEYCLOAK_URL:-http://localhost:8080}"
-KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
-KEYCLOAK_ADMIN_USER="${KEYCLOAK_ADMIN_USER:-admin}"
-KEYCLOAK_ADMIN_PASSWORD="${KEYCLOAK_ADMIN_PASSWORD:-change-me}"
-
 echo "=== Enabling Custom Usernames in Keycloak ==="
 
 # Get admin token
-TOKEN=$(curl -s -X POST "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+TOKEN=$(curl -s -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=${KEYCLOAK_ADMIN_USER}" \
-  -d "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+  -d "username=admin" \
+  -d "password=your-admin-password" \
   -d "grant_type=password" \
   -d "client_id=admin-cli" | jq -r '.access_token')
 
 # Get current realm settings
 echo "Current realm settings:"
-curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}" \
+curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub" \
   -H "Authorization: Bearer $TOKEN" | jq '{
     registrationEmailAsUsername,
     editUsernameAllowed,
@@ -30,7 +24,7 @@ echo ""
 echo "Updating realm to allow custom usernames..."
 
 # Update realm settings
-curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}" \
+curl -s -X PUT "https://auth.unicorncommander.ai/admin/realms/uchub" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -45,7 +39,7 @@ sleep 2
 
 echo ""
 echo "Verification:"
-curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}" \
+curl -s -X GET "https://auth.unicorncommander.ai/admin/realms/uchub" \
   -H "Authorization: Bearer $TOKEN" | jq '{
     registrationEmailAsUsername,
     editUsernameAllowed,
@@ -53,4 +47,4 @@ curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${KEYCLOAK_REALM}" \
   }'
 
 echo ""
-echo "Realm updated to support custom usernames"
+echo "✅ Realm updated to support custom usernames"

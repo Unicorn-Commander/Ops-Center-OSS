@@ -42,13 +42,13 @@ docker exec ops-center-direct python3 /app/scripts/setup_stripe_credit_products.
 
 ### Current Configuration
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/.env.stripe`
+**File**: `/opt/ops-center/backend/.env.stripe`
 
 ```env
 # Stripe API Keys (TEST MODE)
-STRIPE_PUBLISHABLE_KEY=pk_test_51QwxFKDzk9HqAZnHg2c2LyPPgM51YBqRwqMmj1TrKlDQ5LSARByhYFia59QJvDoirITyu1W6q6GoE1jiSCAuSysk00HemfldTN
-STRIPE_SECRET_KEY=sk_test_51QwxFKDzk9HqAZnH2oOwogCrpoqBHQwornGDJrqRejlWG9XbZYbhWOHpAKQVKrFJytdbKDLqe5w7QWTFc0SgffyJ00j900ZOYX
-STRIPE_API_KEY=sk_test_51QwxFKDzk9HqAZnH2oOwogCrpoqBHQwornGDJrqRejlWG9XbZYbhWOHpAKQVKrFJytdbKDLqe5w7QWTFc0SgffyJ00j900ZOYX
+STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_API_KEY=sk_test_your_stripe_secret_key
 
 # Webhook Secret (TO BE CONFIGURED)
 STRIPE_WEBHOOK_SECRET=whsec_placeholder
@@ -58,7 +58,7 @@ STRIPE_WEBHOOK_SECRET=whsec_placeholder
 
 **STRIPE_WEBHOOK_SECRET_CREDITS**: This variable needs to be added after webhook configuration.
 
-**Where to Add**: `/home/muut/Production/UC-Cloud/services/ops-center/.env.auth`
+**Where to Add**: `/opt/ops-center/.env.auth`
 
 ```env
 # Add this line after webhook creation:
@@ -81,7 +81,7 @@ STRIPE_WEBHOOK_SECRET_CREDITS=whsec_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 1. Click "Add endpoint" button
 2. Enter the webhook URL:
    ```
-   https://your-domain.com/api/v1/billing/credits/webhook
+   https://unicorncommander.ai/api/v1/billing/credits/webhook
    ```
 
 #### Step 3: Select Events to Listen For
@@ -108,7 +108,7 @@ After creating the endpoint:
 
 1. Edit `.env.auth`:
    ```bash
-   nano /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+   nano /opt/ops-center/.env.auth
    ```
 
 2. Add the webhook secret:
@@ -218,8 +218,8 @@ fetch('/api/v1/billing/credits/packages', {
 ```json
 {
   "package_code": "starter",
-  "success_url": "https://your-domain.com/admin/credits?purchase=success",
-  "cancel_url": "https://your-domain.com/admin/credits?purchase=cancelled"
+  "success_url": "https://unicorncommander.ai/admin/credits?purchase=success",
+  "cancel_url": "https://unicorncommander.ai/admin/credits?purchase=cancelled"
 }
 ```
 
@@ -350,7 +350,7 @@ Use these test card numbers in Stripe Checkout:
 ### Manual Testing Steps
 
 1. **Login to Ops-Center**:
-   - Go to https://your-domain.com
+   - Go to https://unicorncommander.ai
    - Login with your credentials
 
 2. **Navigate to Credit Dashboard**:
@@ -499,7 +499,7 @@ event = stripe.Webhook.construct_event(
 
 4. Verify endpoint is accessible:
    ```bash
-   curl -X POST https://your-domain.com/api/v1/billing/credits/webhook
+   curl -X POST https://unicorncommander.ai/api/v1/billing/credits/webhook
    ```
 
 5. Check Ops-Center logs for webhook errors:
@@ -693,9 +693,9 @@ ERROR: Failed to add credits: Database connection error
 
 ### Internal Documentation
 
-- **Credit System**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/credit_system.py`
-- **Purchase API**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/credit_purchase_api.py`
-- **Setup Script**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/setup_stripe_credit_products.py`
+- **Credit System**: `/opt/ops-center/backend/credit_system.py`
+- **Purchase API**: `/opt/ops-center/backend/credit_purchase_api.py`
+- **Setup Script**: `/opt/ops-center/backend/scripts/setup_stripe_credit_products.py`
 
 ### Contact Points
 

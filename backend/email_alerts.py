@@ -79,7 +79,7 @@ class EmailAlertService:
 
     def __init__(self):
         # Configuration
-        self.email_from = os.getenv("EMAIL_FROM", "noreply@example.com")
+        self.email_from = os.getenv("EMAIL_FROM", "admin@example.com")
         self.ms365_client_id = os.getenv("MS365_CLIENT_ID")
         self.ms365_tenant_id = os.getenv("MS365_TENANT_ID")
         self.ms365_client_secret = os.getenv("MS365_CLIENT_SECRET")
@@ -237,8 +237,8 @@ class EmailAlertService:
             "message": message,
             "alert_type": alert_type,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "dashboard_url": os.getenv("APP_URL", "http://localhost:8084"),
-            "support_email": os.getenv("SUPPORT_EMAIL", "support@example.com"),
+            "dashboard_url": os.getenv("APP_URL", "https://unicorncommander.ai"),
+            "support_email": os.getenv("SUPPORT_EMAIL", "support@unicorncommander.ai"),
             **(context or {})
         }
 

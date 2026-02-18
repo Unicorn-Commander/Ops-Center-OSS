@@ -256,7 +256,7 @@
 ### Quick Start
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 
 # Run everything
 ./run_all_tests.sh
@@ -352,7 +352,7 @@ Some tests may fail or be marked as `xfail` if:
 
 1. **Review Test Files**:
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+   cd /opt/ops-center/backend/tests
    less test_traefik_manager.py
    less test_traefik_api.py
    less test_traefik_e2e.sh
@@ -378,7 +378,7 @@ Some tests may fail or be marked as `xfail` if:
 2. **Run Tests Against Your Code**:
    ```bash
    # Set PYTHONPATH
-   export PYTHONPATH=/home/muut/Production/UC-Cloud/services/ops-center/backend:$PYTHONPATH
+   export PYTHONPATH=/opt/ops-center/backend:$PYTHONPATH
 
    # Run unit tests
    pytest test_traefik_manager.py -v

@@ -179,8 +179,8 @@ sleep 15
 docker logs ops-center-direct --tail 50
 
 # Test endpoints
-curl https://your-domain.com/api/v1/health
-curl https://your-domain.com/api/v1/system/status
+curl https://unicorncommander.ai/api/v1/health
+curl https://unicorncommander.ai/api/v1/system/status
 ```
 
 ## Rollback Scenarios
@@ -256,7 +256,7 @@ cp /opt/ops-center/backups/compose_TIMESTAMP.yml docker-compose.prod.yml
 docker compose up -d ops-center-frontend
 
 # Verify
-curl https://your-domain.com/
+curl https://unicorncommander.ai/
 ```
 
 ## Rollback Verification
@@ -284,7 +284,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c \
 #### 3. Authentication
 ```bash
 # Test SSO login
-curl -I https://your-domain.com/auth/oidc/login
+curl -I https://unicorncommander.ai/auth/oidc/login
 
 # Should redirect to Keycloak
 ```
@@ -292,20 +292,20 @@ curl -I https://your-domain.com/auth/oidc/login
 #### 4. API Endpoints
 ```bash
 # System status
-curl https://your-domain.com/api/v1/system/status
+curl https://unicorncommander.ai/api/v1/system/status
 
 # User analytics
 curl -H "Authorization: Bearer $TOKEN" \
-  https://your-domain.com/api/v1/admin/users/analytics/summary
+  https://unicorncommander.ai/api/v1/admin/users/analytics/summary
 ```
 
 #### 5. Frontend
 ```bash
 # Homepage
-curl -I https://your-domain.com/
+curl -I https://unicorncommander.ai/
 
 # Admin dashboard
-curl -I https://your-domain.com/admin
+curl -I https://unicorncommander.ai/admin
 ```
 
 ## Rollback Limitations

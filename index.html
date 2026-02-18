@@ -30,9 +30,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
 
-    <!-- Preload critical images (logos used immediately) -->
-    <link rel="preload" as="image" href="/logos/magic_unicorn_logo.webp" type="image/webp" />
-    <link rel="preload" as="image" href="/logos/The_Colonel.webp" type="image/webp" />
+    <!-- Logo preloads removed - they caused warnings on admin pages where they're not used -->
+    <!-- Images are loaded on-demand where needed -->
 
     <!-- Apple Touch Icon for iOS -->
     <link rel="apple-touch-icon" href="/logos/uc-logo-192.png" />
@@ -51,8 +50,8 @@
     <meta property="twitter:description" content="Centralized operations and management dashboard for UC-Cloud infrastructure" />
     <meta property="twitter:image" content="/logos/uc-logo-512.png" />
 
-    <!-- Umami Analytics -->
-    <script defer src="https://umami.your-domain.com/script.js" data-website-id="7a8bd2c2-5482-472b-8242-6a33919f8ba7"></script>
+    <!-- Umami Analytics - Disabled until Umami is deployed -->
+    <!-- <script defer src="https://umami.your-domain.com/script.js" data-website-id="7a8bd2c2-5482-472b-8242-6a33919f8ba7"></script> -->
 
     <title>Unicorn Commander Pro - Admin Dashboard</title>
   </head>

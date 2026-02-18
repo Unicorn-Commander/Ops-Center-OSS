@@ -24,7 +24,7 @@
 ### Basic Image Generation
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -63,7 +63,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 
 ## Endpoint Details
 
-**Base URL**: `https://your-domain.com/api/v1/llm`
+**Base URL**: `https://unicorncommander.ai/api/v1/llm`
 
 **Endpoint**: `POST /image/generations`
 
@@ -380,7 +380,7 @@ Credits charged: 80 credits
 ### Checking Your Balance
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/llm/credits \
+curl -X GET https://unicorncommander.ai/api/v1/llm/credits \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -414,7 +414,7 @@ BYOK allows you to use **your own API keys** from OpenAI, OpenRouter, or other p
 #### 1. Add Your API Key
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/byok/keys \
+curl -X POST https://unicorncommander.ai/api/v1/llm/byok/keys \
   -H "Authorization: Bearer YOUR_UC_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -429,7 +429,7 @@ curl -X POST https://your-domain.com/api/v1/llm/byok/keys \
 #### 2. Use Image Generation (No Credits Charged!)
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer YOUR_UC_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -472,7 +472,7 @@ Response `_metadata`:
 import openai
 
 # Configure for Ops-Center
-openai.api_base = "https://your-domain.com/api/v1/llm"
+openai.api_base = "https://unicorncommander.ai/api/v1/llm"
 openai.api_key = "your-uc-api-key"
 
 # Generate image
@@ -500,7 +500,7 @@ print(f"Remaining: {metadata['credits_remaining']} credits")
 import OpenAI from 'openai';
 
 const client = new OpenAI({
-  baseURL: 'https://your-domain.com/api/v1/llm',
+  baseURL: 'https://unicorncommander.ai/api/v1/llm',
   apiKey: 'your-uc-api-key',
 });
 
@@ -538,7 +538,7 @@ function ImageGenerator() {
   const generateImage = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://your-domain.com/api/v1/llm/image/generations', {
+      const response = await fetch('https://unicorncommander.ai/api/v1/llm/image/generations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -584,7 +584,7 @@ function ImageGenerator() {
 #### Basic DALL-E 3 Image
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-uc-abc123..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -598,7 +598,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 #### HD Landscape Image
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-uc-abc123..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -613,7 +613,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 #### Batch Stable Diffusion Images
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-uc-abc123..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -627,7 +627,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 #### Base64 Response Format
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-uc-abc123..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -768,7 +768,7 @@ def generate_with_retry(prompt, max_retries=3):
 
 ```python
 import openai
-openai.api_base = "https://your-domain.com/api/v1/llm"
+openai.api_base = "https://unicorncommander.ai/api/v1/llm"
 openai.api_key = "your-uc-api-key"
 ```
 
@@ -796,10 +796,10 @@ openai.api_key = "your-uc-api-key"
 
 ## Support
 
-**Documentation**: https://docs.your-domain.com
-**API Status**: https://status.your-domain.com
+**Documentation**: https://docs.unicorncommander.ai
+**API Status**: https://status.unicorncommander.ai
 **Community**: https://discord.gg/unicorncommander
-**Email**: support@your-domain.com
+**Email**: support@unicorncommander.ai
 
 ---
 

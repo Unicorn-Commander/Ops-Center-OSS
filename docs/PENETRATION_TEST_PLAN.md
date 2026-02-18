@@ -2,7 +2,7 @@
 
 **Project**: UC-Cloud Ops-Center
 **Date**: October 23, 2025
-**Test Environment**: https://your-domain.com (Production) OR http://localhost:8084 (Local)
+**Test Environment**: https://unicorncommander.ai (Production) OR http://localhost:8084 (Local)
 **Tester**: Security Team
 **Duration**: 2 hours
 
@@ -34,7 +34,7 @@ This document provides step-by-step penetration testing procedures for the crede
 **Get Admin Session Cookie**:
 ```bash
 # 1. Login to Ops-Center via browser
-open https://your-domain.com
+open https://unicorncommander.ai
 
 # 2. Open DevTools → Application → Cookies
 # 3. Copy session cookie value
@@ -46,7 +46,7 @@ export SESSION_COOKIE="session=your_cookie_value_here"
 **Set Test Variables**:
 ```bash
 # For production testing
-export API_BASE="https://your-domain.com/api/v1/credentials"
+export API_BASE="https://unicorncommander.ai/api/v1/credentials"
 
 # For local testing
 export API_BASE="http://localhost:8084/api/v1/credentials"

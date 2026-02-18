@@ -2,7 +2,7 @@
 
 **Component**: LLM Testing Lab UI
 **Status**: ✅ PRODUCTION READY
-**Access**: https://your-domain.com/admin → LLM Management → Testing Lab
+**Access**: https://unicorncommander.ai/admin → LLM Management → Testing Lab
 **Date**: October 27, 2025
 
 ---
@@ -520,7 +520,7 @@ A: Some free models have zero cost. Paid models show actual cost.
 
 **Deployment Steps**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 docker restart ops-center-direct
@@ -584,4 +584,4 @@ curl http://localhost:8084/api/v1/llm/models?limit=5 | jq '. | length'
 
 ---
 
-**Access the Testing Lab**: https://your-domain.com/admin → LLM Management → Testing Lab
+**Access the Testing Lab**: https://unicorncommander.ai/admin → LLM Management → Testing Lab

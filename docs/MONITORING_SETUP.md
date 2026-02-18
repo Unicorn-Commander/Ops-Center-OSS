@@ -59,7 +59,7 @@ This guide covers the complete setup and configuration of production monitoring 
 ### 1. Deploy Monitoring Stack
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/monitoring
+cd /opt/ops-center/monitoring
 
 # Start all monitoring services
 docker compose -f docker-compose.monitoring.yml up -d
@@ -76,7 +76,7 @@ docker logs ops-center-alertmanager
 ### 2. Install Python Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install prometheus-client and instrumentator
 docker exec ops-center-direct pip install prometheus-client==0.19.0 prometheus-fastapi-instrumentator==6.1.0
@@ -105,9 +105,9 @@ async def metrics():
 
 | Service | URL | Credentials |
 |---------|-----|-------------|
-| **Grafana** | https://monitoring.your-domain.com | admin / your-admin-password |
-| **Prometheus** | https://metrics.your-domain.com | admin / (htpasswd protected) |
-| **Alertmanager** | https://alerts.your-domain.com | admin / (htpasswd protected) |
+| **Grafana** | https://monitoring.unicorncommander.ai | admin / your-admin-password |
+| **Prometheus** | https://metrics.unicorncommander.ai | admin / (htpasswd protected) |
+| **Alertmanager** | https://alerts.unicorncommander.ai | admin / (htpasswd protected) |
 
 ---
 
@@ -115,7 +115,7 @@ async def metrics():
 
 ### Prometheus
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus/prometheus.yml`
+**Location**: `/opt/ops-center/monitoring/prometheus/prometheus.yml`
 
 **Scrape Targets**:
 - Ops-Center FastAPI: `ops-center-direct:8084/metrics`
@@ -133,7 +133,7 @@ async def metrics():
 
 ### Grafana
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/monitoring/grafana/`
+**Location**: `/opt/ops-center/monitoring/grafana/`
 
 **Provisioning**:
 - Datasources: `provisioning/datasources/prometheus.yml`
@@ -148,7 +148,7 @@ async def metrics():
 
 ### Alertmanager
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/monitoring/alerting/alertmanager.yml`
+**Location**: `/opt/ops-center/monitoring/alerting/alertmanager.yml`
 
 **Notification Channels**:
 
@@ -214,7 +214,7 @@ pagerduty_configs:
 ```yaml
 global:
   smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_auth_username: 'alerts@your-domain.com'
+  smtp_auth_username: 'alerts@unicorncommander.ai'
   smtp_auth_password: 'YOUR_APP_PASSWORD'
   smtp_require_tls: true
 ```
@@ -290,23 +290,23 @@ global:
 
 ```bash
 # Check targets status
-curl https://metrics.your-domain.com/targets
+curl https://metrics.unicorncommander.ai/targets
 
 # Query metrics
-curl https://metrics.your-domain.com/api/v1/query?query=up
+curl https://metrics.unicorncommander.ai/api/v1/query?query=up
 
 # Check specific metric
-curl https://metrics.your-domain.com/api/v1/query?query=ops_center_api_requests_total
+curl https://metrics.unicorncommander.ai/api/v1/query?query=ops_center_api_requests_total
 ```
 
 ### Test Alertmanager
 
 ```bash
 # Check configuration
-curl https://alerts.your-domain.com/api/v1/status
+curl https://alerts.unicorncommander.ai/api/v1/status
 
 # Send test alert
-curl -X POST https://alerts.your-domain.com/api/v1/alerts \
+curl -X POST https://alerts.unicorncommander.ai/api/v1/alerts \
   -H 'Content-Type: application/json' \
   -d '[
     {
@@ -414,7 +414,7 @@ docker exec ops-center-alertmanager cat /etc/alertmanager/alertmanager.yml | gre
 
 ```bash
 # Edit prometheus.yml
-vim /home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus/prometheus.yml
+vim /opt/ops-center/monitoring/prometheus/prometheus.yml
 
 # Reload configuration (no restart needed)
 curl -X POST http://ops-center-prometheus:9090/-/reload
@@ -427,7 +427,7 @@ docker restart ops-center-prometheus
 
 ```bash
 # Copy dashboard JSON to dashboards directory
-cp new-dashboard.json /home/muut/Production/UC-Cloud/services/ops-center/monitoring/grafana/dashboards/
+cp new-dashboard.json /opt/ops-center/monitoring/grafana/dashboards/
 
 # Grafana will auto-load in 30 seconds
 # Or manually: Dashboards > Browse > Import
@@ -437,7 +437,7 @@ cp new-dashboard.json /home/muut/Production/UC-Cloud/services/ops-center/monitor
 
 ```bash
 # Edit alert-rules.yml
-vim /home/muut/Production/UC-Cloud/services/ops-center/monitoring/prometheus/alert-rules.yml
+vim /opt/ops-center/monitoring/prometheus/alert-rules.yml
 
 # Validate syntax
 docker exec ops-center-prometheus promtool check rules /etc/prometheus/alert-rules.yml
@@ -555,7 +555,7 @@ prometheus_rule_evaluation_duration_seconds
 
 ```bash
 # API health
-curl https://monitoring.your-domain.com/api/health
+curl https://monitoring.unicorncommander.ai/api/health
 
 # Database health
 docker exec ops-center-grafana grafana-cli admin health

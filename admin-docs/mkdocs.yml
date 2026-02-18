@@ -111,6 +111,6 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/unicorncommander/UC-1-Pro
     - icon: fontawesome/solid/globe
-      link: https://your-domain.com
+      link: https://unicorncommander.com
   version:
     provider: mike

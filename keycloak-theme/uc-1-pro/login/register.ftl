@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://your-domain.com/signup-flow.html">
+    <meta http-equiv="refresh" content="0; url=https://unicorncommander.ai/signup-flow.html">
     <title>Register - UC-1 Pro</title>
     <style>
         body {
@@ -87,7 +87,7 @@
     </style>
     <script>
         // Immediate redirect
-        window.location.replace('https://your-domain.com/signup-flow.html');
+        window.location.replace('https://unicorncommander.ai/signup-flow.html');
     </script>
 </head>
 <body>
@@ -98,7 +98,7 @@
         <div class="spinner"></div>
         <p style="margin-top: 2rem; font-size: 0.9rem;">
             If you are not redirected automatically,
-            <a href="https://your-domain.com/signup-flow.html">click here</a>
+            <a href="https://unicorncommander.ai/signup-flow.html">click here</a>
         </p>
     </div>
 </body>

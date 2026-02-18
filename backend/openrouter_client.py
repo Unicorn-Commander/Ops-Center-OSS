@@ -88,7 +88,7 @@ class OpenRouterClient:
                     max_keepalive_connections=20
                 ),
                 headers={
-                    "HTTP-Referer": "https://your-domain.com",
+                    "HTTP-Referer": "https://unicorncommander.ai",
                     "X-Title": "UC-Cloud Ops Center",
                     "Content-Type": "application/json"
                 }

@@ -2,7 +2,7 @@
 
 > **Last Updated**: November 1, 2025
 > **Infrastructure**: UC-Cloud Production Environment
-> **Domain**: your-domain.com
+> **Domain**: unicorncommander.ai
 
 ## Overview
 
@@ -16,29 +16,29 @@ This document provides the access URLs, authentication details, and integration 
 
 | Service | Access URL | Port | SSO Provider | Realm | Status |
 |---------|-----------|------|--------------|-------|--------|
-| **Open-WebUI** | https://chat.your-domain.com | 8080 | Keycloak | uchub | ✅ Active |
-| **Center-Deep Pro** | https://search.your-domain.com | 8888 | Authentik | - | ✅ Active |
+| **Open-WebUI** | https://chat.unicorncommander.ai | 8080 | Keycloak | uchub | ✅ Active |
+| **Center-Deep Pro** | https://search.unicorncommander.ai | 8888 | Authentik | - | ✅ Active |
 
 ### Premium Services (Paid Add-ons)
 
 | Service | Access URL | Port | SSO Provider | Realm | Status |
 |---------|-----------|------|--------------|-------|--------|
-| **Presenton** | https://presentations.your-domain.com | 3000 | Keycloak | uchub | ✅ Active |
-| **Bolt.DIY** | https://bolt.your-domain.com | 5173 | Keycloak | uchub | ✅ Active |
-| **Unicorn Brigade** | https://brigade.your-domain.com | 8102 | Keycloak | uchub | ✅ Active |
+| **Presenton** | https://presentations.unicorncommander.ai | 3000 | Keycloak | uchub | ✅ Active |
+| **Bolt.DIY** | https://bolt.unicorncommander.ai | 5173 | Keycloak | uchub | ✅ Active |
+| **Unicorn Brigade** | https://brigade.unicorncommander.ai | 8102 | Keycloak | uchub | ✅ Active |
 
 ### Voice Services (Specialized Add-ons)
 
 | Service | Access URL | API URL | Port | SSO Provider | Status |
 |---------|-----------|---------|------|--------------|--------|
-| **Amanuensis (STT)** | https://stt.your-domain.com | https://stt.your-domain.com/v1 | 9003 | Authentik | ✅ Active |
-| **Orator (TTS)** | https://tts.your-domain.com | https://tts.your-domain.com/v1 | 8885 | Authentik | ✅ Active |
+| **Amanuensis (STT)** | https://stt.unicorncommander.ai | https://stt.unicorncommander.ai/v1 | 9003 | Authentik | ✅ Active |
+| **Orator (TTS)** | https://tts.unicorncommander.ai | https://tts.unicorncommander.ai/v1 | 8885 | Authentik | ✅ Active |
 
 ### Coming Soon
 
 | Service | Expected URL | Expected Release | Status |
 |---------|-------------|------------------|--------|
-| **MagicDeck** | https://magicdeck.your-domain.com | Q1 2026 | 🚧 Development |
+| **MagicDeck** | https://magicdeck.unicorncommander.ai | Q1 2026 | 🚧 Development |
 
 ---
 
@@ -48,7 +48,7 @@ This document provides the access URLs, authentication details, and integration 
 
 **Primary SSO Provider for Main Services**
 
-- **Admin Console**: https://auth.your-domain.com/admin/uchub/console/
+- **Admin Console**: https://auth.unicorncommander.ai/admin/uchub/console/
 - **Realm**: `uchub`
 - **Container**: `uchub-keycloak`
 - **Internal URL**: `http://uchub-keycloak:8080`
@@ -73,10 +73,10 @@ Client ID: ops-center
 Client Secret: your-keycloak-client-secret
 Type: Confidential (OpenID Connect)
 Redirect URIs:
-  - https://your-domain.com/auth/callback
+  - https://unicorncommander.ai/auth/callback
   - http://localhost:8000/auth/callback
 Web Origins:
-  - https://your-domain.com
+  - https://unicorncommander.ai
   - http://localhost:8000
 ```
 
@@ -84,11 +84,11 @@ Web Origins:
 
 **Secondary SSO Provider for Legacy Services**
 
-- **Admin Console**: https://auth.your-domain.com/if/flow/initial-setup/
+- **Admin Console**: https://auth.unicorncommander.ai/if/flow/initial-setup/
 - **Container**: `authentik-server`
 - **Admin Credentials**:
   - Username: `akadmin`
-  - Token: `ak_f3c1ae010853720d0e37e3efa95d5afb51201285`
+  - Token: `your-authentik-api-token`
 
 **Configured Services:**
 - Center-Deep Pro
@@ -100,7 +100,7 @@ Web Origins:
 1. **center-deep**
    - Client ID: `center-deep`
    - Client Secret: `centerdeep_oauth_secret_2025`
-   - Redirect URIs: `https://search.your-domain.com/auth/callback`
+   - Redirect URIs: `https://search.unicorncommander.ai/auth/callback`
 
 2. **amanuensis**
    - Client ID: `amanuensis`
@@ -125,14 +125,14 @@ Web Origins:
 5. Welcome email sent with getting started guide
 
 **No additional steps required** - user can immediately access:
-- https://chat.your-domain.com (Open-WebUI)
-- https://search.your-domain.com (Center-Deep)
+- https://chat.unicorncommander.ai (Open-WebUI)
+- https://search.unicorncommander.ai (Center-Deep)
 
 ### For PREMIUM Services (Presenton, Bolt, Brigade)
 
 **User subscribes via marketplace:**
 
-1. User browses marketplace at https://your-domain.com/marketplace
+1. User browses marketplace at https://unicorncommander.ai/marketplace
 2. User clicks "Subscribe" on desired service
 3. Payment processed via Stripe integration
 4. Backend creates subscription record in `service_subscriptions` table
@@ -197,12 +197,12 @@ INSERT INTO user_add_ons (
 **API Authentication Example:**
 ```bash
 # Amanuensis (Speech-to-Text)
-curl -X POST https://stt.your-domain.com/v1/transcribe \
+curl -X POST https://stt.unicorncommander.ai/v1/transcribe \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@meeting.mp3"
 
 # Orator (Text-to-Speech)
-curl -X POST https://tts.your-domain.com/v1/synthesize \
+curl -X POST https://tts.unicorncommander.ai/v1/synthesize \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -278,7 +278,7 @@ await audio.save('welcome.mp3');
 #### Bolt.DIY API
 ```bash
 # Deploy a project via API
-curl -X POST https://bolt.your-domain.com/api/v1/deploy \
+curl -X POST https://bolt.unicorncommander.ai/api/v1/deploy \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -319,7 +319,7 @@ All services are connected via Docker networks:
 
 - Managed by **Traefik** with Let's Encrypt
 - Auto-renewal configured
-- Wildcard certificate for `*.your-domain.com`
+- Wildcard certificate for `*.unicorncommander.ai`
 - All services accessible via HTTPS
 
 ---
@@ -341,7 +341,7 @@ docker logs unicorn-open-webui --tail 100
 docker restart unicorn-open-webui
 
 # Restart all services
-cd /home/muut/Production/UC-Cloud/services
+cd /opt/uc-cloud/services
 docker-compose restart
 ```
 
@@ -357,7 +357,7 @@ docker logs --tail 100 -t unicorn-open-webui
 ### Test SSO Authentication
 ```bash
 # Run automated SSO verification
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 python3 verify_uchub_sso.py
 ```
 
@@ -388,7 +388,7 @@ docker network connect unicorn-network unicorn-service-name
 **Check Keycloak realm:**
 ```bash
 # Access Keycloak admin console
-open https://auth.your-domain.com/admin/uchub/console/
+open https://auth.unicorncommander.ai/admin/uchub/console/
 
 # Verify client configuration
 docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh get clients \
@@ -407,7 +407,7 @@ docker exec uchub-keycloak /opt/keycloak/bin/kcadm.sh get users \
 **Regenerate API key:**
 ```bash
 # Run ops-center API key generation script
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 scripts/generate_api_key.py --user-id USER_UUID --service amanuensis
 ```
 
@@ -420,13 +420,13 @@ SELECT id, email, api_keys FROM users WHERE email = 'user@example.com';
 
 ## 📚 Documentation Links
 
-- **UC-Cloud Main Docs**: https://docs.your-domain.com
-- **Open-WebUI Guide**: https://docs.your-domain.com/services/open-webui
-- **Presenton Guide**: https://docs.your-domain.com/services/presenton
-- **Bolt.DIY Guide**: https://docs.your-domain.com/services/bolt
-- **Brigade Guide**: https://docs.your-domain.com/services/brigade
-- **Amanuensis API**: https://docs.your-domain.com/api/amanuensis
-- **Orator API**: https://docs.your-domain.com/api/orator
+- **UC-Cloud Main Docs**: https://docs.unicorncommander.ai
+- **Open-WebUI Guide**: https://docs.unicorncommander.ai/services/open-webui
+- **Presenton Guide**: https://docs.unicorncommander.ai/services/presenton
+- **Bolt.DIY Guide**: https://docs.unicorncommander.ai/services/bolt
+- **Brigade Guide**: https://docs.unicorncommander.ai/services/brigade
+- **Amanuensis API**: https://docs.unicorncommander.ai/api/amanuensis
+- **Orator API**: https://docs.unicorncommander.ai/api/orator
 - **SSO Setup Guide**: /services/ops-center/SSO-SETUP-COMPLETE.md
 - **Keycloak uchub Realm**: /services/ops-center/UCHUB-REALM-SETUP.md
 
@@ -454,13 +454,13 @@ SELECT id, email, api_keys FROM users WHERE email = 'user@example.com';
 ## 📞 Support
 
 For service access issues:
-- **Email**: support@your-domain.com
-- **Documentation**: https://docs.your-domain.com
-- **Status Page**: https://status.your-domain.com (coming soon)
+- **Email**: support@unicorncommander.ai
+- **Documentation**: https://docs.unicorncommander.ai
+- **Status Page**: https://status.unicorncommander.ai (coming soon)
 
 For billing/subscription issues:
-- **Email**: billing@your-domain.com
-- **Account Portal**: https://your-domain.com/account
+- **Email**: billing@unicorncommander.ai
+- **Account Portal**: https://unicorncommander.ai/account
 
 ---
 

@@ -310,7 +310,7 @@ Deletes audit logs older than specified days (30-365).
 The database will be auto-initialized on first use, but you can also run manually:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 init_audit_db.py
 ```
 
@@ -497,7 +497,7 @@ curl -X DELETE "http://localhost:8084/api/v1/audit/cleanup?days_to_keep=90"
 Run the test suite:
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 test_audit.py
 ```
 
@@ -546,8 +546,8 @@ curl "http://localhost:8084/api/v1/audit/logs?action=auth.login.failed&limit=50"
 ### Database Permission Errors
 
 ```bash
-chmod 666 /home/muut/Production/UC-1-Pro/services/ops-center/backend/data/ops_center.db
-chmod 777 /home/muut/Production/UC-1-Pro/services/ops-center/backend/data/
+chmod 666 /home/deploy/Production/UC-1-Pro/services/ops-center/backend/data/ops_center.db
+chmod 777 /home/deploy/Production/UC-1-Pro/services/ops-center/backend/data/
 ```
 
 ### Log Directory Not Accessible
@@ -574,7 +574,7 @@ sqlite3 data/ops_center.db "SELECT COUNT(*) FROM audit_logs;"
 ## File Locations
 
 ```
-/home/muut/Production/UC-1-Pro/services/ops-center/backend/
+/home/deploy/Production/UC-1-Pro/services/ops-center/backend/
 ├── models/
 │   ├── __init__.py
 │   └── audit_log.py                    # Data models

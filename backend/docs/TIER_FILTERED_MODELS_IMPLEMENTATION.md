@@ -257,7 +257,7 @@ Returns list of LLM models accessible to the authenticated user based on their s
 **Example**:
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
-  https://your-domain.com/api/v1/llm/models
+  https://unicorncommander.ai/api/v1/llm/models
 ```
 ```
 

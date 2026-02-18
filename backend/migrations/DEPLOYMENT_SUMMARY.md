@@ -141,7 +141,7 @@ Successfully created production-ready database migration scripts for the unified
 
 All files are located in:
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/migrations/
+/opt/ops-center/backend/migrations/
 ```
 
 **Migration Files**:
@@ -163,7 +163,7 @@ docker exec unicorn-postgresql pg_dump -U unicorn unicorn_db > backup_$(date +%Y
 
 ### 2. Run Tests (RECOMMENDED)
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 ./test_migration.sh
 ```
 
@@ -275,7 +275,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "
 
 ### Quick Rollback
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations
+cd /opt/ops-center/backend/migrations
 docker exec -i unicorn-postgresql psql -U unicorn -d unicorn_db < rollback_llm_management_tables.sql
 ```
 

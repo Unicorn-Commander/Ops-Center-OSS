@@ -73,7 +73,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             // API responses - Network First (fresh data priority)
-            urlPattern: /^https?:\/\/your-domain.com\/api\/.*/i,
+            urlPattern: /^https?:\/\/unicorncommander\.ai\/api\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
@@ -89,7 +89,7 @@ export default defineConfig({
           },
           {
             // Static API data (rarely changes) - Cache First
-            urlPattern: /^https?:\/\/your-domain.com\/api\/v1\/(system\/status|service-urls|deployment\/config)/i,
+            urlPattern: /^https?:\/\/unicorncommander\.ai\/api\/v1\/(system\/status|service-urls|deployment\/config)/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'static-api-cache',

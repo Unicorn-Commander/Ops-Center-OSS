@@ -88,7 +88,7 @@
 │  Managed Route:                                                   │
 │    POST https://openrouter.ai/api/v1/chat/completions           │
 │    Authorization: Bearer {system API key}                        │
-│    HTTP-Referer: https://your-domain.com                     │
+│    HTTP-Referer: https://unicorncommander.ai                     │
 │                                                                    │
 │  Wait for response: ~500-3000ms                                   │
 └───────────────────────────────────────────────────────────────────┘
@@ -193,7 +193,7 @@
 ┌───────────────────────────────────────────────────────────────────┐
 │  STEP 9: LAGO EVENT RECORDING (Optional)                         │
 ├───────────────────────────────────────────────────────────────────┤
-│  POST https://billing-api.your-domain.com/api/v1/events     │
+│  POST https://billing-api.unicorncommander.ai/api/v1/events     │
 │  {                                                                 │
 │    "event": {                                                     │
 │      "transaction_id": "req_abc123",                             │

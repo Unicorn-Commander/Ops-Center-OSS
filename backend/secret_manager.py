@@ -487,8 +487,8 @@ if __name__ == "__main__":
     # Test 4: Test different secret types
     print("\n4. Testing multiple secret types:")
     secrets = {
-        SecretType.NAMECHEAP_API_KEY: "your-example-api-key",
-        SecretType.STRIPE_SECRET_KEY: "sk_test_your_stripe_key",
+        SecretType.NAMECHEAP_API_KEY: "your-namecheap-api-key",
+        SecretType.STRIPE_SECRET_KEY: "sk_test_your_stripe_secret_key",
         SecretType.USER_API_KEY: "user_api_key_abc123xyz",
     }
 

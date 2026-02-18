@@ -6,7 +6,7 @@ Manage app-specific curated model lists through the admin GUI without code deplo
 
 ## Access
 
-**Admin GUI**: https://your-domain.com/admin/system/model-lists
+**Admin GUI**: https://unicorncommander.ai/admin/system/model-lists
 
 ## Curated Lists (Default)
 

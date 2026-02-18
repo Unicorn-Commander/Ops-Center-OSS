@@ -39,7 +39,7 @@ This document outlines the architecture for implementing admin-managed Two-Facto
 
 ### Keycloak Admin REST API Endpoints
 
-**Base URL**: `https://auth.your-domain.com/admin/realms/uchub`
+**Base URL**: `https://auth.unicorncommander.ai/admin/realms/uchub`
 
 #### Available Endpoints:
 
@@ -881,7 +881,7 @@ async def test_keycloak_2fa_enforcement_flow():
 
 3. **Frontend Deployment**
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    npm run build
    cp -r dist/* public/
    ```
@@ -943,7 +943,7 @@ If deployment fails:
 
 **Security Team Lead**: AI Assistant
 **Project**: Ops-Center 2FA Management
-**Repository**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Repository**: `/opt/ops-center`
 
 ---
 

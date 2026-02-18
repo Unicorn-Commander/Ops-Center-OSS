@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 logger = logging.getLogger(__name__)
 
 # Keycloak Configuration
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com")
+KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai")
 KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "master")
 KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "admin-cli")
 KEYCLOAK_CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET", "")

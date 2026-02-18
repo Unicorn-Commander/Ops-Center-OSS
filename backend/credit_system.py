@@ -123,10 +123,10 @@ class CreditManager:
         async with self.db_pool.acquire() as conn:
             row = await conn.fetchrow(
                 """
-                SELECT user_id, credits_remaining, credits_allocated, tier,
-                        last_reset, updated_at, created_at
+                SELECT user_id, balance, tier, lifetime_credits, monthly_cap,
+                        monthly_usage, monthly_reset_at, last_updated, created_at
                 FROM user_credits
-                WHERE user_id = $1
+                WHERE user_id::text = $1
                 """,
                 user_id
             )
@@ -138,14 +138,14 @@ class CreditManager:
 
             # Map database columns to API response fields
             return {
-                "user_id": row["user_id"],
-                "balance": row["credits_remaining"],  # DB column: credits_remaining
-                "allocated_monthly": row["credits_allocated"],  # DB column: credits_allocated
+                "user_id": str(row["user_id"]) if row["user_id"] else user_id,
+                "balance": row["balance"] or Decimal("0.00"),  # DB column: balance
+                "allocated_monthly": row["monthly_cap"] or Decimal("0.00"),  # DB column: monthly_cap
                 "bonus_credits": Decimal("0.00"),  # Not stored in DB
-                "free_tier_used": Decimal("0.00"),  # Calculated: allocated - remaining
-                "reset_date": row["last_reset"],  # DB column: last_reset
-                "last_updated": row["updated_at"],  # DB column: updated_at
-                "tier": row["tier"],
+                "free_tier_used": row["monthly_usage"] or Decimal("0.00"),  # DB column: monthly_usage
+                "reset_date": row["monthly_reset_at"],  # DB column: monthly_reset_at
+                "last_updated": row["last_updated"],  # DB column: last_updated
+                "tier": row["tier"] or "free",
                 "created_at": row["created_at"]
             }
 
@@ -165,19 +165,43 @@ class CreditManager:
             Created credit record
         """
         allocated = self._tier_allocations.get(tier, Decimal("0.00"))
-        last_reset = datetime.utcnow() + timedelta(days=30)
+        next_reset = datetime.utcnow() + timedelta(days=30)
+
+        # Check if user exists in users table first
+        async with self.db_pool.acquire() as conn:
+            user_exists = await conn.fetchval(
+                "SELECT EXISTS(SELECT 1 FROM users WHERE id = $1::uuid)",
+                user_id
+            )
+
+        if not user_exists:
+            # User not in users table (Keycloak user not synced yet)
+            # Return a default balance object instead of trying to create a record
+            logger.warning(f"User {user_id} not in users table, returning default trial balance")
+            return {
+                "user_id": user_id,
+                "balance": Decimal("0.00"),
+                "allocated_monthly": Decimal("0.00"),
+                "bonus_credits": Decimal("0.00"),
+                "free_tier_used": Decimal("0.00"),
+                "reset_date": next_reset,
+                "last_updated": datetime.utcnow(),
+                "tier": "trial",
+                "created_at": datetime.utcnow(),
+                "note": "User not synced - contact support to activate credits"
+            }
 
         async with self.transaction() as conn:
-            # Create user credits record
-            await conn.execute(
+            # Create user credits record (uses actual DB column names)
+            result = await conn.execute(
                 """
                 INSERT INTO user_credits (
-                    user_id, credits_remaining, credits_allocated, tier, monthly_cap, last_reset
+                    user_id, balance, tier, monthly_cap, monthly_reset_at
                 )
-                VALUES ($1, $2, $3, $4, $5, $6)
+                VALUES ($1::uuid, $2, $3, $4, $5)
                 ON CONFLICT (user_id) DO NOTHING
                 """,
-                user_id, allocated, allocated, tier, allocated, last_reset
+                user_id, allocated, tier, allocated, next_reset
             )
 
             # Log allocation transaction (use 'purchase' type for initial allocation)
@@ -200,7 +224,7 @@ class CreditManager:
                 metadata={
                     "tier": tier,
                     "allocated": float(allocated),
-                    "last_reset": last_reset.isoformat()
+                    "next_reset": next_reset.isoformat()
                 }
             )
 
@@ -236,35 +260,35 @@ class CreditManager:
             raise ValueError("Allocation amount must be positive")
 
         async with self.transaction() as conn:
-            # Get current balance
+            # Get current balance (uses actual DB column name: balance)
             current = await conn.fetchrow(
-                "SELECT credits_remaining FROM user_credits WHERE user_id = $1",
+                "SELECT balance FROM user_credits WHERE user_id::text = $1",
                 user_id
             )
 
             if not current:
                 # Create user first
                 await self.create_user_credits(user_id)
-                current_credits_remaining = Decimal("0.00")
+                current_balance = Decimal("0.00")
             else:
-                current_credits_remaining = current["credits_remaining"]
+                current_balance = current["balance"] or Decimal("0.00")
 
-            new_credits_remaining = current_credits_remaining + amount
+            new_balance = current_balance + amount
 
-            # Update balance
+            # Update balance (uses actual DB column names)
             await conn.execute(
                 """
                 UPDATE user_credits
-                SET credits_remaining = $1,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = $2
+                SET balance = $1,
+                    last_updated = CURRENT_TIMESTAMP
+                WHERE user_id::text = $2
                 """,
-                new_credits_remaining, user_id
+                new_balance, user_id
             )
 
             # Log transaction
             await self._log_transaction(
-                conn, user_id, amount, new_credits_remaining,
+                conn, user_id, amount, new_balance,
                 "allocation", metadata={
                     "source": source,
                     **(metadata or {})
@@ -280,7 +304,7 @@ class CreditManager:
                 details={
                     "amount": float(amount),
                     "source": source,
-                    "new_balance": float(new_credits_remaining),
+                    "new_balance": float(new_balance),
                     "metadata": metadata
                 },
                 status="success"
@@ -318,11 +342,11 @@ class CreditManager:
             raise ValueError("Deduction amount must be positive")
 
         async with self.transaction() as conn:
-            # Check current credits_remaining with row lock
+            # Check current balance with row lock (uses actual DB column name: balance)
             current = await conn.fetchrow(
                 """
-                SELECT credits_remaining FROM user_credits
-                WHERE user_id = $1
+                SELECT balance FROM user_credits
+                WHERE user_id::text = $1
                 FOR UPDATE
                 """,
                 user_id
@@ -331,10 +355,10 @@ class CreditManager:
             if not current:
                 raise CreditError(f"User {user_id} does not have a credit account")
 
-            current_credits_remaining = current["credits_remaining"]
+            current_balance = current["balance"] or Decimal("0.00")
 
             # Check sufficient balance
-            if current_credits_remaining < amount:
+            if current_balance < amount:
                 await audit_logger.log(
                     action="credit.deduct_failed",
                     user_id=user_id,
@@ -342,31 +366,32 @@ class CreditManager:
                     resource_id=user_id,
                     details={
                         "amount": float(amount),
-                        "current_balance": float(current_credits_remaining),
+                        "current_balance": float(current_balance),
                         "reason": "insufficient_credits"
                     },
                     status="failure"
                 )
                 raise InsufficientCreditsError(
-                    f"Insufficient credits. Required: {amount}, Available: {current_credits_remaining}"
+                    f"Insufficient credits. Required: {amount}, Available: {current_balance}"
                 )
 
-            new_credits_remaining = current_credits_remaining - amount
+            new_balance = current_balance - amount
 
-            # Update balance
+            # Update balance (uses actual DB column names)
             await conn.execute(
                 """
                 UPDATE user_credits
-                SET credits_remaining = $1,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = $2
+                SET balance = $1,
+                    monthly_usage = COALESCE(monthly_usage, 0) + $3,
+                    last_updated = CURRENT_TIMESTAMP
+                WHERE user_id::text = $2
                 """,
-                new_credits_remaining, user_id
+                new_balance, user_id, amount
             )
 
             # Log transaction
             await self._log_transaction(
-                conn, user_id, -amount, new_credits_remaining,
+                conn, user_id, -amount, new_balance,
                 "usage", service=service, model=model,
                 cost_breakdown=cost_breakdown, metadata=metadata
             )
@@ -381,17 +406,17 @@ class CreditManager:
                     "amount": float(amount),
                     "service": service,
                     "model": model,
-                    "new_balance": float(new_credits_remaining),
+                    "new_balance": float(new_balance),
                     "cost_breakdown": cost_breakdown
                 },
                 status="success"
             )
 
         # Send low balance alert if credits are running low (don't fail transaction if email fails)
-        if new_credits_remaining < Decimal("100.00") and new_credits_remaining > Decimal("0.00"):
+        if new_balance < Decimal("100.00") and new_balance > Decimal("0.00"):
             try:
-                await email_service.send_low_balance_alert(user_id, new_credits_remaining)
-                logger.info(f"Low balance alert sent to user {user_id} (balance: {new_credits_remaining})")
+                await email_service.send_low_balance_alert(user_id, new_balance)
+                logger.info(f"Low balance alert sent to user {user_id} (balance: {new_balance})")
             except Exception as e:
                 logger.error(f"Failed to send low balance alert to user {user_id}: {e}")
 
@@ -420,14 +445,14 @@ class CreditManager:
             raise ValueError("Bonus amount must be positive")
 
         async with self.transaction() as conn:
-            # Update credits_remaining (note: bonus_credits column doesn't exist in DB)
+            # Update balance (uses actual DB column name: balance)
             result = await conn.fetchrow(
                 """
                 UPDATE user_credits
-                SET credits_remaining = credits_remaining + $1,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = $2
-                RETURNING credits_remaining
+                SET balance = COALESCE(balance, 0) + $1,
+                    last_updated = CURRENT_TIMESTAMP
+                WHERE user_id::text = $2
+                RETURNING balance
                 """,
                 amount, user_id
             )
@@ -435,11 +460,11 @@ class CreditManager:
             if not result:
                 raise CreditError(f"User {user_id} does not have a credit account")
 
-            new_credits_remaining = result["credits_remaining"]
+            new_balance = result["balance"]
 
             # Log transaction
             await self._log_transaction(
-                conn, user_id, amount, new_credits_remaining,
+                conn, user_id, amount, new_balance,
                 "bonus", metadata={
                     "reason": reason,
                     **(metadata or {})
@@ -455,7 +480,7 @@ class CreditManager:
                 details={
                     "amount": float(amount),
                     "reason": reason,
-                    "new_balance": float(new_credits_remaining),
+                    "new_balance": float(new_balance),
                     "metadata": metadata
                 },
                 status="success"
@@ -486,14 +511,14 @@ class CreditManager:
             raise ValueError("Refund amount must be positive")
 
         async with self.transaction() as conn:
-            # Update balance
+            # Update balance (uses actual DB column name: balance)
             result = await conn.fetchrow(
                 """
                 UPDATE user_credits
-                SET credits_remaining = credits_remaining + $1,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = $2
-                RETURNING credits_remaining
+                SET balance = COALESCE(balance, 0) + $1,
+                    last_updated = CURRENT_TIMESTAMP
+                WHERE user_id::text = $2
+                RETURNING balance
                 """,
                 amount, user_id
             )
@@ -501,11 +526,11 @@ class CreditManager:
             if not result:
                 raise CreditError(f"User {user_id} does not have a credit account")
 
-            new_credits_remaining = result["credits_remaining"]
+            new_balance = result["balance"]
 
             # Log transaction
             await self._log_transaction(
-                conn, user_id, amount, new_credits_remaining,
+                conn, user_id, amount, new_balance,
                 "refund", metadata={
                     "reason": reason,
                     **(metadata or {})
@@ -521,7 +546,7 @@ class CreditManager:
                 details={
                     "amount": float(amount),
                     "reason": reason,
-                    "new_balance": float(new_credits_remaining),
+                    "new_balance": float(new_balance),
                     "metadata": metadata
                 },
                 status="success"
@@ -545,12 +570,12 @@ class CreditManager:
             Updated credits_remaining information
         """
         async with self.transaction() as conn:
-            # Get current allocation
+            # Get current allocation (uses actual DB column names)
             current = await conn.fetchrow(
                 """
-                SELECT credits_allocated, credits_remaining
+                SELECT monthly_cap, balance
                 FROM user_credits
-                WHERE user_id = $1
+                WHERE user_id::text = $1
                 """,
                 user_id
             )
@@ -562,28 +587,31 @@ class CreditManager:
             if new_tier:
                 new_allocation = self._tier_allocations.get(new_tier, Decimal("0.00"))
             else:
-                new_allocation = current["credits_allocated"]
+                new_allocation = current["monthly_cap"] or Decimal("0.00")
 
-            # Calculate new credits_remaining (add new allocation)
-            new_credits_remaining = current["credits_remaining"] + new_allocation
+            # Calculate new balance (add new allocation)
+            current_balance = current["balance"] or Decimal("0.00")
+            new_balance = current_balance + new_allocation
             next_reset = datetime.utcnow() + timedelta(days=30)
 
-            # Update credits
+            # Update credits (uses actual DB column names)
             await conn.execute(
                 """
                 UPDATE user_credits
-                SET credits_remaining = $1,
-                    credits_allocated = $2,
-                    last_reset = $3,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE user_id = $4
+                SET balance = $1,
+                    monthly_cap = $2,
+                    monthly_usage = 0,
+                    monthly_reset_at = $3,
+                    tier = COALESCE($5, tier),
+                    last_updated = CURRENT_TIMESTAMP
+                WHERE user_id::text = $4
                 """,
-                new_credits_remaining, new_allocation, next_reset, user_id
+                new_balance, new_allocation, next_reset, user_id, new_tier
             )
 
             # Log transaction
             await self._log_transaction(
-                conn, user_id, new_allocation, new_credits_remaining,
+                conn, user_id, new_allocation, new_balance,
                 "monthly_reset", metadata={
                     "tier": new_tier,
                     "allocation": float(new_allocation),
@@ -599,7 +627,7 @@ class CreditManager:
                 resource_id=user_id,
                 details={
                     "new_allocation": float(new_allocation),
-                    "new_balance": float(new_credits_remaining),
+                    "new_balance": float(new_balance),
                     "tier": new_tier,
                     "next_reset": next_reset.isoformat()
                 },
@@ -608,7 +636,7 @@ class CreditManager:
 
         # Send monthly reset notification (don't fail transaction if email fails)
         try:
-            await email_service.send_monthly_reset_notification(user_id, new_credits_remaining)
+            await email_service.send_monthly_reset_notification(user_id, new_balance)
             logger.info(f"Monthly reset notification sent to user {user_id}")
         except Exception as e:
             logger.error(f"Failed to send monthly reset notification to user {user_id}: {e}")
@@ -637,22 +665,23 @@ class CreditManager:
         if not self.db_pool:
             await self.initialize()
 
+        # Query the 'transactions' table with actual DB schema
         if transaction_type:
             query = """
-                SELECT id, user_id, amount, balance_after, transaction_type,
-                       provider as service, model, cost as cost_breakdown, metadata, created_at
-                FROM credit_transactions
-                WHERE user_id = $1 AND transaction_type = $2
+                SELECT id, user_id, type, amount_cents, balance_after_cents,
+                       description, metadata, created_at
+                FROM transactions
+                WHERE user_id::text = $1 AND type = $2
                 ORDER BY created_at DESC
                 LIMIT $3 OFFSET $4
             """
             params = [user_id, transaction_type, limit, offset]
         else:
             query = """
-                SELECT id, user_id, amount, balance_after, transaction_type,
-                       provider as service, model, cost as cost_breakdown, metadata, created_at
-                FROM credit_transactions
-                WHERE user_id = $1
+                SELECT id, user_id, type, amount_cents, balance_after_cents,
+                       description, metadata, created_at
+                FROM transactions
+                WHERE user_id::text = $1
                 ORDER BY created_at DESC
                 LIMIT $2 OFFSET $3
             """
@@ -661,19 +690,17 @@ class CreditManager:
         async with self.db_pool.acquire() as conn:
             rows = await conn.fetch(query, *params)
 
-            import json
-
             return [
                 {
                     "id": str(row["id"]),  # Convert UUID to string
-                    "user_id": row["user_id"],
-                    "amount": row["amount"],
-                    "balance_after": row["balance_after"],
-                    "transaction_type": row["transaction_type"],
-                    "service": row["service"],
-                    "model": row["model"],
-                    "cost_breakdown": row["cost_breakdown"],
-                    "metadata": json.loads(row["metadata"]) if row["metadata"] and isinstance(row["metadata"], str) else row["metadata"],
+                    "user_id": str(row["user_id"]) if row["user_id"] else user_id,
+                    "amount": Decimal(row["amount_cents"]) / 100,  # Convert cents to decimal
+                    "balance_after": Decimal(row["balance_after_cents"]) / 100,
+                    "transaction_type": row["type"],
+                    "service": row["metadata"].get("service") if row["metadata"] else None,
+                    "model": row["metadata"].get("model") if row["metadata"] else None,
+                    "cost_breakdown": row["metadata"].get("cost_breakdown") if row["metadata"] else None,
+                    "metadata": row["metadata"],
                     "created_at": row["created_at"]
                 }
                 for row in rows
@@ -710,21 +737,42 @@ class CreditManager:
         cost_breakdown: Optional[Dict[str, Any]] = None,
         metadata: Optional[Dict[str, Any]] = None
     ):
-        """Internal method to log a credit transaction"""
+        """Internal method to log a credit transaction using the 'transactions' table"""
         import json
 
+        # Build description from service/model if provided
+        description_parts = [transaction_type]
+        if service:
+            description_parts.append(f"service={service}")
+        if model:
+            description_parts.append(f"model={model}")
+        description = " | ".join(description_parts)
+
+        # Merge service/model/cost into metadata
+        full_metadata = metadata or {}
+        if service:
+            full_metadata["service"] = service
+        if model:
+            full_metadata["model"] = model
+        if cost_breakdown:
+            full_metadata["cost_breakdown"] = cost_breakdown
+
+        # Convert to cents for the transactions table (which stores cents as bigint)
+        amount_cents = int(amount * 100)
+        balance_after_cents = int(balance_after * 100)
+
+        # Insert into transactions table (uses actual DB schema)
         await conn.execute(
             """
-            INSERT INTO credit_transactions (
-                user_id, amount, balance_after, transaction_type,
-                provider, model, metadata
+            INSERT INTO transactions (
+                user_id, type, amount_cents, balance_after_cents,
+                description, metadata
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            SELECT $1::uuid, $2, $3, $4, $5, $6::jsonb
+            WHERE EXISTS (SELECT 1 FROM users WHERE id = $1::uuid)
             """,
-            user_id, amount, balance_after, transaction_type,
-            service,  # Maps to 'provider' column
-            model,
-            json.dumps(metadata) if metadata else None
+            user_id, transaction_type, amount_cents, balance_after_cents,
+            description, json.dumps(full_metadata) if full_metadata else '{}'
         )
 
 

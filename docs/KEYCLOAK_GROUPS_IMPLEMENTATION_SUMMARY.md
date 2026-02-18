@@ -9,7 +9,7 @@
 ## 📋 What Was Delivered
 
 ### 1. Comprehensive Research Document
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
 
 **Contents:**
 - Complete analysis of Keycloak architecture
@@ -31,7 +31,7 @@
 ---
 
 ### 2. Quick Start Guide
-**File:** `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_QUICKSTART.md`
+**File:** `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_QUICKSTART.md`
 
 **Purpose:** Get up and running in 5 minutes
 
@@ -45,7 +45,7 @@
 ---
 
 ### 3. Implementation Scripts
-**Location:** `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/`
+**Location:** `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/`
 
 **Scripts Created:**
 
@@ -80,7 +80,7 @@ All scripts are:
 ### Current State Analysis
 
 **Keycloak Setup:**
-- ✅ Running at https://auth.your-domain.com
+- ✅ Running at https://auth.unicorncommander.ai
 - ✅ Realm: `uchub`
 - ✅ Admin access confirmed: `admin` / `your-admin-password`
 - ✅ OIDC client `ops-center` exists
@@ -88,7 +88,7 @@ All scripts are:
 
 **Current Role System:**
 - ❌ Hardcoded admin list in `role_mapper.py`
-- ❌ Username-based: `["akadmin", "admin", "administrator", "aaron"]`
+- ❌ Username-based: `["akadmin", "admin", "administrator"]`
 - ❌ Email whitelist: `["admin@example.com"]`
 - ✅ Role mapper already supports groups
 - ✅ Checks multiple token claims (`groups`, `realm_access.roles`, etc.)
@@ -292,7 +292,7 @@ uc1-viewers       → viewer role
 
 ```bash
 # Create groups
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 python3 scripts/create-keycloak-groups.py
 
 # Add user to group
@@ -316,7 +316,7 @@ docker restart ops-center-direct
 
 ## 📚 Documentation Files Created
 
-**All files in:** `/home/muut/Production/UC-1-Pro/services/ops-center/`
+**All files in:** `/home/deploy/Production/UC-1-Pro/services/ops-center/`
 
 ### Documentation (docs/)
 1. **KEYCLOAK_GROUPS_RESEARCH.md** - Complete research (25,000+ words)
@@ -438,12 +438,12 @@ No additional research needed - everything is documented and tested.
 ---
 
 **Files Created:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_QUICKSTART.md`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_IMPLEMENTATION_SUMMARY.md`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/create-keycloak-groups.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/add-user-to-group.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/scripts/list-user-groups.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_RESEARCH.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_QUICKSTART.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/docs/KEYCLOAK_GROUPS_IMPLEMENTATION_SUMMARY.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/create-keycloak-groups.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/add-user-to-group.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/scripts/list-user-groups.py`
 
 **Research Status:** ✅ COMPLETE
 **Ready for Implementation:** ✅ YES

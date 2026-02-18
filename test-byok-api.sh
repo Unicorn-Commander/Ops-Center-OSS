@@ -7,7 +7,7 @@
 set -e
 
 # Configuration
-BASE_URL="${BASE_URL:-https://your-domain.com}"
+BASE_URL="${BASE_URL:-https://unicorncommander.ai}"
 SESSION_COOKIE="${SESSION_COOKIE:-}"
 
 # Colors

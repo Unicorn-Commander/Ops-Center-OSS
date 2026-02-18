@@ -19,7 +19,7 @@ class ForgejoClient:
 
     def __init__(
         self,
-        base_url: str = "https://git.your-domain.com",
+        base_url: str = "https://git.unicorncommander.ai",
         admin_token: Optional[str] = "4d79a6bef5c793c89b13400115188ea935fc31b5",
         timeout: int = 10
     ):

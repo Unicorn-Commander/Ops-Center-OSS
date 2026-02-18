@@ -18,7 +18,7 @@ Production-ready email notification system for UC-1 Pro Operations Center with O
 ### 1. Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 pip install -r requirements.txt
 ```
 
@@ -31,9 +31,9 @@ cp .env.email.example .env.email
 
 Edit `.env.email` with your Office 365 credentials:
 ```env
-SMTP_USER=noreply@your-domain.com
+SMTP_USER=noreply@unicorncommander.ai
 SMTP_PASSWORD=your-app-password-here
-FROM_EMAIL=noreply@your-domain.com
+FROM_EMAIL=noreply@unicorncommander.ai
 ```
 
 Or add directly to your main `.env` file.
@@ -67,7 +67,7 @@ Send password reset link with optional temporary password:
 ```python
 await email_service.send_password_reset(
     to="user@example.com",
-    reset_link="https://your-domain.com/reset?token=xxx",
+    reset_link="https://unicorncommander.ai/reset?token=xxx",
     temporary_password="Temp123!"  # Optional
 )
 ```
@@ -131,7 +131,7 @@ await email_service.send_invoice(
 Send system alerts to administrators:
 ```python
 await email_service.send_admin_alert(
-    to="admin@your-domain.com",
+    to="admin@unicorncommander.ai",
     subject="High Memory Usage",
     message="System memory usage exceeded 90%"
 )
@@ -237,7 +237,7 @@ async def stripe_webhook(
 
 ### 1. Create Email Account
 
-Create a dedicated mailbox (e.g., `noreply@your-domain.com`) in your Microsoft 365 Admin Center.
+Create a dedicated mailbox (e.g., `noreply@unicorncommander.ai`) in your Microsoft 365 Admin Center.
 
 ### 2. Enable SMTP Authentication
 
@@ -259,7 +259,7 @@ Create a dedicated mailbox (e.g., `noreply@your-domain.com`) in your Microsoft 3
 For better deliverability:
 1. Add SPF record: `v=spf1 include:spf.protection.outlook.com ~all`
 2. Add DKIM signing in Exchange Admin Center
-3. Add DMARC policy: `v=DMARC1; p=quarantine; rua=mailto:admin@your-domain.com`
+3. Add DMARC policy: `v=DMARC1; p=quarantine; rua=mailto:admin@unicorncommander.ai`
 
 ## Alternative Email Providers
 
@@ -333,9 +333,9 @@ python3 email_service.py
 ### Send Test Email to Specific Address
 
 ```bash
-export SMTP_USER=noreply@your-domain.com
+export SMTP_USER=noreply@unicorncommander.ai
 export SMTP_PASSWORD=your-app-password
-export FROM_EMAIL=noreply@your-domain.com
+export FROM_EMAIL=noreply@unicorncommander.ai
 
 python3 -c "
 import asyncio
@@ -415,11 +415,11 @@ Create `.env.email` or add to main `.env`:
 ```env
 SMTP_HOST=smtp.office365.com
 SMTP_PORT=587
-SMTP_USER=noreply@your-domain.com
+SMTP_USER=noreply@unicorncommander.ai
 SMTP_PASSWORD=xxxx-xxxx-xxxx-xxxx
-FROM_EMAIL=noreply@your-domain.com
+FROM_EMAIL=noreply@unicorncommander.ai
 FROM_NAME=UC-1 Pro Ops Center
-APP_URL=https://your-domain.com
+APP_URL=https://unicorncommander.ai
 ```
 
 ### Restart Services
@@ -457,7 +457,7 @@ For issues or questions:
 - Check logs: `docker logs unicorn-ops-center`
 - Review configuration: `python3 email_service.py`
 - Test SMTP connection: Use telnet or openssl
-- Contact support: admin@your-domain.com
+- Contact support: admin@unicorncommander.ai
 
 ## License
 

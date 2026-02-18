@@ -26,10 +26,10 @@ The Testing Lab API enables **interactive model testing with streaming responses
 
 ```bash
 # API is already created at:
-# /home/muut/Production/UC-Cloud/services/ops-center/backend/testing_lab_api.py
+# /opt/ops-center/backend/testing_lab_api.py
 
 # Register in server.py
-vim /home/muut/Production/UC-Cloud/services/ops-center/backend/server.py
+vim /opt/ops-center/backend/server.py
 
 # Add these lines:
 from testing_lab_api import router as testing_lab_router
@@ -42,7 +42,7 @@ docker restart ops-center-direct
 ### 2. Test
 
 ```bash
-# Get session token from browser cookies (your-domain.com → DevTools → Application → Cookies)
+# Get session token from browser cookies (unicorncommander.ai → DevTools → Application → Cookies)
 export SESSION_TOKEN="your-session-token"
 
 # Test streaming

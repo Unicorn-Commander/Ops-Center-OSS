@@ -10,7 +10,7 @@ echo "======================================================================"
 
 echo ""
 echo "1. Checking if BYOK_ENCRYPTION_KEY is set..."
-ENV_FILE="/home/muut/Production/UC-Cloud/services/ops-center/.env.auth"
+ENV_FILE="/opt/ops-center/.env.auth"
 if grep -q "BYOK_ENCRYPTION_KEY=" "$ENV_FILE" && ! grep -q "BYOK_ENCRYPTION_KEY=$" "$ENV_FILE"; then
     echo "   ✅ BYOK_ENCRYPTION_KEY is set"
     KEY=$(grep "BYOK_ENCRYPTION_KEY=" "$ENV_FILE" | cut -d'=' -f2)
@@ -35,7 +35,7 @@ fi
 
 echo ""
 echo "3. Checking if integration files exist..."
-BACKEND_DIR="/home/muut/Production/UC-Cloud/services/ops-center/backend"
+BACKEND_DIR="/opt/ops-center/backend"
 if [ -f "$BACKEND_DIR/llm_provider_integration.py" ]; then
     echo "   ✅ llm_provider_integration.py exists"
 else

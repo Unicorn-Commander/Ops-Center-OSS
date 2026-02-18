@@ -910,7 +910,7 @@ localStorage.setItem('debug', 'storage:*');
 
 For questions or issues, refer to:
 - **Project**: UC-Cloud / Ops-Center
-- **File Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+- **File Location**: `/opt/ops-center/`
 - **Documentation**: This file + component JSDoc comments
 
 ---

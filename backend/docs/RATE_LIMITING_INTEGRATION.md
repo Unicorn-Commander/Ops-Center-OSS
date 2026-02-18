@@ -340,7 +340,7 @@ Check rate limit keys in Redis:
 
 ```bash
 # Connect to Redis
-docker exec -it unicorn-lago-redis redis-cli
+docker exec -it unicorn-redis redis-cli
 
 # List all rate limit keys
 KEYS ratelimit:*

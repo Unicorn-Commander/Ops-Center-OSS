@@ -37,7 +37,7 @@ securitySchemes:
 
 ### Authentication Flow
 
-1. **Login**: Navigate to `https://auth.your-domain.com`
+1. **Login**: Navigate to `https://auth.unicorncommander.ai`
 2. **Authenticate**: Login with credentials or OAuth provider (Google, GitHub, Microsoft)
 3. **Retrieve Token**: Extract `access_token` from response
 4. **Use Token**: Include in all API requests:
@@ -509,7 +509,7 @@ admin         → Full system access
   "period_end": "2025-11-01T00:00:00Z",
   "issued_at": "2025-10-01T00:00:00Z",
   "paid_at": "2025-10-01T12:34:56Z",
-  "pdf_url": "https://billing.your-domain.com/invoices/inv_abc123.pdf",
+  "pdf_url": "https://billing.unicorncommander.ai/invoices/inv_abc123.pdf",
   "line_items": [
     {
       "description": "Professional Plan - October 2025",
@@ -703,7 +703,7 @@ admin         → Full system access
   "routes": [
     {
       "name": "ops-center-https",
-      "rule": "Host(`your-domain.com`)",
+      "rule": "Host(`unicorncommander.ai`)",
       "service": "ops-center-direct",
       "tls": true,
       "priority": 100,
@@ -711,7 +711,7 @@ admin         → Full system access
     },
     {
       "name": "brigade-https",
-      "rule": "Host(`brigade.your-domain.com`)",
+      "rule": "Host(`brigade.unicorncommander.ai`)",
       "service": "unicorn-brigade-ui",
       "tls": true,
       "priority": 90

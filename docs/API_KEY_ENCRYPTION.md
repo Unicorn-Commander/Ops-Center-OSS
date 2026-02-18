@@ -102,14 +102,14 @@ Delete an API key
 
 ### Required Environment Variables
 
-Add to `/home/muut/Production/UC-1-Pro/.env`:
+Add to `/home/deploy/Production/UC-1-Pro/.env`:
 
 ```bash
 # Encryption key for API keys (generate with command below)
 ENCRYPTION_KEY=pXfS-0VwQPilpOvRaQOivJIBFUOrgT9toMtjyr2NZqo=
 
 # Authentik API token (from Authentik admin panel)
-AUTHENTIK_API_TOKEN=ak_f3c1ae010853720d0e37e3efa95d5afb51201285
+AUTHENTIK_API_TOKEN=your-authentik-api-token
 
 # Authentik URL (internal Docker network)
 AUTHENTIK_URL=http://authentik-server:9000
@@ -123,7 +123,7 @@ python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().
 
 ### Generate Authentik API Token
 
-1. Visit: https://auth.your-domain.com/if/admin/#/core/tokens
+1. Visit: https://auth.unicorncommander.ai/if/admin/#/core/tokens
 2. Click "Create"
 3. User: Select your admin user
 4. Expiry: Set to never expire (or desired expiry)
@@ -190,7 +190,7 @@ docker logs unicorn-ops-center | grep "API Keys router"
 # Should see: "✓ API Keys router registered at /api/v1/user/api-keys"
 
 # 3. Access UserSettings page
-# Open: https://your-domain.com/admin/settings
+# Open: https://unicorncommander.ai/admin/settings
 # Navigate to "API Keys (BYOK)" tab
 
 # 4. Add a test key
@@ -199,7 +199,7 @@ docker logs unicorn-ops-center | grep "API Keys router"
 # Name: Test OpenAI Key
 
 # 5. Verify in Authentik
-# Visit: https://auth.your-domain.com/if/admin/#/core/users
+# Visit: https://auth.unicorncommander.ai/if/admin/#/core/users
 # Click your user -> Attributes tab
 # Should see: byok_api_keys.openai with encrypted_key field
 ```
@@ -211,7 +211,7 @@ docker logs unicorn-ops-center | grep "API Keys router"
 COOKIE="sessionid=YOUR_SESSION_COOKIE"
 
 # Add API key
-curl -X POST https://your-domain.com/api/v1/user/api-keys \
+curl -X POST https://unicorncommander.ai/api/v1/user/api-keys \
   -H "Cookie: $COOKIE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -221,15 +221,15 @@ curl -X POST https://your-domain.com/api/v1/user/api-keys \
   }'
 
 # List API keys
-curl https://your-domain.com/api/v1/user/api-keys \
+curl https://unicorncommander.ai/api/v1/user/api-keys \
   -H "Cookie: $COOKIE"
 
 # Get decrypted key
-curl https://your-domain.com/api/v1/user/api-keys/openai \
+curl https://unicorncommander.ai/api/v1/user/api-keys/openai \
   -H "Cookie: $COOKIE"
 
 # Update key
-curl -X PUT https://your-domain.com/api/v1/user/api-keys/openai \
+curl -X PUT https://unicorncommander.ai/api/v1/user/api-keys/openai \
   -H "Cookie: $COOKIE" \
   -H "Content-Type: application/json" \
   -d '{
@@ -237,7 +237,7 @@ curl -X PUT https://your-domain.com/api/v1/user/api-keys/openai \
   }'
 
 # Delete key
-curl -X DELETE https://your-domain.com/api/v1/user/api-keys/openai \
+curl -X DELETE https://unicorncommander.ai/api/v1/user/api-keys/openai \
   -H "Cookie: $COOKIE"
 ```
 
@@ -246,7 +246,7 @@ curl -X DELETE https://your-domain.com/api/v1/user/api-keys/openai \
 ### Rebuild Frontend
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 npm run build
 ```
 
@@ -299,7 +299,7 @@ docker logs unicorn-ops-center
 **Solution**:
 ```bash
 # Check server.py imports
-grep "api_keys_router" /home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py
+grep "api_keys_router" /home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py
 
 # Should see:
 # from api_keys_router import router as api_keys_router

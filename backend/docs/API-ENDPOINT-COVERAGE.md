@@ -1,6 +1,6 @@
 # API Endpoint Coverage Audit
 **Date**: October 13, 2025
-**Backend Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend`
+**Backend Location**: `/opt/ops-center/backend`
 **Purpose**: Verify backend API support for new navigation structure
 
 ---

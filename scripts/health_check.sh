@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 TIMEOUT=120
 SERVICE="all"
 ENVIRONMENT="production"
-BASE_URL="${BASE_URL:-https://your-domain.com}"
+BASE_URL="${BASE_URL:-https://unicorncommander.ai}"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -179,7 +179,7 @@ check_keycloak() {
     fi
 
     # Test Keycloak health endpoint
-    local keycloak_url="${KEYCLOAK_URL:-https://auth.your-domain.com}"
+    local keycloak_url="${KEYCLOAK_URL:-https://auth.unicorncommander.ai}"
 
     if check_http_endpoint "$keycloak_url/health/ready" 200 "Keycloak Health"; then
         return 0

@@ -50,7 +50,7 @@ class IntegrationTestSuite:
 
     def __init__(self):
         self.base_url = os.getenv("BASE_URL", "http://localhost:8084")
-        self.keycloak_url = os.getenv("KEYCLOAK_URL", "http://keycloak:8080")
+        self.keycloak_url = os.getenv("KEYCLOAK_URL", "http://uchub-keycloak:8080")
         self.lago_url = os.getenv("LAGO_API_URL", "http://unicorn-lago-api:3000")
         self.results: List[TestResult] = []
         self.test_user_email = f"integration_test_{datetime.now().timestamp()}@test.com"
@@ -66,7 +66,7 @@ class IntegrationTestSuite:
             "keycloak": self.keycloak_url,
             "lago": self.lago_url,
             "postgresql": f"postgresql://{os.getenv('POSTGRES_HOST', 'unicorn-postgresql')}:5432",
-            "redis": f"redis://{os.getenv("REDIS_HOST", "unicorn-lago-redis")}:6379"
+            "redis": f"redis://{os.getenv("REDIS_HOST", "unicorn-redis")}:6379"
         }
 
         availability = {}
@@ -901,7 +901,7 @@ async def main():
         report = suite.generate_report()
 
         # Save to file
-        report_path = "/home/muut/Production/UC-Cloud/services/ops-center/TEST_REPORT_INTEGRATION.md"
+        report_path = "/opt/ops-center/TEST_REPORT_INTEGRATION.md"
         with open(report_path, "w") as f:
             f.write(report)
 

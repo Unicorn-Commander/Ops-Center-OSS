@@ -27,7 +27,7 @@ CLOUD_REGION="${CLOUD_REGION:-us-east-1}"
 # Email configuration
 EMAIL_NOTIFICATIONS="${EMAIL_NOTIFICATIONS:-false}"
 EMAIL_TO="${EMAIL_TO:-}"
-EMAIL_FROM="${EMAIL_FROM:-backup@your-domain.com}"
+EMAIL_FROM="${EMAIL_FROM:-backup@unicorncommander.ai}"
 SMTP_HOST="${SMTP_HOST:-localhost}"
 SMTP_PORT="${SMTP_PORT:-25}"
 

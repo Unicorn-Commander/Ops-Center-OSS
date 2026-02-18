@@ -1,7 +1,7 @@
 # Billing API Reference
 
 **Version:** 1.0.0
-**Base URL:** `https://your-domain.com/api/v1`
+**Base URL:** `https://unicorncommander.ai/api/v1`
 **Authentication:** Session-based (Keycloak SSO)
 
 Complete API reference for the Ops-Center billing system. All endpoints require authentication unless otherwise noted.
@@ -82,7 +82,7 @@ Get all available subscription plans.
 **Request:**
 ```http
 GET /api/v1/billing/plans HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 ```
 
 **Response:**
@@ -184,7 +184,7 @@ Get invoice history from Lago.
 **Request:**
 ```http
 GET /api/v1/billing/invoices?limit=10 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -241,7 +241,7 @@ Generate download URL for invoice PDF.
 **Request:**
 ```http
 POST /api/v1/billing/download-invoice/550e8400-e29b-41d4-a716-446655440000 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -273,7 +273,7 @@ Get current billing cycle information.
 **Request:**
 ```http
 GET /api/v1/billing/cycle HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -314,7 +314,7 @@ Get stored payment methods (Stripe).
 **Request:**
 ```http
 GET /api/v1/billing/payment-methods HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -342,7 +342,7 @@ Get billing summary with total spend, upcoming charges, etc.
 **Request:**
 ```http
 GET /api/v1/billing/summary HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -376,7 +376,7 @@ Get user's current credit balance.
 **Request:**
 ```http
 GET /api/v1/credits/balance HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -426,7 +426,7 @@ Get credit transaction history.
 **Request:**
 ```http
 GET /api/v1/credits/transactions?limit=20&offset=0 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -491,7 +491,7 @@ Allocate credits to a user (admin only).
   "source": "manual",
   "metadata": {
     "reason": "Customer retention bonus",
-    "approved_by": "admin@your-domain.com"
+    "approved_by": "admin@unicorncommander.ai"
   }
 }
 ```
@@ -505,7 +505,7 @@ Allocate credits to a user (admin only).
 **Request:**
 ```http
 POST /api/v1/credits/allocate HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -562,7 +562,7 @@ Refund credits to user (admin only).
 **Request:**
 ```http
 POST /api/v1/credits/refund HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -612,7 +612,7 @@ List all BYOK pricing rules.
 **Request:**
 ```http
 GET /api/v1/pricing/rules/byok?provider=openrouter&is_active=true HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -635,8 +635,8 @@ Cookie: session_token=<JWT>
       "is_active": true,
       "created_at": "2024-12-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z",
-      "created_by": "admin@your-domain.com",
-      "updated_by": "admin@your-domain.com"
+      "created_by": "admin@unicorncommander.ai",
+      "updated_by": "admin@unicorncommander.ai"
     }
   ],
   "total": 1
@@ -683,7 +683,7 @@ Create new BYOK pricing rule.
 **Request:**
 ```http
 POST /api/v1/pricing/rules/byok HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -717,7 +717,7 @@ Content-Type: application/json
   "is_active": true,
   "created_at": "2025-01-15T14:45:00Z",
   "updated_at": "2025-01-15T14:45:00Z",
-  "created_by": "admin@your-domain.com"
+  "created_by": "admin@unicorncommander.ai"
 }
 ```
 
@@ -751,7 +751,7 @@ Update existing BYOK pricing rule.
 **Request:**
 ```http
 PUT /api/v1/pricing/rules/byok/rule_abc123 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -777,7 +777,7 @@ Content-Type: application/json
   "is_active": true,
   "created_at": "2024-12-01T00:00:00Z",
   "updated_at": "2025-01-15T14:50:00Z",
-  "updated_by": "admin@your-domain.com"
+  "updated_by": "admin@unicorncommander.ai"
 }
 ```
 
@@ -803,7 +803,7 @@ Delete BYOK pricing rule.
 **Request:**
 ```http
 DELETE /api/v1/pricing/rules/byok/rule_abc123 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -844,7 +844,7 @@ Calculate BYOK cost preview (admin testing).
 **Request:**
 ```http
 POST /api/v1/pricing/calculate/byok HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -900,7 +900,7 @@ Calculate side-by-side BYOK vs Platform cost comparison.
 **Request:**
 ```http
 POST /api/v1/pricing/calculate/comparison HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -955,7 +955,7 @@ Get current subscription details from Lago.
 **Request:**
 ```http
 GET /api/v1/subscriptions/current HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -1011,7 +1011,7 @@ Initiate subscription upgrade flow with Stripe Checkout.
 **Request:**
 ```http
 POST /api/v1/subscriptions/upgrade HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -1060,7 +1060,7 @@ Confirm upgrade after successful Stripe payment (webhook callback).
 **Request:**
 ```http
 POST /api/v1/subscriptions/confirm-upgrade?checkout_session_id=cs_abc123 HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -1095,7 +1095,7 @@ Preview subscription change with proration calculation.
 **Request:**
 ```http
 GET /api/v1/subscriptions/preview-change?target_tier=enterprise HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -1144,7 +1144,7 @@ Schedule subscription downgrade at end of current billing period.
 **Request:**
 ```http
 POST /api/v1/subscriptions/downgrade HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 Content-Type: application/json
 
@@ -1186,7 +1186,7 @@ Cancel current subscription.
 **Request:**
 ```http
 POST /api/v1/subscriptions/cancel HTTP/1.1
-Host: your-domain.com
+Host: unicorncommander.ai
 Cookie: session_token=<JWT>
 ```
 
@@ -1344,7 +1344,7 @@ Events handled:
 ```python
 import requests
 
-BASE_URL = "https://your-domain.com/api/v1"
+BASE_URL = "https://unicorncommander.ai/api/v1"
 
 # Login first to get session cookie
 session = requests.Session()
@@ -1369,7 +1369,7 @@ session = requests.Session()
 # Assume authenticated session
 
 response = session.get(
-    "https://your-domain.com/api/v1/billing/invoices",
+    "https://unicorncommander.ai/api/v1/billing/invoices",
     params={"limit": 10}
 )
 
@@ -1388,7 +1388,7 @@ session = requests.Session()
 # Assume authenticated session
 
 response = session.post(
-    "https://your-domain.com/api/v1/subscriptions/upgrade",
+    "https://unicorncommander.ai/api/v1/subscriptions/upgrade",
     json={"target_tier": "professional"}
 )
 
@@ -1406,7 +1406,7 @@ if data["success"]:
 #### Get Credit Balance
 
 ```javascript
-const BASE_URL = "https://your-domain.com/api/v1";
+const BASE_URL = "https://unicorncommander.ai/api/v1";
 
 async function getCreditBalance() {
   const response = await fetch(`${BASE_URL}/credits/balance`, {
@@ -1487,7 +1487,7 @@ upgradeSubscription('professional');
 
 ```bash
 curl -X GET \
-  https://your-domain.com/api/v1/credits/balance \
+  https://unicorncommander.ai/api/v1/credits/balance \
   -H 'Cookie: session_token=YOUR_SESSION_TOKEN'
 ```
 
@@ -1495,7 +1495,7 @@ curl -X GET \
 
 ```bash
 curl -X GET \
-  'https://your-domain.com/api/v1/billing/invoices?limit=10' \
+  'https://unicorncommander.ai/api/v1/billing/invoices?limit=10' \
   -H 'Cookie: session_token=YOUR_SESSION_TOKEN'
 ```
 
@@ -1503,7 +1503,7 @@ curl -X GET \
 
 ```bash
 curl -X POST \
-  https://your-domain.com/api/v1/pricing/rules/byok \
+  https://unicorncommander.ai/api/v1/pricing/rules/byok \
   -H 'Cookie: session_token=YOUR_SESSION_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1522,7 +1522,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  https://your-domain.com/api/v1/subscriptions/upgrade \
+  https://unicorncommander.ai/api/v1/subscriptions/upgrade \
   -H 'Cookie: session_token=YOUR_SESSION_TOKEN' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1534,11 +1534,11 @@ curl -X POST \
 
 ## Support
 
-**Documentation:** https://your-domain.com/docs
-**API Status:** https://status.your-domain.com
+**Documentation:** https://unicorncommander.ai/docs
+**API Status:** https://status.unicorncommander.ai
 **Support Email:** support@magicunicorn.tech
 
-**Report Issues:** https://git.your-domain.com/UnicornCommander/Ops-Center/issues
+**Report Issues:** https://git.unicorncommander.ai/UnicornCommander/Ops-Center/issues
 
 ---
 

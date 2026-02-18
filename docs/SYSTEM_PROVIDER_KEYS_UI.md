@@ -10,7 +10,7 @@
 
 The **System Provider Keys** page allows platform administrators to configure API keys used for metering all users. These are different from user BYOK (Bring Your Own Key) - system keys provide service to the entire platform.
 
-**URL**: https://your-domain.com/admin/platform/system-provider-keys
+**URL**: https://unicorncommander.ai/admin/platform/system-provider-keys
 
 ---
 
@@ -463,7 +463,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
 
 **A**: Verify `.env.auth` has keys:
 ```bash
-grep -E "OPENROUTER_API_KEY|OPENAI_API_KEY" /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+grep -E "OPENROUTER_API_KEY|OPENAI_API_KEY" /opt/ops-center/.env.auth
 ```
 
 ---

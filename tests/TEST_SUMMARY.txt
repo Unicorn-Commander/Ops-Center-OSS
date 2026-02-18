@@ -3,7 +3,7 @@ UC-1 PRO PLANS PAGE - TEST SUMMARY
 ================================================================================
 
 Test Date: October 11, 2025
-Environment: Production (https://your-domain.com)
+Environment: Production (https://unicorncommander.ai)
 Status: ✅ ALL TESTS PASSED - PRODUCTION READY
 
 ================================================================================
@@ -194,11 +194,11 @@ Full Report:  tests/PLANS_PAGE_TEST_REPORT.md
 Summary:      tests/TEST_SUMMARY.txt
 
 To re-run tests:
-  cd /home/muut/Production/UC-1-Pro/services/ops-center
+  cd /home/deploy/Production/UC-1-Pro/services/ops-center
   bash tests/test_plans_page.sh
 
 To test Trial tier specifically:
-  curl https://your-domain.com/api/v1/subscriptions/plans | \
+  curl https://unicorncommander.ai/api/v1/subscriptions/plans | \
     jq '.plans[] | select(.name == "trial")'
 
 ================================================================================

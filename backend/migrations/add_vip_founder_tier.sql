@@ -95,7 +95,7 @@ BEGIN
 
     -- App 3: Bolt.diy (UC Fork)
     INSERT INTO tier_apps (tier_id, app_key, app_value, enabled)
-    VALUES (v_tier_id, 'bolt_diy', 'https://bolt.your-domain.com', TRUE)
+    VALUES (v_tier_id, 'bolt_diy', 'https://bolt.unicorncommander.ai', TRUE)
     ON CONFLICT (tier_id, app_key) DO UPDATE SET
         app_value = EXCLUDED.app_value,
         enabled = EXCLUDED.enabled,
@@ -103,7 +103,7 @@ BEGIN
 
     -- App 4: Presenton (UC Fork)
     INSERT INTO tier_apps (tier_id, app_key, app_value, enabled)
-    VALUES (v_tier_id, 'presenton', 'https://presentations.your-domain.com', TRUE)
+    VALUES (v_tier_id, 'presenton', 'https://presentations.unicorncommander.ai', TRUE)
     ON CONFLICT (tier_id, app_key) DO UPDATE SET
         app_value = EXCLUDED.app_value,
         enabled = EXCLUDED.enabled,

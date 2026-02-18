@@ -359,7 +359,7 @@ add_user_credits(
 ### 1. Database Setup
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Initialize schema
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -f sql/litellm_schema.sql
@@ -388,7 +388,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "SELECT * FROM c
 pip install pytest psycopg2-binary
 
 # Run tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pytest tests/test_litellm_schema.py -v
 ```
 

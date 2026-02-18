@@ -21,7 +21,7 @@ Copy the output and add to `.env.auth`:
 
 ```bash
 # Edit .env.auth
-nano /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+nano /opt/ops-center/.env.auth
 
 # Add this line (replace with your generated key):
 BYOK_ENCRYPTION_KEY=vK8hs2D-xE3mQBpiWv7gZushLHy0WGhPNKpjulz1ygB=
@@ -49,7 +49,7 @@ Update if your services run on different ports/hosts.
 
 ```bash
 # From UC-Cloud root
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 
 # Restart ops-center
 docker restart ops-center-direct
@@ -121,7 +121,7 @@ docker restart ops-center-direct
 **Problem**: Module not found
 **Solution**: Verify all files exist
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 ls -lh litellm_*.py wilmer_router.py byok_manager.py model_selector.py provider_health.py
 ```
 

@@ -203,7 +203,7 @@ def print_summary(price_mapping: Dict[str, Dict[str, str]]):
 
     print("\n2. Set up Stripe webhook endpoint:")
     print("   - Go to: https://dashboard.stripe.com/webhooks")
-    print("   - Add endpoint: https://your-domain.com/api/v1/billing/webhooks/stripe")
+    print("   - Add endpoint: https://unicorncommander.ai/api/v1/billing/webhooks/stripe")
     print("   - Select events:")
     print("     • checkout.session.completed")
     print("     • customer.subscription.created")
@@ -217,8 +217,8 @@ def print_summary(price_mapping: Dict[str, Dict[str, str]]):
     print("   Add to your .env file:")
     print(f"   STRIPE_API_KEY={STRIPE_API_KEY[:20]}...")
     print("   STRIPE_WEBHOOK_SECRET=whsec_... (from webhook setup)")
-    print("   STRIPE_SUCCESS_URL=https://your-domain.com/billing/success")
-    print("   STRIPE_CANCEL_URL=https://your-domain.com/billing/canceled")
+    print("   STRIPE_SUCCESS_URL=https://unicorncommander.ai/billing/success")
+    print("   STRIPE_CANCEL_URL=https://unicorncommander.ai/billing/canceled")
 
     print("\n4. Save price mapping (optional):")
     print("   This information has been saved to stripe_price_mapping.json")

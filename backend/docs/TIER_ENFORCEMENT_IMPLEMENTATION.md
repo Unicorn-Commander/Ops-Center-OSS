@@ -2,12 +2,12 @@
 
 ## Mission Accomplished
 
-Successfully implemented tier enforcement system that reads subscription tiers from **Keycloak** at `https://auth.your-domain.com/realms/uchub`.
+Successfully implemented tier enforcement system that reads subscription tiers from **Keycloak** at `https://auth.unicorncommander.ai/realms/uchub`.
 
 ## What Was Implemented
 
 ### 1. Keycloak Integration Module
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py`
 
 **Functions**:
 - `get_admin_token()` - Authenticate with Keycloak Admin API
@@ -25,7 +25,7 @@ Successfully implemented tier enforcement system that reads subscription tiers f
 - Error handling with graceful fallbacks
 
 ### 2. Tier Enforcement Middleware
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tier_enforcement_middleware.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tier_enforcement_middleware.py`
 
 **Updated to use Keycloak instead of Authentik**:
 - Removed Authentik API calls
@@ -47,7 +47,7 @@ Successfully implemented tier enforcement system that reads subscription tiers f
 - `/health`, `/docs`, `/redoc`
 
 ### 3. Usage API
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/usage_api.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/usage_api.py`
 
 **Updated to use Keycloak**:
 - Replaced all Authentik API calls with Keycloak integration
@@ -62,8 +62,8 @@ Successfully implemented tier enforcement system that reads subscription tiers f
 
 ### 4. Test Suite
 **Files**:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.sh`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/tests/test_tier_enforcement.sh`
 
 **Python Test Suite** (8 tests):
 1. Keycloak connection and authentication
@@ -86,8 +86,8 @@ Successfully implemented tier enforcement system that reads subscription tiers f
 
 ### 5. Documentation
 **Files**:
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/TIER_ENFORCEMENT_SETUP.md`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/TIER_ENFORCEMENT_IMPLEMENTATION.md` (this file)
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/TIER_ENFORCEMENT_SETUP.md`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/TIER_ENFORCEMENT_IMPLEMENTATION.md` (this file)
 
 **Coverage**:
 - Architecture overview
@@ -141,7 +141,7 @@ X-API-Calls-Remaining: 58
 
 ```bash
 # Keycloak Configuration
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_CLIENT_ID=admin-cli
 KEYCLOAK_ADMIN_USERNAME=admin
@@ -174,22 +174,22 @@ app.include_router(usage_router)
 
 ```bash
 # 1. Login and save session
-curl -c /tmp/session.txt -X POST https://your-domain.com/api/v1/auth/login \
+curl -c /tmp/session.txt -X POST https://unicorncommander.ai/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"your@email.com","password":"yourpass"}'
 
 # 2. Check current usage
-curl -b /tmp/session.txt https://your-domain.com/api/v1/usage/current | jq
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/usage/current | jq
 
 # 3. Make API call and check headers
-curl -b /tmp/session.txt https://your-domain.com/api/v1/services -v 2>&1 | grep X-Tier
+curl -b /tmp/session.txt https://unicorncommander.ai/api/v1/services -v 2>&1 | grep X-Tier
 ```
 
 ### Automated Tests
 
 ```bash
 # Python unit tests
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 tests/test_tier_enforcement.py your@email.com
 
 # Bash integration tests

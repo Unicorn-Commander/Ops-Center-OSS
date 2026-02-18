@@ -45,7 +45,7 @@ PROVIDER_CONFIGS = {
         'api_url': 'https://openrouter.ai/api/v1/models',
         'requires_auth': False,  # Public API
         'default_headers': {
-            'HTTP-Referer': 'https://your-domain.com',
+            'HTTP-Referer': 'https://unicorncommander.ai',
             'X-Title': 'UC-1 Pro Ops Center'
         },
         'display_name': 'OpenRouter',

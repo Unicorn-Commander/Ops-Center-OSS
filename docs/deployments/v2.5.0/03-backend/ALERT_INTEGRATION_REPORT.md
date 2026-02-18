@@ -526,7 +526,7 @@ Based on Backend Team Lead's implementation:
 
 - **Complete Implementation Guide**: `/tmp/ALERT_TRIGGERS_IMPLEMENTATION.md` (2,847 lines)
 - **Deployment Summary**: `/tmp/ALERT_TRIGGERS_DEPLOYMENT_SUMMARY.md` (395 lines)
-- **Backend Files**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/`
+- **Backend Files**: `/opt/ops-center/backend/`
 - **Git Commit**: `390d9d0` on `main` branch
 
 ---

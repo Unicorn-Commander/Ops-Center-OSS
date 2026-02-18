@@ -102,7 +102,7 @@ status = manager.get_acme_status()
 # Create route
 route = manager.create_route(
     name="api-gateway",
-    rule="Host(`api.your-domain.com`)",
+    rule="Host(`api.unicorncommander.ai`)",
     service="ops-center-api",
     entrypoints=["websecure"],
     middlewares=["api-rate-limit", "api-cors"],
@@ -158,7 +158,7 @@ cors = manager.create_middleware(
     type="headers",
     config={
         "accessControlAllowMethods": ["GET", "POST", "PUT", "DELETE"],
-        "accessControlAllowOriginList": ["https://your-domain.com"],
+        "accessControlAllowOriginList": ["https://unicorncommander.ai"],
         "accessControlAllowCredentials": True
     },
     username="admin"
@@ -356,7 +356,7 @@ TraefikError (Base)
 
 ```python
 # Default paths
-traefik_dir = "/home/muut/Production/UC-Cloud/traefik"
+traefik_dir = "/opt/uc-cloud/traefik"
 config_file = traefik_dir + "/traefik.yml"
 dynamic_dir = traefik_dir + "/dynamic"
 backup_dir = traefik_dir + "/backups"
@@ -386,7 +386,7 @@ manager.create_middleware(
 # 2. Create route
 manager.create_route(
     name="new-service",
-    rule="Host(`newservice.your-domain.com`)",
+    rule="Host(`newservice.unicorncommander.ai`)",
     service="unicorn-newservice",
     entrypoints=["websecure"],
     middlewares=["new-service-rate-limit"],
@@ -397,8 +397,8 @@ manager.create_route(
 
 # 3. Request SSL certificate
 manager.request_certificate(
-    domain="newservice.your-domain.com",
-    email="admin@your-domain.com",
+    domain="newservice.unicorncommander.ai",
+    email="admin@unicorncommander.ai",
     username="admin"
 )
 ```
@@ -564,7 +564,7 @@ async def create_backup():
 async def restore_backup(backup_name: str):
     """Restore from backup"""
     try:
-        backup_path = f"/home/muut/Production/UC-Cloud/traefik/backups/{backup_name}"
+        backup_path = f"/opt/uc-cloud/traefik/backups/{backup_name}"
         return manager.restore_config(backup_path, username="api-user")
     except TraefikError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -602,7 +602,7 @@ from pydantic import BaseModel, Field, field_validator, ValidationError  # ❌ N
 docker exec ops-center-direct pip install pydantic
 
 # Or add to requirements.txt
-echo "pydantic>=2.0.0" >> /home/muut/Production/UC-Cloud/services/ops-center/requirements.txt
+echo "pydantic>=2.0.0" >> /opt/ops-center/requirements.txt
 ```
 
 ## Testing
@@ -611,7 +611,7 @@ echo "pydantic>=2.0.0" >> /home/muut/Production/UC-Cloud/services/ops-center/req
 
 ```bash
 # Run built-in tests
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 traefik_manager.py
 
 # Expected output:
@@ -625,7 +625,7 @@ python3 traefik_manager.py
 #    Total Certificates: 5
 # 3. Routes:
 #    Found 10 routes
-#    - api-gateway: Host(`api.your-domain.com`)
+#    - api-gateway: Host(`api.unicorncommander.ai`)
 # ...
 # ✅ All tests passed!
 ```
@@ -667,8 +667,8 @@ print(response.json())
 
 1. **File Permissions**: Ensure traefik directory has correct permissions
    ```bash
-   chown -R traefik:traefik /home/muut/Production/UC-Cloud/traefik
-   chmod 600 /home/muut/Production/UC-Cloud/traefik/acme/acme.json
+   chown -R traefik:traefik /opt/uc-cloud/traefik
+   chmod 600 /opt/uc-cloud/traefik/acme/acme.json
    ```
 
 2. **Audit Logs**: Protect audit log from unauthorized access
@@ -678,7 +678,7 @@ print(response.json())
 
 3. **Backup Directory**: Secure backups (contain SSL private keys)
    ```bash
-   chmod 700 /home/muut/Production/UC-Cloud/traefik/backups
+   chmod 700 /opt/uc-cloud/traefik/backups
    ```
 
 4. **Rate Limiting**: Prevents DoS via config changes
@@ -698,8 +698,8 @@ docker exec ops-center-direct pip install pydantic
 
 ```bash
 # Solution: Check file permissions
-ls -la /home/muut/Production/UC-Cloud/traefik/
-sudo chown -R $(whoami):$(whoami) /home/muut/Production/UC-Cloud/traefik/
+ls -la /opt/uc-cloud/traefik/
+sudo chown -R $(whoami):$(whoami) /opt/uc-cloud/traefik/
 ```
 
 ### Issue: Traefik not reloading
@@ -722,7 +722,7 @@ docker exec traefik cat /acme/acme.json | jq .
 dig newdomain.com
 
 # Check Traefik dashboard
-# https://your-domain.com:8080/dashboard/
+# https://unicorncommander.ai:8080/dashboard/
 ```
 
 ## Future Enhancements
@@ -741,7 +741,7 @@ dig newdomain.com
 - **Traefik Docs**: https://doc.traefik.io/traefik/
 - **Let's Encrypt**: https://letsencrypt.org/docs/
 - **Pydantic**: https://docs.pydantic.dev/
-- **UC-Cloud Architecture**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **UC-Cloud Architecture**: `/opt/uc-cloud/CLAUDE.md`
 
 ---
 

@@ -31,7 +31,7 @@ OPS_DB_URL = os.getenv(
 )
 
 # Redis cache configuration
-REDIS_URL = "redis://unicorn-lago-redis:6379"
+REDIS_URL = "redis://unicorn-redis:6379"
 CACHE_TTL = 300  # 5 minutes
 
 # Initialize database engines

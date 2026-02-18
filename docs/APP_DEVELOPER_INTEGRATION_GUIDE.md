@@ -68,7 +68,7 @@ UC-Cloud provides a **centralized LLM infrastructure** that:
 ┌─────────────────────────────────────────────────────────────┐
 │                   Ops-Center API                             │
 │              (LiteLLM Proxy + Credit System)                 │
-│         https://your-domain.com/api/v1/llm              │
+│         https://unicorncommander.ai/api/v1/llm              │
 └─────────────────────────────────────────────────────────────┘
                               │
                     ┌─────────┴─────────┐
@@ -114,7 +114,7 @@ UC-Cloud provides a **centralized LLM infrastructure** that:
 **Configuration**:
 ```javascript
 // .env file
-UC_CLOUD_API_URL=https://your-domain.com/api/v1/llm
+UC_CLOUD_API_URL=https://unicorncommander.ai/api/v1/llm
 UC_CLOUD_SERVICE_KEY=sk-yourapp-service-key-2025
 
 // In your app
@@ -141,7 +141,7 @@ const SERVICE_KEY = process.env.UC_CLOUD_SERVICE_KEY;
 - No need to pass `user` field (inferred from API key)
 
 **User generates key**:
-1. Go to: https://your-domain.com/admin/account/api-keys
+1. Go to: https://unicorncommander.ai/admin/account/api-keys
 2. Click "Generate New API Key"
 3. Copy key (shown only once): `uc_a1b2c3d4e5f6...`
 4. Use in your app configuration
@@ -149,7 +149,7 @@ const SERVICE_KEY = process.env.UC_CLOUD_SERVICE_KEY;
 **Configuration**:
 ```javascript
 // .env file
-UC_CLOUD_API_URL=https://your-domain.com/api/v1/llm
+UC_CLOUD_API_URL=https://unicorncommander.ai/api/v1/llm
 UC_CLOUD_USER_API_KEY=uc_a1b2c3d4e5f6...
 
 // In your app
@@ -163,7 +163,7 @@ const USER_API_KEY = process.env.UC_CLOUD_USER_API_KEY;
 
 ### Base URL
 
-**Production**: `https://your-domain.com/api/v1/llm`
+**Production**: `https://unicorncommander.ai/api/v1/llm`
 **Internal (Docker)**: `http://ops-center-direct:8084/api/v1/llm`
 
 ### Available Endpoints
@@ -326,7 +326,7 @@ import OpenAI from 'openai';
 
 // Initialize client
 export const openai = new OpenAI({
-  baseURL: import.meta.env.VITE_UC_CLOUD_API_URL || 'https://your-domain.com/api/v1/llm',
+  baseURL: import.meta.env.VITE_UC_CLOUD_API_URL || 'https://unicorncommander.ai/api/v1/llm',
   apiKey: import.meta.env.VITE_UC_CLOUD_SERVICE_KEY || 'sk-bolt-diy-service-key-2025',
   dangerouslyAllowBrowser: true, // For client-side usage
   defaultHeaders: {
@@ -368,7 +368,7 @@ import OpenAI from 'openai';
 import { verifyKeycloakToken } from '../middleware/auth';
 
 const openai = new OpenAI({
-  baseURL: process.env.UC_CLOUD_API_URL || 'https://your-domain.com/api/v1/llm',
+  baseURL: process.env.UC_CLOUD_API_URL || 'https://unicorncommander.ai/api/v1/llm',
   apiKey: process.env.UC_CLOUD_SERVICE_KEY || 'sk-bolt-diy-service-key-2025'
 });
 
@@ -409,11 +409,11 @@ app.post('/api/generate-code', verifyKeycloakToken, async (req, res) => {
 
 ```bash
 # UC-Cloud Integration
-UC_CLOUD_API_URL=https://your-domain.com/api/v1/llm
+UC_CLOUD_API_URL=https://unicorncommander.ai/api/v1/llm
 UC_CLOUD_SERVICE_KEY=sk-bolt-diy-service-key-2025
 
 # Keycloak SSO
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_CLIENT_ID=bolt-diy
 KEYCLOAK_CLIENT_SECRET=<from-keycloak>
@@ -436,7 +436,7 @@ export class AIClient {
 
   constructor() {
     this.openai = new OpenAI({
-      baseURL: process.env.NEXT_PUBLIC_UC_CLOUD_API_URL || 'https://your-domain.com/api/v1/llm',
+      baseURL: process.env.NEXT_PUBLIC_UC_CLOUD_API_URL || 'https://unicorncommander.ai/api/v1/llm',
       apiKey: process.env.UC_CLOUD_SERVICE_KEY || 'sk-presenton-service-key-2025'
     });
   }
@@ -511,7 +511,7 @@ import os
 class AIService:
     def __init__(self):
         self.client = AsyncOpenAI(
-            base_url=os.getenv('UC_CLOUD_API_URL', 'https://your-domain.com/api/v1/llm'),
+            base_url=os.getenv('UC_CLOUD_API_URL', 'https://unicorncommander.ai/api/v1/llm'),
             api_key=os.getenv('UC_CLOUD_SERVICE_KEY', 'sk-presenton-service-key-2025')
         )
 
@@ -585,7 +585,7 @@ class UCCloudLLMProvider:
 
     def __init__(self):
         self.client = AsyncOpenAI(
-            base_url=os.getenv('UC_CLOUD_API_URL', 'https://your-domain.com/api/v1/llm'),
+            base_url=os.getenv('UC_CLOUD_API_URL', 'https://unicorncommander.ai/api/v1/llm'),
             api_key=os.getenv('UC_CLOUD_SERVICE_KEY', 'sk-openwebui-service-key-2025'),
             timeout=120.0
         )
@@ -794,7 +794,7 @@ PROVIDER_CONFIGS = {
 ### User Configures BYOK
 
 Users can configure their own API keys at:
-https://your-domain.com/admin/account/api-keys
+https://unicorncommander.ai/admin/account/api-keys
 
 **Supported Providers**:
 - OpenRouter (recommended - supports 100+ models)
@@ -1130,7 +1130,7 @@ async function checkUsage(userEmail: string) {
 
 ```bash
 # Test chat completion
-curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/v1/chat/completions \
   -H "Authorization: Bearer sk-bolt-diy-service-key-2025" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1141,11 +1141,11 @@ curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
   }'
 
 # Test model listing
-curl https://your-domain.com/api/v1/llm/v1/models \
+curl https://unicorncommander.ai/api/v1/llm/v1/models \
   -H "Authorization: Bearer sk-bolt-diy-service-key-2025"
 
 # Check credit balance
-curl https://your-domain.com/api/v1/llm/v1/credits \
+curl https://unicorncommander.ai/api/v1/llm/v1/credits \
   -H "Authorization: Bearer sk-bolt-diy-service-key-2025"
 ```
 
@@ -1153,10 +1153,10 @@ curl https://your-domain.com/api/v1/llm/v1/credits \
 
 ```bash
 # Generate user API key first at:
-# https://your-domain.com/admin/account/api-keys
+# https://unicorncommander.ai/admin/account/api-keys
 
 # Test with user API key (no need to pass 'user' field)
-curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/v1/chat/completions \
   -H "Authorization: Bearer uc_a1b2c3d4e5f6..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -1169,11 +1169,11 @@ curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
 ### 3. Test BYOK Detection
 
 ```bash
-# 1. Configure BYOK at: https://your-domain.com/admin/account/api-keys
+# 1. Configure BYOK at: https://unicorncommander.ai/admin/account/api-keys
 # 2. Add OpenRouter API key
 # 3. Make request and check _metadata.using_byok
 
-curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
+curl -X POST https://unicorncommander.ai/api/v1/llm/v1/chat/completions \
   -H "Authorization: Bearer sk-bolt-diy-service-key-2025" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1193,7 +1193,7 @@ curl -X POST https://your-domain.com/api/v1/llm/v1/chat/completions \
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  baseURL: 'https://your-domain.com/api/v1/llm',
+  baseURL: 'https://unicorncommander.ai/api/v1/llm',
   apiKey: 'sk-bolt-diy-service-key-2025'
 });
 
@@ -1261,7 +1261,7 @@ runTests();
 
 ```bash
 # Check system health
-curl https://your-domain.com/api/v1/llm/v1/health
+curl https://unicorncommander.ai/api/v1/llm/v1/health
 
 # Expected response:
 # {
@@ -1292,7 +1292,7 @@ curl https://your-domain.com/api/v1/llm/v1/health
 Your app should:
 1. Catch this error
 2. Show a prompt to "Top up credits" or "Add BYOK"
-3. Link to: `https://your-domain.com/admin/subscription/plan`
+3. Link to: `https://unicorncommander.ai/admin/subscription/plan`
 
 ### Q: How do I know if a user is using BYOK?
 
@@ -1372,7 +1372,7 @@ They'll provision a service key like: `sk-yourapp-service-key-2025`
 from langchain.chat_models import ChatOpenAI
 
 llm = ChatOpenAI(
-    base_url="https://your-domain.com/api/v1/llm",
+    base_url="https://unicorncommander.ai/api/v1/llm",
     api_key="sk-yourapp-service-key-2025",
     model="openai/gpt-4"
 )
@@ -1381,7 +1381,7 @@ llm = ChatOpenAI(
 from llama_index.llms import OpenAI
 
 llm = OpenAI(
-    api_base="https://your-domain.com/api/v1/llm",
+    api_base="https://unicorncommander.ai/api/v1/llm",
     api_key="sk-yourapp-service-key-2025",
     model="openai/gpt-4"
 )
@@ -1400,9 +1400,9 @@ llm = OpenAI(
 ## Support & Resources
 
 ### Documentation
-- **Main Docs**: https://docs.your-domain.com
-- **API Reference**: https://docs.your-domain.com/api
-- **Ops-Center Guide**: https://docs.your-domain.com/ops-center
+- **Main Docs**: https://docs.unicorncommander.ai
+- **API Reference**: https://docs.unicorncommander.ai/api
+- **Ops-Center Guide**: https://docs.unicorncommander.ai/ops-center
 
 ### Developer Resources
 - **GitHub**: https://github.com/Unicorn-Commander/UC-Cloud
@@ -1411,12 +1411,12 @@ llm = OpenAI(
 
 ### Support
 - **Email**: support@magicunicorn.tech
-- **Status Page**: https://status.your-domain.com
+- **Status Page**: https://status.unicorncommander.ai
 - **Issue Tracker**: https://github.com/Unicorn-Commander/UC-Cloud/issues
 
 ### Contact
 - **Organization**: Magic Unicorn Unconventional Technology & Stuff Inc
-- **Website**: https://your-domain.com
+- **Website**: https://unicorncommander.com
 - **License**: MIT
 
 ---

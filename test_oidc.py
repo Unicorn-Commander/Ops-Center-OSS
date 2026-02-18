@@ -1,22 +1,13 @@
 #!/usr/bin/env python3
-"""
-Test OIDC configuration and token exchange
-
-Environment Variables:
-    KEYCLOAK_URL - Keycloak server URL (default: http://localhost:8080)
-    KEYCLOAK_REALM - Keycloak realm (default: uchub)
-    KEYCLOAK_CLIENT_ID - Client ID (default: ops-center)
-    KEYCLOAK_CLIENT_SECRET - Client secret (required for token exchange)
-    KEYCLOAK_ADMIN_PASSWORD - Admin password for client config test
-"""
+"""Test OIDC configuration and token exchange"""
 import httpx
 import asyncio
 import os
 
-KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8080")
-KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "uchub")
-CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "ops-center")
-CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET", "change-me")
+KEYCLOAK_URL = "http://uchub-keycloak:8080"
+KEYCLOAK_REALM = "uchub"
+CLIENT_ID = "ops-center"
+CLIENT_SECRET = "your-keycloak-client-secret"
 
 async def test_oidc_discovery():
     """Test OIDC discovery endpoint"""
@@ -58,14 +49,13 @@ async def test_client_config():
     async with httpx.AsyncClient(verify=False) as client:
         try:
             # Get admin token
-            admin_password = os.getenv("KEYCLOAK_ADMIN_PASSWORD", "change-me")
             response = await client.post(
                 token_url,
                 data={
                     "grant_type": "password",
                     "client_id": "admin-cli",
                     "username": "admin",
-                    "password": admin_password
+                    "password": "your-admin-password"
                 }
             )
 
@@ -128,8 +118,7 @@ async def test_token_exchange():
     # But it will show us what error Keycloak returns
 
     token_url = f"{KEYCLOAK_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token"
-    app_url = os.getenv("APP_URL", "http://localhost:8084")
-    redirect_uri = f"{app_url}/auth/callback"
+    redirect_uri = "https://unicorncommander.ai/auth/callback"
 
     print(f"Token URL: {token_url}")
     print(f"Client ID: {CLIENT_ID}")

@@ -377,7 +377,7 @@ All endpoints except `/health` require **admin authentication** via Keycloak SSO
 ### Example Request
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/network/firewall/rules \
+curl -X GET https://unicorncommander.ai/api/v1/network/firewall/rules \
   -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
   -H "Content-Type: application/json"
 ```
@@ -453,7 +453,7 @@ INFO: FIREWALL ACTION: ADD_RULE by admin@example.com - allow tcp/80 from 192.168
 
 ### Step 1: Import Router
 
-Edit `/home/muut/Production/UC-Cloud/services/ops-center/backend/server_auth_integrated.py`:
+Edit `/opt/ops-center/backend/server_auth_integrated.py`:
 
 ```python
 # Add import at top

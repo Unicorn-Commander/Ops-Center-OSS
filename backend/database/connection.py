@@ -46,11 +46,17 @@ async def get_db_pool() -> asyncpg.Pool:
     global _db_pool
 
     if _db_pool is None:
-        # Get database connection from environment
-        database_url = os.getenv(
-            "DATABASE_URL",
-            "postgresql://ops_user:change-me@localhost:5432/ops_center_db"
-        )
+        # Build database URL from environment variables
+        db_host = os.getenv("POSTGRES_HOST", "unicorn-postgresql")
+        db_port = os.getenv("POSTGRES_PORT", "5432")
+        db_user = os.getenv("POSTGRES_USER", "unicorn")
+        db_password = os.getenv("POSTGRES_PASSWORD", "unicorn")
+        db_name = os.getenv("POSTGRES_DB", "unicorn_db")
+
+        # Allow override via DATABASE_URL if explicitly set
+        database_url = os.getenv("DATABASE_URL")
+        if not database_url:
+            database_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
         try:
             logger.info("Creating database connection pool...")

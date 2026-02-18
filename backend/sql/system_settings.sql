@@ -113,7 +113,7 @@ VALUES
     ('STRIPE_WEBHOOK_SECRET', '', 'billing', 'Stripe webhook secret for signature verification', TRUE, 'string', TRUE, NULL),
     ('LAGO_API_KEY', '', 'billing', 'Lago API key for billing management', TRUE, 'string', TRUE, NULL),
     ('LAGO_API_URL', '', 'billing', 'Lago API URL', FALSE, 'url', TRUE, 'http://unicorn-lago-api:3000'),
-    ('LAGO_PUBLIC_URL', '', 'billing', 'Lago public URL for webhooks', FALSE, 'url', TRUE, 'https://billing-api.your-domain.com')
+    ('LAGO_PUBLIC_URL', '', 'billing', 'Lago public URL for webhooks', FALSE, 'url', TRUE, 'https://billing-api.unicorncommander.ai')
 ON CONFLICT (key) DO NOTHING;
 
 -- Email Settings
@@ -169,7 +169,7 @@ ON CONFLICT (key) DO NOTHING;
 -- System Settings
 INSERT INTO system_settings (key, encrypted_value, category, description, is_sensitive, value_type, is_required, default_value)
 VALUES
-    ('EXTERNAL_HOST', '', 'system', 'External hostname or IP address', FALSE, 'string', TRUE, 'your-domain.com'),
+    ('EXTERNAL_HOST', '', 'system', 'External hostname or IP address', FALSE, 'string', TRUE, 'unicorncommander.ai'),
     ('EXTERNAL_PROTOCOL', '', 'system', 'External protocol (http or https)', FALSE, 'string', TRUE, 'https'),
     ('SYSTEM_NAME', '', 'system', 'System display name', FALSE, 'string', FALSE, 'UC-Cloud Operations Center'),
     ('SYSTEM_TIMEZONE', '', 'system', 'System timezone', FALSE, 'string', FALSE, 'UTC'),

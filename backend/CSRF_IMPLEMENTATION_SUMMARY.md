@@ -11,14 +11,14 @@ October 9, 2025
 
 ### New Files Created
 
-1. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/csrf_protection.py`**
+1. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/csrf_protection.py`**
    - Core CSRF protection module (350+ lines)
    - `CSRFProtection` class for token generation and validation
    - `CSRFMiddleware` class for FastAPI middleware integration
    - Helper functions: `get_csrf_token()`, `create_csrf_protection()`
    - Implements double-submit cookie pattern with session integration
 
-2. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/CSRF_IMPLEMENTATION.md`**
+2. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/CSRF_IMPLEMENTATION.md`**
    - Comprehensive documentation (600+ lines)
    - Architecture and security details
    - Frontend integration guide
@@ -26,13 +26,13 @@ October 9, 2025
    - Troubleshooting guide
    - Security best practices
 
-3. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/test_csrf.py`**
+3. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/test_csrf.py`**
    - Complete test suite (400+ lines)
    - 13 automated test cases using pytest
    - Manual test runner with detailed output
    - Tests for all CSRF scenarios
 
-4. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/frontend_csrf_guide.js`**
+4. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/frontend_csrf_guide.js`**
    - React integration examples (500+ lines)
    - 5 different integration methods
    - Context provider implementation
@@ -42,7 +42,7 @@ October 9, 2025
 
 ### Modified Files
 
-1. **`/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`**
+1. **`/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`**
    - Added CSRF module import (line 50)
    - Added CSRF configuration (lines 78-81)
    - Updated CORS middleware to allow CSRF header (lines 115-116)
@@ -169,7 +169,7 @@ const { csrfToken } = useCsrf();
 ### Run Automated Tests
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 
 # Using pytest
 pytest test_csrf.py -v

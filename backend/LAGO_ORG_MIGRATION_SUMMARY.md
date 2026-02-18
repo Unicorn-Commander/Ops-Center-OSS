@@ -6,7 +6,7 @@
 
 Created a comprehensive Lago API integration module that uses **org_id** instead of user_id for billing.
 
-**Location:** `/home/muut/Production/UC-Cloud/services/ops-center/backend/lago_integration.py`
+**Location:** `/opt/ops-center/backend/lago_integration.py`
 
 #### Key Functions Implemented:
 
@@ -74,7 +74,7 @@ Created a comprehensive Lago API integration module that uses **org_id** instead
 
 ### 2. Documentation: `LAGO_ORG_BILLING_INTEGRATION.md`
 
-**Location:** `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/LAGO_ORG_BILLING_INTEGRATION.md`
+**Location:** `/opt/ops-center/backend/docs/LAGO_ORG_BILLING_INTEGRATION.md`
 
 Comprehensive documentation covering:
 - Overview of changes from user-based to org-based
@@ -86,7 +86,7 @@ Comprehensive documentation covering:
 
 ### 3. Example Implementation: `lago_org_billing_example.py`
 
-**Location:** `/home/muut/Production/UC-Cloud/services/ops-center/backend/examples/lago_org_billing_example.py`
+**Location:** `/opt/ops-center/backend/examples/lago_org_billing_example.py`
 
 Complete working example including:
 
@@ -111,7 +111,7 @@ Complete working example including:
 
 ### 4. Migration Script: `migrate_lago_to_org_billing.py`
 
-**Location:** `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/migrate_lago_to_org_billing.py`
+**Location:** `/opt/ops-center/backend/scripts/migrate_lago_to_org_billing.py`
 
 Automated migration script with:
 - Dry-run mode (default) - simulates migration without changes
@@ -343,17 +343,17 @@ except LagoIntegrationError as e:
 ## Files Created
 
 1. **Core Module:**
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/lago_integration.py` (780 lines)
+   - `/opt/ops-center/backend/lago_integration.py` (780 lines)
 
 2. **Documentation:**
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/LAGO_ORG_BILLING_INTEGRATION.md`
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/LAGO_ORG_MIGRATION_SUMMARY.md` (this file)
+   - `/opt/ops-center/backend/docs/LAGO_ORG_BILLING_INTEGRATION.md`
+   - `/opt/ops-center/backend/LAGO_ORG_MIGRATION_SUMMARY.md` (this file)
 
 3. **Examples:**
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/examples/lago_org_billing_example.py` (580 lines)
+   - `/opt/ops-center/backend/examples/lago_org_billing_example.py` (580 lines)
 
 4. **Scripts:**
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/scripts/migrate_lago_to_org_billing.py` (390 lines)
+   - `/opt/ops-center/backend/scripts/migrate_lago_to_org_billing.py` (390 lines)
 
 ## Next Steps
 

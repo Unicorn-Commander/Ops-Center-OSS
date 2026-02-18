@@ -4,11 +4,11 @@
 **Review Date:** October 9, 2025
 **Reviewer:** Claude Code Security Review Agent
 **Files Reviewed:**
-- `/home/muut/Production/UC-1-Pro/services/ops-center/src/components/Layout.jsx`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/src/App.jsx`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py`
-- `/home/muut/Production/UC-1-Pro/services/ops-center/frontend/src/contexts/AuthContext.js`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/src/components/Layout.jsx`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/src/App.jsx`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/auth_manager.py`
+- `/home/deploy/Production/UC-1-Pro/services/ops-center/frontend/src/contexts/AuthContext.js`
 
 ---
 
@@ -217,7 +217,7 @@ sessions[session_token] = {
 **Attack Scenario:**
 ```html
 <!-- Malicious website -->
-<form action="https://your-domain.com/api/v1/services/unicorn-postgres/action" method="POST">
+<form action="https://unicorncommander.ai/api/v1/services/unicorn-postgres/action" method="POST">
   <input type="hidden" name="action" value="stop">
 </form>
 <script>document.forms[0].submit();</script>
@@ -288,7 +288,7 @@ def password_strength(cls, v):
 
 ```python
 # File: backend/auth_manager.py, line 192
-admin_password = os.getenv("ADMIN_PASSWORD", "your-admin-password")
+admin_password = os.getenv("ADMIN_PASSWORD", "MagicUnicorn!8-)")
 ```
 
 **Problems:**
@@ -316,7 +316,7 @@ admin_password = os.getenv("ADMIN_PASSWORD", "your-admin-password")
 ```bash
 # Attacker can attempt unlimited logins
 for i in {1..10000}; do
-  curl -X POST https://your-domain.com/api/v1/auth/login \
+  curl -X POST https://unicorncommander.ai/api/v1/auth/login \
     -d '{"username":"admin","password":"attempt'$i'"}'
 done
 ```
@@ -665,7 +665,7 @@ async def add_security_headers(request: Request, call_next):
 # Add trusted host middleware
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["your-domain.com", "*.your-domain.com", "localhost"]
+    allowed_hosts=["unicorncommander.ai", "*.unicorncommander.ai", "localhost"]
 )
 ```
 

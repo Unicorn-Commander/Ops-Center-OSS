@@ -26,7 +26,7 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 ## 🚀 What's Live
 
 ### 1. Subscription Management
-**URL**: https://your-domain.com/admin/system/subscription-management
+**URL**: https://unicorncommander.ai/admin/system/subscription-management
 
 **Features**:
 - ✅ Create/edit/delete subscription tiers
@@ -46,9 +46,9 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 
 ### 2. Monitoring Configuration Pages
 **URLs**:
-- https://your-domain.com/admin/monitoring/grafana
-- https://your-domain.com/admin/monitoring/prometheus
-- https://your-domain.com/admin/monitoring/umami
+- https://unicorncommander.ai/admin/monitoring/grafana
+- https://unicorncommander.ai/admin/monitoring/prometheus
+- https://unicorncommander.ai/admin/monitoring/umami
 
 **Status**: Frontend and APIs deployed
 - ✅ Health checks working
@@ -141,7 +141,7 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 
 1. **Access the page**:
    ```
-   https://your-domain.com/admin/system/subscription-management
+   https://unicorncommander.ai/admin/system/subscription-management
    ```
 
 2. **Create a new tier**:
@@ -164,19 +164,19 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 ### Configuring Monitoring
 
 1. **Grafana** (when deployed):
-   - Go to: https://your-domain.com/admin/monitoring/grafana
+   - Go to: https://unicorncommander.ai/admin/monitoring/grafana
    - Test connection
    - View dashboards
    - Manage data sources
 
 2. **Prometheus** (when deployed):
-   - Go to: https://your-domain.com/admin/monitoring/prometheus
+   - Go to: https://unicorncommander.ai/admin/monitoring/prometheus
    - Configure scrape targets (6 pre-defined)
    - Set retention policies
    - View metrics
 
 3. **Umami** (when deployed):
-   - Go to: https://your-domain.com/admin/monitoring/umami
+   - Go to: https://unicorncommander.ai/admin/monitoring/umami
    - Add websites to track
    - Generate tracking scripts
    - View analytics
@@ -189,9 +189,9 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 
 1. **Deploy Atlas to Brigade**:
    ```bash
-   curl -X POST https://api.brigade.your-domain.com/api/agents \
+   curl -X POST https://api.brigade.unicorncommander.ai/api/agents \
      -H "Authorization: Bearer $ADMIN_TOKEN" \
-     -d @/home/muut/Production/UC-Cloud/services/ops-center/atlas/architecture/atlas-agent.json
+     -d @/opt/ops-center/atlas/architecture/atlas-agent.json
    ```
 
 2. **Deploy monitoring services** (if needed):
@@ -248,16 +248,16 @@ The final 10% of Ops-Center development is **COMPLETE** and **DEPLOYED**. All cr
 ## 📞 Support
 
 **Documentation**:
-- Main: `/home/muut/Production/UC-Cloud/services/ops-center/CLAUDE.md`
+- Main: `/opt/ops-center/CLAUDE.md`
 - Subscription Guide: `docs/SUBSCRIPTION_MANAGEMENT_GUIDE.md`
 - Atlas Guide: `atlas/docs/INTEGRATION_GUIDE.md`
 - E2E Test Report: `/tmp/e2e_results_final.md`
 - Completion Report: `docs/FINAL_10_PERCENT_COMPLETE.md`
 
 **URLs**:
-- Production: https://your-domain.com
-- Admin Dashboard: https://your-domain.com/admin
-- API Docs: https://your-domain.com/api/docs
+- Production: https://unicorncommander.ai
+- Admin Dashboard: https://unicorncommander.ai/admin
+- API Docs: https://unicorncommander.ai/api/docs
 
 **Contact**: admin@magicunicorn.tech
 

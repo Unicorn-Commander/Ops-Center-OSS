@@ -2,7 +2,7 @@
 
 **Date**: October 11, 2025
 **Tester**: Claude (AI QA Specialist)
-**Environment**: Production VPS (your-domain.com)
+**Environment**: Production VPS (unicorncommander.ai)
 **Test Scope**: Complete user signup and payment flow from plans page to billing settings
 
 ---
@@ -29,8 +29,8 @@ The UC-1 Pro signup and payment flow is fully functional and ready to accept rea
 
 ### ✅ Page Structure & Design
 - **Status**: PASS
-- **URL**: https://your-domain.com/plans.html
-- **File Location**: `/home/muut/Production/UC-1-Pro/services/ops-center/public/plans.html`
+- **URL**: https://unicorncommander.ai/plans.html
+- **File Location**: `/home/deploy/Production/UC-1-Pro/services/ops-center/public/plans.html`
 
 **Findings**:
 - Beautiful gradient background with galaxy animation
@@ -157,8 +157,8 @@ The UC-1 Pro signup and payment flow is fully functional and ready to accept rea
 
 ### ✅ Page Structure & Design
 - **Status**: PASS
-- **URL**: https://your-domain.com/signup-flow.html
-- **File Location**: `/home/muut/Production/UC-1-Pro/services/ops-center/public/signup-flow.html`
+- **URL**: https://unicorncommander.ai/signup-flow.html
+- **File Location**: `/home/deploy/Production/UC-1-Pro/services/ops-center/public/signup-flow.html`
 
 **Findings**:
 - 3-step progress indicator (Select Plan → Payment → Complete)
@@ -210,10 +210,10 @@ The UC-1 Pro signup and payment flow is fully functional and ready to accept rea
 ## 3. Authentication Integration Test Results
 
 ### ✅ Keycloak SSO Configuration
-- **Auth Server**: https://auth.your-domain.com/realms/uchub
+- **Auth Server**: https://auth.unicorncommander.ai/realms/uchub
 - **Client ID**: `ops-center`
 - **OAuth Flow**: Authorization Code with PKCE
-- **Redirect URI**: `https://your-domain.com/signup-flow.html`
+- **Redirect URI**: `https://unicorncommander.ai/signup-flow.html`
 
 ### ✅ Authentication Endpoints
 
@@ -241,7 +241,7 @@ The UC-1 Pro signup and payment flow is fully functional and ready to accept rea
 ## 4. Checkout Flow API Test Results
 
 ### ✅ Stripe Integration Configured
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py`
 
 #### POST /api/v1/billing/checkout/create
 - **Purpose**: Create Stripe checkout session
@@ -286,8 +286,8 @@ All endpoints configured with proper authentication and error handling.
 
 ### ✅ Page Structure & Design
 - **Status**: PASS
-- **URL**: https://your-domain.com/billing-settings.html
-- **File Location**: `/home/muut/Production/UC-1-Pro/services/ops-center/public/billing-settings.html`
+- **URL**: https://unicorncommander.ai/billing-settings.html
+- **File Location**: `/home/deploy/Production/UC-1-Pro/services/ops-center/public/billing-settings.html`
 
 **Findings**:
 - Sticky header with logo and navigation
@@ -349,7 +349,7 @@ const upgradeOptions = plans.filter(plan => {
 ## 6. JavaScript Code Quality Review
 
 ### ✅ Centralized Billing Module
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/public/js/billing.js`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/public/js/billing.js`
 
 **Class**: `BillingManager`
 - **Lines of Code**: 516
@@ -390,7 +390,7 @@ await billing.cancelSubscription();
 ## 7. User Flow Documentation Review
 
 ### ✅ USER_SIGNUP_GUIDE.md
-**File**: `/home/muut/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md`
+**File**: `/home/deploy/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md`
 **Lines**: 321
 **Status**: ✅ COMPREHENSIVE AND ACCURATE
 
@@ -408,7 +408,7 @@ await billing.cancelSubscription();
 - Plans page: `/plans.html` ✓
 - Signup flow: `/signup-flow.html` ✓
 - Billing settings: `/billing-settings.html` ✓
-- Auth server: `https://auth.your-domain.com/realms/uchub` ✓
+- Auth server: `https://auth.unicorncommander.ai/realms/uchub` ✓
 
 ---
 
@@ -418,7 +418,7 @@ await billing.cancelSubscription();
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1. User visits your-domain.com                          │
+│ 1. User visits unicorncommander.ai                          │
 │    - Sees landing page with "View Plans" CTA                │
 └────────────────────────┬────────────────────────────────────┘
                          │
@@ -745,18 +745,18 @@ INFO: 172.18.0.3:50680 - "GET /signup-flow.html HTTP/1.1" 200 OK
 ## 15. Files Tested
 
 ### Frontend Files:
-1. `/home/muut/Production/UC-1-Pro/services/ops-center/public/plans.html` - ✅ PASS
-2. `/home/muut/Production/UC-1-Pro/services/ops-center/public/signup-flow.html` - ✅ PASS
-3. `/home/muut/Production/UC-1-Pro/services/ops-center/public/billing-settings.html` - ✅ PASS
-4. `/home/muut/Production/UC-1-Pro/services/ops-center/public/js/billing.js` - ✅ EXCELLENT
+1. `/home/deploy/Production/UC-1-Pro/services/ops-center/public/plans.html` - ✅ PASS
+2. `/home/deploy/Production/UC-1-Pro/services/ops-center/public/signup-flow.html` - ✅ PASS
+3. `/home/deploy/Production/UC-1-Pro/services/ops-center/public/billing-settings.html` - ✅ PASS
+4. `/home/deploy/Production/UC-1-Pro/services/ops-center/public/js/billing.js` - ✅ EXCELLENT
 
 ### Backend Files:
-1. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/subscription_api.py` - ✅ WORKING
-2. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py` - ✅ CONFIGURED
-3. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/subscription_manager.py` - ✅ WORKING
+1. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/subscription_api.py` - ✅ WORKING
+2. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/stripe_api.py` - ✅ CONFIGURED
+3. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/subscription_manager.py` - ✅ WORKING
 
 ### Documentation:
-1. `/home/muut/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md` - ✅ COMPREHENSIVE
+1. `/home/deploy/Production/UC-1-Pro/services/ops-center/USER_SIGNUP_GUIDE.md` - ✅ COMPREHENSIVE
 
 ---
 

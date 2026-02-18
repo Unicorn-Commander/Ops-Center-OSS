@@ -387,9 +387,9 @@ User Login → Fetch Apps API → Filter by Role/Tier → Display Cards
 - **[sample_apps_access.json](./sample_apps_access.json)** - Example configuration
 
 ### Existing Documentation
-- **[ROLE_MAPPING.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)** - Current role system
-- **[AUTHENTIK_SETUP.md](/home/muut/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)** - Authentication setup
-- **[ADMIN_API_QUICK_REFERENCE.md](/home/muut/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)** - API reference
+- **[ROLE_MAPPING.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/ROLE_MAPPING.md)** - Current role system
+- **[AUTHENTIK_SETUP.md](/home/deploy/Production/UC-1-Pro/services/ops-center/backend/AUTHENTIK_SETUP.md)** - Authentication setup
+- **[ADMIN_API_QUICK_REFERENCE.md](/home/deploy/Production/UC-1-Pro/services/ops-center/docs/ADMIN_API_QUICK_REFERENCE.md)** - API reference
 
 ---
 

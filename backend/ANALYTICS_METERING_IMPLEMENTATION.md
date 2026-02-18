@@ -9,7 +9,7 @@
 
 Implemented 21 missing analytics and metering endpoints to provide comprehensive insights into revenue, users, services, and LLM usage.
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/routers/`
+**Location**: `/opt/ops-center/backend/routers/`
 
 ---
 

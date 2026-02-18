@@ -36,7 +36,7 @@ This document provides comprehensive testing information for the Local User Mana
 
 **Run Unit Tests**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_local_user_management.py -v
 ```
 
@@ -61,7 +61,7 @@ pytest test_local_user_management.py -v
 
 **Run Integration Tests**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_local_user_api.py -v
 ```
 
@@ -73,7 +73,7 @@ pytest test_local_user_api.py -v
 
 **Run Manual Tests** (requires root):
 ```bash
-sudo /home/muut/Production/UC-Cloud/services/ops-center/scripts/test_local_users.sh
+sudo /opt/ops-center/scripts/test_local_users.sh
 ```
 
 ---

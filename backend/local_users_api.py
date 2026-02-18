@@ -179,7 +179,7 @@ async def check_admin_role(request: Request) -> str:
         )
 
     # Get Redis connection info
-    redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+    redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
     # Initialize session manager
@@ -281,7 +281,7 @@ class LocalUser(BaseModel):
                 "username": "muut",
                 "uid": 1000,
                 "gid": 1000,
-                "home": "/home/muut",
+                "home": "/home/deploy",
                 "shell": "/bin/bash",
                 "groups": ["muut", "sudo", "docker"],
                 "has_sudo": True,

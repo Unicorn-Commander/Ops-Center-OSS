@@ -36,7 +36,7 @@ The `/api/v1/credentials/{service}/test` endpoint has no rate limiting, allowing
 **Step 1**: Install slowapi dependency
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pip install slowapi
 ```
 
@@ -126,7 +126,7 @@ description: "<script>alert(document.cookie)</script>"
 **Step 1**: Install bleach dependency
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pip install bleach
 ```
 
@@ -413,7 +413,7 @@ When users click "show password" toggle, no warning is displayed about security 
 
 ```bash
 # Rebuild frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 cp -r dist/* public/
 
@@ -502,7 +502,7 @@ bleach>=6.1.0
 
 **Installation**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pip install slowapi bleach
 pip freeze > requirements.txt
 ```

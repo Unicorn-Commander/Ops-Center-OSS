@@ -173,7 +173,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "\d llm_provider
 ### Step 1: Check Migration Status
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Option A: Use Python script
 python3 run_migration.py --check
@@ -194,7 +194,7 @@ WHERE table_name='llm_providers' AND column_name='encrypted_api_key';
 #### Option A: Using Python Script (Recommended)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 run_migration.py
 ```
 
@@ -233,7 +233,7 @@ Timestamp: 2025-10-27 14:30:00
 #### Option B: Direct SQL Execution
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Copy SQL to container
 docker cp migrations/002_add_system_api_keys.sql unicorn-postgresql:/tmp/
@@ -245,7 +245,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -f /tmp/002_add_sys
 ### Step 3: Verify Migration
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run test suite
 bash test_migration.sh
@@ -349,14 +349,14 @@ WHERE encrypted_api_key IS NOT NULL;
 #### Option A: Using Python Script
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python3 run_migration.py --rollback
 ```
 
 #### Option B: Direct SQL Execution
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Copy rollback SQL to container
 docker cp migrations/002_add_system_api_keys_rollback.sql unicorn-postgresql:/tmp/
@@ -522,7 +522,7 @@ python3 run_migration.py --force
 - **Main Schema Docs**: `backend/SCHEMA.md`
 - **Fernet Encryption**: https://cryptography.io/en/latest/fernet/
 - **PostgreSQL ALTER TABLE**: https://www.postgresql.org/docs/current/sql-altertable.html
-- **UC-Cloud Docs**: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- **UC-Cloud Docs**: `/opt/uc-cloud/CLAUDE.md`
 
 ---
 

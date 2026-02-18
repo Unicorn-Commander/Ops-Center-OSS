@@ -2,7 +2,7 @@
 -- UC-Cloud Services Catalog - Real Production Services
 -- ================================================================
 -- This catalog represents actual UC-Cloud hosted services that
--- users can subscribe to and access via your-domain.com
+-- users can subscribe to and access via unicorncommander.ai
 -- Last Updated: 2025-11-01
 -- ================================================================
 
@@ -71,13 +71,13 @@ INSERT INTO add_ons (
     1,
     NOW(),
     '{
-        "access_url": "https://chat.your-domain.com",
+        "access_url": "https://chat.unicorncommander.ai",
         "sso_provider": "keycloak",
         "realm": "uchub",
         "requires_api_key": false,
         "included_in_base": true,
         "setup_time": "instant",
-        "documentation": "https://docs.your-domain.com/services/open-webui"
+        "documentation": "https://docs.unicorncommander.ai/services/open-webui"
     }'::jsonb
 );
 
@@ -138,12 +138,12 @@ INSERT INTO add_ons (
     4,
     NOW(),
     '{
-        "access_url": "https://search.your-domain.com",
+        "access_url": "https://search.unicorncommander.ai",
         "sso_provider": "authentik",
         "requires_api_key": false,
         "included_in_base": true,
         "setup_time": "instant",
-        "documentation": "https://docs.your-domain.com/services/center-deep"
+        "documentation": "https://docs.unicorncommander.ai/services/center-deep"
     }'::jsonb
 );
 
@@ -210,14 +210,14 @@ INSERT INTO add_ons (
     2,
     NOW(),
     '{
-        "access_url": "https://presentations.your-domain.com",
+        "access_url": "https://presentations.unicorncommander.ai",
         "sso_provider": "keycloak",
         "realm": "uchub",
         "requires_api_key": false,
         "included_in_base": false,
         "setup_time": "instant",
         "trial_period_days": 14,
-        "documentation": "https://docs.your-domain.com/services/presenton"
+        "documentation": "https://docs.unicorncommander.ai/services/presenton"
     }'::jsonb
 );
 
@@ -286,14 +286,14 @@ INSERT INTO add_ons (
     3,
     NOW(),
     '{
-        "access_url": "https://bolt.your-domain.com",
+        "access_url": "https://bolt.unicorncommander.ai",
         "sso_provider": "keycloak",
         "realm": "uchub",
         "requires_api_key": false,
         "included_in_base": false,
         "setup_time": "instant",
         "trial_period_days": 14,
-        "documentation": "https://docs.your-domain.com/services/bolt"
+        "documentation": "https://docs.unicorncommander.ai/services/bolt"
     }'::jsonb
 );
 
@@ -377,14 +377,14 @@ INSERT INTO add_ons (
     5,
     NOW(),
     '{
-        "access_url": "https://brigade.your-domain.com",
+        "access_url": "https://brigade.unicorncommander.ai",
         "sso_provider": "keycloak",
         "realm": "uchub",
         "requires_api_key": false,
         "included_in_base": false,
         "setup_time": "instant",
         "trial_period_days": 14,
-        "documentation": "https://docs.your-domain.com/services/brigade"
+        "documentation": "https://docs.unicorncommander.ai/services/brigade"
     }'::jsonb
 );
 
@@ -458,14 +458,14 @@ INSERT INTO add_ons (
     6,
     NOW(),
     '{
-        "access_url": "https://stt.your-domain.com",
-        "api_url": "https://stt.your-domain.com/v1",
+        "access_url": "https://stt.unicorncommander.ai",
+        "api_url": "https://stt.unicorncommander.ai/v1",
         "sso_provider": "authentik",
         "requires_api_key": true,
         "included_in_base": false,
         "setup_time": "instant",
         "trial_period_days": 7,
-        "documentation": "https://docs.your-domain.com/services/amanuensis"
+        "documentation": "https://docs.unicorncommander.ai/services/amanuensis"
     }'::jsonb
 );
 
@@ -545,14 +545,14 @@ INSERT INTO add_ons (
     7,
     NOW(),
     '{
-        "access_url": "https://tts.your-domain.com",
-        "api_url": "https://tts.your-domain.com/v1",
+        "access_url": "https://tts.unicorncommander.ai",
+        "api_url": "https://tts.unicorncommander.ai/v1",
         "sso_provider": "authentik",
         "requires_api_key": true,
         "included_in_base": false,
         "setup_time": "instant",
         "trial_period_days": 7,
-        "documentation": "https://docs.your-domain.com/services/orator"
+        "documentation": "https://docs.unicorncommander.ai/services/orator"
     }'::jsonb
 );
 
@@ -611,7 +611,7 @@ INSERT INTO add_ons (
     8,
     NOW(),
     '{
-        "access_url": "https://magicdeck.your-domain.com",
+        "access_url": "https://magicdeck.unicorncommander.ai",
         "sso_provider": "keycloak",
         "realm": "uchub",
         "requires_api_key": false,
@@ -619,7 +619,7 @@ INSERT INTO add_ons (
         "setup_time": "instant",
         "status": "coming_soon",
         "expected_release": "2026-Q1",
-        "documentation": "https://docs.your-domain.com/services/magicdeck"
+        "documentation": "https://docs.unicorncommander.ai/services/magicdeck"
     }'::jsonb
 );
 

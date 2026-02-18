@@ -1,7 +1,7 @@
 # Backend API Endpoint Audit - Summary
 
 **Date**: October 13, 2025
-**Full Report**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`
+**Full Report**: `/opt/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`
 
 ## Overall Status: 🟡 65% Coverage
 
@@ -124,15 +124,15 @@ Check in `server.py`:
 
 ## Files to Create
 
-1. `/home/muut/Production/UC-Cloud/services/ops-center/backend/org_api.py`
-2. `/home/muut/Production/UC-Cloud/services/ops-center/backend/profile_api.py`
-3. `/home/muut/Production/UC-Cloud/services/ops-center/backend/session_api.py` (optional, could extend server.py)
+1. `/opt/ops-center/backend/org_api.py`
+2. `/opt/ops-center/backend/profile_api.py`
+3. `/opt/ops-center/backend/session_api.py` (optional, could extend server.py)
 
 ## Files to Modify
 
-1. `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py` - Mount new routers
-2. `/home/muut/Production/UC-Cloud/services/ops-center/backend/stripe_api.py` - Add payment methods
-3. `/home/muut/Production/UC-Cloud/services/ops-center/backend/subscription_api.py` - Add alias
+1. `/opt/ops-center/backend/server.py` - Mount new routers
+2. `/opt/ops-center/backend/stripe_api.py` - Add payment methods
+3. `/opt/ops-center/backend/subscription_api.py` - Add alias
 
 ## Dependencies Already Available
 
@@ -155,4 +155,4 @@ Check in `server.py`:
 
 ---
 
-**Full Technical Details**: See `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`
+**Full Technical Details**: See `/opt/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`

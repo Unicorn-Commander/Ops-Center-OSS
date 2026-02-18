@@ -285,7 +285,7 @@ async def discover_docker_services():
                 suggested_host = labels.get('traefik.http.routers.rule', '')
                 if not suggested_host and traefik_enabled:
                     # Generate suggestion based on container name
-                    suggested_host = f"Host(`{name}.your-domain.com`)"
+                    suggested_host = f"Host(`{name}.unicorncommander.ai`)"
 
                 suggested_service = labels.get('traefik.http.services.loadbalancer.server.port', '')
                 if not suggested_service and ports:
@@ -884,7 +884,7 @@ async def renew_certificate(certificate_id: str):
 
         # Extract email from ACME config
         config = traefik_manager.get_config()
-        email = config.get('certificatesResolvers', {}).get('letsencrypt', {}).get('acme', {}).get('email', 'admin@your-domain.com')
+        email = config.get('certificatesResolvers', {}).get('letsencrypt', {}).get('acme', {}).get('email', 'admin@unicorncommander.ai')
 
         renewal_result = traefik_manager.request_certificate(
             domain=domain,

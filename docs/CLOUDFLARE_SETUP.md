@@ -46,7 +46,7 @@ This guide explains how to configure Cloudflare DNS management in UC-Cloud Ops-C
    - Include / All zones
 
    Client IP Address Filtering (optional):
-   - Add your server IP: YOUR_SERVER_IP
+   - Add your server IP: your-server-ip
 
    TTL (optional):
    - Leave blank for no expiration
@@ -56,7 +56,7 @@ This guide explains how to configure Cloudflare DNS management in UC-Cloud Ops-C
    - Click "Continue to summary"
    - Click "Create Token"
    - **IMPORTANT**: Copy the token immediately (you won't see it again)
-   - Example: `0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_`
+   - Example: `your-cloudflare-api-token`
 
 ### Option B: Using API Token Template
 
@@ -74,7 +74,7 @@ This guide explains how to configure Cloudflare DNS management in UC-Cloud Ops-C
 
 1. **Edit Environment File**
    ```bash
-   cd /home/muut/Production/UC-Cloud/services/ops-center
+   cd /opt/ops-center
    vim .env.auth
    ```
 
@@ -130,7 +130,7 @@ curl -H "Cookie: session=YOUR_SESSION" \
 
 ### Access UI
 
-1. Open Ops-Center: https://your-domain.com
+1. Open Ops-Center: https://unicorncommander.ai
 2. Navigate to: **Network → Cloudflare DNS**
 3. You should see:
    - Zone list (if configured correctly)
@@ -209,7 +209,7 @@ docker exec ops-center-direct python3 -c "import os; print(f'Token length: {len(
 2. **IP Filtering** (Optional but recommended)
    ```
    Client IP Address Filtering:
-   - YOUR_SERVER_IP (your server IP)
+   - your-server-ip (your server IP)
    ```
 
 3. **Token Rotation**

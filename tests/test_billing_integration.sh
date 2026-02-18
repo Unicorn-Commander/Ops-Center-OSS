@@ -10,7 +10,7 @@ set -e
 
 # Configuration
 BASE_URL="${1:-http://localhost:8084}"
-KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.your-domain.com}"
+KEYCLOAK_URL="${KEYCLOAK_URL:-https://auth.unicorncommander.ai}"
 KEYCLOAK_REALM="${KEYCLOAK_REALM:-uchub}"
 
 # Colors for output

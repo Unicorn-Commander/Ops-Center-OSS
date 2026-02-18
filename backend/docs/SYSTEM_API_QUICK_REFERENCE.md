@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-https://your-domain.com/api/v1/system
+https://unicorncommander.ai/api/v1/system
 ```
 
 ## Authentication
@@ -24,7 +24,7 @@ Authorization: Bearer <JWT_TOKEN>
 
 ### 1. Get Network Configuration
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/network" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
@@ -43,7 +43,7 @@ curl -X GET "https://your-domain.com/api/v1/system/network" \
 
 ### 2. Update Network (Static IP)
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -57,7 +57,7 @@ curl -X PUT "https://your-domain.com/api/v1/system/network" \
 
 ### 3. Update Network (DHCP)
 ```bash
-curl -X PUT "https://your-domain.com/api/v1/system/network" \
+curl -X PUT "https://unicorncommander.ai/api/v1/system/network" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"dhcp": true}'
@@ -65,7 +65,7 @@ curl -X PUT "https://your-domain.com/api/v1/system/network" \
 
 ### 4. Change User Password
 ```bash
-curl -X POST "https://your-domain.com/api/v1/system/user/password" \
+curl -X POST "https://unicorncommander.ai/api/v1/system/user/password" \
   -H "Authorization: Bearer $JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -84,7 +84,7 @@ curl -X POST "https://your-domain.com/api/v1/system/user/password" \
 
 ### 5. Get Available Updates
 ```bash
-curl -X GET "https://your-domain.com/api/v1/system/packages" \
+curl -X GET "https://unicorncommander.ai/api/v1/system/packages" \
   -H "Authorization: Bearer $JWT_TOKEN"
 ```
 
@@ -161,7 +161,7 @@ class SystemManager:
         return response.json()
 
 # Usage
-manager = SystemManager("https://your-domain.com", "your_jwt_token")
+manager = SystemManager("https://unicorncommander.ai", "your_jwt_token")
 network = manager.get_network_config()
 print(f"Current IP: {network['ip']}")
 ```
@@ -216,7 +216,7 @@ class SystemAPI {
 }
 
 // Usage
-const api = new SystemAPI('https://your-domain.com', 'your_jwt_token');
+const api = new SystemAPI('https://unicorncommander.ai', 'your_jwt_token');
 const network = await api.getNetworkConfig();
 console.log(`Current IP: ${network.ip}`);
 ```
@@ -236,6 +236,6 @@ console.log(`Current IP: ${network.ip}`);
 
 ## Files
 
-- **Backend Module:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`
-- **API Endpoints:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py`
-- **Full Documentation:** `/home/muut/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_MANAGEMENT_API.md`
+- **Backend Module:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/system_manager.py`
+- **API Endpoints:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py`
+- **Full Documentation:** `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/docs/SYSTEM_MANAGEMENT_API.md`

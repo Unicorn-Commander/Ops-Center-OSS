@@ -12,7 +12,7 @@
 
 ### 1. Add Environment Variables
 ```bash
-KEYCLOAK_URL=https://auth.your-domain.com
+KEYCLOAK_URL=https://auth.unicorncommander.ai
 KEYCLOAK_REALM=uchub
 KEYCLOAK_ADMIN_USER=admin
 KEYCLOAK_ADMIN_PASSWORD=your-admin-password
@@ -28,17 +28,17 @@ docker start ops-center-direct
 ```
 
 ### 3. Configure Lago
-- **Webhook URL:** `https://your-domain.com/api/v1/webhooks/lago`
+- **Webhook URL:** `https://unicorncommander.ai/api/v1/webhooks/lago`
 - **Enable Events:** subscription.*, invoice.paid
 
 ### 4. Test Health
 ```bash
-curl https://your-domain.com/api/v1/webhooks/lago/health
+curl https://unicorncommander.ai/api/v1/webhooks/lago/health
 ```
 
 ### 5. Run Tests
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center
+cd /home/deploy/Production/UC-1-Pro/services/ops-center
 ./scripts/test_keycloak_webhook.sh
 ```
 
@@ -59,22 +59,22 @@ cd /home/muut/Production/UC-1-Pro/services/ops-center
 
 ### Health Check
 ```bash
-curl https://your-domain.com/api/v1/webhooks/lago/health
+curl https://unicorncommander.ai/api/v1/webhooks/lago/health
 ```
 
 ### Test Webhook
 ```bash
-curl -X POST https://your-domain.com/api/v1/webhooks/lago \
+curl -X POST https://unicorncommander.ai/api/v1/webhooks/lago \
   -H "Content-Type: application/json" \
   -d '{"webhook_type":"subscription.created","customer":{"email":"admin@example.com"},"subscription":{"lago_id":"test_123","plan_code":"professional","status":"active"}}'
 ```
 
 ### Check Keycloak Attributes
 ```bash
-TOKEN=$(curl -sk -X POST "https://auth.your-domain.com/realms/master/protocol/openid-connect/token" \
+TOKEN=$(curl -sk -X POST "https://auth.unicorncommander.ai/realms/master/protocol/openid-connect/token" \
   -d "username=admin" -d "password=your-admin-password" -d "grant_type=password" -d "client_id=admin-cli" | jq -r '.access_token')
 
-curl -sk "https://auth.your-domain.com/admin/realms/uchub/users?email=admin@example.com&exact=true" \
+curl -sk "https://auth.unicorncommander.ai/admin/realms/uchub/users?email=admin@example.com&exact=true" \
   -H "Authorization: Bearer $TOKEN" | jq '.[0].attributes'
 ```
 
@@ -82,9 +82,9 @@ curl -sk "https://auth.your-domain.com/admin/realms/uchub/users?email=admin@exam
 
 ## Files Modified
 
-1. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` - NEW
-2. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py` - UPDATED
-3. `/home/muut/Production/UC-1-Pro/services/ops-center/backend/server.py` - FIXED (line 3763)
+1. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/keycloak_integration.py` - NEW
+2. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/lago_webhooks.py` - UPDATED
+3. `/home/deploy/Production/UC-1-Pro/services/ops-center/backend/server.py` - FIXED (line 3763)
 
 ---
 

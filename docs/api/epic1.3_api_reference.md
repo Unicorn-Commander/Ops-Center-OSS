@@ -1691,8 +1691,8 @@ curl -X POST \
 
 ## Support
 
-**Documentation**: https://your-domain.com/docs
-**API Support**: ops-support@your-domain.com
+**Documentation**: https://unicorncommander.ai/docs
+**API Support**: ops-support@unicorncommander.ai
 **Bug Reports**: https://github.com/Unicorn-Commander/ops-center/issues
 
 **Response Times**:

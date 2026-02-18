@@ -239,7 +239,7 @@ const UserDetail = () => {
       setCurrentAction(null);
 
       if (currentAction === 'delete') {
-        navigate('/admin/system/users');
+        navigate('/admin/people/users');
       } else {
         fetchProfile();
       }
@@ -346,7 +346,7 @@ const UserDetail = () => {
     return (
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Alert severity="error" action={
-          <Button color="inherit" onClick={() => navigate('/admin/system/users')}>
+          <Button color="inherit" onClick={() => navigate('/admin/people/users')}>
             Go Back
           </Button>
         }>
@@ -374,7 +374,7 @@ const UserDetail = () => {
           underline="hover"
           color="inherit"
           href="#"
-          onClick={() => navigate('/admin/system/users')}
+          onClick={() => navigate('/admin/people/users')}
         >
           Users
         </Link>
@@ -437,7 +437,7 @@ const UserDetail = () => {
               <Button
                 variant="outlined"
                 startIcon={<ArrowBackIcon />}
-                onClick={() => navigate('/admin/system/users')}
+                onClick={() => navigate('/admin/people/users')}
               >
                 Back to Users
               </Button>

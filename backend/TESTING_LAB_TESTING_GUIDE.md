@@ -49,7 +49,7 @@ CREATE INDEX IF NOT EXISTS idx_usage_source ON llm_usage_logs((metadata->>'sourc
 
 ### 3. Register API in `server.py`
 
-Edit `/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py`:
+Edit `/opt/ops-center/backend/server.py`:
 
 ```python
 # Add import
@@ -62,7 +62,7 @@ app.include_router(testing_lab_router)
 ### 4. Restart Backend
 
 ```bash
-cd /home/muut/Production/UC-Cloud
+cd /opt/uc-cloud
 docker restart ops-center-direct
 
 # Wait for startup
@@ -82,7 +82,7 @@ Before testing, you need a valid session token.
 
 #### Option A: Login via Browser
 
-1. Go to https://your-domain.com
+1. Go to https://unicorncommander.ai
 2. Login with your credentials
 3. Open browser DevTools (F12)
 4. Go to Application → Cookies

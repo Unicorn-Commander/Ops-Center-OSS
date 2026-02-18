@@ -211,7 +211,7 @@ All documentation located in `/tmp/`:
 ### Git Commit Message
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 git add backend/org_credit_integration.py
 git add backend/platform_keys_api.py
@@ -291,12 +291,12 @@ All complementary - each provides different insights.
 
 ## Next Steps (Optional)
 
-### For your-domain.com Instance
+### For unicorncommander.ai Instance
 
 If you want the same improvements:
 ```bash
 # Pull changes from Forgejo
-cd /path/to/your-domain.com/ops-center
+cd /path/to/unicorncommander.ai/ops-center
 git pull origin main
 
 # Rebuild frontend

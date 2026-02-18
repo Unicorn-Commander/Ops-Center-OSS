@@ -85,7 +85,7 @@ async def authenticated_client(http_client, base_url) -> httpx.AsyncClient:
 def keycloak_config() -> Dict[str, str]:
     """Keycloak configuration"""
     return {
-        "url": os.getenv("KEYCLOAK_URL", "https://auth.your-domain.com"),
+        "url": os.getenv("KEYCLOAK_URL", "https://auth.unicorncommander.ai"),
         "realm": os.getenv("KEYCLOAK_REALM", "uchub"),
         "admin_username": os.getenv("KEYCLOAK_ADMIN_USERNAME", "admin"),
         "admin_password": os.getenv("KEYCLOAK_ADMIN_PASSWORD", ""),
@@ -365,7 +365,7 @@ def test_report_header(request):
     print("UC-1 PRO BILLING SYSTEM - TEST SUITE")
     print("="*80)
     print(f"Base URL: {os.getenv('BASE_URL', 'http://localhost:8084')}")
-    print(f"Keycloak: {os.getenv('KEYCLOAK_URL', 'https://auth.your-domain.com')}")
+    print(f"Keycloak: {os.getenv('KEYCLOAK_URL', 'https://auth.unicorncommander.ai')}")
     print(f"Stripe Test Mode: True")
     print("="*80 + "\n")
 

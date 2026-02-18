@@ -46,7 +46,7 @@ This integration provides:
 ### 1. Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 pip install -r requirements.txt
 ```
 
@@ -63,8 +63,8 @@ Required environment variables:
 ```bash
 STRIPE_API_KEY=sk_test_...           # Stripe secret key
 STRIPE_WEBHOOK_SECRET=whsec_...      # Webhook signing secret
-STRIPE_SUCCESS_URL=https://your-domain.com/billing/success
-STRIPE_CANCEL_URL=https://your-domain.com/billing/canceled
+STRIPE_SUCCESS_URL=https://unicorncommander.ai/billing/success
+STRIPE_CANCEL_URL=https://unicorncommander.ai/billing/canceled
 ```
 
 ### 3. Set Up Stripe Products
@@ -100,7 +100,7 @@ SubscriptionPlan(
 
 1. Go to [Stripe Dashboard → Webhooks](https://dashboard.stripe.com/webhooks)
 2. Click "Add endpoint"
-3. Set endpoint URL: `https://your-domain.com/api/v1/billing/webhooks/stripe`
+3. Set endpoint URL: `https://unicorncommander.ai/api/v1/billing/webhooks/stripe`
 4. Select these events:
    - `checkout.session.completed`
    - `customer.subscription.created`

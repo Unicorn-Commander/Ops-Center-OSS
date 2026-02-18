@@ -214,13 +214,13 @@ export default function MobileNavigation({ user, currentPath }) {
       icon: <ComputerIcon />,
       visible: userRole === 'admin',
       children: [
-        { label: 'Services', path: '/admin/services', icon: <ServerIcon /> },
-        { label: 'Hardware', path: '/admin/infrastructure/hardware', icon: <BuildIcon /> },
-        { label: 'Monitoring', path: '/admin/system', icon: <BarChartIcon /> },
-        { label: 'LLM Management', path: '/admin/llm-management', icon: <CloudIcon /> },
-        { label: 'LLM Providers', path: '/admin/litellm-providers', icon: <AutoAwesomeIcon /> },
-        { label: 'Model Catalog', path: '/admin/llm-models', icon: <ViewListIcon /> },
-        { label: 'Cloudflare DNS', path: '/admin/infrastructure/cloudflare', icon: <LanguageIcon /> }
+        { label: 'Services', path: '/admin/infra/services', icon: <ServerIcon /> },
+        { label: 'Hardware', path: '/admin/infra/hardware', icon: <BuildIcon /> },
+        { label: 'Monitoring', path: '/admin/monitoring/overview', icon: <BarChartIcon /> },
+        { label: 'LLM Management', path: '/admin/ai/management', icon: <CloudIcon /> },
+        { label: 'LLM Providers', path: '/admin/ai/providers', icon: <AutoAwesomeIcon /> },
+        { label: 'Model Catalog', path: '/admin/ai/models', icon: <ViewListIcon /> },
+        { label: 'Cloudflare DNS', path: '/admin/integrations/cloudflare', icon: <LanguageIcon /> }
       ]
     },
     {
@@ -229,10 +229,10 @@ export default function MobileNavigation({ user, currentPath }) {
       icon: <PeopleIcon />,
       visible: userRole === 'admin',
       children: [
-        { label: 'User Management', path: '/admin/system/users', icon: <PeopleIcon /> },
+        { label: 'User Management', path: '/admin/people/users', icon: <PeopleIcon /> },
         { label: 'Organizations', path: '/admin/org/settings', icon: <BusinessIcon /> },
-        { label: 'Permissions', path: '/admin/system/permissions', icon: <SecurityIcon /> },
-        { label: 'API Keys', path: '/admin/authentication', icon: <KeyIcon /> }
+        { label: 'Permissions', path: '/admin/org/roles', icon: <SecurityIcon /> },
+        { label: 'Authentication', path: '/admin/people/authentication', icon: <KeyIcon /> }
       ]
     },
     {
@@ -241,13 +241,13 @@ export default function MobileNavigation({ user, currentPath }) {
       icon: <PaymentIcon />,
       visible: userRole === 'admin',
       children: [
-        { label: 'Subscription Management', path: '/admin/system/subscription-management', icon: <CreditCardIcon /> },
-        { label: 'Feature Management', path: '/admin/system/feature-management', icon: <SettingsIcon /> },
-        { label: 'Billing Dashboard', path: '/admin/system/billing', icon: <AttachMoneyIcon /> },
-        { label: 'Analytics', path: '/admin/system/analytics', icon: <AnalyticsIcon /> },
-        { label: 'Usage Metrics', path: '/admin/system/usage-metrics', icon: <PieChartIcon /> },
-        { label: 'Subscriptions', path: '/admin/billing', icon: <DescriptionIcon /> },
-        { label: 'Invoices', path: '/admin/system/billing#invoices', icon: <ReceiptIcon /> }
+        { label: 'Subscription Management', path: '/admin/billing/tiers', icon: <CreditCardIcon /> },
+        { label: 'App Management', path: '/admin/billing/apps', icon: <SettingsIcon /> },
+        { label: 'Billing Dashboard', path: '/admin/billing/system', icon: <AttachMoneyIcon /> },
+        { label: 'Analytics', path: '/admin/monitoring/analytics', icon: <AnalyticsIcon /> },
+        { label: 'Usage Metrics', path: '/admin/monitoring/usage-metrics', icon: <PieChartIcon /> },
+        { label: 'Subscriptions', path: '/admin/subscription/plan', icon: <DescriptionIcon /> },
+        { label: 'Invoices', path: '/admin/billing/overview', icon: <ReceiptIcon /> }
       ]
     },
     {
@@ -257,9 +257,9 @@ export default function MobileNavigation({ user, currentPath }) {
       visible: userRole === 'admin',
       children: [
         { label: 'Unicorn Brigade', path: '/admin/brigade', icon: <AutoAwesomeIcon /> },
-        { label: 'Center-Deep Search', path: 'https://search.your-domain.com', icon: <SearchIcon />, external: true },
-        { label: 'Email Settings', path: '/admin/platform/email-settings', icon: <EmailIcon /> },
-        { label: 'Platform Settings', path: '/admin/platform/settings', icon: <SettingsIcon /> }
+        { label: 'Center-Deep Search', path: 'https://search.unicorncommander.ai', icon: <SearchIcon />, external: true },
+        { label: 'Email Settings', path: '/admin/integrations/email', icon: <EmailIcon /> },
+        { label: 'Platform Settings', path: '/admin/integrations/credentials', icon: <SettingsIcon /> }
       ]
     },
     {

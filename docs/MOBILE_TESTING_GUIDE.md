@@ -1015,7 +1015,7 @@ Run Lighthouse in Chrome DevTools:
 
 ```bash
 # Command line
-lighthouse https://your-domain.com/admin \
+lighthouse https://unicorncommander.ai/admin \
   --preset=perf \
   --form-factor=mobile \
   --throttling.rttMs=150 \
@@ -1036,7 +1036,7 @@ lighthouse https://your-domain.com/admin \
 Use WebPageTest.org for real device testing:
 
 1. Go to https://www.webpagetest.org/
-2. Enter URL: `https://your-domain.com/admin`
+2. Enter URL: `https://unicorncommander.ai/admin`
 3. Select:
    - Test Location: `Dulles, VA - Moto G4 - 3G`
    - Browser: `Chrome`
@@ -1108,7 +1108,7 @@ Use WAVE Chrome extension:
 
 ```bash
 # Install dependencies
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm install playwright @axe-core/playwright lighthouse
 
 # Run all mobile tests
@@ -1418,13 +1418,13 @@ npx playwright test --headed
 npx playwright test --reporter=html
 
 # Run Lighthouse audit
-lighthouse https://your-domain.com/admin \
+lighthouse https://unicorncommander.ai/admin \
   --preset=perf \
   --form-factor=mobile \
   --output=html
 
 # Check viewport meta tag
-curl -s https://your-domain.com/admin | grep viewport
+curl -s https://unicorncommander.ai/admin | grep viewport
 ```
 
 ---

@@ -29,7 +29,7 @@ This guide covers administrative tasks including configuring dynamic pricing, ma
 - Logged in to Ops-Center
 
 **Access:**
-1. Login to https://your-domain.com
+1. Login to https://unicorncommander.ai
 2. Navigate to **Admin** → **Billing** in sidebar
 
 ### Dashboard Sections
@@ -122,7 +122,7 @@ This guide covers administrative tasks including configuring dynamic pricing, ma
 **API Request:**
 ```bash
 curl -X PUT \
-  https://your-domain.com/api/v1/pricing/rules/platform/professional \
+  https://unicorncommander.ai/api/v1/pricing/rules/platform/professional \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -176,7 +176,7 @@ curl -X PUT \
 **Via API:**
 ```bash
 curl -X POST \
-  https://your-domain.com/api/v1/pricing/rules/byok \
+  https://unicorncommander.ai/api/v1/pricing/rules/byok \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -342,7 +342,7 @@ curl -X POST \
 **Via API:**
 ```bash
 curl -X POST \
-  https://your-domain.com/api/v1/credits/allocate \
+  https://unicorncommander.ai/api/v1/credits/allocate \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -352,7 +352,7 @@ curl -X POST \
     "metadata": {
       "reason": "6-month anniversary bonus",
       "campaign": "loyal_user_2025_q1",
-      "approved_by": "admin@your-domain.com"
+      "approved_by": "admin@unicorncommander.ai"
     }
   }'
 ```
@@ -383,7 +383,7 @@ User receives email:
 ```
 Subject: 1,000 Bonus Credits Added to Your Account!
 
-Hi Aaron,
+Hi Admin,
 
 Great news! We've added 1,000 bonus credits to your account.
 
@@ -455,7 +455,7 @@ Thanks for being a loyal customer.
 **API Request:**
 ```bash
 curl -X POST \
-  https://your-domain.com/api/v1/credits/deduct \
+  https://unicorncommander.ai/api/v1/credits/deduct \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -465,7 +465,7 @@ curl -X POST \
     "metadata": {
       "reason": "ToS violation - credit farming detected",
       "ticket_id": "SUPPORT-2025-001",
-      "reviewed_by": "admin@your-domain.com"
+      "reviewed_by": "admin@unicorncommander.ai"
     }
   }'
 ```
@@ -490,7 +490,7 @@ curl -X POST \
 2. **Issue Refund**
    ```bash
    curl -X POST \
-     https://your-domain.com/api/v1/credits/refund \
+     https://unicorncommander.ai/api/v1/credits/refund \
      -H 'Cookie: session_token=<ADMIN_TOKEN>' \
      -H 'Content-Type: application/json' \
      -d '{
@@ -514,7 +514,7 @@ curl -X POST \
    ```
    Subject: Credit Refund Issued - Apology for Service Outage
 
-   Hi Aaron,
+   Hi Admin,
 
    We sincerely apologize for the service outage on January 14th.
 
@@ -560,7 +560,7 @@ Sort by: [Created Date ▼] [MRR] [Tier] [Status]
 ┌─────────────────────────────────────────────────────────────┐
 │ User              │ Tier         │ MRR   │ Status  │ Actions│
 ├───────────────────┼──────────────┼───────┼─────────┼────────┤
-│ aaron@magic...    │ Professional │ $49   │ Active  │ [...]  │
+│ admin@example.com    │ Professional │ $49   │ Active  │ [...]  │
 │ john@example.com  │ Enterprise   │ $99   │ Active  │ [...]  │
 │ jane@company.com  │ Starter      │ $19   │ Past Due│ [...]  │
 │ bob@startup.io    │ Professional │ $49   │ Paused  │ [...]  │
@@ -602,7 +602,7 @@ Sort by: [Created Date ▼] [MRR] [Tier] [Status]
    Reason: Insufficient funds
 
    Please update your payment method to avoid service interruption:
-   https://your-domain.com/billing/payment-methods
+   https://unicorncommander.ai/billing/payment-methods
 
    We'll retry on Jan 15, 2025.
 
@@ -633,7 +633,7 @@ Sort by: [Created Date ▼] [MRR] [Tier] [Status]
 **API Request:**
 ```bash
 curl -X PUT \
-  https://your-domain.com/api/v1/admin/subscriptions/7a6bfd31 \
+  https://unicorncommander.ai/api/v1/admin/subscriptions/7a6bfd31 \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -656,7 +656,7 @@ curl -X PUT \
 **API Request:**
 ```bash
 curl -X GET \
-  'https://your-domain.com/api/v1/pricing/rules/byok' \
+  'https://unicorncommander.ai/api/v1/pricing/rules/byok' \
   -H 'Cookie: session_token=<ADMIN_TOKEN>'
 ```
 
@@ -698,7 +698,7 @@ curl -X GET \
 **API Request:**
 ```bash
 curl -X PUT \
-  https://your-domain.com/api/v1/pricing/rules/byok/rule_openrouter \
+  https://unicorncommander.ai/api/v1/pricing/rules/byok/rule_openrouter \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -715,7 +715,7 @@ curl -X PUT \
   "markup_value": "0.03",
   "description": "Reduced to 3% to compete with market rates",
   "updated_at": "2025-01-15T10:30:00Z",
-  "updated_by": "admin@your-domain.com"
+  "updated_by": "admin@unicorncommander.ai"
 }
 ```
 
@@ -734,7 +734,7 @@ Example savings:
 - New platform fee: $0.00009 (3%)
 - You save: 40% on platform fees!
 
-Start saving: https://your-domain.com/settings/byok
+Start saving: https://unicorncommander.ai/settings/byok
 ```
 
 ---
@@ -746,7 +746,7 @@ Start saving: https://your-domain.com/settings/byok
 **API Request:**
 ```bash
 curl -X PUT \
-  https://your-domain.com/api/v1/pricing/rules/byok/rule_huggingface \
+  https://unicorncommander.ai/api/v1/pricing/rules/byok/rule_huggingface \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1087,7 +1087,7 @@ Option B: Credit bonus
 ```
 Subject: We'd Like to Make This Right
 
-Hi Aaron,
+Hi Admin,
 
 We're sorry your experience didn't meet expectations.
 
@@ -1132,7 +1132,7 @@ docker logs ops-center-direct | grep webhook | tail -50
 # https://dashboard.stripe.com/test/webhooks
 
 # Check Lago webhook logs
-# https://billing.your-domain.com/admin (login required)
+# https://billing.unicorncommander.ai/admin (login required)
 ```
 
 **Solution:**
@@ -1143,7 +1143,7 @@ docker logs ops-center-direct | grep webhook | tail -50
      -u sk_test_...:
 
    # Lago
-   curl https://billing-api.your-domain.com/webhooks \
+   curl https://billing-api.unicorncommander.ai/webhooks \
      -H "Authorization: Bearer d87f40d7..."
    ```
 
@@ -1173,13 +1173,13 @@ docker logs ops-center-direct | grep webhook | tail -50
 ```bash
 # Get user's transactions
 curl -X GET \
-  'https://your-domain.com/api/v1/credits/transactions?limit=100' \
+  'https://unicorncommander.ai/api/v1/credits/transactions?limit=100' \
   -H 'Cookie: session_token=<USER_TOKEN>' \
   | jq '.[] | select(.transaction_type == "deducted") | {model, tokens: .metadata.tokens, cost: .cost_breakdown}'
 
 # Compare with pricing rules
 curl -X POST \
-  https://your-domain.com/api/v1/pricing/calculate/comparison \
+  https://unicorncommander.ai/api/v1/pricing/calculate/comparison \
   -H 'Cookie: session_token=<ADMIN_TOKEN>' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -1246,7 +1246,7 @@ curl https://api.stripe.com/v1/charges?customer=cus_abc123 \
 
 **2. Hard Decline (card_declined, expired_card):**
 - Prompt user to update payment method
-- Provide direct link: `https://your-domain.com/billing/payment-methods`
+- Provide direct link: `https://unicorncommander.ai/billing/payment-methods`
 - If no response after 7 days, suspend subscription
 
 **3. Fraud Detection (card_issuer flagged):**
@@ -1459,8 +1459,8 @@ Billing is the **lifeblood of your SaaS**. Master it, and your company thrives.
 
 **Resources:**
 - 📧 Support: support@magicunicorn.tech
-- 📚 Docs: https://your-domain.com/docs
-- 🐛 Report Issues: https://git.your-domain.com/issues
+- 📚 Docs: https://unicorncommander.ai/docs
+- 🐛 Report Issues: https://git.unicorncommander.ai/issues
 
 ---
 

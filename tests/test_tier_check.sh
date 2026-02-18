@@ -161,10 +161,10 @@ fi
 echo ""
 
 echo -e "${YELLOW}Checking middlewares.yml configuration...${NC}"
-if [ -f "/home/muut/Infrastructure/traefik/dynamic/middlewares.yml" ]; then
+if [ -f "/home/deploy/Infrastructure/traefik/dynamic/middlewares.yml" ]; then
     echo -e "${GREEN}✓ middlewares.yml exists${NC}"
 
-    if grep -q "lago-tier-check" "/home/muut/Infrastructure/traefik/dynamic/middlewares.yml"; then
+    if grep -q "lago-tier-check" "/home/deploy/Infrastructure/traefik/dynamic/middlewares.yml"; then
         echo -e "${GREEN}✓ lago-tier-check middleware defined${NC}"
     else
         echo -e "${RED}✗ lago-tier-check middleware not found in file${NC}"
@@ -211,7 +211,7 @@ if [ $TESTS_FAILED -eq 0 ]; then
     echo "2. Create test user in Keycloak with subscription_tier attribute"
     echo "3. Restart Ops-Center: docker restart unicorn-ops-center"
     echo "4. Re-run this test with real user email"
-    echo "5. Test full flow via browser: https://billing.your-domain.com"
+    echo "5. Test full flow via browser: https://billing.unicorncommander.ai"
     exit 0
 else
     echo -e "${RED}========================================${NC}"

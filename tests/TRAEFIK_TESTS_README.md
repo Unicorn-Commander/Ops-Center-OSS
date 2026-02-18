@@ -217,7 +217,7 @@ tests/
 
 ```bash
 # Navigate to tests directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/tests
+cd /opt/ops-center/tests
 
 # Make script executable (first time only)
 chmod +x run_traefik_tests.sh
@@ -280,7 +280,7 @@ pytest tests/ -v -m "not destructive"
 ### 1. Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # Install test dependencies
 pip install -r tests/requirements-test.txt

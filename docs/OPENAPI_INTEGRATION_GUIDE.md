@@ -193,7 +193,7 @@ When endpoints are added or modified:
 
 ```bash
 # Navigate to backend directory
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 
 # Run endpoint extractor
 python3 scripts/simple_endpoint_extractor.py
@@ -224,7 +224,7 @@ All endpoints require JWT Bearer token:
 
 ```bash
 curl -H "Authorization: Bearer <token>" \
-  https://your-domain.com/api/v1/users
+  https://unicorncommander.ai/api/v1/users
 ```
 
 ### Rate Limiting
@@ -271,7 +271,7 @@ All endpoints prefixed with `/api/v1/` to support future versioning.
 
 ### Contact
 - **Email**: support@magicunicorn.tech
-- **Website**: https://your-domain.com
+- **Website**: https://unicorncommander.com
 - **GitHub**: https://github.com/Unicorn-Commander/UC-Cloud
 
 ---

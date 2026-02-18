@@ -94,7 +94,7 @@ Final QA verification for Ops-Center v2.5.0 has been completed successfully. All
 **Severity**: Critical
 **Status**: ✅ VERIFIED
 **Solution**: Confirmed `import os` present at line 17
-**Files**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/email_alerts_api.py`
+**Files**: `/opt/ops-center/backend/email_alerts_api.py`
 **Impact**: No NameError on email history endpoint
 
 ### Issue 3: CSRF Exemptions Incomplete

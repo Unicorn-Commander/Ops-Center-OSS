@@ -1,13 +1,3 @@
-# Ops-Center Production Docker Compose
-#
-# CONFIGURATION REQUIRED:
-# Set the following environment variables before deploying:
-#   - APP_DOMAIN: Your application domain (e.g., ops.example.com)
-#   - NETWORK_NAME: Your Docker network name (default: ops-center-network)
-#
-# Example:
-#   APP_DOMAIN=ops.example.com docker-compose -f docker-compose.prod.yml up -d
-
 version: '3.8'
 
 services:
@@ -19,19 +9,19 @@ services:
       - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
     networks:
       - web
-      - ${NETWORK_NAME:-ops-center-network}
+      - unicorn-network
     labels:
       - "traefik.enable=true"
 
-      # Main router - configure APP_DOMAIN environment variable
-      - "traefik.http.routers.ops-center-main.rule=Host(`${APP_DOMAIN:-localhost}`)"
+      # Main router for your-domain.com (authentication temporarily disabled for testing)
+      - "traefik.http.routers.ops-center-main.rule=Host(`your-domain.com`)"
       - "traefik.http.routers.ops-center-main.entrypoints=https"
       - "traefik.http.routers.ops-center-main.tls.certresolver=letsencrypt"
       - "traefik.http.routers.ops-center-main.priority=100"
       - "traefik.http.services.ops-center-main.loadbalancer.server.port=80"
 
       # HTTP to HTTPS redirect
-      - "traefik.http.routers.ops-center-main-http.rule=Host(`${APP_DOMAIN:-localhost}`)"
+      - "traefik.http.routers.ops-center-main-http.rule=Host(`your-domain.com`)"
       - "traefik.http.routers.ops-center-main-http.entrypoints=http"
       - "traefik.http.routers.ops-center-main-http.middlewares=https-redirect"
       - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
@@ -39,5 +29,5 @@ services:
 networks:
   web:
     external: true
-  ${NETWORK_NAME:-ops-center-network}:
+  unicorn-network:
     external: true

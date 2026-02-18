@@ -3,11 +3,19 @@
 # UC-1 Pro Admin Dashboard Installation Script
 # This script installs all system dependencies required for the admin dashboard
 #
+# NOTE: For Docker-based deployments (recommended), use:
+#   ./scripts/setup-infrastructure.sh
+#
+# This legacy script is for bare-metal installations only.
+#
 
 set -e  # Exit on error
 
 echo "UC-1 Pro Admin Dashboard - System Dependencies Installation"
 echo "=========================================================="
+echo ""
+echo "NOTE: For Docker-based deployments, use: ./scripts/setup-infrastructure.sh"
+echo ""
 
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then 

@@ -71,9 +71,9 @@ asyncio.run(check())
 
 **File**: `.env.stripe`
 ```env
-STRIPE_PUBLISHABLE_KEY=pk_test_51QwxFKDzk9HqAZnH...
-STRIPE_SECRET_KEY=sk_test_51QwxFKDzk9HqAZnH...
-STRIPE_API_KEY=sk_test_51QwxFKDzk9HqAZnH...
+STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_API_KEY=sk_test_your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=whsec_placeholder
 ```
 
@@ -135,8 +135,8 @@ fetch('/api/v1/billing/credits/packages', {
 ```json
 {
   "package_code": "starter",
-  "success_url": "https://your-domain.com/admin/credits?purchase=success",
-  "cancel_url": "https://your-domain.com/admin/credits?purchase=cancelled"
+  "success_url": "https://unicorncommander.ai/admin/credits?purchase=success",
+  "cancel_url": "https://unicorncommander.ai/admin/credits?purchase=cancelled"
 }
 ```
 
@@ -286,7 +286,7 @@ asyncio.run(test())
 
 ### Current Status
 
-**Webhook Endpoint**: `https://your-domain.com/api/v1/billing/credits/webhook`
+**Webhook Endpoint**: `https://unicorncommander.ai/api/v1/billing/credits/webhook`
 **Status**: ❌ NOT CONFIGURED IN STRIPE
 
 ### Required Event
@@ -299,7 +299,7 @@ asyncio.run(test())
 **User must**:
 1. Login to Stripe Dashboard: https://dashboard.stripe.com/test/webhooks
 2. Click "Add endpoint"
-3. Enter URL: `https://your-domain.com/api/v1/billing/credits/webhook`
+3. Enter URL: `https://unicorncommander.ai/api/v1/billing/credits/webhook`
 4. Select event: `checkout.session.completed`
 5. Copy webhook secret (starts with `whsec_`)
 6. Add to `.env.auth`: `STRIPE_WEBHOOK_SECRET_CREDITS=whsec_xxxxx`

@@ -270,26 +270,20 @@ run_smoke_tests() {
     fi
 
     # Test 4: Database connectivity
-    # Uses environment variables: POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
-    DB_HOST="${POSTGRES_HOST:-localhost}"
-    DB_USER="${POSTGRES_USER:-ops_user}"
-    DB_PASS="${POSTGRES_PASSWORD:-change-me}"
-    DB_NAME="${POSTGRES_DB:-ops_center_db}"
-    if docker exec ops-center-direct python -c "import psycopg2; import os; conn = psycopg2.connect(host=os.getenv('POSTGRES_HOST','localhost'), user=os.getenv('POSTGRES_USER','ops_user'), password=os.getenv('POSTGRES_PASSWORD',''), dbname=os.getenv('POSTGRES_DB','ops_center_db')); conn.close()" 2>/dev/null; then
-        log_success "Database connectivity OK"
+    if docker exec ops-center-direct python -c "import psycopg2; conn = psycopg2.connect(host='unicorn-postgresql', user='unicorn', password='your-postgres-password', dbname='unicorn_db'); conn.close()" 2>/dev/null; then
+        log_success "✓ Database connectivity OK"
         tests_passed=$((tests_passed + 1))
     else
-        log_error "Database connectivity failed"
+        log_error "✗ Database connectivity failed"
         tests_failed=$((tests_failed + 1))
     fi
 
     # Test 5: Redis connectivity
-    # Uses environment variable: REDIS_HOST
-    if docker exec ops-center-direct python -c "import redis; import os; r = redis.Redis(host=os.getenv('REDIS_HOST','localhost')); r.ping()" 2>/dev/null; then
-        log_success "Redis connectivity OK"
+    if docker exec ops-center-direct python -c "import redis; r = redis.Redis(host='unicorn-redis'); r.ping()" 2>/dev/null; then
+        log_success "✓ Redis connectivity OK"
         tests_passed=$((tests_passed + 1))
     else
-        log_error "Redis connectivity failed"
+        log_error "✗ Redis connectivity failed"
         tests_failed=$((tests_failed + 1))
     fi
 

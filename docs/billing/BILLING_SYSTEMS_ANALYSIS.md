@@ -2,7 +2,7 @@
 
 **Date**: November 14, 2025
 **Analyst**: Billing Systems Team Lead
-**Working Directory**: `/home/muut/Production/UC-Cloud/services/ops-center`
+**Working Directory**: `/opt/ops-center`
 
 ---
 

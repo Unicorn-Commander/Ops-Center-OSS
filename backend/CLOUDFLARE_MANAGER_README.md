@@ -2,7 +2,7 @@
 
 **Status**: ✅ Production Ready (Phase 1 Complete)
 **Module**: `cloudflare_manager.py`
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/cloudflare_manager.py`
+**Location**: `/opt/ops-center/backend/cloudflare_manager.py`
 **Epic**: 1.6 Phase 1 - Zone Management
 **Created**: October 22, 2025
 
@@ -698,7 +698,7 @@ CREATE TABLE cloudflare_zones (
 **Current Cloudflare Account** (as of Oct 22, 2025):
 
 **Total Zones**: 6
-- **Active**: 3 (superiorbsolutions.com, your-domain.com, your-domain.com)
+- **Active**: 3 (superiorbsolutions.com, unicorncommander.ai, unicorncommander.com)
 - **Pending**: 3 (adornadesign.art, magicunicorn.tech, shawns.services)
 
 **Nameservers Assigned**:
@@ -805,9 +805,9 @@ AuditLogger.log_cloudflare_action(
 
 ## Documentation
 
-**Architecture Spec**: `/home/muut/Production/UC-Cloud/docs/epic1.6_cloudflare_architecture_spec.md`
-**Module Code**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/cloudflare_manager.py`
-**This README**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/CLOUDFLARE_MANAGER_README.md`
+**Architecture Spec**: `/opt/uc-cloud/docs/epic1.6_cloudflare_architecture_spec.md`
+**Module Code**: `/opt/ops-center/backend/cloudflare_manager.py`
+**This README**: `/opt/ops-center/backend/CLOUDFLARE_MANAGER_README.md`
 
 ---
 

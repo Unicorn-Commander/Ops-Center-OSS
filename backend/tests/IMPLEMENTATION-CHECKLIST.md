@@ -325,7 +325,7 @@ app.include_router(profile_router)  # NEW
 
 ### Create org_api.py
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 touch org_api.py
 ```
 
@@ -381,5 +381,5 @@ Before starting implementation, verify:
 
 **Last Updated**: October 13, 2025
 **See Also**:
-- Full Audit: `/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`
-- Summary: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/AUDIT-SUMMARY.md`
+- Full Audit: `/opt/ops-center/backend/docs/API-ENDPOINT-COVERAGE.md`
+- Summary: `/opt/ops-center/backend/tests/AUDIT-SUMMARY.md`

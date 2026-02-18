@@ -221,7 +221,7 @@ RESULTS: 11/11 passed
 
 ```bash
 # 1. Frontend build
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 NODE_OPTIONS='--max-old-space-size=4096' npx vite build
 
 # 2. Deploy to public directory
@@ -231,7 +231,7 @@ cp -r dist/* public/
 docker restart ops-center-direct
 
 # 4. Verify
-curl https://your-domain.com/health
+curl https://unicorncommander.ai/health
 ```
 
 ---

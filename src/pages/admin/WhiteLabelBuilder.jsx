@@ -44,6 +44,7 @@ import {
   Image as ImageIcon,
   Code as CodeIcon
 } from '@mui/icons-material';
+import PageHeader from '../../components/admin/PageHeader';
 
 const WhiteLabelBuilder = () => {
   // Tab state
@@ -798,16 +799,37 @@ const WhiteLabelBuilder = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <PaletteIcon fontSize="large" />
-          White Label Builder
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Customize the branding and appearance of your Ops-Center instance
-        </Typography>
-      </Box>
+      <PageHeader
+        title="White Label Builder"
+        subtitle="Customize the branding and appearance of your Ops-Center instance"
+        actions={(
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="contained"
+              startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
+              onClick={saveConfig}
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<PreviewIcon />}
+              onClick={() => window.open('/', '_blank')}
+            >
+              Preview
+            </Button>
+            <Button
+              variant="outlined"
+              color="warning"
+              startIcon={<ResetIcon />}
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+          </Stack>
+        )}
+      />
 
       {/* Error Alert */}
       {error && (
@@ -815,35 +837,6 @@ const WhiteLabelBuilder = () => {
           {error}
         </Alert>
       )}
-
-      {/* Action Buttons */}
-      <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-        <Button
-          variant="contained"
-          startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
-          onClick={saveConfig}
-          disabled={saving}
-        >
-          {saving ? 'Saving...' : 'Save Configuration'}
-        </Button>
-
-        <Button
-          variant="outlined"
-          startIcon={<PreviewIcon />}
-          onClick={() => window.open('/', '_blank')}
-        >
-          Preview
-        </Button>
-
-        <Button
-          variant="outlined"
-          color="warning"
-          startIcon={<ResetIcon />}
-          onClick={handleReset}
-        >
-          Reset to Defaults
-        </Button>
-      </Stack>
 
       {/* Main Content - Two Column Layout */}
       <Grid container spacing={3}>

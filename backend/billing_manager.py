@@ -119,7 +119,7 @@ def get_current_user(request: Request) -> Dict[str, Any]:
 
     return {
         "user_id": "admin" if is_admin else "user-" + secrets.token_hex(4),
-        "email": "admin@your-domain.com" if is_admin else "user@example.com",
+        "email": "admin@unicorncommander.ai" if is_admin else "user@example.com",
         "is_admin": is_admin,
         "subscription_tier": "enterprise" if is_admin else "free"
     }
@@ -335,7 +335,7 @@ async def update_user_subscription(tier: str, request: Request):
     return {
         "message": f"Subscription updated to {tier}",
         "payment_required": tier != "free",
-        "checkout_url": f"https://billing.your-domain.com/checkout?tier={tier}&user={user['user_id']}"
+        "checkout_url": f"https://billing.unicorncommander.ai/checkout?tier={tier}&user={user['user_id']}"
     }
 
 # ============================================

@@ -353,7 +353,7 @@ docker pull unicorncommander/ops-center:latest
 docker-compose -f docker-compose.direct.yml restart ops-center-direct
 
 # 4. Verify deployment
-curl https://your-domain.com/api/v1/health
+curl https://unicorncommander.ai/api/v1/health
 
 # 5. Monitor logs
 docker logs -f ops-center-direct
@@ -372,7 +372,7 @@ docker exec ops-center-direct tar -xzf /tmp/ops-center-backup.tar.gz -C /
 docker-compose -f docker-compose.direct.yml start ops-center-direct
 
 # 4. Verify rollback
-curl https://your-domain.com/api/v1/health
+curl https://unicorncommander.ai/api/v1/health
 ```
 
 ---
@@ -403,11 +403,11 @@ curl https://your-domain.com/api/v1/health
 1. **GitHub Issues:** https://github.com/Unicorn-Commander/UC-1-Pro/issues
 2. **Email:** support@magicunicorn.tech
 3. **In-App Feedback:** Click "Help & Documentation" → "Feedback"
-4. **Community Forum:** https://forum.your-domain.com
+4. **Community Forum:** https://forum.unicorncommander.ai
 
 ### Support Channels
 
-- **Documentation:** https://docs.your-domain.com
+- **Documentation:** https://docs.unicorncommander.ai
 - **Email Support:** support@magicunicorn.tech
 - **Slack Community:** #ops-center-support
 - **Emergency:** emergency@magicunicorn.tech (critical issues only)

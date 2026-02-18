@@ -121,12 +121,12 @@ EOF
 
 ```bash
 # Copy migration to container
-docker cp /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations/create_llm_management_tables_v2.sql \
+docker cp /opt/ops-center/backend/migrations/create_llm_management_tables_v2.sql \
   unicorn-postgresql:/tmp/migration_v2.sql
 
 # Backup database first
 docker exec unicorn-postgresql pg_dump -U unicorn unicorn_db > \
-  /home/muut/backups/unicorn_db_before_migration_v2_$(date +%Y%m%d_%H%M%S).sql
+  /opt/backups/unicorn_db_before_migration_v2_$(date +%Y%m%d_%H%M%S).sql
 
 # Run migration
 docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -f /tmp/migration_v2.sql
@@ -147,7 +147,7 @@ If you need to undo the V2 migration:
 
 ```bash
 # Copy rollback script to container
-docker cp /home/muut/Production/UC-Cloud/services/ops-center/backend/migrations/rollback_llm_management_tables_v2.sql \
+docker cp /opt/ops-center/backend/migrations/rollback_llm_management_tables_v2.sql \
   unicorn-postgresql:/tmp/rollback_v2.sql
 
 # Run rollback

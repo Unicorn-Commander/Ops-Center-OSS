@@ -30,9 +30,9 @@ class EmailService:
         self.smtp_password = os.getenv("SMTP_PASSWORD")
 
         # Email settings
-        self.from_email = os.getenv("EMAIL_FROM", "noreply@your-domain.com")
+        self.from_email = os.getenv("EMAIL_FROM", "noreply@unicorncommander.ai")
         self.from_name = os.getenv("EMAIL_FROM_NAME", "Unicorn Commander")
-        self.reply_to = os.getenv("EMAIL_REPLY_TO", "support@your-domain.com")
+        self.reply_to = os.getenv("EMAIL_REPLY_TO", "support@unicorncommander.ai")
 
         logger.info(f"Email service initialized: provider={self.provider}, enabled={self.enabled}")
 
@@ -237,14 +237,14 @@ class EmailService:
                 </ul>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://your-domain.com/dashboard"
+                    <a href="https://unicorncommander.ai/dashboard"
                        style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
                         Go to Dashboard
                     </a>
                 </div>
 
                 <p style="color: #999; font-size: 14px; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
-                    Questions? Contact us at <a href="mailto:support@your-domain.com">support@your-domain.com</a>
+                    Questions? Contact us at <a href="mailto:support@unicorncommander.ai">support@unicorncommander.ai</a>
                 </p>
             </div>
         </body>
@@ -287,7 +287,7 @@ class EmailService:
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://your-domain.com/dashboard"
+                    <a href="https://unicorncommander.ai/dashboard"
                        style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
                         View Dashboard
                     </a>
@@ -336,14 +336,14 @@ class EmailService:
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://your-domain.com/pricing"
+                    <a href="https://unicorncommander.ai/pricing"
                        style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
                         Reactivate Subscription
                     </a>
                 </div>
 
                 <p style="color: #999; font-size: 14px; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
-                    Need help? Contact us at <a href="mailto:support@your-domain.com">support@your-domain.com</a>
+                    Need help? Contact us at <a href="mailto:support@unicorncommander.ai">support@unicorncommander.ai</a>
                 </p>
             </div>
         </body>
@@ -382,14 +382,14 @@ class EmailService:
                 </p>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://your-domain.com/dashboard/billing"
+                    <a href="https://unicorncommander.ai/dashboard/billing"
                        style="background: #dc3545; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
                         Update Payment Method
                     </a>
                 </div>
 
                 <p style="color: #999; font-size: 14px; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
-                    Questions? Contact us at <a href="mailto:support@your-domain.com">support@your-domain.com</a>
+                    Questions? Contact us at <a href="mailto:support@unicorncommander.ai">support@unicorncommander.ai</a>
                 </p>
             </div>
         </body>
@@ -431,7 +431,7 @@ class EmailService:
                 {f'<div style="text-align: center; margin: 30px 0;"><a href="{invoice_url}" style="background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">View Invoice</a></div>' if invoice_url else ''}
 
                 <p style="color: #999; font-size: 14px; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px;">
-                    Questions about this invoice? Contact us at <a href="mailto:billing@your-domain.com">billing@your-domain.com</a>
+                    Questions about this invoice? Contact us at <a href="mailto:billing@unicorncommander.ai">billing@unicorncommander.ai</a>
                 </p>
             </div>
         </body>

@@ -266,7 +266,7 @@ if [ $FAIL -eq 0 ]; then
     echo "  - Available in OpenAPI schema"
     echo ""
     echo "Next Step: Manual frontend testing required"
-    echo "  URL: https://your-domain.com/admin/system/users"
+    echo "  URL: https://unicorncommander.ai/admin/system/users"
     echo ""
     echo "See API_CONNECTIVITY_TEST_REPORT.md for detailed testing guide"
 else

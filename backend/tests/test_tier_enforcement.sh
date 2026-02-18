@@ -4,7 +4,7 @@
 
 set -e
 
-BASE_URL="${BASE_URL:-https://your-domain.com}"
+BASE_URL="${BASE_URL:-https://unicorncommander.ai}"
 SESSION_FILE="${SESSION_FILE:-/tmp/tier_test_session.txt}"
 
 echo "=========================================="

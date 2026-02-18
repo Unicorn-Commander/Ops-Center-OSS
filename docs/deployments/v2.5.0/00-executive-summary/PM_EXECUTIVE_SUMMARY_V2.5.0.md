@@ -80,7 +80,7 @@ Deployed Ops-Center v2.5.0 with 3 major systems (8,869 lines of code) and coordi
 
 **Task 1: Grafana API Key - COMPLETE** ✅
 - **Grafana Instance**: taxsquare-grafana (v12.2.0, healthy)
-- **API Key Generated**: `glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb`
+- **API Key Generated**: `your-grafana-api-key`
 - **Role**: Editor (can create/modify dashboards)
 - **Tested**: Health endpoint responding (283ms)
 - **Next Step**: Add key to Ops-Center `.env.auth`
@@ -226,7 +226,7 @@ chmod +x test_commands.sh
 
 ```bash
 # Add to .env.auth
-GRAFANA_API_KEY=glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb
+GRAFANA_API_KEY=your-grafana-api-key
 GRAFANA_URL=http://taxsquare-grafana:3000
 
 # Restart to load new env

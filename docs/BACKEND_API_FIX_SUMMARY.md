@@ -262,7 +262,7 @@ curl -s http://localhost:8084/api/v1/cloudflare/zones
 ```
 
 **To test with authentication**:
-1. Login to Ops-Center UI: https://your-domain.com
+1. Login to Ops-Center UI: https://unicorncommander.ai
 2. Open browser dev tools → Network tab
 3. Copy session cookie
 4. Test API with cookie:
@@ -343,7 +343,7 @@ curl -s http://localhost:8084/api/v1/system/hardware | jq
    ```
 
 6. **Access UI**:
-   - Open: https://your-domain.com/admin/network/cloudflare-dns
+   - Open: https://unicorncommander.ai/admin/network/cloudflare-dns
    - Verify: Should load zones or show setup instructions
 
 ### Post-Deployment Verification
@@ -456,7 +456,7 @@ if (err.response?.status === 401 || err.response?.status === 403) {
 
 The current Cloudflare API token in `.env.auth` is:
 ```
-CLOUDFLARE_API_TOKEN=0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_
+CLOUDFLARE_API_TOKEN=your-cloudflare-api-token
 ```
 
 **This token is exposed in**:
@@ -477,7 +477,7 @@ CLOUDFLARE_API_TOKEN=0LVXYAzHsGRtxn1Qe0_ItTlCFGxW9iogQCmsegC_
 
 3. **Update Configuration**:
    ```bash
-   vim /home/muut/Production/UC-Cloud/services/ops-center/.env.auth
+   vim /opt/ops-center/.env.auth
    # Update CLOUDFLARE_API_TOKEN line
    docker restart ops-center-direct
    ```

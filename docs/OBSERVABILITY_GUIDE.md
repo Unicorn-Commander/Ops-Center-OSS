@@ -728,7 +728,7 @@ if error_rate > thresholds["api"]["error_rate_warning"]:
 ### 1. Install Dependencies
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 pip install -r requirements.txt
 ```
 
@@ -782,7 +782,7 @@ ENVIRONMENT=production  # production, staging, development
 ### 4. Export Alerting Rules
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 python -c "from observability.alerting import AlertingRules; AlertingRules.export_prometheus_rules('../config/alerting_rules.yml')"
 ```
 

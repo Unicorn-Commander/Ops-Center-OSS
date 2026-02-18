@@ -201,7 +201,7 @@ fastapi.exceptions.HTTPException: 403: CSRF validation failed
 **Status**: ❓ **CANNOT TEST** (API blocked by CSRF)
 
 **Expected**:
-- Access at https://your-domain.com/admin/logs
+- Access at https://unicorncommander.ai/admin/logs
 - Advanced filter controls visible
 - Search results load
 
@@ -337,7 +337,7 @@ GRAFANA_URL=http://taxsquare-grafana:3000
 **Status**: ❓ **CANNOT TEST** (No API key)
 
 **Expected**:
-- Access at https://your-domain.com/admin/monitoring/grafana/dashboards
+- Access at https://unicorncommander.ai/admin/monitoring/grafana/dashboards
 - Dashboard list loads
 - Embed controls work (theme, fullscreen, refresh)
 

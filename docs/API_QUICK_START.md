@@ -45,7 +45,7 @@ The Ops-Center API uses OAuth 2.0 authentication via Keycloak SSO. You'll need t
 **Using cURL:**
 
 ```bash
-curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
   -d "client_id=ops-center" \
@@ -96,7 +96,7 @@ os.environ['OPS_TOKEN'] = 'your-access-token-here'
 Access tokens expire after 1 hour. Use your refresh token to get a new access token without re-authenticating:
 
 ```bash
-curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=refresh_token" \
   -d "client_id=ops-center" \
@@ -115,7 +115,7 @@ Let's start with a simple request to verify your authentication is working.
 **cURL:**
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/system/status \
+curl -X GET https://unicorncommander.ai/api/v1/system/status \
   -H "Authorization: Bearer $OPS_TOKEN"
 ```
 
@@ -147,7 +147,7 @@ import os
 token = os.environ['OPS_TOKEN']
 
 response = requests.get(
-    'https://your-domain.com/api/v1/system/status',
+    'https://unicorncommander.ai/api/v1/system/status',
     headers={'Authorization': f'Bearer {token}'}
 )
 
@@ -186,7 +186,7 @@ print(f"Memory: {data['memory_percent']}%")
 **cURL:**
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/admin/users \
+curl -X GET https://unicorncommander.ai/api/v1/admin/users \
   -H "Authorization: Bearer $OPS_TOKEN"
 ```
 
@@ -217,7 +217,7 @@ getUsers();
 ```python
 def get_users(token):
     response = requests.get(
-        'https://your-domain.com/api/v1/admin/users',
+        'https://unicorncommander.ai/api/v1/admin/users',
         headers={'Authorization': f'Bearer {token}'}
     )
     users = response.json()
@@ -279,7 +279,7 @@ createUser({
 ```python
 def create_user(token, user_data):
     response = requests.post(
-        'https://your-domain.com/api/v1/admin/users/comprehensive',
+        'https://unicorncommander.ai/api/v1/admin/users/comprehensive',
         headers={
             'Authorization': f'Bearer {token}',
             'Content-Type': 'application/json'
@@ -342,7 +342,7 @@ getSubscription();
 ```python
 def get_subscription(token):
     response = requests.get(
-        'https://your-domain.com/api/v1/billing/subscriptions/current',
+        'https://unicorncommander.ai/api/v1/billing/subscriptions/current',
         headers={'Authorization': f'Bearer {token}'}
     )
 
@@ -405,7 +405,7 @@ def filter_users(token, **filters):
     params = {k: v for k, v in params.items() if v is not None}
 
     response = requests.get(
-        'https://your-domain.com/api/v1/admin/users',
+        'https://unicorncommander.ai/api/v1/admin/users',
         params=params,
         headers={'Authorization': f'Bearer {token}'}
     )
@@ -460,7 +460,7 @@ console.log('AI Response:', response);
 ```python
 def chat_with_ai(token, messages, model='openai/gpt-4'):
     response = requests.post(
-        'https://your-domain.com/api/v1/llm/chat/completions',
+        'https://unicorncommander.ai/api/v1/llm/chat/completions',
         headers={
             'Authorization': f'Bearer {token}',
             'Content-Type': 'application/json'
@@ -567,7 +567,7 @@ def safe_api_call(url, token, method='GET', data=None):
 
 # Usage
 try:
-    users = safe_api_call('https://your-domain.com/api/v1/admin/users', token)
+    users = safe_api_call('https://unicorncommander.ai/api/v1/admin/users', token)
 except Exception as e:
     print(f"Failed to fetch users: {e}")
 ```
@@ -646,7 +646,7 @@ Now that you've completed the quick start, explore these advanced topics:
 
 ### 🛠️ Interactive Tools
 
-- **API Playground**: https://your-domain.com/admin/platform/api-docs
+- **API Playground**: https://unicorncommander.ai/admin/platform/api-docs
   - Test API endpoints interactively
   - See request/response examples
   - Save and share requests
@@ -694,7 +694,7 @@ Now that you've completed the quick start, explore these advanced topics:
 **Solution**: Your access token has expired. Refresh it using your refresh token:
 
 ```bash
-curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/token \
+curl -X POST https://auth.unicorncommander.ai/realms/uchub/protocol/openid-connect/token \
   -d "grant_type=refresh_token" \
   -d "client_id=ops-center" \
   -d "client_secret=your-keycloak-client-secret" \
@@ -706,7 +706,7 @@ curl -X POST https://auth.your-domain.com/realms/uchub/protocol/openid-connect/t
 **Solution**: You don't have the required permissions. Check your role:
 
 ```bash
-curl -X GET https://your-domain.com/api/v1/auth/session \
+curl -X GET https://unicorncommander.ai/api/v1/auth/session \
   -H "Authorization: Bearer $OPS_TOKEN"
 ```
 
@@ -730,8 +730,8 @@ Most admin operations require the `admin` or `moderator` role.
 
 ## Get Help
 
-- 📚 **Documentation**: https://your-domain.com:8086
-- 💬 **Support**: support@your-domain.com
+- 📚 **Documentation**: https://unicorncommander.ai:8086
+- 💬 **Support**: support@unicorncommander.com
 - 🐛 **Report Bugs**: https://github.com/Unicorn-Commander/UC-Cloud/issues
 - 💡 **Feature Requests**: https://github.com/Unicorn-Commander/UC-Cloud/discussions
 

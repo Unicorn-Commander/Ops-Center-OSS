@@ -147,14 +147,14 @@ info:
 
   contact:
     name: UC-Cloud Support
-    url: https://your-domain.com
-    email: support@example.com
+    url: https://unicorncommander.com
+    email: support@magicunicorn.tech
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://your-domain.com
+  - url: https://unicorncommander.ai
     description: Production server
   - url: http://localhost:8084
     description: Development server
@@ -239,7 +239,7 @@ components:
         JWT token obtained from Keycloak SSO authentication.
 
         To obtain a token:
-        1. Navigate to https://auth.your-domain.com
+        1. Navigate to https://auth.unicorncommander.ai
         2. Login with credentials or OAuth provider (Google, GitHub, Microsoft)
         3. Retrieve access_token from response
         4. Include in Authorization header: `Bearer <token>`

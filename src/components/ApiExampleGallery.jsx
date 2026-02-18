@@ -37,7 +37,7 @@ const ApiExampleGallery = () => {
         title: 'List All Users',
         description: 'Retrieve a list of all users in your organization',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/admin/users \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/admin/users \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/admin/users', {
   headers: {
@@ -49,7 +49,7 @@ console.log(\`Found \${users.length} users\`);`,
           python: `import requests
 
 response = requests.get(
-    'https://your-domain.com/api/v1/admin/users',
+    'https://unicorncommander.ai/api/v1/admin/users',
     headers={'Authorization': f'Bearer {token}'}
 )
 users = response.json()
@@ -61,7 +61,7 @@ print(f"Found {len(users)} users")`
         title: 'Create New User',
         description: 'Create a new user account with full provisioning',
         code: {
-          curl: `curl -X POST https://your-domain.com/api/v1/admin/users/comprehensive \\
+          curl: `curl -X POST https://unicorncommander.ai/api/v1/admin/users/comprehensive \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -91,7 +91,7 @@ print(f"Found {len(users)} users")`
 });
 const user = await newUser.json();`,
           python: `response = requests.post(
-    'https://your-domain.com/api/v1/admin/users/comprehensive',
+    'https://unicorncommander.ai/api/v1/admin/users/comprehensive',
     headers={
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ user = response.json()`
         title: 'Filter Users',
         description: 'Advanced filtering by tier, role, status, and more',
         code: {
-          curl: `curl -X GET "https://your-domain.com/api/v1/admin/users?tier=professional&role=admin&status=enabled&limit=50" \\
+          curl: `curl -X GET "https://unicorncommander.ai/api/v1/admin/users?tier=professional&role=admin&status=enabled&limit=50" \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const params = new URLSearchParams({
   tier: 'professional',
@@ -135,7 +135,7 @@ const users = await response.json();`,
 }
 
 response = requests.get(
-    'https://your-domain.com/api/v1/admin/users',
+    'https://unicorncommander.ai/api/v1/admin/users',
     params=params,
     headers={'Authorization': f'Bearer {token}'}
 )
@@ -149,14 +149,14 @@ users = response.json()`
         title: 'List Organizations',
         description: 'Get all organizations accessible to your account',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/organizations \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/organizations \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/organizations', {
   headers: { 'Authorization': \`Bearer \${token}\` }
 });
 const orgs = await response.json();`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/organizations',
+    'https://unicorncommander.ai/api/v1/organizations',
     headers={'Authorization': f'Bearer {token}'}
 )
 orgs = response.json()`
@@ -167,7 +167,7 @@ orgs = response.json()`
         title: 'Create Organization',
         description: 'Create a new organization',
         code: {
-          curl: `curl -X POST https://your-domain.com/api/v1/organizations \\
+          curl: `curl -X POST https://unicorncommander.ai/api/v1/organizations \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -188,7 +188,7 @@ orgs = response.json()`
   })
 });`,
           python: `response = requests.post(
-    'https://your-domain.com/api/v1/organizations',
+    'https://unicorncommander.ai/api/v1/organizations',
     headers={
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
@@ -208,7 +208,7 @@ orgs = response.json()`
         title: 'Get Subscription Plans',
         description: 'List all available subscription plans',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/billing/plans \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/billing/plans \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/billing/plans', {
   headers: { 'Authorization': \`Bearer \${token}\` }
@@ -218,7 +218,7 @@ plans.forEach(plan => {
   console.log(\`\${plan.name}: $\${plan.amount_cents / 100}/\${plan.interval}\`);
 });`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/billing/plans',
+    'https://unicorncommander.ai/api/v1/billing/plans',
     headers={'Authorization': f'Bearer {token}'}
 )
 plans = response.json()
@@ -231,7 +231,7 @@ for plan in plans:
         title: 'Get Current Subscription',
         description: 'View your current subscription details',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/billing/subscriptions/current \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/billing/subscriptions/current \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/billing/subscriptions/current', {
   headers: { 'Authorization': \`Bearer \${token}\` }
@@ -240,7 +240,7 @@ const subscription = await response.json();
 console.log(\`Plan: \${subscription.plan_name}\`);
 console.log(\`Status: \${subscription.status}\`);`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/billing/subscriptions/current',
+    'https://unicorncommander.ai/api/v1/billing/subscriptions/current',
     headers={'Authorization': f'Bearer {token}'}
 )
 subscription = response.json()
@@ -255,7 +255,7 @@ print(f"Status: {subscription['status']}")`
         title: 'Chat Completion',
         description: 'Send a chat message to an AI model (OpenAI-compatible)',
         code: {
-          curl: `curl -X POST https://your-domain.com/api/v1/llm/chat/completions \\
+          curl: `curl -X POST https://unicorncommander.ai/api/v1/llm/chat/completions \\
   -H "Authorization: Bearer YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -284,7 +284,7 @@ print(f"Status: {subscription['status']}")`
 const data = await result.json();
 console.log(data.choices[0].message.content);`,
           python: `response = requests.post(
-    'https://your-domain.com/api/v1/llm/chat/completions',
+    'https://unicorncommander.ai/api/v1/llm/chat/completions',
     headers={
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json'
@@ -307,7 +307,7 @@ print(result['choices'][0]['message']['content'])`
         title: 'List Available Models',
         description: 'Get all available AI models via LiteLLM',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/llm/models \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/llm/models \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/llm/models', {
   headers: { 'Authorization': \`Bearer \${token}\` }
@@ -317,7 +317,7 @@ models.data.forEach(model => {
   console.log(\`\${model.id}: \${model.owned_by}\`);
 });`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/llm/models',
+    'https://unicorncommander.ai/api/v1/llm/models',
     headers={'Authorization': f'Bearer {token}'}
 )
 models = response.json()
@@ -332,7 +332,7 @@ for model in models['data']:
         title: 'Get System Status',
         description: 'Check overall system health and resource usage',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/system/status \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/system/status \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/system/status', {
   headers: { 'Authorization': \`Bearer \${token}\` }
@@ -341,7 +341,7 @@ const status = await response.json();
 console.log(\`CPU: \${status.cpu_percent}%\`);
 console.log(\`Memory: \${status.memory_percent}%\`);`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/system/status',
+    'https://unicorncommander.ai/api/v1/system/status',
     headers={'Authorization': f'Bearer {token}'}
 )
 status = response.json()
@@ -354,7 +354,7 @@ print(f"Memory: {status['memory_percent']}%")`
         title: 'User Analytics',
         description: 'Get user statistics and metrics',
         code: {
-          curl: `curl -X GET https://your-domain.com/api/v1/admin/users/analytics/summary \\
+          curl: `curl -X GET https://unicorncommander.ai/api/v1/admin/users/analytics/summary \\
   -H "Authorization: Bearer YOUR_TOKEN"`,
           javascript: `const response = await fetch('/api/v1/admin/users/analytics/summary', {
   headers: { 'Authorization': \`Bearer \${token}\` }
@@ -363,7 +363,7 @@ const analytics = await response.json();
 console.log(\`Total Users: \${analytics.total_users}\`);
 console.log(\`Active Users: \${analytics.active_users}\`);`,
           python: `response = requests.get(
-    'https://your-domain.com/api/v1/admin/users/analytics/summary',
+    'https://unicorncommander.ai/api/v1/admin/users/analytics/summary',
     headers={'Authorization': f'Bearer {token}'}
 )
 analytics = response.json()

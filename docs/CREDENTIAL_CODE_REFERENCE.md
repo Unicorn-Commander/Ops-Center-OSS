@@ -6,26 +6,26 @@
 
 ### Backend Core Files
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/key_encryption.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/secret_manager.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_service.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_manager.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/byok_api.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/cloudflare_api.py
-/home/muut/Production/UC-Cloud/services/ops-center/backend/server.py
+/opt/ops-center/backend/key_encryption.py
+/opt/ops-center/backend/secret_manager.py
+/opt/ops-center/backend/byok_service.py
+/opt/ops-center/backend/byok_manager.py
+/opt/ops-center/backend/byok_api.py
+/opt/ops-center/backend/cloudflare_api.py
+/opt/ops-center/backend/server.py
 ```
 
 ### Frontend Components
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/src/pages/account/AccountAPIKeys.jsx
-/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/APIKeyCard.jsx
-/home/muut/Production/UC-Cloud/services/ops-center/src/components/llm/AddAPIKeyModal.jsx
+/opt/ops-center/src/pages/account/AccountAPIKeys.jsx
+/opt/ops-center/src/components/llm/APIKeyCard.jsx
+/opt/ops-center/src/components/llm/AddAPIKeyModal.jsx
 ```
 
 ### Configuration
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/.env.auth
-/home/muut/Production/UC-Cloud/services/ops-center/docker-compose.direct.yml
+/opt/ops-center/.env.auth
+/opt/ops-center/docker-compose.direct.yml
 ```
 
 ---
@@ -524,10 +524,10 @@ CLOUDFLARE_ACCOUNT_ID=
 CLOUDFLARE_API_BASE_URL=https://api.cloudflare.com/client/v4
 
 # Lines 30-38: NameCheap configuration
-NAMECHEAP_API_USERNAME=SkyBehind
-NAMECHEAP_API_KEY=your-example-api-key
-NAMECHEAP_USERNAME=SkyBehind
-NAMECHEAP_CLIENT_IP=YOUR_SERVER_IP
+NAMECHEAP_API_USERNAME=your-namecheap-username
+NAMECHEAP_API_KEY=your-namecheap-api-key
+NAMECHEAP_USERNAME=your-namecheap-username
+NAMECHEAP_CLIENT_IP=your-server-ip
 NAMECHEAP_SANDBOX=false
 
 # Needed for encryption (usually set in docker-compose)

@@ -10,7 +10,7 @@
 **What Was Accomplished**:
 - ✅ Grafana is running and healthy (v12.2.0)
 - ✅ Prometheus is operational with 11 active targets
-- ✅ Grafana API key confirmed working (`glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb`)
+- ✅ Grafana API key confirmed working (`your-grafana-api-key`)
 - ✅ Ops-Center Grafana integration code already in place
 - ❌ No GPU exporter currently deployed (nvidia-smi not available on host)
 
@@ -37,7 +37,7 @@
 
 **API Key Generated**: ✅
 ```
-Key: glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb
+Key: your-grafana-api-key
 Name: ops-center-api
 Role: Editor
 Expiration: None (permanent)
@@ -47,7 +47,7 @@ Status: VERIFIED WORKING
 **Test Results**:
 ```bash
 # Health check with API key
-curl -H "Authorization: Bearer glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb" \
+curl -H "Authorization: Bearer your-grafana-api-key" \
   http://localhost:3102/api/health
 
 Response: {"database":"ok","version":"12.2.0","commit":"92f1fba9b4b6700328e99e97328d6639df8ddc3d"}
@@ -80,7 +80,7 @@ POST /api/v1/monitoring/grafana/query               # Query metrics
 ```
 
 **Recommendations**:
-1. Store API key in Ops-Center environment variable: `GRAFANA_API_KEY=glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb`
+1. Store API key in Ops-Center environment variable: `GRAFANA_API_KEY=your-grafana-api-key`
 2. Update `backend/grafana_api.py` to use environment variable instead of hardcoded credentials
 3. Test Grafana embed URLs work in Ops-Center UI
 
@@ -291,7 +291,7 @@ I've created a comprehensive Grafana dashboard for GPU monitoring that will work
 
 # 2. Or import via API:
 curl -X POST http://localhost:3102/api/dashboards/db \
-  -H "Authorization: Bearer glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb" \
+  -H "Authorization: Bearer your-grafana-api-key" \
   -H "Content-Type: application/json" \
   -d @/tmp/gpu-monitoring-dashboard.json
 ```
@@ -313,7 +313,7 @@ curl -X POST http://localhost:3102/api/dashboards/db \
 import os
 
 GRAFANA_URL = os.getenv("GRAFANA_URL", "http://taxsquare-grafana:3000")
-GRAFANA_API_KEY = os.getenv("GRAFANA_API_KEY", "glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb")
+GRAFANA_API_KEY = os.getenv("GRAFANA_API_KEY", "your-grafana-api-key")
 
 # Use API key in all requests
 async def get_gpu_dashboard_embed_url():
@@ -332,7 +332,7 @@ async def get_gpu_dashboard_embed_url():
 # Grafana Configuration
 GRAFANA_URL=http://taxsquare-grafana:3000
 GRAFANA_EXTERNAL_URL=http://localhost:3102
-GRAFANA_API_KEY=glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb
+GRAFANA_API_KEY=your-grafana-api-key
 GRAFANA_GPU_DASHBOARD_UID=gpu-monitoring-v1
 ```
 
@@ -475,7 +475,7 @@ Result: {"database":"ok","version":"12.2.0"}
 
 ### API Key Test ✅
 ```bash
-curl -H "Authorization: Bearer glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb" \
+curl -H "Authorization: Bearer your-grafana-api-key" \
   http://localhost:3102/api/health
 Result: {"database":"ok","version":"12.2.0","commit":"92f1fba9b4"}
 ```
@@ -581,7 +581,7 @@ Result: No GPU exporter containers
 - URL: http://localhost:3102
 - Username: `admin`
 - Password: `Grafana_Admin_2025!`
-- API Key: `glsa_kIj0EQvFIL0hMpQBs3x5I6OxIiTMGRaH_e48d91bb`
+- API Key: `your-grafana-api-key`
 
 **Prometheus Access**:
 - URL: http://localhost:9091

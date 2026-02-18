@@ -466,7 +466,7 @@ SELECT openrouter_api_key_encrypted FROM openrouter_accounts;
 
 ```bash
 # 1. Backup current implementation
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 cp backend/openrouter_automation.py backend/openrouter_automation.py.backup
 
 # 2. Deploy new files

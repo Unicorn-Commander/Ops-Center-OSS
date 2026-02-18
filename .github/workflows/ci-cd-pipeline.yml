@@ -1,14 +1,12 @@
 name: Complete CI/CD Pipeline
 
-# Disabled automatic triggers - run manually when needed
 on:
-  workflow_dispatch:
-  # push:
-  #   branches: [main, develop, staging]
-  # pull_request:
-  #   branches: [main, develop]
-  # release:
-  #   types: [published]
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop]
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -420,8 +418,7 @@ jobs:
     if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
     environment:
       name: staging
-      # Configure your staging URL in GitHub repository variables
-      url: ${{ vars.STAGING_URL }}
+      url: https://staging.your-domain.com
 
     steps:
       - name: Checkout code
@@ -450,8 +447,7 @@ jobs:
     if: github.event_name == 'release'
     environment:
       name: production
-      # Configure your production URL in GitHub repository variables
-      url: ${{ vars.PRODUCTION_URL }}
+      url: https://your-domain.com
 
     steps:
       - name: Checkout code
@@ -473,8 +469,7 @@ jobs:
       - name: Verify deployment
         run: |
           sleep 30
-          # Configure PRODUCTION_URL in GitHub repository variables
-          curl -f ${{ vars.PRODUCTION_URL }}/api/v1/system/status || exit 1
+          curl -f https://your-domain.com/api/v1/system/status || exit 1
           echo "Production deployment verified successfully"
 
       - name: Notify deployment
@@ -508,13 +503,12 @@ jobs:
       - name: Run load tests
         run: |
           if [ -f backend/tests/performance/locustfile.py ]; then
-            # Configure STAGING_URL in GitHub repository variables
             locust -f backend/tests/performance/locustfile.py \
               --headless \
               --users 100 \
               --spawn-rate 10 \
               --run-time 2m \
-              --host ${{ vars.STAGING_URL }} \
+              --host https://staging.your-domain.com \
               --html performance-report.html \
               --csv performance-results \
               || true

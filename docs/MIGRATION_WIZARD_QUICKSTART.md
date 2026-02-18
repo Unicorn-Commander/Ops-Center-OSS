@@ -42,10 +42,10 @@ The Migration Wizard is an automated tool for migrating domains from NameCheap t
 
 ### Step 1: Access the Wizard
 
-**URL**: `https://your-domain.com/admin/infrastructure/migration`
+**URL**: `https://unicorncommander.ai/admin/infrastructure/migration`
 
 **Navigation**:
-1. Login to Ops-Center: `https://your-domain.com/auth/login`
+1. Login to Ops-Center: `https://unicorncommander.ai/auth/login`
 2. Click "Infrastructure" in sidebar (if navigation updated)
 3. Click "Domain Migration"
 4. **Or** navigate directly to: `/admin/infrastructure/migration`
@@ -93,7 +93,7 @@ The Migration Wizard is an automated tool for migrating domains from NameCheap t
 **Check API Connections**:
 
 ```bash
-curl https://your-domain.com/api/v1/migration/health
+curl https://unicorncommander.ai/api/v1/migration/health
 ```
 
 **Expected Output**:
@@ -115,7 +115,7 @@ curl https://your-domain.com/api/v1/migration/health
 ### Step 4: Run Your First Migration
 
 **Open the Wizard**:
-- URL: `https://your-domain.com/admin/infrastructure/migration`
+- URL: `https://unicorncommander.ai/admin/infrastructure/migration`
 
 **Follow the 5-Step Workflow**:
 
@@ -178,7 +178,7 @@ All API endpoints require admin authentication:
 
 ```bash
 # Get auth token (via Keycloak SSO)
-TOKEN=$(curl -s -X POST "https://your-domain.com/auth/login" \
+TOKEN=$(curl -s -X POST "https://unicorncommander.ai/auth/login" \
   -H "Content-Type: application/json" \
   -d '{"username": "your-username", "password": "your-password"}' \
   | jq -r '.access_token')
@@ -189,7 +189,7 @@ TOKEN=$(curl -s -X POST "https://your-domain.com/auth/login" \
 **Endpoint**: `GET /api/v1/migration/namecheap/domains`
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains" \
+curl -X GET "https://unicorncommander.ai/api/v1/migration/namecheap/domains" \
   -H "Authorization: Bearer $TOKEN" \
   -H "accept: application/json"
 ```
@@ -217,7 +217,7 @@ curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains" \
 **Endpoint**: `GET /api/v1/migration/namecheap/domains/{domain}`
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains/example.com" \
+curl -X GET "https://unicorncommander.ai/api/v1/migration/namecheap/domains/example.com" \
   -H "Authorization: Bearer $TOKEN" \
   -H "accept: application/json"
 ```
@@ -243,7 +243,7 @@ curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains/example.
 **Endpoint**: `GET /api/v1/migration/namecheap/domains/{domain}/dns`
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains/example.com/dns" \
+curl -X GET "https://unicorncommander.ai/api/v1/migration/namecheap/domains/example.com/dns" \
   -H "Authorization: Bearer $TOKEN" \
   -H "accept: application/json"
 ```
@@ -277,7 +277,7 @@ curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains/example.
 **Endpoint**: `POST /api/v1/migration/migration/preview`
 
 ```bash
-curl -X POST "https://your-domain.com/api/v1/migration/migration/preview" \
+curl -X POST "https://unicorncommander.ai/api/v1/migration/migration/preview" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -311,7 +311,7 @@ curl -X POST "https://your-domain.com/api/v1/migration/migration/preview" \
 **Endpoint**: `POST /api/v1/migration/migration/execute`
 
 ```bash
-curl -X POST "https://your-domain.com/api/v1/migration/migration/execute" \
+curl -X POST "https://unicorncommander.ai/api/v1/migration/migration/execute" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -338,7 +338,7 @@ curl -X POST "https://your-domain.com/api/v1/migration/migration/execute" \
 **Endpoint**: `GET /api/v1/migration/migration/{migration_id}/status`
 
 ```bash
-curl -X GET "https://your-domain.com/api/v1/migration/migration/mig_abc123/status" \
+curl -X GET "https://unicorncommander.ai/api/v1/migration/migration/mig_abc123/status" \
   -H "Authorization: Bearer $TOKEN" \
   -H "accept: application/json"
 ```
@@ -372,13 +372,13 @@ curl -X GET "https://your-domain.com/api/v1/migration/migration/mig_abc123/statu
 
 **Pause**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/migration/migration/mig_abc123/pause" \
+curl -X POST "https://unicorncommander.ai/api/v1/migration/migration/mig_abc123/pause" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 **Resume**:
 ```bash
-curl -X POST "https://your-domain.com/api/v1/migration/migration/mig_abc123/resume" \
+curl -X POST "https://unicorncommander.ai/api/v1/migration/migration/mig_abc123/resume" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -387,7 +387,7 @@ curl -X POST "https://your-domain.com/api/v1/migration/migration/mig_abc123/resu
 **Endpoint**: `POST /api/v1/migration/migration/{migration_id}/rollback`
 
 ```bash
-curl -X POST "https://your-domain.com/api/v1/migration/migration/mig_abc123/rollback" \
+curl -X POST "https://unicorncommander.ai/api/v1/migration/migration/mig_abc123/rollback" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -501,7 +501,7 @@ curl -X POST "https://your-domain.com/api/v1/migration/migration/mig_abc123/roll
 **Solutions**:
 ```bash
 # 1. Verify credentials in .env.auth
-cat /home/muut/Production/UC-Cloud/services/ops-center/.env.auth | grep NAMECHEAP
+cat /opt/ops-center/.env.auth | grep NAMECHEAP
 
 # 2. Restart container to reload credentials
 docker restart ops-center-direct
@@ -525,7 +525,7 @@ docker exec ops-center-direct curl -s http://localhost:8084/api/v1/migration/hea
 **Solutions**:
 ```bash
 # Test API connection manually
-curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains" \
+curl -X GET "https://unicorncommander.ai/api/v1/migration/namecheap/domains" \
   -H "Authorization: Bearer $TOKEN"
 
 # Check backend logs
@@ -639,14 +639,14 @@ sleep 60
 **Steps**:
 1. Export domain list to CSV:
    ```bash
-   curl -X GET "https://your-domain.com/api/v1/migration/namecheap/domains" \
+   curl -X GET "https://unicorncommander.ai/api/v1/migration/namecheap/domains" \
      -H "Authorization: Bearer $TOKEN" \
      | jq -r '.domains[] | .name' > domains.txt
    ```
 
 2. Use bulk export API:
    ```bash
-   curl -X POST "https://your-domain.com/api/v1/migration/namecheap/domains/bulk-export" \
+   curl -X POST "https://unicorncommander.ai/api/v1/migration/namecheap/domains/bulk-export" \
      -H "Authorization: Bearer $TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"domains": ["domain1.com", "domain2.com", "domain3.com"]}'
@@ -790,11 +790,11 @@ If you have a custom SSL certificate:
 
 **Support**:
 - Check logs: `docker logs ops-center-direct | grep -i migration`
-- API health: `curl https://your-domain.com/api/v1/migration/health`
-- Swagger docs: `https://your-domain.com/docs`
+- API health: `curl https://unicorncommander.ai/api/v1/migration/health`
+- Swagger docs: `https://unicorncommander.ai/docs`
 
 **Community**:
-- UC-Cloud documentation: `/home/muut/Production/UC-Cloud/CLAUDE.md`
+- UC-Cloud documentation: `/opt/uc-cloud/CLAUDE.md`
 - GitHub issues: [Repository URL]
 
 ---

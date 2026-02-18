@@ -256,13 +256,13 @@ except Exception as e:
 
 **1. Test Authentication** (30 seconds):
 ```bash
-curl -X GET https://your-domain.com/api/v1/credentials
+curl -X GET https://unicorncommander.ai/api/v1/credentials
 # Expected: 401 Unauthorized
 ```
 
 **2. Test Credential Masking** (1 minute):
 ```bash
-curl -X GET https://your-domain.com/api/v1/credentials \
+curl -X GET https://unicorncommander.ai/api/v1/credentials \
   -H "Cookie: session=..."
 # Expected: All values masked (e.g., "cf_ab***xyz")
 ```
@@ -270,7 +270,7 @@ curl -X GET https://your-domain.com/api/v1/credentials \
 **3. Test Rate Limiting** (1 minute):
 ```bash
 for i in {1..10}; do
-  curl -X POST https://your-domain.com/api/v1/credentials/cloudflare/test \
+  curl -X POST https://unicorncommander.ai/api/v1/credentials/cloudflare/test \
     -H "Cookie: session=..." -d '{"value": "test"}' &
 done
 # Expected: 429 Too Many Requests after 5 requests
@@ -278,7 +278,7 @@ done
 
 **4. Test XSS Prevention** (1 minute):
 ```bash
-curl -X POST https://your-domain.com/api/v1/credentials \
+curl -X POST https://unicorncommander.ai/api/v1/credentials \
   -H "Cookie: session=..." \
   -d '{"service": "cloudflare", "credential_type": "api_token",
        "value": "test", "metadata": {"description": "<script>alert(1)</script>"}}'

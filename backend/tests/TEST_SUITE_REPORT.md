@@ -58,7 +58,7 @@ TestErrorHandling           # 3 test cases
 
 **Run Command**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_local_user_management.py -v --tb=short
 ```
 
@@ -105,7 +105,7 @@ TestInputValidation         # 2 test cases
 
 **Run Command**:
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_local_user_api.py -v --tb=short
 ```
 
@@ -140,7 +140,7 @@ pytest test_local_user_api.py -v --tb=short
 
 **Run Command** (requires root):
 ```bash
-sudo /home/muut/Production/UC-Cloud/services/ops-center/scripts/test_local_users.sh
+sudo /opt/ops-center/scripts/test_local_users.sh
 ```
 
 **Output Example**:
@@ -153,7 +153,7 @@ Test 1: List Users
 ✓ List users successful (HTTP 200)
 {
   "users": [
-    {"username": "muut", "uid": 1000, "home_dir": "/home/muut", ...}
+    {"username": "muut", "uid": 1000, "home_dir": "/home/deploy", ...}
   ]
 }
 ```
@@ -394,14 +394,14 @@ sudo apt-get install jq
 
 ```bash
 # 1. Run unit tests (safe, no privileges needed)
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 pytest test_local_user_management.py -v
 
 # 2. Run integration tests (safe, mocked)
 pytest test_local_user_api.py -v
 
 # 3. Run manual tests (REQUIRES ROOT, TEST ENV ONLY!)
-sudo /home/muut/Production/UC-Cloud/services/ops-center/scripts/test_local_users.sh
+sudo /opt/ops-center/scripts/test_local_users.sh
 ```
 
 ### After Testing
@@ -428,7 +428,7 @@ sudo /home/muut/Production/UC-Cloud/services/ops-center/scripts/test_local_users
 All deliverables are in the Ops-Center directory:
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/
+/opt/ops-center/
 ├── backend/
 │   ├── tests/
 │   │   ├── test_local_user_management.py  ← Unit tests (491 lines)

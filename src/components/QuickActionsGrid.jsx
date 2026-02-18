@@ -22,7 +22,7 @@ export default function QuickActionsGrid() {
       description: 'Create new user account',
       icon: UserPlusIcon,
       color: 'blue',
-      path: '/admin/system/users',
+      path: '/admin/people/users',
       action: 'create',
       gradient: 'from-blue-500 to-cyan-500'
     },
@@ -31,7 +31,7 @@ export default function QuickActionsGrid() {
       description: 'Manage subscriptions & invoices',
       icon: CreditCardIcon,
       color: 'green',
-      path: '/admin/billing',
+      path: '/admin/billing/system',
       gradient: 'from-emerald-500 to-green-500'
     },
     {
@@ -39,7 +39,7 @@ export default function QuickActionsGrid() {
       description: 'System activity & errors',
       icon: DocumentMagnifyingGlassIcon,
       color: 'purple',
-      path: '/admin/logs',
+      path: '/admin/monitoring/logs',
       gradient: 'from-purple-500 to-indigo-500'
     },
     {
@@ -47,7 +47,7 @@ export default function QuickActionsGrid() {
       description: 'Start, stop, restart services',
       icon: ServerIcon,
       color: 'orange',
-      path: '/admin/services',
+      path: '/admin/infra/services',
       gradient: 'from-orange-500 to-amber-500'
     },
     {
@@ -55,7 +55,7 @@ export default function QuickActionsGrid() {
       description: 'Configure system parameters',
       icon: Cog6ToothIcon,
       color: 'slate',
-      path: '/admin/settings',
+      path: '/admin/system/settings',
       gradient: 'from-slate-500 to-gray-500'
     },
     {
@@ -63,7 +63,7 @@ export default function QuickActionsGrid() {
       description: 'Usage metrics & trends',
       icon: ChartBarIcon,
       color: 'pink',
-      path: '/admin/analytics',
+      path: '/admin/monitoring/analytics',
       gradient: 'from-pink-500 to-rose-500'
     }
   ];

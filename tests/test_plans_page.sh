@@ -16,7 +16,7 @@ FAILED=0
 WARNINGS=0
 
 # Test URLs
-BASE_URL="https://your-domain.com"
+BASE_URL="https://unicorncommander.ai"
 PLANS_PAGE="$BASE_URL/plans.html"
 API_ENDPOINT="$BASE_URL/api/v1/subscriptions/plans"
 SIGNUP_FLOW="$BASE_URL/signup-flow.html"

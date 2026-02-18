@@ -6,11 +6,11 @@ import os
 import asyncio
 
 # Set environment variables
-os.environ['KEYCLOAK_URL'] = 'https://auth.your-domain.com'
+os.environ['KEYCLOAK_URL'] = 'https://auth.unicorncommander.ai'
 os.environ['KEYCLOAK_REALM'] = 'uchub'
 os.environ['KEYCLOAK_CLIENT_ID'] = 'admin-cli'
 os.environ['KEYCLOAK_ADMIN_USERNAME'] = 'admin'
-os.environ['KEYCLOAK_ADMIN_PASSWORD'] = 'your-test-password'
+os.environ['KEYCLOAK_ADMIN_PASSWORD'] = 'your-admin-password'
 
 # Add backend to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))

@@ -148,4 +148,4 @@ All 8 documentation files created during comprehensive audit and consolidation:
 - ✅ Duplicate UI removed (SystemProviderKeys)
 - ✅ All improvements preserved (org credits, validators)
 
-**Status**: Production ready for both centerdeep.online and your-domain.com instances
+**Status**: Production ready for both centerdeep.online and unicorncommander.ai instances

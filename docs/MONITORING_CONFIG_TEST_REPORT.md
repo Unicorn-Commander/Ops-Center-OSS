@@ -17,7 +17,7 @@ All three monitoring configuration pages have been successfully wired to their b
 
 ## 1. Grafana Configuration Page
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/GrafanaConfig.jsx`
+**File**: `/opt/ops-center/src/pages/GrafanaConfig.jsx`
 **Backend API**: `grafana_api.py` (512 lines)
 **Status**: ✅ FULLY OPERATIONAL
 
@@ -77,7 +77,7 @@ All three monitoring configuration pages have been successfully wired to their b
 
 ## 2. Prometheus Configuration Page
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/PrometheusConfig.jsx`
+**File**: `/opt/ops-center/src/pages/PrometheusConfig.jsx`
 **Backend API**: `prometheus_api.py` (209 lines)
 **Status**: ✅ FULLY OPERATIONAL
 
@@ -140,7 +140,7 @@ All three monitoring configuration pages have been successfully wired to their b
 
 ## 3. Umami Analytics Configuration Page
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/UmamiConfig.jsx`
+**File**: `/opt/ops-center/src/pages/UmamiConfig.jsx`
 **Backend API**: `umami_api.py` (224 lines)
 **Status**: ✅ FULLY OPERATIONAL
 
@@ -383,15 +383,15 @@ All 18 endpoints tested via curl:
 ### Production Deployment
 
 ✅ **Frontend Built**: October 28, 2025 at 05:34 UTC
-✅ **Deployed to**: `/home/muut/Production/UC-Cloud/services/ops-center/public/`
+✅ **Deployed to**: `/opt/ops-center/public/`
 ✅ **Backend Restarted**: ops-center-direct container
-✅ **URL**: https://your-domain.com/admin/monitoring/*
+✅ **URL**: https://unicorncommander.ai/admin/monitoring/*
 
 ### Access URLs
 
-- **Grafana Config**: https://your-domain.com/admin/monitoring/grafana
-- **Prometheus Config**: https://your-domain.com/admin/monitoring/prometheus
-- **Umami Config**: https://your-domain.com/admin/monitoring/umami
+- **Grafana Config**: https://unicorncommander.ai/admin/monitoring/grafana
+- **Prometheus Config**: https://unicorncommander.ai/admin/monitoring/prometheus
+- **Umami Config**: https://unicorncommander.ai/admin/monitoring/umami
 
 ### Verification Steps
 
@@ -399,9 +399,9 @@ To verify deployment:
 
 ```bash
 # Check frontend files exist
-ls -lh /home/muut/Production/UC-Cloud/services/ops-center/public/assets/Grafana*.js
-ls -lh /home/muut/Production/UC-Cloud/services/ops-center/public/assets/Prometheus*.js
-ls -lh /home/muut/Production/UC-Cloud/services/ops-center/public/assets/Umami*.js
+ls -lh /opt/ops-center/public/assets/Grafana*.js
+ls -lh /opt/ops-center/public/assets/Prometheus*.js
+ls -lh /opt/ops-center/public/assets/Umami*.js
 
 # Test API endpoints
 curl http://localhost:8084/api/v1/monitoring/grafana/health
@@ -440,17 +440,17 @@ npx claude-flow@alpha hooks notify --message "Epic 5.1 complete: All 3 monitorin
 ### Files Modified
 
 1. **Frontend Components**:
-   - `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/GrafanaConfig.jsx` (495 lines)
-   - `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/PrometheusConfig.jsx` (409 lines)
-   - `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/UmamiConfig.jsx` (497 lines)
+   - `/opt/ops-center/src/pages/GrafanaConfig.jsx` (495 lines)
+   - `/opt/ops-center/src/pages/PrometheusConfig.jsx` (409 lines)
+   - `/opt/ops-center/src/pages/UmamiConfig.jsx` (497 lines)
 
 2. **Backend APIs** (READ-ONLY):
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/grafana_api.py` (512 lines)
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/prometheus_api.py` (209 lines)
-   - `/home/muut/Production/UC-Cloud/services/ops-center/backend/umami_api.py` (224 lines)
+   - `/opt/ops-center/backend/grafana_api.py` (512 lines)
+   - `/opt/ops-center/backend/prometheus_api.py` (209 lines)
+   - `/opt/ops-center/backend/umami_api.py` (224 lines)
 
 3. **Documentation**:
-   - `/home/muut/Production/UC-Cloud/services/ops-center/docs/MONITORING_CONFIG_TEST_REPORT.md` (this file)
+   - `/opt/ops-center/docs/MONITORING_CONFIG_TEST_REPORT.md` (this file)
 
 ---
 

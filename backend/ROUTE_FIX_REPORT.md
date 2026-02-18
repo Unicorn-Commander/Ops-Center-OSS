@@ -24,7 +24,7 @@ FastAPI processes routes in the order they are defined. When a route with a path
 
 ## Root Cause
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/traefik_api.py`
+**File**: `/opt/ops-center/backend/traefik_api.py`
 
 ### Original Route Order (INCORRECT)
 
@@ -84,7 +84,7 @@ Line 849: @router.post("/ssl/renew/{certificate_id}") # Renew single (with param
 
 ## Test Results
 
-**Command**: `bash /home/muut/Production/UC-Cloud/services/ops-center/backend/TEST_NEW_ENDPOINTS.sh`
+**Command**: `bash /opt/ops-center/backend/TEST_NEW_ENDPOINTS.sh`
 
 ### Before Fix
 - ❌ GET /api/v1/traefik/services/discover - FAIL

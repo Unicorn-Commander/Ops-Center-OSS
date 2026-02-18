@@ -31,7 +31,7 @@ Restructured navigation menu following proper RBAC principles:
 
 ### 1. Layout.jsx Updates
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/components/Layout.jsx`
+**File**: `/opt/ops-center/src/components/Layout.jsx`
 
 #### Added Account Section (Lines 305-353)
 ```javascript
@@ -168,7 +168,7 @@ return {
 
 ### 2. Routes Verification
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/App.jsx`
+**File**: `/opt/ops-center/src/App.jsx`
 
 All required routes already existed:
 
@@ -512,7 +512,7 @@ If rollback is needed, revert Layout.jsx changes:
 
 ```bash
 # Restore from git (if committed)
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 git checkout HEAD~1 src/components/Layout.jsx
 
 # Rebuild and deploy
@@ -527,11 +527,11 @@ docker restart ops-center-direct
 
 ## Access URLs
 
-- **Production**: https://your-domain.com
-- **Admin Dashboard**: https://your-domain.com/admin/
-- **Account Settings**: https://your-domain.com/admin/account/profile
-- **API Keys**: https://your-domain.com/admin/account/api-keys
-- **Subscription**: https://your-domain.com/admin/subscription/plan
+- **Production**: https://unicorncommander.ai
+- **Admin Dashboard**: https://unicorncommander.ai/admin/
+- **Account Settings**: https://unicorncommander.ai/admin/account/profile
+- **API Keys**: https://unicorncommander.ai/admin/account/api-keys
+- **Subscription**: https://unicorncommander.ai/admin/subscription/plan
 
 ---
 
@@ -548,7 +548,7 @@ The navigation restructure successfully resolved the critical RBAC issue where A
 
 The implementation was completed in **4 hours** with comprehensive documentation and testing.
 
-**Status**: ✅ PRODUCTION READY - Deployed and tested on https://your-domain.com
+**Status**: ✅ PRODUCTION READY - Deployed and tested on https://unicorncommander.ai
 
 ---
 

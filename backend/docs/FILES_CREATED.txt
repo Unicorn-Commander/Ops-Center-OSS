@@ -64,8 +64,8 @@ SERVICES IN CATALOG
 
 FREE Services (2)
 -----------------
-1. Open-WebUI         - AI chat interface (chat.your-domain.com)
-2. Center-Deep Pro    - Privacy metasearch (search.your-domain.com)
+1. Open-WebUI         - AI chat interface (chat.unicorncommander.ai)
+2. Center-Deep Pro    - Privacy metasearch (search.unicorncommander.ai)
 
 PREMIUM Services (5)
 --------------------
@@ -103,16 +103,16 @@ ABSOLUTE FILE PATHS
 
 SQL:
 ----
-/home/muut/Production/UC-Cloud/services/ops-center/backend/sql/uc_cloud_services_catalog.sql
+/opt/ops-center/backend/sql/uc_cloud_services_catalog.sql
 
 Documentation:
 --------------
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/SERVICE_URLS.md
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/SERVICES_CATALOG_SUMMARY.md
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/PRICING_STRATEGY.md
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/QUICK_START_DEPLOYMENT.md
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/DEPLOYMENT_SUMMARY.txt
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/FILES_CREATED.txt (this file)
+/opt/ops-center/backend/docs/SERVICE_URLS.md
+/opt/ops-center/backend/docs/SERVICES_CATALOG_SUMMARY.md
+/opt/ops-center/backend/docs/PRICING_STRATEGY.md
+/opt/ops-center/backend/docs/QUICK_START_DEPLOYMENT.md
+/opt/ops-center/backend/docs/DEPLOYMENT_SUMMARY.txt
+/opt/ops-center/backend/docs/FILES_CREATED.txt (this file)
 
 ================================================================================
 WHAT TO READ FIRST
@@ -152,7 +152,7 @@ QUICK COMMANDS
 
 Deploy Services:
 ----------------
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend
+cd /opt/ops-center/backend
 docker exec ops-center-postgres pg_dump -U unicorn_ops unicorn_ops_db > backup.sql
 docker exec -i ops-center-postgres psql -U unicorn_ops -d unicorn_ops_db < sql/uc_cloud_services_catalog.sql
 
@@ -163,7 +163,7 @@ docker exec ops-center-postgres psql -U unicorn_ops -d unicorn_ops_db -c "SELECT
 
 Test:
 -----
-Open browser: https://your-domain.com/marketplace
+Open browser: https://unicorncommander.ai/marketplace
 Check: All 8 services display correctly
 
 ================================================================================
@@ -211,11 +211,11 @@ SUPPORT
 
 Documentation Location:
 -----------------------
-/home/muut/Production/UC-Cloud/services/ops-center/backend/docs/
+/opt/ops-center/backend/docs/
 
 Quick Reference:
 ----------------
-cat /home/muut/Production/UC-Cloud/services/ops-center/backend/docs/FILES_CREATED.txt
+cat /opt/ops-center/backend/docs/FILES_CREATED.txt
 
 For Help:
 ---------
@@ -225,7 +225,7 @@ See PRICING_STRATEGY.md for revenue strategy
 
 Contact:
 --------
-support@your-domain.com
+support@unicorncommander.ai
 
 ================================================================================
 

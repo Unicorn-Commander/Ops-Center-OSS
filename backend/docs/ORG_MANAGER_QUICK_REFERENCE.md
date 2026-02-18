@@ -187,7 +187,7 @@ get_organizations_by_plan()     -> List[Organization]
 ## Storage Location
 
 ```
-/home/muut/Production/UC-Cloud/services/ops-center/backend/data/
+/opt/ops-center/backend/data/
 ├── organizations.json
 └── org_users.json
 ```

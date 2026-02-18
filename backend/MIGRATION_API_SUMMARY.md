@@ -1,7 +1,7 @@
 # Migration API Implementation Summary
 
 **Status**: ✅ COMPLETE
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/migration_api.py`
+**File**: `/opt/ops-center/backend/migration_api.py`
 **Epic**: 1.7 - NameCheap Integration & Migration Workflow
 **Date**: October 22, 2025
 
@@ -236,9 +236,9 @@ backend/
 Add to `.env.auth`:
 ```bash
 # NameCheap API Configuration
-NAMECHEAP_API_KEY=your-example-api-key
-NAMECHEAP_USERNAME=SkyBehind
-NAMECHEAP_CLIENT_IP=YOUR_SERVER_IP
+NAMECHEAP_API_KEY=your-namecheap-api-key
+NAMECHEAP_USERNAME=your-namecheap-username
+NAMECHEAP_CLIENT_IP=your-server-ip
 
 # NameCheap Encryption Key (generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
 NAMECHEAP_ENCRYPTION_KEY=<generated-key>
@@ -316,13 +316,13 @@ curl -X GET http://localhost:8084/api/v1/migration/namecheap/domains \
 
 ### 2. Export DNS Records
 ```bash
-curl -X GET http://localhost:8084/api/v1/migration/namecheap/domains/your-domain.com/dns?format=json \
+curl -X GET http://localhost:8084/api/v1/migration/namecheap/domains/unicorncommander.ai/dns?format=json \
   -H "Authorization: Bearer <token>"
 ```
 
 ### 3. Detect Email Service
 ```bash
-curl -X GET http://localhost:8084/api/v1/migration/namecheap/domains/your-domain.com/email \
+curl -X GET http://localhost:8084/api/v1/migration/namecheap/domains/unicorncommander.ai/email \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -332,7 +332,7 @@ curl -X POST http://localhost:8084/api/v1/migration/migration/preview \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
-    "domains": ["your-domain.com", "magicunicorn.tech"],
+    "domains": ["unicorncommander.ai", "magicunicorn.tech"],
     "options": {"preserve_email": true}
   }'
 ```

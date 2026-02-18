@@ -15,11 +15,11 @@ The Lago billing integration has been successfully tested and verified. All org-
 
 ### Environment Variables
 - `LAGO_API_URL`: http://unicorn-lago-api:3000
-- `LAGO_PUBLIC_URL`: https://billing-api.your-domain.com
-- `LAGO_API_KEY`: d87f40d7-25c4-411c-bd51-677b26299e1c (configured)
+- `LAGO_PUBLIC_URL`: https://billing-api.unicorncommander.ai
+- `LAGO_API_KEY`: your-lago-api-key (configured)
 
 ### Code Changes
-- **File**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/lago_integration.py`
+- **File**: `/opt/ops-center/backend/lago_integration.py`
 - **Fix**: Added required `external_id` field to subscription creation
 - **Change**: Subscriptions now include unique external ID: `{org_id}_{plan_code}_{timestamp}`
 
@@ -191,7 +191,7 @@ The integration includes helpers for migrating from user-based to org-based bill
 ## Test Files
 
 ### Test Script
-**Location:** `/home/muut/Production/UC-Cloud/services/ops-center/tests/test_lago_integration.py`
+**Location:** `/opt/ops-center/tests/test_lago_integration.py`
 
 **Features:**
 - Comprehensive test suite covering all operations

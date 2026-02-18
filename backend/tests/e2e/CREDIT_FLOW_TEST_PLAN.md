@@ -405,7 +405,7 @@ export TEST_OPENROUTER_KEY="sk-or-test-your-key-here"
    ```
 
 3. **Create Test Users** (Keycloak Admin Console):
-   - Navigate to: https://auth.your-domain.com/admin/uchub/console
+   - Navigate to: https://auth.unicorncommander.ai/admin/uchub/console
    - Create test users with credentials above
 
 ### Run Tests
@@ -413,21 +413,21 @@ export TEST_OPENROUTER_KEY="sk-or-test-your-key-here"
 #### Option 1: Automated Script
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/e2e
+cd /opt/ops-center/backend/tests/e2e
 ./run_credit_flow_tests.sh
 ```
 
 #### Option 2: Pytest
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 pytest backend/tests/e2e/test_complete_credit_flow.py -v
 ```
 
 #### Option 3: Standalone Python
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 python3 backend/tests/e2e/test_complete_credit_flow.py
 ```
 

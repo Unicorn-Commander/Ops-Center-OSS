@@ -4,7 +4,7 @@
 
 set -e
 
-BACKEND_DIR="/home/muut/Production/UC-Cloud/services/ops-center/backend"
+BACKEND_DIR="/opt/ops-center/backend"
 SERVER_FILE="$BACKEND_DIR/server.py"
 BACKUP_FILE="$SERVER_FILE.backup.$(date +%Y%m%d_%H%M%S)"
 

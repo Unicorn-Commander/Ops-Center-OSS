@@ -25,7 +25,7 @@ Get up and running with the UC-1 Pro Admin Dashboard in minutes. This guide will
 1. You'll be presented with the login screen
 2. Enter the default credentials:
    - **Username**: `ucladmin`
-   - **Password**: `your-admin-password`
+   - **Password**: `MagicUnicorn!8-)`
 3. Click **Login**
 
 !!! warning "Change Default Password"

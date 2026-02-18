@@ -1097,7 +1097,7 @@ const UserManagement = () => {
                     <TableRow
                       key={user.id}
                       hover
-                      onClick={() => navigate(`/admin/system/users/${user.user_id || user.id}`)}
+                      onClick={() => navigate(`/admin/people/users/${user.user_id || user.id}`)}
                       sx={{ cursor: 'pointer' }}
                     >
                       <TableCell>
@@ -1145,7 +1145,7 @@ const UserManagement = () => {
                             size="small"
                             onClick={(e) => {
                               e.stopPropagation();
-                              navigate(`/admin/system/users/${user.user_id || user.id}`);
+                              navigate(`/admin/people/users/${user.user_id || user.id}`);
                             }}
                             color="primary"
                           >

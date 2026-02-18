@@ -105,7 +105,7 @@
 ## Integration Points
 
 ### Existing Services
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/`
+**Location**: `/opt/ops-center/`
 
 **Backend Services**:
 - `backend/server.py` - Main FastAPI app

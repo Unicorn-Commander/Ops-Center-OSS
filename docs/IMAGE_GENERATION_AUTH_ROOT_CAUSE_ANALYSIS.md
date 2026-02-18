@@ -177,7 +177,7 @@ The current implementation assumes:
 ### Test Case 1: Service Key Without X-User-ID (FAILS)
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-presenton-service-key-2025" \
   -H "Content-Type: application/json" \
   -d '{
@@ -195,7 +195,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 ### Test Case 2: Service Key With X-User-ID (SHOULD WORK)
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer sk-presenton-service-key-2025" \
   -H "X-User-ID: 7a6bfd31-0120-4a30-9e21-0fc3b8006579" \
   -H "Content-Type: application/json" \
@@ -214,7 +214,7 @@ curl -X POST https://your-domain.com/api/v1/llm/image/generations \
 ### Test Case 3: BYOK (WORKS - Current Workaround)
 
 ```bash
-curl -X POST https://your-domain.com/api/v1/llm/image/generations \
+curl -X POST https://unicorncommander.ai/api/v1/llm/image/generations \
   -H "Authorization: Bearer uc_<user-api-key>" \
   -H "Content-Type: application/json" \
   -d '{

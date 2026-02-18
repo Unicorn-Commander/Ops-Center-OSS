@@ -244,8 +244,8 @@ The build successfully implements dynamic code splitting:
    - Users get fresh assets on visit
 
 3. **Verification**:
-   - Frontend loads: https://your-domain.com
-   - Admin dashboard: https://your-domain.com/admin
+   - Frontend loads: https://unicorncommander.ai
+   - Admin dashboard: https://unicorncommander.ai/admin
    - All pages should work without errors
 
 ### Success Criteria Met

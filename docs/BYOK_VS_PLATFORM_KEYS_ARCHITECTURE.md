@@ -1075,7 +1075,7 @@ self._tier_allocations = {
 │ ┌──────────────────────────────────────────────────────┐│
 │ │ # Python Example                                     ││
 │ │ import openai                                        ││
-│ │ openai.api_base = "https://api.your-domain.com"  ││
+│ │ openai.api_base = "https://api.unicorncommander.ai"  ││
 │ │ openai.api_key = "uc_a1b2..."                        ││
 │ └──────────────────────────────────────────────────────┘│
 │                                                          │
@@ -1861,7 +1861,7 @@ async def test_platform_key_end_to_end_flow():
   - [ ] Open terminal
   - [ ] Run curl command:
     ```bash
-    curl -X POST https://api.your-domain.com/api/v1/llm/chat/completions \
+    curl -X POST https://api.unicorncommander.ai/api/v1/llm/chat/completions \
       -H "Authorization: Bearer uc_xxx..." \
       -H "Content-Type: application/json" \
       -d '{"messages": [{"role": "user", "content": "Hello"}], "model": "gpt-3.5-turbo"}'

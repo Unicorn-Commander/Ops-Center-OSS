@@ -65,7 +65,7 @@ class TestRateLimitConfig:
         """Test default configuration values"""
         config = RateLimitConfig()
         assert config.enabled is True
-        assert config.redis_url == "redis://unicorn-lago-redis:6379/0"
+        assert config.redis_url == "redis://unicorn-redis:6379/0"
         assert config.strategy in ["sliding_window", "token_bucket"]
 
     def test_parse_limit(self):

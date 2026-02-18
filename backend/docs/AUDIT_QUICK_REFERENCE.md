@@ -4,7 +4,7 @@
 
 ### 1. Initialize Database
 ```bash
-cd /home/muut/Production/UC-1-Pro/services/ops-center/backend
+cd /home/deploy/Production/UC-1-Pro/services/ops-center/backend
 python3 init_audit_db.py
 ```
 

@@ -215,7 +215,7 @@ GET /api/v1/usage/history?days=7
 
 ### Frontend
 
-**File**: `/home/muut/Production/UC-Cloud/services/ops-center/src/pages/subscription/SubscriptionUsage.jsx`
+**File**: `/opt/ops-center/src/pages/subscription/SubscriptionUsage.jsx`
 
 **Changes**:
 1. Added `generateMockHistoryData()` helper function (lines 43-66)
@@ -228,7 +228,7 @@ GET /api/v1/usage/history?days=7
 
 ```bash
 # Build frontend
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 npm run build
 
 # Deploy to public/

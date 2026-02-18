@@ -20,7 +20,7 @@ DB_CONTAINER="unicorn-postgresql"
 DB_USER="unicorn"
 DB_NAME="unicorn_test"
 DB_PASSWORD="unicorn"
-MIGRATIONS_DIR="/home/muut/Production/UC-Cloud/services/ops-center/backend/migrations"
+MIGRATIONS_DIR="/opt/ops-center/backend/migrations"
 
 echo -e "${BLUE}================================================${NC}"
 echo -e "${BLUE}LLM Hub Test Database Setup${NC}"
@@ -85,7 +85,7 @@ docker exec ${DB_CONTAINER} psql -U ${DB_USER} -d ${DB_NAME} <<EOF
 -- Create test users
 INSERT INTO users (id, keycloak_id, username, email, tier, created_at)
 VALUES
-    (gen_random_uuid(), 'test-admin-001', 'admin', 'admin@your-domain.com', 'enterprise', NOW()),
+    (gen_random_uuid(), 'test-admin-001', 'admin', 'admin@unicorncommander.ai', 'enterprise', NOW()),
     (gen_random_uuid(), 'test-user-001', 'testuser', 'test@example.com', 'professional', NOW()),
     (gen_random_uuid(), 'test-dev-001', 'devuser', 'admin@example.com', 'enterprise', NOW())
 ON CONFLICT (email) DO NOTHING;
@@ -102,7 +102,7 @@ BEGIN
             false,
             NOW()
         FROM users u
-        WHERE u.email = 'admin@your-domain.com'
+        WHERE u.email = 'admin@unicorncommander.ai'
         ON CONFLICT DO NOTHING;
     END IF;
 END \$\$;

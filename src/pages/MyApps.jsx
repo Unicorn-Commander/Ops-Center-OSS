@@ -46,7 +46,7 @@ export default function MyApps() {
       name: 'AI Chat (Open-WebUI)',
       description: 'Advanced conversational AI interface',
       status: 'Active',
-      access_url: 'https://chat.your-domain.com',
+      access_url: 'https://chat.unicorncommander.ai',
       icon_url: null,
       gradient: 'from-blue-500 to-cyan-500',
       last_used: '2 hours ago',
@@ -54,10 +54,10 @@ export default function MyApps() {
     },
     {
       id: 'search',
-      name: 'AI Search (Center-Deep)',
+      name: 'AI Search (Magic Unicorn)',
       description: 'Privacy-focused AI metasearch',
       status: 'Active',
-      access_url: 'https://search.your-domain.com',
+      access_url: 'https://search.unicorncommander.ai',
       icon_url: null,
       gradient: 'from-purple-500 to-pink-500',
       last_used: '1 day ago',
@@ -162,12 +162,12 @@ export default function MyApps() {
               className={`${glassStyles.card} rounded-2xl overflow-hidden shadow-xl`}
             >
               {/* Service Header */}
-              <div className={`h-32 bg-gradient-to-br ${service.gradient} flex items-center justify-center relative`}>
+              <div className={`h-32 bg-gradient-to-br ${service.gradient} flex items-center justify-center relative overflow-hidden`}>
                 {service.icon_url ? (
                   <img
                     src={service.icon_url}
                     alt={service.name}
-                    className="h-16 w-16 object-contain"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <ServerIcon className="h-16 w-16 text-white opacity-90" />

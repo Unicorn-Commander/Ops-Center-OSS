@@ -15,7 +15,7 @@ This guide documents the 4 test users created for testing subscription tier-base
 
 ## Test Users
 
-### 1. Trial User (trial@test.your-domain.com)
+### 1. Trial User (trial@test.unicorncommander.ai)
 
 **User ID**: `test-trial-user-00000000-0000-0000-0000-000000000001`
 **Subscription Tier**: `trial`
@@ -32,7 +32,7 @@ This guide documents the 4 test users created for testing subscription tier-base
 
 ---
 
-### 2. Starter User (starter@test.your-domain.com)
+### 2. Starter User (starter@test.unicorncommander.ai)
 
 **User ID**: `test-starter-user-00000000-0000-0000-0000-000000000002`
 **Subscription Tier**: `starter`
@@ -49,7 +49,7 @@ This guide documents the 4 test users created for testing subscription tier-base
 
 ---
 
-### 3. Professional User (professional@test.your-domain.com)
+### 3. Professional User (professional@test.unicorncommander.ai)
 
 **User ID**: `test-professional-user-00000000-0000-0000-0000-000000000003`
 **Subscription Tier**: `professional`
@@ -66,7 +66,7 @@ This guide documents the 4 test users created for testing subscription tier-base
 
 ---
 
-### 4. Enterprise User (enterprise@test.your-domain.com)
+### 4. Enterprise User (enterprise@test.unicorncommander.ai)
 
 **User ID**: `test-enterprise-user-00000000-0000-0000-0000-000000000004`
 **Subscription Tier**: `enterprise`
@@ -109,7 +109,7 @@ ORDER BY tier;
 Run the automated tier access test:
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center/backend/tests
+cd /opt/ops-center/backend/tests
 ./test_tier_access.sh
 ```
 
@@ -192,7 +192,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
 
 ## Test User Credentials File
 
-**Location**: `/home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_users.json`
+**Location**: `/opt/ops-center/backend/tests/test_users.json`
 
 **Format**:
 ```json
@@ -200,7 +200,7 @@ docker exec unicorn-postgresql psql -U unicorn -d unicorn_db \
   "test_users": [
     {
       "user_id": "test-trial-user-00000000-0000-0000-0000-000000000001",
-      "email": "trial@test.your-domain.com",
+      "email": "trial@test.unicorncommander.ai",
       "tier": "trial",
       "credits": "5.00",
       "description": "Trial user - should see 50-80 free/cheap models only"

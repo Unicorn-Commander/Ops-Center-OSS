@@ -165,7 +165,7 @@ Successfully delivered a comprehensive API documentation portal for UC-Cloud Ops
 **Example Output**:
 ```bash
 # cURL
-curl -X GET "https://your-domain.com/api/v1/users" \
+curl -X GET "https://unicorncommander.ai/api/v1/users" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json"
 ```
@@ -173,7 +173,7 @@ curl -X GET "https://your-domain.com/api/v1/users" \
 ```javascript
 // JavaScript (Axios)
 const response = await axios.get(
-  'https://your-domain.com/api/v1/users',
+  'https://unicorncommander.ai/api/v1/users',
   {
     headers: {
       'Authorization': 'Bearer YOUR_TOKEN',
@@ -186,7 +186,7 @@ const response = await axios.get(
 ```python
 # Python (requests)
 response = requests.get(
-  'https://your-domain.com/api/v1/users',
+  'https://unicorncommander.ai/api/v1/users',
   headers={
     'Authorization': 'Bearer YOUR_TOKEN',
     'Content-Type': 'application/json'
@@ -434,7 +434,7 @@ info:
 
   contact:
     name: UC-Cloud Support
-    url: https://your-domain.com
+    url: https://unicorncommander.com
     email: support@magicunicorn.tech
 
   license:
@@ -468,7 +468,7 @@ security:
 
 ```yaml
 servers:
-  - url: https://your-domain.com
+  - url: https://unicorncommander.ai
     description: Production server
 
   - url: http://localhost:8084
@@ -661,7 +661,7 @@ const requestInterceptor = (request) => {
    - Click "API Documentation"
 
 2. **Direct URL**:
-   - `https://your-domain.com/admin/platform/api-docs`
+   - `https://unicorncommander.ai/admin/platform/api-docs`
 
 3. **Full-Screen Views**:
    - Swagger UI: `/api/v1/docs/swagger`
@@ -1079,7 +1079,7 @@ The API Documentation Portal (Epic 2.8) has been successfully delivered and is p
 ```javascript
 <CodeExampleTabs
   endpoint={endpoint}                   // Endpoint object with method, path
-  baseUrl="https://your-domain.com" // Optional base URL
+  baseUrl="https://unicorncommander.ai" // Optional base URL
 />
 ```
 

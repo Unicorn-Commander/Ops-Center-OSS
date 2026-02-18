@@ -28,13 +28,13 @@ This deployment creates the complete database schema for the Extensions Marketpl
 psql -U postgres -d unicorn_db
 
 # 2. Run migration (creates tables + indexes + triggers)
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/sql/extensions_migration.sql
+\i /opt/ops-center/backend/sql/extensions_migration.sql
 
 # 3. Load seed data (9 add-ons + features + promos)
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/sql/extensions_seed_data.sql
+\i /opt/ops-center/backend/sql/extensions_seed_data.sql
 
 # 4. Run test suite (validates everything)
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_extensions_schema.sql
+\i /opt/ops-center/backend/tests/test_extensions_schema.sql
 ```
 
 ### Option 2: Step-by-Step (Recommended for Development)
@@ -44,16 +44,16 @@ psql -U postgres -d unicorn_db
 psql -U postgres -d unicorn_db
 
 # 2. Create tables and triggers
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/sql/extensions_schema.sql
+\i /opt/ops-center/backend/sql/extensions_schema.sql
 
 # 3. Create performance indexes
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/sql/extensions_indexes.sql
+\i /opt/ops-center/backend/sql/extensions_indexes.sql
 
 # 4. Load seed data
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/sql/extensions_seed_data.sql
+\i /opt/ops-center/backend/sql/extensions_seed_data.sql
 
 # 5. Run tests
-\i /home/muut/Production/UC-Cloud/services/ops-center/backend/tests/test_extensions_schema.sql
+\i /opt/ops-center/backend/tests/test_extensions_schema.sql
 ```
 
 ---

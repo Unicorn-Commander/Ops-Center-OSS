@@ -25,7 +25,7 @@ This directory contains the complete database schema for the Extensions Marketpl
 ### Option 1: Full Migration (Recommended)
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 psql -U postgres -d unicorn_db -f backend/sql/extensions_migration.sql
 psql -U postgres -d unicorn_db -f backend/sql/extensions_seed_data.sql
 psql -U postgres -d unicorn_db -f backend/tests/test_extensions_schema.sql
@@ -34,7 +34,7 @@ psql -U postgres -d unicorn_db -f backend/tests/test_extensions_schema.sql
 ### Option 2: Step by Step
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 
 # 1. Create tables and triggers
 psql -U postgres -d unicorn_db -f backend/sql/extensions_schema.sql
@@ -52,7 +52,7 @@ psql -U postgres -d unicorn_db -f backend/tests/test_extensions_schema.sql
 ### Option 3: Quick Validation
 
 ```bash
-cd /home/muut/Production/UC-Cloud/services/ops-center
+cd /opt/ops-center
 ./backend/sql/validate_schema.sh
 ```
 

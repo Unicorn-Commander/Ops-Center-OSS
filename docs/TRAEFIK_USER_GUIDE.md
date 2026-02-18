@@ -60,7 +60,7 @@ The Traefik Configuration Management feature is organized into four main section
 
 ### 2.1 Accessing the Feature
 
-**URL**: https://your-domain.com/admin/system/traefik
+**URL**: https://unicorncommander.ai/admin/system/traefik
 
 **Prerequisites**:
 - You must be logged in to Ops-Center via Keycloak SSO
@@ -68,7 +68,7 @@ The Traefik Configuration Management feature is organized into four main section
 - Traefik must be running (part of UC-Cloud infrastructure)
 
 **Navigation**:
-1. Log in to Ops-Center at https://your-domain.com
+1. Log in to Ops-Center at https://unicorncommander.ai
 2. Click on **Admin** in the top navigation bar
 3. Select **System** from the admin menu
 4. Click **Traefik Configuration**
@@ -151,7 +151,7 @@ SSL/TLS certificates encrypt traffic between clients and your server. Traefik us
 3. You'll see a table with all certificates
 
 **Certificate Information Displayed**:
-- **Domain**: Main domain name (e.g., `your-domain.com`)
+- **Domain**: Main domain name (e.g., `unicorncommander.ai`)
 - **Status**: Visual indicator (green = valid, yellow = expiring soon, red = expired)
 - **Expiry Date**: When the certificate expires
 - **Issuer**: Typically "Let's Encrypt Authority X3"
@@ -173,8 +173,8 @@ SSL/TLS certificates encrypt traffic between clients and your server. Traefik us
 1. Click the **Request Certificate** button (top-right corner)
 
 2. In the dialog that appears, fill in:
-   - **Domain**: The full domain name (e.g., `chat.your-domain.com`)
-   - **Email**: Your contact email (e.g., `admin@your-domain.com`)
+   - **Domain**: The full domain name (e.g., `chat.unicorncommander.ai`)
+   - **Email**: Your contact email (e.g., `admin@unicorncommander.ai`)
 
 3. Click **Request Certificate**
 
@@ -266,7 +266,7 @@ A **route** (also called a router in Traefik terminology) defines how incoming H
 
 **Route Components**:
 - **Name**: Unique identifier (e.g., `ops-center-route`)
-- **Rule**: Matching criteria (e.g., `Host(\`your-domain.com\`)`)
+- **Rule**: Matching criteria (e.g., `Host(\`unicorncommander.ai\`)`)
 - **Service**: Backend service name (e.g., `ops-center-svc`)
 - **Entry Points**: Network listeners (e.g., `web` = HTTP, `websecure` = HTTPS)
 - **Middleware**: Optional processing chain (e.g., authentication, rate limiting)
@@ -319,7 +319,7 @@ A **route** (also called a router in Traefik terminology) defines how incoming H
 
    **Rule** (required):
    - Traefik rule syntax (see Rule Syntax section below)
-   - Example: `Host(\`chat.your-domain.com\`)`
+   - Example: `Host(\`chat.unicorncommander.ai\`)`
    - Can be multi-line for complex rules
 
    **Service** (required):
@@ -475,7 +475,7 @@ Query(`debug`, `true`)
 
 **Scenario 1**: Route all traffic for `chat.example.com` to OpenWebUI service
 ```
-Host(`chat.your-domain.com`)
+Host(`chat.unicorncommander.ai`)
 ```
 
 **Scenario 2**: Route API requests to backend service, web requests to frontend
@@ -861,7 +861,7 @@ Traefik uses two types of configuration:
 
 **Backup Location**:
 ```
-/home/muut/Production/UC-Cloud/traefik/backups/
+/opt/uc-cloud/traefik/backups/
   traefik_backup_20251024_150530/
     traefik.yml
     dynamic/
@@ -1730,7 +1730,7 @@ A: Use Forward Auth middleware pointing to your auth service (Keycloak, Authelia
 
 **Q: Where are backups stored?**
 
-A: `/home/muut/Production/UC-Cloud/traefik/backups/`
+A: `/opt/uc-cloud/traefik/backups/`
 
 **Q: How long are backups kept?**
 
@@ -1873,7 +1873,7 @@ A: Passwords are bcrypt hashed. Never store plaintext passwords. Use `htpasswd` 
 **Documentation**:
 - Traefik Official Docs: https://doc.traefik.io/traefik/
 - Let's Encrypt Docs: https://letsencrypt.org/docs/
-- UC-Cloud Docs: `/home/muut/Production/UC-Cloud/services/ops-center/docs/`
+- UC-Cloud Docs: `/opt/ops-center/docs/`
 
 **Community**:
 - Traefik Community Forum: https://community.traefik.io/
@@ -1881,7 +1881,7 @@ A: Passwords are bcrypt hashed. Never store plaintext passwords. Use `htpasswd` 
 
 **Contact**:
 - Email: support@magicunicorn.tech
-- Website: https://your-domain.com
+- Website: https://unicorncommander.com
 
 ---
 

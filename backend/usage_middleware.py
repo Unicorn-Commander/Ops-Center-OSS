@@ -99,7 +99,7 @@ class UsageTrackingMiddleware(BaseHTTPMiddleware):
             if not session_token:
                 return None
 
-            redis_host = os.getenv("REDIS_HOST", "unicorn-lago-redis")
+            redis_host = os.getenv("REDIS_HOST", "unicorn-redis")
             redis_port = int(os.getenv("REDIS_PORT", "6379"))
 
             sessions = RedisSessionManager(host=redis_host, port=redis_port)
