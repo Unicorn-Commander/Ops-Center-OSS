@@ -11,6 +11,9 @@
 [![React](https://img.shields.io/badge/react-18-61dafb.svg?style=for-the-badge)](https://react.dev)
 [![FastAPI](https://img.shields.io/badge/fastapi-0.100+-009688.svg?style=for-the-badge)](https://fastapi.tiangolo.com)
 
+<a href="https://github.com/sponsors/Unicorn-Commander"><img src="https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"/></a>
+<a href="https://buymeacoffee.com/aaronyo"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"/></a>
+
 <br/>
 
 ```
@@ -556,6 +559,11 @@ Copyright (c) 2025-2026 Magic Unicorn Unconventional Technology & Stuff Inc
 ---
 
 <div align="center">
+
+**If Ops-Center helps you, consider supporting development:**
+
+<a href="https://github.com/sponsors/Unicorn-Commander"><img src="https://img.shields.io/badge/Sponsor_on_GitHub-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"/></a>
+<a href="https://buymeacoffee.com/aaronyo"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"/></a>
 
 **[GitHub](https://github.com/Unicorn-Commander/Ops-Center)** · **[Issues](https://github.com/Unicorn-Commander/Ops-Center/issues)** · **[Discussions](https://github.com/Unicorn-Commander/Ops-Center/discussions)**
 
