@@ -8,18 +8,27 @@ This roadmap outlines our planned features and improvements. Community feedback 
 
 ## 🎖️ Flagship Feature: The Colonel Agent
 
-**The Colonel** is our planned AI-powered infrastructure orchestration assistant. Think of it as an AI Platform Engineer that can integrate applications, configure billing tiers, set up organizations, and manage access control—all through natural language conversation.
+**The Colonel** is an AI-powered infrastructure orchestration assistant. Think of it as an AI Platform Engineer that can manage Docker containers, check service health, query databases, view logs, and manage access control — all through natural language conversation with real-time WebSocket streaming.
 
-### Planned Capabilities
+**Status: v1 Implemented** — 5,700+ lines across backend (WebSocket gateway, skill router, safety layer, memory system, audit logging) and frontend (chat UI, status dashboard, onboarding, sidebar).
+
+### Capabilities
 
 | Capability | Description | Status |
 |------------|-------------|--------|
-| **Application Integration** | "Colonel, integrate this new app into our stack with its own pricing tier" | 🔬 Research |
-| **Organization Setup** | "Set up org-admin, manager, and user tiers for the new client" | 📋 Planned |
-| **Billing Configuration** | "Create a $49/mo tier with 10,000 API calls and access to GPT-4" | 📋 Planned |
-| **Access Control** | "Give the marketing team read-only access to analytics" | 📋 Planned |
+| **System Status** | "Colonel, how's the server doing?" — CPU, RAM, GPU, disk, uptime | ✅ Complete |
+| **Docker Management** | "Restart the Redis container" — list, start, stop, restart, logs | ✅ Complete |
+| **Service Health** | "Check if all services are healthy" — latency, connection checks | ✅ Complete |
+| **Log Viewer** | "Show me the last 50 lines of the Keycloak logs" | ✅ Complete |
+| **PostgreSQL Ops** | "How many active connections? Show table sizes" | ✅ Complete |
+| **Keycloak Auth** | "Look up user john@example.com" — sessions, realm status | ✅ Complete |
+| **Forgejo Git** | "Show repo stats for the main org" | ✅ Complete |
+| **Bash Execution** | "Run df -h" — with human-in-the-loop safety | ✅ Complete |
+| **Application Integration** | "Integrate this new app with its own pricing tier" | 📋 Planned (v2) |
+| **Organization Setup** | "Set up org-admin, manager, and user tiers for the new client" | 📋 Planned (v2) |
+| **Billing Configuration** | "Create a $49/mo tier with 10,000 API calls and access to GPT-4" | 📋 Planned (v2) |
 | **Infrastructure Provisioning** | "Spin up a new instance for the enterprise client" | 💭 Concept |
-| **Cost Optimization** | AI recommendations to reduce cloud/LLM spend | 📋 Planned |
+| **Cost Optimization** | AI recommendations to reduce cloud/LLM spend | 📋 Planned (v2) |
 
 ### Example Conversation
 
@@ -83,9 +92,12 @@ Colonel: Done. I've also:
 ### Phase 2: Intelligence (v3.0 - v3.2)
 *Focus: AI integration and The Colonel Agent MVP*
 
-- [ ] **The Colonel Agent v1**
-  - Natural language server queries
-  - Read-only operations initially
+- [x] **The Colonel Agent v1**
+  - Natural language server queries via WebSocket streaming
+  - 8 skills: system status, Docker, service health, logs, PostgreSQL, Keycloak, Forgejo, bash
+  - Human-in-the-loop safety for destructive operations
+  - Memory system (Kuzu graph DB + Mem0 vectors)
+  - Full audit logging of all actions
   - Integration with existing monitoring
 - [ ] **Smart Alerts**
   - AI-powered anomaly detection

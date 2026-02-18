@@ -1,579 +1,564 @@
-# 🦄 Ops-Center - UC-Cloud Command & Control
-
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)
-![Status](https://img.shields.io/badge/status-production-green.svg)
-![License](https://img.shields.io/badge/license-MIT-purple.svg)
-![Python](https://img.shields.io/badge/python-3.10+-yellow.svg)
-![React](https://img.shields.io/badge/react-18-61dafb.svg)
+# Ops-Center
 
-**The Central Hub for Managing Your Entire AI Infrastructure**
+### The AI-Powered Infrastructure Command Center
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API Reference](#-api-reference)
+[![Version](https://img.shields.io/badge/version-2.5.0-7c3aed.svg?style=for-the-badge)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/status-production-22c55e.svg?style=for-the-badge)](#)
+[![License](https://img.shields.io/badge/license-MIT-3b82f6.svg?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10+-fbbf24.svg?style=for-the-badge)](https://python.org)
+[![React](https://img.shields.io/badge/react-18-61dafb.svg?style=for-the-badge)](https://react.dev)
+[![FastAPI](https://img.shields.io/badge/fastapi-0.100+-009688.svg?style=for-the-badge)](https://fastapi.tiangolo.com)
+
+<br/>
+
+```
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                                                                 │
+   │    ╔═══════════════════════════════════════════════════════╗     │
+   │    ║                                                       ║     │
+   │    ║   You: "Colonel, spin up a new org with Pro access    ║     │
+   │    ║         and notify the team on Slack."                ║     │
+   │    ║                                                       ║     │
+   │    ║   Colonel: Done. Created "Acme Corp" with 3 roles,   ║     │
+   │    ║   assigned Pro tier, SSO configured.                  ║     │
+   │    ║   Slack notification sent to #ops.                    ║     │
+   │    ║                                                       ║     │
+   │    ╚═══════════════════════════════════════════════════════╝     │
+   │                                                                 │
+   │    Users ████████████████░░░░  847 active                       │
+   │    API   ████████████░░░░░░░░  62% quota                       │
+   │    Rev   ██████████████████░░  $12.4k MRR                      │
+   │    GPU   ███████░░░░░░░░░░░░░  38% utilization                 │
+   │                                                                 │
+   └─────────────────────────────────────────────────────────────────┘
+```
+
+**Manage users, billing, AI models, organizations, and infrastructure — all from one place.**<br/>
+**Talk to The Colonel, your AI platform engineer, to orchestrate it all with natural language.**
+
+[Get Started](#-quick-start) · [The Colonel](#-the-colonel--ai-platform-engineer) · [Features](#-features) · [API Reference](#-api-at-a-glance) · [Documentation](#-documentation)
 
 </div>
 
 ---
 
-## 🎯 What is Ops-Center?
+## What is Ops-Center?
 
-Ops-Center is the **centralized management dashboard** for the UC-Cloud ecosystem - your single pane of glass for managing users, organizations, subscriptions, LLM infrastructure, and services across your entire AI platform.
-
-**Think of it like:**
-- 🏢 **AWS Console** - Infrastructure management at scale
-- 👥 **Auth0 Dashboard** - Complete user and authentication control
-- 💰 **Stripe Dashboard** - Subscription and billing management
-- 🤖 **LiteLLM Proxy** - Multi-provider LLM orchestration
-- 📊 **Grafana** - Real-time analytics and monitoring
-
-**All in one beautiful, unified interface.**
-
----
-
-## ⚡ Key Features
-
-### 👥 User Management
-- **Advanced Filtering**: 10+ filter options (tier, role, status, org, date ranges)
-- **Bulk Operations**: CSV import/export, bulk role assignment, bulk actions
-- **User Detail Pages**: 6-tab comprehensive profile view with charts
-- **Role Management**: Visual permission matrix with hierarchical roles
-- **API Key Management**: Full CRUD for user API keys with bcrypt hashing
-- **User Impersonation**: Admin "login as user" feature with 24hr sessions
-- **Activity Timeline**: Color-coded audit log with expandable details
-
-### 💰 Billing & Subscriptions
-- **4 Subscription Tiers**: Trial ($1/week), Starter ($19/mo), Professional ($49/mo), Enterprise ($99/mo)
-- **Usage Tracking**: Real-time API call tracking with quota management
-- **Stripe Integration**: Payment processing, invoices, webhooks
-- **Lago Billing**: Advanced metering, usage-based billing
-- **Self-Service**: Users can upgrade/downgrade/cancel their plans
-- **Payment Methods**: Manage cards, billing address, upcoming invoices
-
-### 🏢 Organization Management
-- **Multi-Tenancy**: Organizations with team management
-- **Role-Based Access**: Custom roles and permissions per organization
-- **Team Collaboration**: Invite members, manage roles, audit trails
-- **Resource Quotas**: Per-organization limits (API calls, storage, seats)
-- **Billing**: Organization-level subscription and payment management
-
-### 🤖 LLM Management
-- **100+ Models**: OpenAI, Anthropic, Google, Meta, and more via LiteLLM
-- **BYOK Support**: Bring Your Own Key - use your API keys, no platform markup
-- **Credit System**: Usage-based billing with automatic credit tracking
-- **Model Catalog**: Curated lists per app (Bolt.diy, Presenton, Open-WebUI)
-- **Image Generation**: DALL-E, Stable Diffusion, Imagen support
-- **Provider Routing**: Smart routing to cheapest/fastest providers
-
-### 🎨 Apps Marketplace
-- **Dynamic Tier-Based Access**: Apps appear/disappear based on subscription tier
-- **8 Integrated Services**: Chat, Search, TTS, STT, Git, Brigade, Bolt, Presentations
-- **Single Sign-On**: Keycloak SSO across all apps
-- **Feature Management**: Admin control over which tiers get which apps
-
-### 📊 Analytics & Monitoring
-- **Real-Time Dashboards**: User growth, API usage, revenue trends
-- **Service Health**: Monitor all services in real-time
-- **Usage Analytics**: API calls, credits consumed, costs per service
-- **Audit Logs**: Complete activity tracking across all operations
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Docker** & **Docker Compose**
-- **PostgreSQL** (shared database)
-- **Redis** (shared cache)
-- **Keycloak** (SSO authentication)
-- **Node.js 20+** (for frontend development)
-- **Python 3.10+** (for backend development)
-
-### 1. Clone the Repository
-
-```bash
-cd /opt/ops-center
-```
-
-### 2. Configure Environment
-
-```bash
-# Copy environment template
-cp .env.example .env.auth
-
-# Edit configuration
-vim .env.auth
-```
-
-**Key Variables**:
-```bash
-# Keycloak SSO
-KEYCLOAK_URL=http://uchub-keycloak:8080
-KEYCLOAK_REALM=uchub
-KEYCLOAK_CLIENT_ID=ops-center
-KEYCLOAK_CLIENT_SECRET=<your-secret>
-
-# Database
-POSTGRES_HOST=unicorn-postgresql
-POSTGRES_DB=unicorn_db
-
-# Billing
-LAGO_API_KEY=<your-lago-key>
-STRIPE_SECRET_KEY=<your-stripe-key>
-
-# Billing Mode (Optional)
-BILLING_ENABLED=true                    # Set "false" to disable all billing
-CREDIT_EXEMPT_TIERS=free,admin,internal # Tiers exempt from charges (or "*" for all)
-```
-
-> **Tip**: For personal or internal servers, set `BILLING_ENABLED=false` to skip all credit checks.
-
-### 3. Start the Services
-
-```bash
-# Start with Docker Compose
-docker compose -f docker-compose.direct.yml up -d
-
-# Check status
-docker ps | grep ops-center
-```
-
-### 4. Access the Dashboard
-
-```bash
-# Local development
-http://localhost:8084
-
-# Production
-https://unicorncommander.ai
-```
-
-**Default Admin**: Navigate to Keycloak and create your first admin user
-
----
-
-## 📁 Project Structure
+Ops-Center is a **full-stack operations dashboard** for managing AI-powered infrastructure. It combines the capabilities of an AWS Console, Stripe Dashboard, Auth0 admin panel, and LLM gateway into a single, self-hosted platform — with an AI agent (The Colonel) that can operate it all through conversation.
 
 ```
-ops-center/
-├── backend/                      # FastAPI backend
-│   ├── server.py                 # Main application
-│   ├── user_management_api.py    # User CRUD + bulk ops
-│   ├── billing_analytics_api.py  # Billing & subscriptions
-│   ├── org_api.py                # Organization management
-│   ├── litellm_api.py            # LLM proxy + credit system
-│   ├── my_apps_api.py            # Tier-based app access
-│   ├── model_list_api.py         # Model catalog management
-│   ├── landing_page_settings_api.py  # Landing page config
-│   ├── pricing_packages_api.py   # Public pricing API
-│   ├── keycloak_integration.py   # SSO integration
-│   ├── lago_integration.py       # Billing system
-│   └── dependencies.py           # Dependency injection
-│
-├── src/                          # React frontend
-│   ├── App.jsx                   # Main app + routing
-│   ├── pages/
-│   │   ├── Dashboard.jsx         # Main dashboard
-│   │   ├── UserManagement.jsx    # User list + filters
-│   │   ├── UserDetail.jsx        # User profile (6 tabs)
-│   │   ├── AppsMarketplace.jsx   # Tier-based apps
-│   │   ├── BillingDashboard.jsx  # Admin billing
-│   │   ├── admin/
-│   │   │   ├── ModelListManagement.jsx  # Model catalogs
-│   │   │   └── FeatureManagement.jsx    # Feature flags
-│   │   ├── subscription/         # User subscription pages
-│   │   └── organization/         # Org management pages
-│   ├── components/               # Reusable components
-│   └── contexts/                 # React contexts
-│
-├── public/                       # Static assets + built files
-├── docker-compose.direct.yml     # Docker configuration
-├── package.json                  # Frontend dependencies
-├── requirements.txt              # Backend dependencies
-└── CLAUDE.md                     # Complete documentation
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          YOUR INFRASTRUCTURE                             │
+│                                                                          │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐      │
+│  │Open-WebUI│  │Bolt.diy │  │ Forgejo │  │ Search  │  │  Your   │      │
+│  │  (Chat)  │  │  (Dev)  │  │  (Git)  │  │ Engine  │  │  Apps   │      │
+│  └────┬─────┘  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘      │
+│       │              │            │             │             │           │
+│       └──────────────┴─────┬──────┴─────────────┴─────────────┘           │
+│                            │                                              │
+│                    ┌───────▼────────┐                                     │
+│                    │                │                                     │
+│                    │   OPS-CENTER   │◄──── The Colonel (AI Agent)         │
+│                    │                │      "Deploy the new service"       │
+│                    └───────┬────────┘                                     │
+│                            │                                              │
+│           ┌────────────────┼────────────────┐                            │
+│           │                │                │                            │
+│     ┌─────▼─────┐   ┌─────▼─────┐   ┌──────▼──────┐                    │
+│     │  Keycloak  │   │ PostgreSQL│   │    Redis     │                    │
+│     │    SSO     │   │  + Lago   │   │   + Cache    │                    │
+│     │  ┌─────┐   │   │           │   │              │                    │
+│     │  │Google│   │   │           │   │              │                    │
+│     │  │GitHub│   │   │           │   │              │                    │
+│     │  │  MS  │   │   │           │   │              │                    │
+│     │  └─────┘   │   │           │   │              │                    │
+│     └────────────┘   └───────────┘   └──────────────┘                    │
+│                                                                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
+│  │  Stripe  │  │ LiteLLM  │  │ Traefik  │  │ Grafana  │                │
+│  │ Payments │  │ 100+ LLMs│  │ SSL/TLS  │  │ Metrics  │                │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘                │
+└──────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## The Colonel — AI Platform Engineer
 
-### Backend
-- **Framework**: FastAPI (async Python)
-- **Database**: PostgreSQL + asyncpg
-- **Cache**: Redis
-- **Authentication**: Keycloak SSO (OpenID Connect)
-- **Billing**: Lago + Stripe
-- **LLM Proxy**: LiteLLM (100+ models)
+The Colonel is Ops-Center's flagship feature: an **AI-powered infrastructure agent** that lives inside your dashboard. Built on Claude/GPT with real-time WebSocket streaming, tool-use capabilities, and a modular skill system, The Colonel can execute actual operations on your infrastructure through natural language.
 
-### Frontend
-- **Framework**: React 18
-- **Build Tool**: Vite
-- **UI Library**: Material-UI (MUI v5)
-- **Routing**: React Router v6
-- **State**: React Context API
-- **Charts**: Chart.js + react-chartjs-2
-- **HTTP**: Axios
-
-### Infrastructure
-- **Containers**: Docker + Docker Compose
-- **Reverse Proxy**: Traefik (SSL/TLS)
-- **Networks**: Multi-network architecture
-- **Orchestration**: Docker Compose
-
----
-
-## 🎨 Screenshots
-
-### Dashboard Overview
-Beautiful, modern interface with real-time metrics and service status.
-
-### User Management
-Advanced filtering, bulk operations, and detailed user profiles.
-
-### Apps Marketplace
-Dynamic tier-based app access with single sign-on across all services.
-
-### Billing Dashboard
-Complete subscription management, usage tracking, and payment processing.
-
----
-
-## 📚 Documentation
-
-### For Users
-- **[Quick Start Guide](docs/QUICK_START.md)** - Get up and running in 5 minutes
-- **[User Guide](docs/USER_GUIDE.md)** - Complete feature walkthrough
-- **[FAQ](docs/FAQ.md)** - Common questions and answers
-
-### For Developers
-- **[CLAUDE.md](CLAUDE.md)** - Complete technical documentation (production context)
-- **[API Reference](docs/API_REFERENCE.md)** - REST API endpoints
-- **[Development Guide](docs/DEVELOPMENT.md)** - Local development setup
-- **[Architecture](docs/ARCHITECTURE.md)** - System design and architecture
-
-### For Admins
-- **[Admin Guide](docs/ADMIN_OPERATIONS_HANDBOOK.md)** - Administrative operations
-- **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
-
----
-
-## 🔌 API Reference
-
-### Base URL
 ```
-https://unicorncommander.ai/api/v1
-http://localhost:8084/api/v1  # Local development
+┌─────────────────────────────────────────────────────────────────┐
+│  THE COLONEL                                          ● Online  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  You: Show me which services are unhealthy                      │
+│                                                                 │
+│  Colonel: Running health checks...                              │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │ PostgreSQL ........... healthy  (2ms)                    │    │
+│  │ Redis ................ healthy  (1ms)                    │    │
+│  │ Keycloak ............ healthy  (45ms)                   │    │
+│  │ vLLM ................ degraded (GPU temp 82C)           │    │
+│  │ Traefik ............. healthy  (3ms)                    │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│  vLLM is running but the GPU is warm. Want me to check          │
+│  the inference queue depth?                                     │
+│                                                                 │
+│  You: Yes, and restart it if the queue is backed up             │
+│                                                                 │
+│  Colonel: Queue depth is 47 (threshold: 20).                    │
+│  Requesting confirmation to restart vLLM...                     │
+│  ┌──────────────────────────────────────┐                       │
+│  │  Restart vLLM inference server?      │                       │
+│  │  [ Approve ]  [ Deny ]              │                       │
+│  └──────────────────────────────────────┘                       │
+│                                                                 │
+│  [Type a message...]                                    [Send]  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### Authentication
-All admin endpoints require Keycloak SSO authentication via session cookies or Bearer tokens.
+### Colonel Skills
 
-### Key Endpoints
+| Skill | Capabilities | Confirmation Required |
+|-------|-------------|----------------------|
+| **System Status** | CPU, RAM, disk, GPU metrics, uptime | No |
+| **Docker Management** | List, start, stop, restart containers, view logs | Destructive ops only |
+| **Service Health** | Check all services, latency, connection status | No |
+| **Log Viewer** | Tail logs, search patterns, filter by service | No |
+| **PostgreSQL Ops** | Query stats, table sizes, active connections, vacuum | Write ops only |
+| **Keycloak Auth** | User lookup, session management, realm status | Write ops only |
+| **Forgejo Git** | Repo stats, user management, org operations | Write ops only |
+| **Bash Execution** | Run shell commands with safety controls | Always |
+
+### How It Works
+
+```
+  User Message ──► WebSocket Gateway ──► LLM (Claude/GPT)
+                        │                      │
+                        │                 tool_calls
+                        │                      │
+                        ▼                      ▼
+                  Stream chunks ◄── Skill Router ──► Skill Executor
+                  to browser              │
+                                          ▼
+                                   Safety Layer
+                                   (confirmation for
+                                    destructive ops)
+                                          │
+                                          ▼
+                              ┌─── Memory Layer ───┐
+                              │  Kuzu (Graph DB)   │
+                              │  Mem0 (Vectors)    │
+                              │  Redis (Sessions)  │
+                              └────────────────────┘
+                                          │
+                                          ▼
+                                    Audit Log
+                              (every action recorded)
+```
+
+**Key Design Decisions:**
+- **Human-in-the-loop**: Destructive operations require explicit user approval
+- **Streaming**: Real-time WebSocket delivery — see The Colonel think and act
+- **Auditable**: Every skill execution logged with parameters, results, and duration
+- **Extensible**: Add new skills by dropping a `SKILL.md` file in `backend/colonel/skills/`
+- **Configurable**: Adjust personality, enabled skills, and LLM model via admin UI
+
+---
+
+## Features
+
+### Platform Management
+
+<table>
+<tr>
+<td width="50%">
 
 #### User Management
-```bash
-GET    /admin/users                    # List users (with filters)
-GET    /admin/users/{id}               # Get user details
-POST   /admin/users/comprehensive      # Create user
-PUT    /admin/users/{id}               # Update user
-DELETE /admin/users/{id}               # Delete user
-POST   /admin/users/bulk/import        # Import CSV
-GET    /admin/users/export             # Export CSV
-```
+- 10+ advanced filters (tier, role, status, org, date range)
+- Bulk operations: CSV import/export, mass role assignment
+- 6-tab user detail pages with usage charts
+- API key management with bcrypt hashing
+- Admin impersonation (24hr sessions)
+- Color-coded activity timeline
 
-#### Organization Management
-```bash
-GET    /organizations                  # List organizations
-POST   /organizations                  # Create organization
-GET    /organizations/{id}             # Get organization
-PUT    /organizations/{id}             # Update organization
-GET    /organizations/{id}/members     # List members
-POST   /organizations/{id}/invite      # Invite member
-```
-
-#### LLM & Credits
-```bash
-POST   /llm/chat/completions           # Chat completion (OpenAI-compatible)
-POST   /llm/image/generations          # Image generation (DALL-E, SD)
-GET    /llm/models                     # List available models
-GET    /llm/models/categorized         # Models by BYOK vs Platform
-GET    /llm/usage                      # Usage statistics
-```
+</td>
+<td width="50%">
 
 #### Billing & Subscriptions
-```bash
-GET    /billing/plans                  # List subscription plans
-GET    /billing/subscriptions/current  # Current subscription
-POST   /billing/subscriptions/create   # Create subscription
-POST   /billing/subscriptions/upgrade  # Upgrade tier
-POST   /billing/subscriptions/cancel   # Cancel subscription
-GET    /billing/invoices               # Invoice history
-```
+- 4 tiers: Trial, Starter ($19/mo), Pro ($49/mo), Enterprise ($99/mo)
+- Stripe + Lago dual billing integration
+- Self-service upgrade/downgrade/cancel
+- Usage-based API metering with quotas
+- Payment method management (PCI compliant)
+- Dynamic database-driven pricing
+
+</td>
+</tr>
+<tr>
+<td>
+
+#### Organizations
+- Multi-tenant with team management
+- Role hierarchy: Owner > Admin > Member
+- Org-level feature grants (override tier restrictions)
+- Invitation system with onboarding
+- Per-org billing and credit pools
+
+</td>
+<td>
+
+#### LLM Gateway
+- 100+ models via OpenRouter, OpenAI, Anthropic, Google
+- BYOK: Bring Your Own Key (no platform markup)
+- Credit system with tier-based pricing
+- Image generation (DALL-E, Stable Diffusion, Imagen)
+- Admin-curated model lists per app
+- Smart provider routing for cost optimization
+
+</td>
+</tr>
+<tr>
+<td>
 
 #### Apps Marketplace
-```bash
-GET    /my-apps/authorized             # Apps user can access (tier-filtered)
-GET    /my-apps/marketplace            # Apps available for purchase
-```
+- Dynamic tier-based app visibility
+- Org-level feature grants
+- Role-based access control per app
+- SSO across all integrated services
+- Admin feature management GUI
 
-**Complete API documentation**: [docs/API_REFERENCE.md](docs/API_REFERENCE.md)
+</td>
+<td>
+
+#### Monitoring & Analytics
+- Real-time service health dashboard
+- GPU monitoring (NVIDIA Tesla P40+)
+- Usage analytics with interactive charts
+- Revenue and subscription metrics
+- Complete immutable audit trail
+
+</td>
+</tr>
+</table>
+
+### Billing Flexibility
+
+Ops-Center adapts to your deployment scenario:
+
+```bash
+# Personal server — no billing at all
+BILLING_ENABLED=false
+
+# Internal company — everyone gets free access
+CREDIT_EXEMPT_TIERS=*
+
+# SaaS platform — full billing with custom exempt tiers
+CREDIT_EXEMPT_TIERS=free,enterprise,staff,beta_tester
+```
 
 ---
 
-## 🧪 Development
+## Quick Start
 
-### Local Development Setup
+### Option 1: Docker Compose (Recommended)
 
 ```bash
-# Install frontend dependencies
-npm install
+# Clone the repository
+git clone https://github.com/Unicorn-Commander/Ops-Center.git
+cd Ops-Center
 
-# Install backend dependencies
-pip install -r backend/requirements.txt
+# Copy environment template and configure
+cp .env.example .env.auth
+nano .env.auth
 
-# Start development server (frontend)
-npm run dev  # http://localhost:5173
-
-# Start backend (via Docker)
+# Start everything
 docker compose -f docker-compose.direct.yml up -d
 
-# Watch logs
-docker logs ops-center-direct -f
+# Verify
+curl http://localhost:8084/api/v1/system/status
 ```
 
-### Build Frontend
+### Option 2: Bare Metal
 
 ```bash
-# Production build
-npm run build
+# Run the installer (Python, Node.js, Docker, all dependencies)
+sudo ./install.sh
 
-# Deploy to public/
-cp -r dist/* public/
+# Configure
+cp .env.example .env.auth && nano .env.auth
 
-# Restart backend to serve new files
-docker restart ops-center-direct
+# Start
+sudo systemctl start ops-center
+sudo systemctl enable ops-center
 ```
 
-### Run Tests
+### Option 3: Development Mode
 
 ```bash
-# Backend tests (if available)
-cd backend && pytest
+npm install && pip install -r backend/requirements.txt
 
-# Frontend tests
-npm test
+# Terminal 1: Backend
+cd backend && uvicorn server:app --reload --port 8084
 
-# E2E tests
-npm run test:e2e
-```
+# Terminal 2: Frontend
+npm run dev   # → http://localhost:5173
 
-### Code Quality
-
-```bash
-# Frontend linting
-npm run lint
-
-# Backend linting
-ruff check backend/
-
-# Type checking
-mypy backend/
-```
-
----
-
-## 🌟 Recent Updates
-
-### v2.4.0 (November 29, 2025) - Image Generation + P0 Fixes
-
-**Added**:
-- ✨ OpenAI GPT Image 1 & Image 1 Mini models
-- ✨ Google Gemini Imagen 3 & Gemini 2.5 Flash Image
-- ✨ Ollama Cloud provider support
-- ✨ OpenRouter image generation support
-- 📊 Model categorization by BYOK vs Platform
-- 🎨 Image category badges (pink #e91e63)
-
-**Fixed**:
-- 🐛 Image generation routing (DALL-E→OpenAI, Imagen→Gemini, SD→OpenRouter)
-- 🐛 Service auth UUID mapping (using database UUIDs)
-- 🐛 API get_db_pool() parameter errors
-- 🐛 Missing database tables (app_definitions, landing_page_settings, features)
-- 🐛 Log errors (eliminated app_definitions errors)
-
-**Performance**:
-- ⚡ 100% test pass rate (17/17 tests)
-- ⚡ All P0 bugs fixed
-- ⚡ API response times: 2-8ms (38x faster than Stripe)
-
-**[Complete Changelog](CHANGELOG.md)**
-
----
-
-## 🤝 Integration
-
-### UC-Cloud Ecosystem
-
-Ops-Center integrates seamlessly with the entire UC-Cloud platform:
-
-- **🎖️ Unicorn Brigade** - AI agent platform (47+ pre-built agents)
-- **💬 Open-WebUI** - AI chat interface
-- **🔍 Center-Deep** - AI metasearch engine (70+ search engines)
-- **🎤 Unicorn Orator** - Professional TTS service
-- **🎧 Unicorn Amanuensis** - Professional STT service
-- **⚡ Bolt.diy** - AI development environment
-- **📊 Presenton** - AI presentation generation
-- **🔐 Keycloak** - Enterprise SSO (uchub realm)
-- **💳 Lago + Stripe** - Advanced billing system
-- **🐙 Forgejo** - Self-hosted Git server
-
-All services share:
-- ✅ Single Sign-On (Keycloak)
-- ✅ Unified billing (Lago + Stripe)
-- ✅ Centralized LLM routing
-- ✅ Cross-service authentication
-- ✅ Shared database and cache
-
----
-
-## 🔒 Security
-
-- **🔐 SSO Authentication**: Keycloak with Google, GitHub, Microsoft providers
-- **🔑 API Key Management**: Bcrypt hashing, secure storage
-- **👮 Role-Based Access**: 5-tier role hierarchy (admin → viewer)
-- **📝 Audit Logging**: Complete activity tracking
-- **🛡️ Input Validation**: Pydantic models, SQL injection protection
-- **🔒 HTTPS/TLS**: SSL certificates via Traefik
-- **💰 PCI Compliance**: Stripe handles all card data
-
----
-
-## 📊 Performance
-
-- **⚡ API Response Times**: 2-8ms average (38x faster than Stripe API)
-- **💾 Database Queries**: <1ms execution time
-- **🎯 Container Resources**: 0.66% memory, 0.20% CPU
-- **📦 Bundle Size**: Frontend optimized for production
-- **🚀 Zero Downtime**: Rolling deployments supported
-
----
-
-## 🛠️ Troubleshooting
-
-### Common Issues
-
-**❓ Metrics showing 0**
-```bash
-# Populate Keycloak user attributes
-docker exec ops-center-direct python3 /app/scripts/quick_populate_users.py
-```
-
-**❓ Build errors**
-```bash
-# Install dependencies
-npm install
-
-# Rebuild
+# Build for production
 npm run build && cp -r dist/* public/
 ```
 
-**❓ API 401/403 errors**
-```bash
-# Check Keycloak
-docker ps | grep keycloak
+### First Login
 
-# Re-login via SSO
-# https://unicorncommander.ai/auth/login
+1. Navigate to `http://localhost:8084`
+2. Set up Keycloak and create your admin user
+3. Configure SSO providers (Google, GitHub, Microsoft) if desired
+4. Visit `/admin` to access the full dashboard
+
+---
+
+## API at a Glance
+
+**624+ endpoints** across 12 API domains.
+
+<details>
+<summary><b>User Management</b> — CRUD, bulk ops, roles, API keys, impersonation</summary>
+
+```
+GET    /api/v1/admin/users                         List users (10+ filters)
+POST   /api/v1/admin/users/comprehensive           Create user (full provisioning)
+GET    /api/v1/admin/users/{id}                    User details
+POST   /api/v1/admin/users/bulk/import             CSV import (up to 1,000)
+GET    /api/v1/admin/users/export                  CSV export
+POST   /api/v1/admin/users/bulk/assign-roles       Bulk role assignment
+POST   /api/v1/admin/users/{id}/api-keys           Generate API key
+POST   /api/v1/admin/users/{id}/impersonate/start  Admin impersonation
+GET    /api/v1/admin/users/analytics/summary       User statistics
+```
+</details>
+
+<details>
+<summary><b>Organizations</b> — Multi-tenant with feature grants</summary>
+
+```
+GET    /api/v1/organizations                       List organizations
+POST   /api/v1/organizations                       Create organization
+GET    /api/v1/organizations/{id}/members          List members
+POST   /api/v1/organizations/{id}/invite           Invite member
+POST   /api/v1/admin/orgs/{id}/features            Grant feature to org
+DELETE /api/v1/admin/orgs/{id}/features/{key}      Revoke feature
+GET    /api/v1/admin/features/available             List grantable features
+```
+</details>
+
+<details>
+<summary><b>LLM & Credits</b> — OpenAI-compatible chat, images, model catalog</summary>
+
+```
+POST   /api/v1/llm/chat/completions               Chat completion (OpenAI-compatible)
+POST   /api/v1/llm/image/generations               Image generation
+GET    /api/v1/llm/models                          List all models
+GET    /api/v1/llm/models/categorized              BYOK vs Platform breakdown
+GET    /api/v1/llm/models/curated?app=bolt-diy     Per-app curated lists
+GET    /api/v1/llm/usage                           Usage statistics
+```
+</details>
+
+<details>
+<summary><b>Billing & Subscriptions</b> — Stripe + Lago, self-service management</summary>
+
+```
+GET    /api/v1/billing/plans                       List subscription plans
+POST   /api/v1/subscriptions/upgrade               Upgrade tier
+POST   /api/v1/subscriptions/downgrade             Downgrade tier
+POST   /api/v1/subscriptions/cancel                Cancel subscription
+GET    /api/v1/subscriptions/preview-change        Preview cost changes
+GET    /api/v1/payment-methods                     List payment methods
+POST   /api/v1/payment-methods/setup-intent        Add new card
+GET    /api/v1/usage/current                       Current usage stats
+```
+</details>
+
+<details>
+<summary><b>The Colonel</b> — AI agent via WebSocket + REST</summary>
+
+```
+WS     /api/v1/colonel/ws                          WebSocket (streaming chat)
+GET    /api/v1/colonel/config                      Current configuration
+PUT    /api/v1/colonel/config                      Update configuration
+GET    /api/v1/colonel/status                      Health + session stats
+GET    /api/v1/colonel/sessions                    List chat sessions
+DELETE /api/v1/colonel/sessions/{id}               Delete session
+GET    /api/v1/colonel/audit                       Audit log
+```
+</details>
+
+Full API documentation: [docs/API_REFERENCE.md](docs/API_REFERENCE.md)
+
+---
+
+## Technology Stack
+
+```
+FRONTEND                    BACKEND                     INFRASTRUCTURE
+─────────────────────       ─────────────────────       ─────────────────────
+React 18 + Vite             FastAPI (async Python)      Docker + Compose
+Material-UI v5              PostgreSQL + asyncpg         Traefik (SSL/TLS)
+React Router v6             Redis (cache + sessions)     Keycloak SSO
+Chart.js                    Lago (billing engine)        Let's Encrypt
+Tailwind CSS                Stripe (payments)            NVIDIA GPU support
+WebSocket                   LiteLLM (LLM proxy)
+                            Kuzu + Mem0 (AI memory)
 ```
 
-**❓ Database connection errors**
-```bash
-# Check PostgreSQL
-docker ps | grep postgresql
+### Performance
 
-# Test connection
-docker exec unicorn-postgresql psql -U unicorn -d unicorn_db -c "SELECT 1;"
+```
+API Response Time    ████████████████████████████░░  2-8ms avg
+Database Queries     █████████████████████████████░  <1ms execution
+Redis Cache          ██████████████████████████████  ~1ms lookups
+Usage Tracking       ████████████████████████████░░  <5ms overhead/request
+Container Footprint  ███░░░░░░░░░░░░░░░░░░░░░░░░░░  0.66% RAM, 0.20% CPU
 ```
 
-**[Complete Troubleshooting Guide](docs/TROUBLESHOOTING.md)**
+---
+
+## Project Structure
+
+```
+ops-center/
+├── backend/                        # FastAPI backend
+│   ├── server.py                   # Main application
+│   ├── colonel/                    # The Colonel AI Agent
+│   │   ├── websocket_gateway.py    #   WebSocket streaming
+│   │   ├── skill_router.py         #   Tool-call routing
+│   │   ├── skill_executor.py       #   Skill execution engine
+│   │   ├── skill_loader.py         #   SKILL.md parser
+│   │   ├── safety.py               #   Confirmation + safety
+│   │   ├── system_prompt.py        #   Dynamic prompt builder
+│   │   ├── a2a_server.py           #   Agent-to-Agent protocol
+│   │   ├── memory/                 #   Kuzu graph + Mem0 vectors
+│   │   └── skills/                 #   8 skill definitions
+│   ├── routers/colonel.py          # Colonel REST API
+│   ├── litellm_api.py              # LLM proxy + credits
+│   ├── user_management_api.py      # User CRUD + bulk ops
+│   ├── billing_analytics_api.py    # Billing + analytics
+│   ├── org_api.py                  # Organization management
+│   ├── my_apps_api.py              # Tier-based app access
+│   ├── keycloak_integration.py     # SSO integration
+│   ├── lago_integration.py         # Lago billing
+│   └── migrations/                 # SQL schemas
+│
+├── src/                            # React frontend
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── ColonelChat.jsx     # Colonel chat interface
+│   │   │   ├── ColonelStatus.jsx   # Colonel health dashboard
+│   │   │   └── ColonelOnboarding.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── UserManagement.jsx
+│   │   ├── AppsMarketplace.jsx
+│   │   ├── subscription/           # Self-service billing
+│   │   └── organization/           # Org management
+│   ├── components/colonel/         # Colonel UI components
+│   ├── hooks/                      # useColonelWebSocket, etc.
+│   └── contexts/                   # React contexts
+│
+├── public/                         # Static assets + logos
+├── docker-compose.direct.yml       # Docker configuration
+├── install.sh                      # Bare-metal installer
+├── package.json                    # Frontend dependencies
+└── .env.example                    # Configuration template
+```
 
 ---
 
-## 📈 Roadmap
+## Security
 
-### Phase 2: Enhanced Analytics (In Progress)
-- 📊 User growth charts and heatmaps
-- 📉 Churn analysis and retention metrics
-- 💰 Revenue forecasting and LTV calculations
-- ⚠️ Real-time alerts and notifications
-
-### Phase 3: Advanced Organization Management
-- 🏢 Team hierarchies and nested teams
-- 🎭 Custom roles per organization
-- 📦 Resource quotas and limits
-- 🔐 Per-organization SSO providers
-
-### Phase 4: Self-Service & Automation
-- 🤖 Automated provisioning on signup
-- 📈 Usage-based tier upgrades
-- 💬 AI-powered chatbot support
-- 📚 Built-in API documentation portal
-
-**[Complete Roadmap](docs/ROADMAP.md)**
+| Layer | Implementation |
+|-------|---------------|
+| **Authentication** | Keycloak SSO with Google, GitHub, Microsoft |
+| **Authorization** | 5-tier role hierarchy (admin, moderator, developer, analyst, viewer) |
+| **API Keys** | bcrypt hashing, secure storage |
+| **Sessions** | Redis-backed with configurable TTL |
+| **Input Validation** | Pydantic models throughout |
+| **SQL Protection** | Parameterized queries via asyncpg |
+| **XSS Protection** | React built-in escaping |
+| **HTTPS/TLS** | Traefik with Let's Encrypt auto-renewal |
+| **PCI Compliance** | Stripe Elements (no raw card data touches your server) |
+| **Colonel Safety** | Human-in-the-loop confirmation for destructive operations |
+| **Audit Trail** | Immutable log of all operations and Colonel actions |
 
 ---
 
-## 🧑‍💻 Contributing
+## Ecosystem
 
-We welcome contributions! Here's how to get started:
+Ops-Center is the control plane for a full AI infrastructure stack:
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make your changes** (follow our coding standards)
-4. **Run tests**: `npm test && pytest`
-5. **Commit**: `git commit -m 'feat: Add amazing feature'`
-6. **Push**: `git push origin feature/amazing-feature`
-7. **Open a Pull Request**
-
-**[Contributing Guidelines](CONTRIBUTING.md)**
-
----
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-Copyright (c) 2025 Magic Unicorn Unconventional Technology & Stuff Inc
+| Service | Role | Integration |
+|---------|------|-------------|
+| **Unicorn Brigade** | AI agent platform (47+ agents) | Shared SSO, LLM routing |
+| **Open-WebUI** | AI chat interface | SSO, credit billing |
+| **Center-Deep** | AI metasearch (70+ engines) | SSO, cross-domain auth |
+| **Bolt.diy** | AI dev environment | Curated model lists |
+| **Presenton** | AI presentations | Image generation API |
+| **Forgejo** | Self-hosted Git | SSO, tier-based access |
+| **Keycloak** | Identity provider | SSO backbone |
+| **Lago + Stripe** | Billing engine | Metering, invoicing |
+| **LiteLLM** | LLM proxy | 100+ model routing |
+| **Grafana** | Observability | Metrics dashboards |
 
 ---
 
-## 🙏 Acknowledgments
+## Documentation
 
-Built with ❤️ by the UC-Cloud team using:
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
-- [React](https://reactjs.org/) - UI library
-- [Material-UI](https://mui.com/) - Component library
-- [Keycloak](https://www.keycloak.org/) - Identity and access management
-- [Lago](https://www.getlago.com/) - Open-source billing platform
-- [LiteLLM](https://litellm.ai/) - LLM proxy and routing
+| Document | Description |
+|----------|-------------|
+| **[CLAUDE.md](CLAUDE.md)** | Complete technical reference (production context) |
+| **[API Reference](docs/API_REFERENCE.md)** | All 624+ REST endpoints |
+| **[Admin Handbook](docs/ADMIN_OPERATIONS_HANDBOOK.md)** | Operations guide |
+| **[Deployment Guide](DEPLOYMENT_GUIDE.md)** | Production deployment |
+| **[Integration Guide](docs/INTEGRATION_GUIDE.md)** | Connect your apps |
+| **[Troubleshooting](docs/TROUBLESHOOTING.md)** | Common issues and fixes |
+| **[Architecture](ARCHITECTURE_DIAGRAM.md)** | System design diagrams |
+| **[Contributing](CONTRIBUTING.md)** | How to contribute |
+| **[Security Policy](SECURITY.md)** | Vulnerability reporting |
+| **[Roadmap](ROADMAP.md)** | What's coming next |
 
 ---
 
-## 📞 Support
+## Contributing
 
-- **📧 Email**: support@magicunicorn.tech
-- **💬 Discord**: [Join our community](https://discord.gg/unicorn-commander)
-- **🐛 Issues**: [GitHub Issues](https://github.com/Unicorn-Commander/Ops-Center/issues)
-- **📚 Docs**: [Complete Documentation](https://docs.unicorncommander.ai)
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+```bash
+git checkout -b feature/amazing-feature
+npm test && cd backend && pytest
+git commit -m 'feat: add amazing feature'
+git push origin feature/amazing-feature
+# Open a Pull Request
+```
+
+We use [Conventional Commits](https://www.conventionalcommits.org/): `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+Copyright (c) 2025-2026 Magic Unicorn Unconventional Technology & Stuff Inc
 
 ---
 
 <div align="center">
 
-**⭐ Star us on GitHub** • **🐦 Follow on Twitter** • **💼 Connect on LinkedIn**
+**[GitHub](https://github.com/Unicorn-Commander/Ops-Center)** · **[Issues](https://github.com/Unicorn-Commander/Ops-Center/issues)** · **[Discussions](https://github.com/Unicorn-Commander/Ops-Center/discussions)**
 
-Made with 🦄 by [Magic Unicorn Tech](https://magicunicorn.tech)
+Built with care by [Magic Unicorn Tech](https://unicorncommander.com)
 
 </div>
