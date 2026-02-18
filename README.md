@@ -15,6 +15,8 @@
 <a href="https://buymeacoffee.com/aaronyo"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"/></a>
 
 <br/>
+<img src="public/logos/The_Colonel.png" alt="The Colonel - AI Platform Engineer" width="200"/>
+<br/>
 
 ```
    ┌─────────────────────────────────────────────────────────────────┐
@@ -52,40 +54,116 @@
 Ops-Center is a **full-stack operations dashboard** for managing AI-powered infrastructure. It combines the capabilities of an AWS Console, Stripe Dashboard, Auth0 admin panel, and LLM gateway into a single, self-hosted platform — with an AI agent (The Colonel) that can operate it all through conversation.
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                          YOUR INFRASTRUCTURE                             │
-│                                                                          │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐      │
-│  │Open-WebUI│  │Bolt.diy │  │ Forgejo │  │ Search  │  │  Your   │      │
-│  │  (Chat)  │  │  (Dev)  │  │  (Git)  │  │ Engine  │  │  Apps   │      │
-│  └────┬─────┘  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘      │
-│       │              │            │             │             │           │
-│       └──────────────┴─────┬──────┴─────────────┴─────────────┘           │
-│                            │                                              │
-│                    ┌───────▼────────┐                                     │
-│                    │                │                                     │
-│                    │   OPS-CENTER   │◄──── The Colonel (AI Agent)         │
-│                    │                │      "Deploy the new service"       │
-│                    └───────┬────────┘                                     │
-│                            │                                              │
-│           ┌────────────────┼────────────────┐                            │
-│           │                │                │                            │
-│     ┌─────▼─────┐   ┌─────▼─────┐   ┌──────▼──────┐                    │
-│     │  Keycloak  │   │ PostgreSQL│   │    Redis     │                    │
-│     │    SSO     │   │  + Lago   │   │   + Cache    │                    │
-│     │  ┌─────┐   │   │           │   │              │                    │
-│     │  │Google│   │   │           │   │              │                    │
-│     │  │GitHub│   │   │           │   │              │                    │
-│     │  │  MS  │   │   │           │   │              │                    │
-│     │  └─────┘   │   │           │   │              │                    │
-│     └────────────┘   └───────────┘   └──────────────┘                    │
-│                                                                          │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐                │
-│  │  Stripe  │  │ LiteLLM  │  │ Traefik  │  │ Grafana  │                │
-│  │ Payments │  │ 100+ LLMs│  │ SSL/TLS  │  │ Metrics  │                │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘                │
-└──────────────────────────────────────────────────────────────────────────┘
+                              ┌───────────────────────────┐
+                              │        USERS              │
+                              │  Browsers · APIs · Apps   │
+                              └────────────┬──────────────┘
+                                           │
+                              ┌────────────▼──────────────┐
+                              │     ☁  CLOUDFLARE         │
+                              │  CDN · DDoS Protection    │
+                              │  DNS · WAF · Edge Cache   │
+                              └────────────┬──────────────┘
+                                           │
+                              ┌────────────▼──────────────┐
+                              │      🔀 TRAEFIK           │
+                              │  Reverse Proxy · SSL/TLS  │
+                              │  Let's Encrypt · Routing  │
+                              │  Web Hosting (sites)      │
+                              └────────────┬──────────────┘
+                                           │
+          ┌────────────────────────────────┼────────────────────────────────┐
+          │                                │                                │
+          ▼                                ▼                                ▼
+┌──────────────────┐          ┌────────────────────────┐        ┌────────────────────┐
+│  USER DASHBOARD  │          │      OPS-CENTER        │        │  ADMIN DASHBOARD   │
+│                  │          │    (FastAPI + React)    │        │                    │
+│ Credits · Usage  │          │                        │        │ Services · GPUs    │
+│ Subscription     │◄────────►│  The Colonel (AI Agent) │◄──────►│ Users · Billing   │
+│ Apps · API Keys  │          │  "Deploy the service"  │        │ Orgs · Analytics   │
+└──────────────────┘          └───────────┬────────────┘        └────────────────────┘
+                                          │
+         ┌──────────────┬─────────────────┼─────────────────┬──────────────┐
+         │              │                 │                  │              │
+         ▼              ▼                 ▼                  ▼              ▼
+┌──────────────┐ ┌─────────────┐ ┌──────────────┐ ┌──────────────┐ ┌────────────┐
+│ APPS         │ │ AUTH & SSO  │ │  AI & LLM    │ │  BILLING     │ │ MONITORING │
+│ MARKETPLACE  │ │             │ │              │ │              │ │            │
+│              │ │ Keycloak    │ │ LiteLLM Proxy│ │ Stripe       │ │ Prometheus │
+│ Open-WebUI   │ │   SSO       │ │  100+ cloud  │ │  (payments)  │ │  (metrics) │
+│ Bolt.diy     │ │             │ │  models      │ │              │ │            │
+│ Forgejo      │ │ ┌─────────┐ │ │              │ │ Lago         │ │ Grafana    │
+│ Center-Deep  │ │ │ Google  │ │ │ Ollama       │ │  (metering & │ │  (dashbds) │
+│ Presenton    │ │ │ GitHub  │ │ │  (local LLM) │ │   invoicing) │ │            │
+│ Web Hosting  │ │ │ MS 365  │ │ │ vLLM         │ │              │ │ Umami      │
+│              │ │ └─────────┘ │ │  (GPU infer.)│ └──────────────┘ │  (web      │
+└──────────────┘ │             │ │ llama.cpp    │                   │  analytics)│
+                 │ MS 365 Email│ │              │                   └────────────┘
+                 │  (SMTP /    │ │ TTS models   │
+                 │   Graph API)│ │ STT models   │
+                 └─────────────┘ │ Embeddings   │
+                                 │ Reranking    │
+                                 │ Image Gen    │
+                                 │  DALL-E · SD │
+                                 │  Imagen      │
+                                 └──────┬───────┘
+                                        │
+         ┌──────────────────────────────┼──────────────────────────────┐
+         │                              │                              │
+         ▼                              ▼                              ▼
+┌──────────────────┐       ┌────────────────────┐       ┌──────────────────┐
+│   PostgreSQL     │       │      Redis         │       │  AI Memory       │
+│                  │       │                    │       │                  │
+│ Users · Orgs     │       │ Sessions · Cache   │       │ Kuzu (Graph DB)  │
+│ Billing · Tiers  │       │ Rate Limiting      │       │  Colonel memory  │
+│ Audit Logs       │       │ Usage Counters     │       │                  │
+│ API Keys         │       │                    │       │ Mem0 (Vectors)   │
+│ App Permissions  │       │                    │       │  Semantic search  │
+└──────────────────┘       └────────────────────┘       └──────────────────┘
 ```
+
+---
+
+## Screenshots
+
+<table>
+<tr>
+<td width="50%">
+<img src="screenshots/Admin-Dashboard.png" alt="Admin Dashboard" width="100%"/>
+<p align="center"><b>Admin Dashboard</b> — System health, services, GPU status, hosted sites</p>
+</td>
+<td width="50%">
+<img src="screenshots/User Dashboard-Homepage.png" alt="User Dashboard" width="100%"/>
+<p align="center"><b>User Dashboard</b> — Credits, usage, subscription, spending breakdown</p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="screenshots/AI-Model-Management.png" alt="AI Model Management" width="100%"/>
+<p align="center"><b>AI Model Management</b> — 100+ LLMs, curated lists, BYOK configuration</p>
+</td>
+<td width="50%">
+<img src="screenshots/Service Management.png" alt="Service Management" width="100%"/>
+<p align="center"><b>Service Management</b> — Docker containers, health checks, logs</p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="screenshots/System Monitoring.png" alt="System Monitoring" width="100%"/>
+<p align="center"><b>System Monitoring</b> — CPU, RAM, disk, GPU metrics, real-time graphs</p>
+</td>
+<td width="50%">
+<img src="screenshots/Extensions.png" alt="Apps Marketplace" width="100%"/>
+<p align="center"><b>Apps Marketplace</b> — Tier-based app access, org grants, SSO integration</p>
+</td>
+</tr>
+<tr>
+<td width="50%" colspan="2" align="center">
+<img src="screenshots/Settings.png" alt="Settings" width="50%"/>
+<p align="center"><b>Settings</b> — Email providers, system configuration, admin controls</p>
+</td>
+</tr>
+</table>
 
 ---
 
@@ -509,11 +587,18 @@ Ops-Center is the control plane for a full AI infrastructure stack:
 | **Center-Deep** | AI metasearch (70+ engines) | SSO, cross-domain auth |
 | **Bolt.diy** | AI dev environment | Curated model lists |
 | **Presenton** | AI presentations | Image generation API |
+| **Unicorn Orator** | Text-to-Speech service | SSO, credit billing |
+| **Unicorn Amanuensis** | Speech-to-Text service | SSO, credit billing |
 | **Forgejo** | Self-hosted Git | SSO, tier-based access |
-| **Keycloak** | Identity provider | SSO backbone |
-| **Lago + Stripe** | Billing engine | Metering, invoicing |
-| **LiteLLM** | LLM proxy | 100+ model routing |
-| **Grafana** | Observability | Metrics dashboards |
+| **Keycloak** | Identity provider (Google, GitHub, MS) | SSO backbone |
+| **Lago + Stripe** | Billing engine | Metering, invoicing, payments |
+| **LiteLLM** | LLM proxy | 100+ model routing, BYOK |
+| **Prometheus** | Metrics collection | `/metrics` endpoint |
+| **Grafana** | Observability dashboards | Metrics visualization |
+| **Umami** | Web analytics | Privacy-focused tracking |
+| **Traefik** | Reverse proxy + web hosting | SSL/TLS, Let's Encrypt |
+| **Cloudflare** | CDN + DDoS protection | DNS, WAF, edge cache |
+| **Docker** | Container orchestration | All services containerized |
 
 ---
 
@@ -524,10 +609,10 @@ Ops-Center is the control plane for a full AI infrastructure stack:
 | **[CLAUDE.md](CLAUDE.md)** | Complete technical reference (production context) |
 | **[API Reference](docs/API_REFERENCE.md)** | All 624+ REST endpoints |
 | **[Admin Handbook](docs/ADMIN_OPERATIONS_HANDBOOK.md)** | Operations guide |
-| **[Deployment Guide](DEPLOYMENT_GUIDE.md)** | Production deployment |
+| **[Deployment Guide](docs/deployments/DEPLOYMENT_GUIDE.md)** | Production deployment |
 | **[Integration Guide](docs/INTEGRATION_GUIDE.md)** | Connect your apps |
 | **[Troubleshooting](docs/TROUBLESHOOTING.md)** | Common issues and fixes |
-| **[Architecture](ARCHITECTURE_DIAGRAM.md)** | System design diagrams |
+| **[Architecture](docs/architecture/ARCHITECTURE_DIAGRAM.md)** | System design diagrams |
 | **[Contributing](CONTRIBUTING.md)** | How to contribute |
 | **[Security Policy](SECURITY.md)** | Vulnerability reporting |
 | **[Roadmap](ROADMAP.md)** | What's coming next |
@@ -555,6 +640,14 @@ We use [Conventional Commits](https://www.conventionalcommits.org/): `feat`, `fi
 MIT License — see [LICENSE](LICENSE) for details.
 
 Copyright (c) 2025-2026 Magic Unicorn Unconventional Technology & Stuff Inc
+
+---
+
+## Acknowledgments
+
+Built with these excellent open-source projects:
+
+[FastAPI](https://fastapi.tiangolo.com/) · [React](https://react.dev/) · [Material-UI](https://mui.com/) · [Keycloak](https://www.keycloak.org/) · [Lago](https://www.getlago.com/) · [LiteLLM](https://litellm.ai/) · [Traefik](https://traefik.io/) · [Prometheus](https://prometheus.io/) · [Grafana](https://grafana.com/) · [Umami](https://umami.is/) · [Forgejo](https://forgejo.org/) · [Vite](https://vitejs.dev/) · [Chart.js](https://www.chartjs.org/) · [Kuzu](https://kuzudb.com/) · [Ollama](https://ollama.ai/)
 
 ---
 

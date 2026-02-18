@@ -638,6 +638,6 @@ echo "Diagnostic report created: $REPORT_DIR.tar.gz"
 
 ## References
 
-- [Deployment Guide](./DEPLOYMENT_GUIDE.md)
+- [Deployment Guide](./deployments/DEPLOYMENT_GUIDE.md)
 - [Rollback Guide](./ROLLBACK_GUIDE.md)
 - [CI/CD Pipeline](./CI_CD_PIPELINE.md)

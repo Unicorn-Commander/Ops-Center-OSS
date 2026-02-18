@@ -511,6 +511,6 @@ rsync -avz /opt/ops-center/backups/ backup-server:/backups/ops-center/
 
 ## References
 
-- [Deployment Guide](./DEPLOYMENT_GUIDE.md)
+- [Deployment Guide](./deployments/DEPLOYMENT_GUIDE.md)
 - [CI/CD Pipeline](./CI_CD_PIPELINE.md)
 - [Troubleshooting Guide](./TROUBLESHOOTING.md)
