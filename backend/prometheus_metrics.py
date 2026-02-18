@@ -228,8 +228,8 @@ app_info = Info(
 )
 
 app_info.info({
-    'version': '2.4.0',
-    'build_date': '2025-11-29',
+    'version': '2.5.0',
+    'build_date': '2026-02-18',
     'python_version': '3.10'
 })
 

@@ -1,8 +1,8 @@
 {
-  "name": "uc1-pro-admin-dashboard",
-  "version": "2.0.0",
+  "name": "ops-center",
+  "version": "2.5.0",
   "type": "module",
-  "description": "Professional admin dashboard for UC-1 Pro",
+  "description": "AI-Powered Infrastructure Command Center",
   "private": true,
   "engines": {
     "node": ">=18.0.0",
