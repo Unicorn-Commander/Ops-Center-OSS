@@ -656,6 +656,16 @@ We use [Conventional Commits](https://www.conventionalcommits.org/): `feat`, `fi
 
 ---
 
+## Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Unicorn-Commander/Ops-Center-OSS&type=Date)](https://star-history.com/#Unicorn-Commander/Ops-Center-OSS&Date)
+
+</div>
+
+---
+
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
@@ -679,8 +689,8 @@ Built with these excellent open-source projects:
 <a href="https://github.com/sponsors/Unicorn-Commander"><img src="https://img.shields.io/badge/Sponsor_on_GitHub-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"/></a>
 <a href="https://buymeacoffee.com/aaronyo"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"/></a>
 
-**[GitHub](https://github.com/Unicorn-Commander/Ops-Center)** · **[Issues](https://github.com/Unicorn-Commander/Ops-Center/issues)** · **[Discussions](https://github.com/Unicorn-Commander/Ops-Center/discussions)**
+**[GitHub](https://github.com/Unicorn-Commander/Ops-Center-OSS)** · **[Issues](https://github.com/Unicorn-Commander/Ops-Center-OSS/issues)** · **[Discussions](https://github.com/Unicorn-Commander/Ops-Center-OSS/discussions)**
 
-Built with care by [Magic Unicorn Tech](https://unicorncommander.com)
+Built with care by [Magic Unicorn Tech](https://magicunicorn.tech)
 
 </div>
