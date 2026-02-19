@@ -114,8 +114,8 @@ INFO:get_credential:Credential 'LAGO_API_KEY' loaded from database
 
 | API | Status | Credential Source | Value Preview |
 |-----|--------|-------------------|---------------|
-| Cloudflare | ✅ PASS | Database | `ub2ITv_GW8UIIo0LedEQ...` |
-| Stripe | ✅ PASS | Database | `sk_live_51QwxFKDzk9H...` |
+| Cloudflare | ✅ PASS | Database | `your-cloudflare-api-token` |
+| Stripe | ✅ PASS | Database | `sk_live_...` |
 | NameCheap | ✅ PASS | Database | `your-namecheap-api-key |
 | Lago | ✅ PASS | Database | `your-lago-api-key |
 

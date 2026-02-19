@@ -71,7 +71,7 @@ docker exec ops-center-direct python3 -c "
 from get_credential import get_credential
 print(get_credential('CLOUDFLARE_API_TOKEN')[:20] + '...')
 "
-# Output: ub2ITv_GW8UIIo0LedEQ...
+# Output: your-cloudflare-token...
 
 # Check logs for database reads
 docker logs ops-center-direct | grep "loaded from database"
@@ -83,8 +83,8 @@ docker logs ops-center-direct | grep "loaded from database"
 ```sql
 SELECT key, LEFT(value, 20) || '...' FROM platform_settings WHERE is_secret = true;
 
-CLOUDFLARE_API_TOKEN | ub2ITv_GW8UIIo0LedEQ...  ✓
-STRIPE_SECRET_KEY    | sk_live_51QwxFKDzk9H...  ✓
+CLOUDFLARE_API_TOKEN | your-cloudflare-token...  ✓
+STRIPE_SECRET_KEY    | sk_live_...               ✓
 NAMECHEAP_API_KEY    | your-namecheap-api-key  ✓
 LAGO_API_KEY         | (not yet entered)
 ```
