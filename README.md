@@ -346,12 +346,23 @@ CREDIT_EXEMPT_TIERS=free,enterprise,staff,beta_tester
 
 ## Quick Start
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: Full Stack (Recommended)
+
+Use the [Unicorn Commander](https://github.com/Unicorn-Commander/Unicorn-Commander) umbrella repo for one-command setup with Keycloak SSO, Brigade, and all infrastructure:
 
 ```bash
-# Clone the repository
-git clone https://github.com/Unicorn-Commander/Ops-Center.git
-cd Ops-Center
+git clone --recursive https://github.com/Unicorn-Commander/Unicorn-Commander.git
+cd Unicorn-Commander
+./setup.sh
+```
+
+This auto-imports the Keycloak `uchub` realm with pre-configured OAuth clients and identity provider stubs (Google, GitHub, Microsoft).
+
+### Option 2: Standalone Docker Compose
+
+```bash
+git clone https://github.com/Unicorn-Commander/Ops-Center-OSS.git
+cd Ops-Center-OSS
 
 # Copy environment template and configure
 cp .env.example .env.auth
@@ -364,7 +375,7 @@ docker compose -f docker-compose.direct.yml up -d
 curl http://localhost:8084/api/v1/system/status
 ```
 
-### Option 2: Bare Metal
+### Option 3: Bare Metal
 
 ```bash
 # Run the installer (Python, Node.js, Docker, all dependencies)
@@ -378,7 +389,7 @@ sudo systemctl start ops-center
 sudo systemctl enable ops-center
 ```
 
-### Option 3: Development Mode
+### Option 4: Development Mode
 
 ```bash
 npm install && pip install -r backend/requirements.txt
@@ -396,9 +407,19 @@ npm run build && cp -r dist/* public/
 ### First Login
 
 1. Navigate to `http://localhost:8084`
-2. Set up Keycloak and create your admin user
-3. Configure SSO providers (Google, GitHub, Microsoft) if desired
-4. Visit `/admin` to access the full dashboard
+2. If using the umbrella repo, the Keycloak realm is already configured
+3. If standalone, set up Keycloak and create your admin user
+4. Configure SSO providers (Google, GitHub, Microsoft) if desired
+5. Visit `/admin` to access the full dashboard
+
+### Keycloak Realm
+
+A scrubbed Keycloak `uchub` realm export is included at `keycloak-theme/realm/uchub-realm.json`. It contains:
+- Pre-configured OAuth clients (`ops-center`, `brigade`)
+- Identity provider stubs (Google, GitHub, Microsoft) — add your own OAuth credentials
+- Client scopes, roles, and authentication flows
+
+When using the umbrella repo's `docker-compose.yml`, this realm is auto-imported on first boot via Keycloak's `--import-realm` flag.
 
 ---
 
