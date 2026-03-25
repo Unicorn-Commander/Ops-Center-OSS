@@ -4,7 +4,7 @@
 
 ### The AI-Powered Infrastructure Command Center
 
-[![Version](https://img.shields.io/badge/version-2.5.0-7c3aed.svg?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.0.0-7c3aed.svg?style=for-the-badge)](CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-production-22c55e.svg?style=for-the-badge)](#)
 [![License](https://img.shields.io/badge/license-MIT-3b82f6.svg?style=for-the-badge)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-fbbf24.svg?style=for-the-badge)](https://python.org)
@@ -52,6 +52,8 @@
 ## What is Ops-Center?
 
 Ops-Center is a **full-stack operations dashboard** for managing AI-powered infrastructure. It combines the capabilities of an AWS Console, Stripe Dashboard, Auth0 admin panel, and LLM gateway into a single, self-hosted platform — with an AI agent (The Colonel) that can operate it all through conversation.
+
+Starting with v3.0, Ops-Center also supports **federation** — connect multiple instances into a distributed mesh network, route inference across nodes, and manage GPU resources across cloud providers.
 
 ```
                               ┌───────────────────────────┐
@@ -164,6 +166,17 @@ Ops-Center is a **full-stack operations dashboard** for managing AI-powered infr
 </td>
 </tr>
 </table>
+
+### Federation Mesh
+
+Ops-Center v3.0 introduces **Federation** — connect multiple Unicorn Commander instances into a distributed mesh network. Route inference requests across nodes based on hardware capability, manage GPU resources across cloud providers (RunPod, Lambda, Vast.ai), and aggregate metering across your fleet.
+
+- **Node Registry** — Discover and monitor peer nodes automatically
+- **Inference Routing** — Smart routing based on model availability, GPU memory, and load
+- **Distributed Metering** — Aggregate usage and billing across federated nodes
+- **Cloud Provisioning** — Bootstrap GPU instances on RunPod, Lambda, Vast.ai
+- **Resilience** — Automatic failover when nodes go offline
+- **Access Control** — Per-node, per-model access policies
 
 ---
 
@@ -583,7 +596,7 @@ ops-center/
 
 | Layer | Implementation |
 |-------|---------------|
-| **Authentication** | Keycloak SSO with Google, GitHub, Microsoft |
+| **Authentication** | Keycloak SSO with Google, GitHub, Microsoft; custom themed login, error, password reset, profile, and IDP linking pages |
 | **Authorization** | 5-tier role hierarchy (admin, moderator, developer, analyst, viewer) |
 | **API Keys** | bcrypt hashing, secure storage |
 | **Sessions** | Redis-backed with configurable TTL |
