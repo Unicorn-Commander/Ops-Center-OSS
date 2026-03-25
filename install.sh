@@ -28,7 +28,7 @@ NC='\033[0m'
 echo ""
 echo -e "${PURPLE}╔═══════════════════════════════════════════════════════╗${NC}"
 echo -e "${PURPLE}║                                                       ║${NC}"
-echo -e "${PURPLE}║       Ops-Center Installation Script v2.5.0           ║${NC}"
+echo -e "${PURPLE}║       Ops-Center Installation Script v3.0.0           ║${NC}"
 echo -e "${PURPLE}║       The AI-Powered Infrastructure Command Center    ║${NC}"
 echo -e "${PURPLE}║                                                       ║${NC}"
 echo -e "${PURPLE}╚═══════════════════════════════════════════════════════╝${NC}"
