@@ -5,6 +5,25 @@ All notable changes to Ops-Center will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-03-25
+
+### Added
+
+- **Federation Mesh** — Multi-node deployment support with inference routing, distributed metering, cloud GPU provisioning (RunPod, Lambda, Vast.ai), automatic failover, and per-node access control
+- **Federation Settings API** — GUI-based configuration for federation nodes and routing policies
+- **Federation Database Schema** — Node registry, routing audit logs, and configuration tables
+- **Colonel Persistence** — Conversation history persisted to PostgreSQL
+- **Keycloak Theme Templates** — Error pages, password reset, profile update, IDP linking, logout confirmation
+- **Colonel Logo** — Custom Keycloak login branding
+
+### Changed
+
+- Bumped version to 3.0.0
+- Server lifecycle now starts/stops federation agent alongside other services
+- Install script banner updated to v3.0.0
+
+---
+
 ## [2.3.0] - 2025-11-09
 
 ### Major Refactoring: Feature → App Terminology
