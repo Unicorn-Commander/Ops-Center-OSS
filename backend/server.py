@@ -109,6 +109,15 @@ from subscription_tiers_api import router as subscription_tiers_router
 from tier_features_api import router as tier_features_router
 from app_definitions_api import router as app_definitions_router
 from routers.forgejo import router as forgejo_router
+from routers.federation import router as federation_router
+from federation_settings_api import router as federation_settings_router
+
+# Federation startup/stop (optional — only if federation module is installed)
+try:
+    from federation.startup import start_federation_agent, stop_federation_agent
+    FEDERATION_AVAILABLE = True
+except ImportError:
+    FEDERATION_AVAILABLE = False
 
 # Local Inference Module (GPU/Model Management)
 from routers.local_inference import router as local_inference_router
@@ -886,6 +895,14 @@ async def startup_event():
         logger.error(f"Failed to start alert checker: {e}")
         # Don't block startup if alert checking fails
 
+    # Start federation agent (if available)
+    if FEDERATION_AVAILABLE:
+        try:
+            await start_federation_agent()
+            logger.info("Federation agent started")
+        except Exception as e:
+            logger.warning(f"Could not start federation agent: {e}")
+
 
 async def check_alerts_periodically():
     """
@@ -910,6 +927,13 @@ async def check_alerts_periodically():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
+    # Stop federation agent
+    if FEDERATION_AVAILABLE:
+        try:
+            await stop_federation_agent()
+        except Exception as e:
+            logger.error(f"Error stopping federation agent: {e}")
+
     if RATE_LIMIT_ENABLED:
         try:
             await rate_limiter.close()
@@ -1329,6 +1353,11 @@ logger.info("Dynamic Pricing Management API endpoints registered at /api/v1/pric
 app.include_router(colonel_router)
 app.include_router(colonel_a2a_router)
 logger.info("🎖️ Colonel AI Command System registered at /api/v1/colonel + A2A at /.well-known/agent.json")
+
+# Federation Module
+app.include_router(federation_router)
+app.include_router(federation_settings_router)
+logger.info("Federation API registered at /api/v1/federation + /api/v1/admin/federation")
 
 # CSRF Token Endpoint removed - see line 2897 for the full implementation that handles unauthenticated users
 
