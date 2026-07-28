@@ -1,0 +1,29 @@
+COUPON REDEEMED SUCCESSFULLY!
+=============================
+
+Hello {{ username }},
+
+Great news! You've successfully redeemed a coupon code and credits have been added to your account.
+
+COUPON CODE: {{ coupon_code }}
+
+CREDITS ADDED: +${{ credits_added }}
+
+Your new balance: ${{ new_balance }}
+
+COUPON DETAILS:
+- Type: {{ coupon_type }}
+- Expires: {{ expires_at }}
+- Redeemed: {{ redeemed_at }}
+
+View your credit balance: {{ dashboard_url }}/admin/credits
+
+Have more coupon codes? Redeem them anytime from your dashboard.
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Credits Dashboard: {{ dashboard_url }}/admin/credits
+Support: {{ dashboard_url }}/support
+Unsubscribe from notifications: {{ unsubscribe_url }}

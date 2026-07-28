@@ -1,0 +1,37 @@
+node_modules/
+dist/
+public/assets/
+public/avatars/
+*.tar.gz
+__pycache__/
+*.pyc
+*.bak*
+*.backup
+*.NEW
+*.BACKUP
+.DS_Store
+
+# runtime data stores (app-created, not source) — added 2026-06-08
+backend/data/*.db
+backend/data/*.db-shm
+backend/data/*.db-wal
+backend/data/*.wal
+backend/data/colonel_graph
+# build analysis artifact (rollup visualizer) — not needed at runtime
+public/stats.html
+
+# per-node runtime data (org membership, pricing rate book) — never sync across nodes
+backend/data/org_users.json
+backend/data/organizations.json
+backend/data/pricing_config.json
+
+# entire per-node runtime data dir (DBs, org JSON, encryption keys) — never sync across nodes
+backend/data/
+
+# repo hygiene — added 2026-07-02 (node_modules/, dist/, .DS_Store, *.backup, *.BACKUP,
+# __pycache__/ were already covered above)
+*.log
+.venv/
+# node_modules may be a SYMLINK in build worktrees (dir-only "node_modules/" pattern
+# does not match symlinks; without this, `git add -A` would commit the link)
+node_modules

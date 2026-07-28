@@ -1,0 +1,32 @@
+LOW CREDIT BALANCE ALERT
+========================
+
+Hello {{ username }},
+
+Your credit balance is running low and may not be sufficient for continued service usage.
+
+CREDITS REMAINING: ${{ credits_remaining }}
+
+This represents approximately {{ percentage }}% of your monthly allocation.
+
+WHAT HAPPENS WHEN CREDITS RUN OUT?
+- API requests will be throttled or blocked
+- Service access may be limited
+- You'll need to upgrade your plan or wait for monthly reset
+
+RECOMMENDED ACTIONS:
+- Upgrade to a higher tier for more credits
+- Monitor your usage on the dashboard
+- Enable BYOK (Bring Your Own Key) to reduce costs
+
+View your credits dashboard: {{ dashboard_url }}/admin/credits
+
+Your credits will automatically reset on {{ reset_date }}.
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Manage Subscription: {{ dashboard_url }}/admin/subscription/plan
+Support: {{ dashboard_url }}/support
+Unsubscribe from alerts: {{ unsubscribe_url }}

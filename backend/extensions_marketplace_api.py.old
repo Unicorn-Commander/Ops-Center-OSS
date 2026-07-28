@@ -1,0 +1,587 @@
+"""
+Extensions Marketplace API
+REST API for browsing, purchasing, and managing add-ons
+"""
+
+from fastapi import APIRouter, HTTPException, Request, Depends, Header
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List, Dict, Any
+import logging
+from datetime import datetime
+from sqlalchemy import text
+from database import get_db
+from redis_session import redis_session_manager
+from stripe_extensions import stripe_extensions
+from stripe_webhook_handler import webhook_handler
+import json
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter(prefix="/api/v1/extensions", tags=["extensions"])
+
+
+# Request/Response Models
+
+class AddOnResponse(BaseModel):
+    id: int
+    name: str
+    slug: str
+    description: str
+    long_description: Optional[str]
+    category: Optional[Dict[str, Any]]
+    base_price: float
+    currency: str
+    version: Optional[str]
+    author: Optional[str]
+    icon_url: Optional[str]
+    screenshot_urls: Optional[List[str]]
+    features: Optional[List[str]]
+    is_active: bool
+    is_featured: bool
+    install_count: int
+    rating: Optional[float]
+    review_count: int
+    created_at: str
+
+
+class AddToCartRequest(BaseModel):
+    add_on_id: int
+    quantity: int = 1
+
+
+class RemoveFromCartRequest(BaseModel):
+    cart_item_id: int
+
+
+class CheckoutRequest(BaseModel):
+    promo_code: Optional[str] = None
+
+
+class PurchaseResponse(BaseModel):
+    id: int
+    add_on: Dict[str, Any]
+    amount_paid: float
+    currency: str
+    status: str
+    activated_at: Optional[str]
+    created_at: str
+
+
+# Authentication helper
+
+async def get_current_user_id(request: Request) -> str:
+    """Extract user ID from session"""
+    session_token = request.cookies.get("session_token")
+    if not session_token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    session_data = redis_session_manager.get(session_token)
+    if not session_data:
+        raise HTTPException(status_code=401, detail="Session expired")
+    
+    user = session_data.get("user", {})
+    user_id = user.get("sub") or user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="User ID not found")
+    
+    return user_id
+
+
+# Browse Add-ons
+
+@router.get("/addons", response_model=List[AddOnResponse])
+async def list_addons(
+    category: Optional[str] = None,
+    featured: Optional[bool] = None,
+    search: Optional[str] = None,
+    limit: int = 50,
+    offset: int = 0,
+    db=Depends(get_db)
+):
+    """
+    List all available add-ons with filtering
+    
+    Query Parameters:
+    - category: Filter by category slug
+    - featured: Filter featured add-ons
+    - search: Search by name or description
+    - limit: Max results (default 50)
+    - offset: Pagination offset
+    """
+    try:
+        # Build dynamic query
+        conditions = ["a.is_active = true"]
+        params = {'limit': limit, 'offset': offset}
+        
+        if category:
+            conditions.append("c.slug = :category")
+            params['category'] = category
+        
+        if featured is not None:
+            conditions.append("a.is_featured = :featured")
+            params['featured'] = featured
+        
+        if search:
+            conditions.append("(a.name ILIKE :search OR a.description ILIKE :search)")
+            params['search'] = f"%{search}%"
+        
+        where_clause = " AND ".join(conditions)
+        
+        query = text(f"""
+            SELECT a.id, a.name, a.slug, a.description, a.long_description,
+                   a.base_price, a.currency, a.version, a.author,
+                   a.icon_url, a.screenshot_urls, a.features,
+                   a.is_active, a.is_featured, a.install_count,
+                   a.rating, a.review_count, a.created_at,
+                   c.id as cat_id, c.name as cat_name, c.slug as cat_slug
+            FROM add_ons a
+            LEFT JOIN add_on_categories c ON a.category_id = c.id
+            WHERE {where_clause}
+            ORDER BY a.is_featured DESC, a.created_at DESC
+            LIMIT :limit OFFSET :offset
+        """)
+        
+        results = db.execute(query, params).fetchall()
+        
+        addons = []
+        for row in results:
+            addon = {
+                'id': row[0],
+                'name': row[1],
+                'slug': row[2],
+                'description': row[3],
+                'long_description': row[4],
+                'category': {
+                    'id': row[18],
+                    'name': row[19],
+                    'slug': row[20]
+                } if row[18] else None,
+                'base_price': float(row[5]),
+                'currency': row[6],
+                'version': row[7],
+                'author': row[8],
+                'icon_url': row[9],
+                'screenshot_urls': row[10] if row[10] else [],
+                'features': row[11] if row[11] else [],
+                'is_active': row[12],
+                'is_featured': row[13],
+                'install_count': row[14],
+                'rating': float(row[15]) if row[15] else None,
+                'review_count': row[16],
+                'created_at': row[17].isoformat()
+            }
+            addons.append(addon)
+        
+        return addons
+
+    except Exception as e:
+        logger.error(f"Error listing add-ons: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/addons/{addon_id}", response_model=AddOnResponse)
+async def get_addon(addon_id: int, db=Depends(get_db)):
+    """Get detailed information about a specific add-on"""
+    try:
+        query = text("""
+            SELECT a.id, a.name, a.slug, a.description, a.long_description,
+                   a.base_price, a.currency, a.version, a.author,
+                   a.icon_url, a.screenshot_urls, a.features,
+                   a.is_active, a.is_featured, a.install_count,
+                   a.rating, a.review_count, a.created_at,
+                   c.id as cat_id, c.name as cat_name, c.slug as cat_slug
+            FROM add_ons a
+            LEFT JOIN add_on_categories c ON a.category_id = c.id
+            WHERE a.id = :addon_id AND a.is_active = true
+        """)
+        
+        row = db.execute(query, {'addon_id': addon_id}).fetchone()
+        
+        if not row:
+            raise HTTPException(status_code=404, detail="Add-on not found")
+        
+        return {
+            'id': row[0],
+            'name': row[1],
+            'slug': row[2],
+            'description': row[3],
+            'long_description': row[4],
+            'category': {
+                'id': row[18],
+                'name': row[19],
+                'slug': row[20]
+            } if row[18] else None,
+            'base_price': float(row[5]),
+            'currency': row[6],
+            'version': row[7],
+            'author': row[8],
+            'icon_url': row[9],
+            'screenshot_urls': row[10] if row[10] else [],
+            'features': row[11] if row[11] else [],
+            'is_active': row[12],
+            'is_featured': row[13],
+            'install_count': row[14],
+            'rating': float(row[15]) if row[15] else None,
+            'review_count': row[16],
+            'created_at': row[17].isoformat()
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching add-on {addon_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/categories")
+async def list_categories(db=Depends(get_db)):
+    """List all add-on categories"""
+    try:
+        query = text("""
+            SELECT id, name, slug, description, icon, display_order
+            FROM add_on_categories
+            ORDER BY display_order
+        """)
+        
+        results = db.execute(query).fetchall()
+        
+        categories = []
+        for row in results:
+            categories.append({
+                'id': row[0],
+                'name': row[1],
+                'slug': row[2],
+                'description': row[3],
+                'icon': row[4],
+                'display_order': row[5]
+            })
+        
+        return categories
+
+    except Exception as e:
+        logger.error(f"Error listing categories: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Cart Management
+
+@router.get("/cart")
+async def get_cart(user_id: str = Depends(get_current_user_id), db=Depends(get_db)):
+    """Get user's shopping cart"""
+    try:
+        query = text("""
+            SELECT ci.id, ci.add_on_id, ci.quantity, ci.added_at,
+                   a.name, a.description, a.base_price, a.currency, a.icon_url
+            FROM cart_items ci
+            JOIN add_ons a ON ci.add_on_id = a.id
+            WHERE ci.user_id = :user_id
+            ORDER BY ci.added_at DESC
+        """)
+        
+        results = db.execute(query, {'user_id': user_id}).fetchall()
+        
+        cart = []
+        total = 0
+        
+        for row in results:
+            item_total = float(row[6]) * row[2]
+            total += item_total
+            
+            cart.append({
+                'id': row[0],
+                'add_on_id': row[1],
+                'quantity': row[2],
+                'added_at': row[3].isoformat(),
+                'addon': {
+                    'name': row[4],
+                    'description': row[5],
+                    'base_price': float(row[6]),
+                    'currency': row[7],
+                    'icon_url': row[8]
+                },
+                'item_total': item_total
+            })
+        
+        return {
+            'items': cart,
+            'total': total,
+            'item_count': len(cart)
+        }
+
+    except Exception as e:
+        logger.error(f"Error fetching cart: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/cart")
+async def add_to_cart(
+    request: AddToCartRequest,
+    user_id: str = Depends(get_current_user_id),
+    db=Depends(get_db)
+):
+    """Add an add-on to shopping cart"""
+    try:
+        # Check if add-on exists and is active
+        addon_query = text("""
+            SELECT id, name FROM add_ons
+            WHERE id = :addon_id AND is_active = true
+        """)
+        addon = db.execute(addon_query, {'addon_id': request.add_on_id}).fetchone()
+        
+        if not addon:
+            raise HTTPException(status_code=404, detail="Add-on not found")
+        
+        # Check if already in cart
+        check_query = text("""
+            SELECT id, quantity FROM cart_items
+            WHERE user_id = :user_id AND add_on_id = :addon_id
+        """)
+        existing = db.execute(check_query, {
+            'user_id': user_id,
+            'addon_id': request.add_on_id
+        }).fetchone()
+        
+        if existing:
+            # Update quantity
+            update_query = text("""
+                UPDATE cart_items
+                SET quantity = quantity + :quantity
+                WHERE id = :cart_id
+                RETURNING id
+            """)
+            result = db.execute(update_query, {
+                'cart_id': existing[0],
+                'quantity': request.quantity
+            }).fetchone()
+            cart_item_id = result[0]
+        else:
+            # Add new item
+            insert_query = text("""
+                INSERT INTO cart_items (user_id, add_on_id, quantity)
+                VALUES (:user_id, :addon_id, :quantity)
+                RETURNING id
+            """)
+            result = db.execute(insert_query, {
+                'user_id': user_id,
+                'addon_id': request.add_on_id,
+                'quantity': request.quantity
+            }).fetchone()
+            cart_item_id = result[0]
+        
+        db.commit()
+        
+        return {
+            'success': True,
+            'cart_item_id': cart_item_id,
+            'message': f"{addon[1]} added to cart"
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error adding to cart: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/cart/{cart_item_id}")
+async def remove_from_cart(
+    cart_item_id: int,
+    user_id: str = Depends(get_current_user_id),
+    db=Depends(get_db)
+):
+    """Remove item from cart"""
+    try:
+        query = text("""
+            DELETE FROM cart_items
+            WHERE id = :cart_item_id AND user_id = :user_id
+            RETURNING id
+        """)
+        result = db.execute(query, {
+            'cart_item_id': cart_item_id,
+            'user_id': user_id
+        }).fetchone()
+        
+        if not result:
+            raise HTTPException(status_code=404, detail="Cart item not found")
+        
+        db.commit()
+        
+        return {'success': True, 'message': 'Item removed from cart'}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error removing from cart: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Checkout
+
+@router.post("/checkout")
+async def create_checkout(
+    request: CheckoutRequest,
+    user_id: str = Depends(get_current_user_id),
+    req: Request = None,
+    db=Depends(get_db)
+):
+    """
+    Create Stripe Checkout session for cart items
+    
+    Returns checkout URL for redirect to Stripe
+    """
+    try:
+        # Get user email from session
+        session_token = req.cookies.get("session_token")
+        session_data = redis_session_manager.get(session_token)
+        user = session_data.get("user", {})
+        user_email = user.get("email") or user.get("preferred_username")
+        
+        if not user_email:
+            raise HTTPException(status_code=400, detail="User email not found")
+        
+        # Get cart items with full add-on details
+        cart_query = text("""
+            SELECT ci.id, ci.add_on_id, ci.quantity,
+                   a.name, a.description, a.base_price, a.currency, a.icon_url,
+                   a.features
+            FROM cart_items ci
+            JOIN add_ons a ON ci.add_on_id = a.id
+            WHERE ci.user_id = :user_id AND a.is_active = true
+        """)
+        cart_results = db.execute(cart_query, {'user_id': user_id}).fetchall()
+        
+        if not cart_results:
+            raise HTTPException(status_code=400, detail="Cart is empty")
+        
+        # Format cart items for Stripe
+        cart_items = []
+        for row in cart_results:
+            cart_items.append({
+                'id': row[0],
+                'add_on_id': row[1],
+                'quantity': row[2],
+                'addon': {
+                    'name': row[3],
+                    'description': row[4],
+                    'base_price': float(row[5]),
+                    'currency': row[6],
+                    'icon_url': row[7],
+                    'features': row[8]
+                }
+            })
+        
+        # Create Stripe checkout session
+        result = stripe_extensions.create_checkout_session(
+            user_id=user_id,
+            user_email=user_email,
+            cart_items=cart_items,
+            promo_code=request.promo_code
+        )
+        
+        if not result.get('success'):
+            raise HTTPException(
+                status_code=500,
+                detail=result.get('message', 'Failed to create checkout session')
+            )
+        
+        logger.info(f"Created checkout session for user {user_email}")
+        
+        return {
+            'checkout_url': result['checkout_url'],
+            'session_id': result['session_id']
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating checkout: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Webhooks
+
+@router.post("/webhooks/stripe")
+async def stripe_webhook(
+    request: Request,
+    stripe_signature: str = Header(None, alias="stripe-signature")
+):
+    """
+    Handle Stripe webhook events
+    
+    This endpoint is called by Stripe to notify about payment events.
+    IMPORTANT: This endpoint MUST be excluded from CSRF protection.
+    """
+    try:
+        payload = await request.body()
+        
+        if not stripe_signature:
+            raise HTTPException(status_code=400, detail="Missing Stripe signature")
+        
+        # Verify webhook signature
+        event = stripe_extensions.verify_webhook_signature(payload, stripe_signature)
+        
+        if not event:
+            raise HTTPException(status_code=400, detail="Invalid webhook signature")
+        
+        # Process event
+        result = webhook_handler.handle_event(event)
+        
+        if result.get('status') == 'error':
+            logger.error(f"Webhook processing error: {result.get('message')}")
+            raise HTTPException(status_code=500, detail=result.get('message'))
+        
+        logger.info(f"Processed webhook: {event['type']}, result: {result['status']}")
+        
+        return {'received': True, 'result': result}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error processing webhook: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Purchase History
+
+@router.get("/purchases", response_model=List[PurchaseResponse])
+async def list_purchases(
+    user_id: str = Depends(get_current_user_id),
+    db=Depends(get_db)
+):
+    """Get user's purchase history"""
+    try:
+        query = text("""
+            SELECT p.id, p.amount_paid, p.currency, p.status,
+                   p.activated_at, p.created_at,
+                   a.id as addon_id, a.name, a.description, a.icon_url, a.version
+            FROM add_on_purchases p
+            JOIN add_ons a ON p.add_on_id = a.id
+            WHERE p.user_id = :user_id
+            ORDER BY p.created_at DESC
+        """)
+        
+        results = db.execute(query, {'user_id': user_id}).fetchall()
+        
+        purchases = []
+        for row in results:
+            purchases.append({
+                'id': row[0],
+                'amount_paid': float(row[1]),
+                'currency': row[2],
+                'status': row[3],
+                'activated_at': row[4].isoformat() if row[4] else None,
+                'created_at': row[5].isoformat(),
+                'add_on': {
+                    'id': row[6],
+                    'name': row[7],
+                    'description': row[8],
+                    'icon_url': row[9],
+                    'version': row[10]
+                }
+            })
+        
+        return purchases
+
+    except Exception as e:
+        logger.error(f"Error fetching purchases: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

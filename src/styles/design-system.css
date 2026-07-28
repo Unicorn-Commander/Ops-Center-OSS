@@ -1,0 +1,151 @@
+/* Modern display type — Space Grotesk (headings) + Inter (body), matching the
+   craft level of homegrow.magicunicorn.dev, adapted for a functional console. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* ============================================================================
+   SPECIAL PROJECTS — DESIGN SYSTEM LAYER (v2: modern uplift)
+   Loaded last in main.jsx. Refines, never fights, the Tailwind/MUI styling.
+   Governing rules: Elevation = luminance. Accent = punctuation (+ subtle glow).
+   Numbers = tabular. Display type = confident. Brand = violet + cyan.
+   ============================================================================ */
+
+:root {
+  /* ---- surface ramp (deep, faintly violet near-black) */
+  --uc-canvas:          #06080f;
+  --uc-base:            #0a0c16;
+  --uc-surface:         #11131f;
+  --uc-surface-raised:  #171a28;
+  --uc-surface-overlay: #20232f;
+  --uc-glass:           rgba(18, 21, 33, 0.72);
+
+  /* ---- hairline borders (tinted, opacity-based) */
+  --uc-border:          rgba(160, 170, 210, 0.12);
+  --uc-border-strong:   rgba(168, 130, 255, 0.32);
+
+  /* ---- text tiers */
+  --uc-text:            #eef0fb;
+  --uc-text-2:          #aab3cf;
+  --uc-text-3:          #7b85a3;
+
+  /* ---- brand accents (violet + cyan) */
+  --uc-violet:          #a855f7;
+  --uc-violet-bright:   #c084fc;
+  --uc-violet-fill:     #7c3aed;
+  --uc-cyan:            #22d3ee;
+  --uc-focus:           #a855f7;
+
+  /* ---- shape + motion */
+  --uc-radius:          16px;
+  --uc-radius-lg:       20px;
+  --uc-ease:            cubic-bezier(0.22, 0.61, 0.36, 1);
+  --uc-dur:             180ms;
+
+  /* ---- depth + signature glow */
+  --uc-shadow:          0 24px 64px -28px rgba(0, 0, 0, 0.8);
+  --uc-glow-violet:     0 0 40px -12px rgba(168, 85, 247, 0.5);
+  --uc-glow-cyan:       0 0 40px -12px rgba(34, 211, 238, 0.42);
+
+  /* ---- type */
+  --font-display:       'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body:          'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---- premium font rendering ------------------------------------------------ */
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+body { font-family: var(--font-body); font-feature-settings: "cv01" 1, "ss01" 1, "kern" 1, "calt" 1; }
+
+/* ---- DISPLAY TYPE: confident headings in Space Grotesk (body stays Inter) --- */
+h1, h2, h3,
+.MuiTypography-h1, .MuiTypography-h2, .MuiTypography-h3, .MuiTypography-h4, .MuiTypography-h5,
+[class*="page-title"], [class*="PageTitle"], [class*="page-header"] h1,
+[class*="hero"] h1, [class*="hero"] h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+/* big "engineered" stat numbers */
+[class*="stat-value"], [class*="StatValue"], [class*="metric-value"], [class*="MetricValue"],
+[class*="kpi"] [class*="value"], .uc-stat-value {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+/* ---- numbers are tabular wherever they cluster ----------------------------- */
+table, td, th, code, kbd, pre, .font-mono,
+[class*="tabular"], [class*="stat"], [class*="metric"], [class*="Metric"],
+[class*="count"], [class*="Count"], [class*="balance"], [class*="price"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- refined selection + accessible on-brand focus ------------------------- */
+::selection { background: rgba(168, 85, 247, 0.32); color: #fff; }
+:focus-visible { outline: 2px solid var(--uc-focus); outline-offset: 2px; border-radius: 6px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* ---- premium custom scrollbars --------------------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: rgba(160, 170, 210, 0.28) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background-color: rgba(160, 170, 210, 0.26); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background-color: rgba(168, 85, 247, 0.55); background-clip: padding-box; }
+*::-webkit-scrollbar-corner { background: transparent; }
+
+/* ---- skeleton shimmer ------------------------------------------------------ */
+.uc-skeleton { position: relative; overflow: hidden; background: var(--uc-surface-raised); border-radius: 8px; }
+.uc-skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  animation: uc-shimmer 1.4s ease-in-out infinite; }
+@keyframes uc-shimmer { 100% { transform: translateX(100%); } }
+
+/* ---- reusable glass + glow utilities --------------------------------------- */
+.uc-glass { background: var(--uc-glass); -webkit-backdrop-filter: blur(14px) saturate(125%); backdrop-filter: blur(14px) saturate(125%); border: 1px solid var(--uc-border); }
+.uc-glow-violet { box-shadow: var(--uc-glow-violet); }
+.uc-glow-cyan { box-shadow: var(--uc-glow-cyan); }
+
+/* ---- tasteful global motion on interactive elements ------------------------ */
+button, a, [role="button"], .MuiButtonBase-root, .MuiChip-root {
+  transition: background-color var(--uc-dur) var(--uc-ease), border-color var(--uc-dur) var(--uc-ease),
+    color var(--uc-dur) var(--uc-ease), box-shadow var(--uc-dur) var(--uc-ease),
+    transform var(--uc-dur) var(--uc-ease), opacity var(--uc-dur) var(--uc-ease); }
+
+/* ---- MUI cards: modern depth, generous radius, subtle violet lift on hover -- */
+.MuiCard-root, .MuiPaper-root[class*="MuiCard"] {
+  border-radius: var(--uc-radius) !important;
+  transition: border-color var(--uc-dur) var(--uc-ease), box-shadow var(--uc-dur) var(--uc-ease), transform var(--uc-dur) var(--uc-ease); }
+.MuiCard-root:hover { border-color: var(--uc-border-strong); box-shadow: var(--uc-shadow), var(--uc-glow-violet); }
+
+/* ---- MUI table rows: quiet on-brand hover ---------------------------------- */
+.MuiTableRow-root.MuiTableRow-hover:hover { background-color: rgba(168, 85, 247, 0.06) !important; }
+.MuiTableCell-head { letter-spacing: 0.04em; }
+
+/* ---- DATA TABLES never clip columns -----------------------------------------
+   Fixes the "dates/columns off the right edge" bug: a flex parent was letting
+   wide tables grow past the viewport with no scroll. Constrain width + always
+   allow horizontal scroll so every column (dates, status, actions) is reachable. */
+.MuiTableContainer-root {
+  overflow-x: auto !important;
+  max-width: 100%;
+  min-width: 0;
+}
+/* flex/grid children that hold tables must be allowed to shrink (min-width:0)
+   instead of growing to content width */
+.MuiCard-root > .MuiCardContent-root,
+.MuiCard-root, .MuiGrid-item, [class*="flex-1"] { min-width: 0; }
+
+/* ---- content links use accent violet (never the dark fill purple) ---------- */
+a:not(.MuiButtonBase-root):not([class*="Mui"]):not(.no-accent) { color: var(--uc-violet-bright); }
+a:not(.MuiButtonBase-root):not([class*="Mui"]):not(.no-accent):hover { color: #d8b4fe; }
+
+/* ---- deepen the command background with soft accent glows (homegrow-style) -- */
+.ops-command-bg::after {
+  background:
+    radial-gradient(900px 520px at 82% -8%, rgba(168, 85, 247, 0.10), transparent 60%),
+    radial-gradient(760px 480px at 8% 4%, rgba(34, 211, 238, 0.08), transparent 58%),
+    linear-gradient(180deg, transparent 0%, rgba(4, 6, 16, 0.6) 100%) !important;
+}
+
+/* ---- respect reduced-motion ------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .uc-skeleton::after, .animate-shimmer, .animate-gradient, .sparkle-text { animation: none !important; }
+  * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}

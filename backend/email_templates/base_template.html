@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }} - Unicorn Commander</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            padding: 20px;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            padding: 30px;
+            text-align: center;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .alert-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: {{ color or '#8b5cf6' }};
+            color: #ffffff;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e0d4f7;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #a78bfa;
+        }
+        .footer a {
+            color: #ec4899;
+            text-decoration: none;
+        }
+        .timestamp {
+            font-size: 12px;
+            color: #a78bfa;
+            margin-top: 20px;
+        }
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .message {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🦄</div>
+            <div class="brand">UNICORN COMMANDER</div>
+        </div>
+
+        <div class="content">
+            <span class="alert-badge">{{ alert_level or 'NOTIFICATION' }}</span>
+            <h1>{{ subject }}</h1>
+            <div class="message">
+                {{ message }}
+            </div>
+
+            {% if dashboard_url %}
+            <a href="{{ dashboard_url }}" class="cta-button">Go to Dashboard</a>
+            {% endif %}
+
+            <div class="timestamp">{{ timestamp }}</div>
+        </div>
+
+        <div class="footer">
+            Questions? Contact us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>
+            <br><br>
+            <small>This is an automated alert from Unicorn Commander Ops Center</small>
+        </div>
+    </div>
+</body>
+</html>

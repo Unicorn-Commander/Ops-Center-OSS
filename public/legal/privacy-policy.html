@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Unicorn Commander</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #555;
+      --heading: #0f0f23;
+      --accent: #6c5ce7;
+      --border: #e0e0e0;
+      --banner-bg: #fff3cd;
+      --banner-text: #856404;
+      --banner-border: #ffc107;
+      --section-bg: #f8f9fa;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f23;
+        --text: #d4d4e8;
+        --text-secondary: #9a9ab8;
+        --heading: #ffffff;
+        --accent: #a29bfe;
+        --border: #2a2a4a;
+        --banner-bg: #3d3200;
+        --banner-text: #ffc107;
+        --banner-border: #ffc107;
+        --section-bg: #16162e;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .draft-banner {
+      background: var(--banner-bg);
+      color: var(--banner-text);
+      border-bottom: 3px solid var(--banner-border);
+      text-align: center;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 32px;
+      color: var(--heading);
+      margin-bottom: 8px;
+    }
+
+    header .subtitle {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    header .meta {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    header .meta strong {
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 22px;
+      color: var(--heading);
+      margin-top: 40px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 .section-number {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    h3 {
+      font-size: 17px;
+      color: var(--heading);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+    }
+
+    ul, ol {
+      margin: 12px 0 16px 24px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .highlight {
+      background: var(--section-bg);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--section-bg);
+      font-weight: 600;
+      color: var(--heading);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 2px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="draft-banner">Draft — Pending Legal Review</div>
+
+<div class="container">
+  <header>
+    <h1>Privacy Policy</h1>
+    <div class="subtitle">Unicorn Commander</div>
+    <div class="meta">
+      <strong>Company:</strong> Magic Unicorn Unconventional Technology &amp; Stuff Inc.<br>
+      <strong>Website:</strong> <a href="https://unicorncommander.ai">unicorncommander.ai</a><br>
+      <strong>Effective Date:</strong> March 21, 2026<br>
+      <strong>Last Updated:</strong> March 21, 2026
+    </div>
+  </header>
+
+  <p>This Privacy Policy describes how Magic Unicorn Unconventional Technology &amp; Stuff Inc. ("Company," "we," "us," or "our") collects, uses, and protects your information when you use the Unicorn Commander platform ("Service"). By using the Service, you agree to the practices described in this policy.</p>
+
+  <h2><span class="section-number">1.</span> Information We Collect</h2>
+
+  <h3>Account Information</h3>
+  <p>When you create an account through our Keycloak-based single sign-on (SSO) system, we collect:</p>
+  <ul>
+    <li>Email address</li>
+    <li>Display name</li>
+    <li>Username</li>
+    <li>Profile information provided through your identity provider</li>
+  </ul>
+
+  <h3>Usage Data</h3>
+  <p>We automatically collect information about your use of the Service, including:</p>
+  <ul>
+    <li>API calls and request metadata (timestamps, endpoints, response codes)</li>
+    <li>Credit consumption and billing events</li>
+    <li>Service usage patterns (which AI services you use, frequency of use)</li>
+    <li>Feature interactions and navigation within the platform</li>
+  </ul>
+
+  <h3>Device &amp; Browser Information</h3>
+  <ul>
+    <li>IP address</li>
+    <li>Browser type and version</li>
+    <li>Operating system</li>
+    <li>Device type</li>
+    <li>Referrer URL</li>
+  </ul>
+
+  <h3>Payment Information</h3>
+  <p>Payment processing is handled by <strong>Stripe</strong>. We do not store your credit card numbers, CVV, or full payment card details on our servers. We retain only:</p>
+  <ul>
+    <li>Last four digits of your payment card (for your reference)</li>
+    <li>Billing address</li>
+    <li>Transaction history and invoice records</li>
+    <li>Stripe customer ID</li>
+  </ul>
+
+  <h2><span class="section-number">2.</span> How We Use Information</h2>
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li><strong>Provide Services</strong> — Process your AI requests, deliver generated content, and manage your account</li>
+    <li><strong>Billing &amp; Payments</strong> — Track credit usage, process payments, generate invoices, and manage subscriptions</li>
+    <li><strong>Improve the Platform</strong> — Analyze aggregated usage patterns to optimize performance, reliability, and user experience</li>
+    <li><strong>Security Monitoring</strong> — Detect and prevent abuse, fraud, unauthorized access, and violations of our Terms of Service</li>
+    <li><strong>Analytics</strong> — Understand how the Service is used to guide feature development and resource allocation</li>
+    <li><strong>Communication</strong> — Send service announcements, billing notifications, and respond to support requests</li>
+  </ul>
+
+  <h2><span class="section-number">3.</span> AI Processing</h2>
+  <div class="highlight">
+    <p><strong>We do not use your content to train AI models.</strong></p>
+  </div>
+  <p>When you use our AI services, you may submit content such as:</p>
+  <ul>
+    <li>Text prompts and instructions</li>
+    <li>Lyrics and musical parameters</li>
+    <li>Images for processing or reference</li>
+    <li>Audio files for analysis or transformation</li>
+  </ul>
+  <p>This content is processed on our servers (or federated partner servers — see Section 4) solely to generate the outputs you request. Your submitted content is:</p>
+  <ul>
+    <li><strong>Not used to train, fine-tune, or improve AI models</strong></li>
+    <li><strong>Retained only as long as necessary</strong> to deliver the requested service and any associated outputs</li>
+    <li><strong>Not shared with third parties</strong> except as required for processing (e.g., federated compute) or as required by law</li>
+  </ul>
+  <p>Generated outputs (music, images, text, audio) are stored in your account and retained according to our Data Retention policy (Section 6).</p>
+
+  <h2><span class="section-number">4.</span> Federation &amp; Third-Party Processing</h2>
+  <p>Unicorn Commander operates a federated compute network. Your AI processing requests may be routed to:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Processing Location</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Our Servers</strong></td>
+        <td>Infrastructure directly owned and operated by Magic Unicorn Unconventional Technology &amp; Stuff Inc.</td>
+      </tr>
+      <tr>
+        <td><strong>Federated Nodes</strong></td>
+        <td>Partner servers participating in the Unicorn Commander federation network</td>
+      </tr>
+      <tr>
+        <td><strong>Cloud GPU Providers</strong></td>
+        <td>On-demand cloud infrastructure (e.g., Lambda Labs) used during peak demand</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>When your data is processed on third-party infrastructure:</p>
+  <ul>
+    <li>All federation partners are required to meet our security and data handling standards</li>
+    <li>Data is encrypted in transit between all nodes</li>
+    <li>Processing is ephemeral — your input data is not retained on partner infrastructure after the request completes</li>
+    <li>We maintain audit logs of where requests are processed</li>
+  </ul>
+
+  <h2><span class="section-number">5.</span> Data Storage &amp; Security</h2>
+  <p>We implement the following security measures to protect your data:</p>
+  <ul>
+    <li><strong>Encryption in Transit</strong> — All data transmitted between your device and our servers is encrypted using TLS (HTTPS)</li>
+    <li><strong>Authenticated Access</strong> — All API and platform access is authenticated through Keycloak SSO with session management</li>
+    <li><strong>Audit Logging</strong> — Administrative and security-relevant actions are logged for monitoring and incident response</li>
+    <li><strong>Database Security</strong> — PostgreSQL and Redis instances are configured with authentication and are not exposed to the public internet</li>
+    <li><strong>Access Controls</strong> — Internal access to user data is restricted to authorized personnel on a need-to-know basis</li>
+  </ul>
+
+  <h2><span class="section-number">6.</span> Data Retention</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Data Type</th>
+        <th>Retention Period</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Account data</td>
+        <td>Retained while your account is active; deleted upon request after account closure</td>
+      </tr>
+      <tr>
+        <td>Generated content (music, images, text)</td>
+        <td>Retained for 30 days after generation, or until you delete it, whichever comes first</td>
+      </tr>
+      <tr>
+        <td>Input content (prompts, lyrics, uploads)</td>
+        <td>Deleted after processing is complete; not retained beyond the active session</td>
+      </tr>
+      <tr>
+        <td>Billing &amp; transaction records</td>
+        <td>Retained as required by applicable tax and financial regulations (typically 7 years)</td>
+      </tr>
+      <tr>
+        <td>Usage logs &amp; analytics</td>
+        <td>Retained in aggregated/anonymized form; raw logs retained for up to 90 days</td>
+      </tr>
+      <tr>
+        <td>Security &amp; audit logs</td>
+        <td>Retained for up to 1 year</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2><span class="section-number">7.</span> Your Rights</h2>
+  <p>You have the following rights regarding your personal data:</p>
+  <ul>
+    <li><strong>Access</strong> — Request a copy of the personal data we hold about you</li>
+    <li><strong>Correction</strong> — Request correction of inaccurate or incomplete personal data</li>
+    <li><strong>Deletion</strong> — Request deletion of your personal data (subject to legal retention requirements)</li>
+    <li><strong>Data Export</strong> — Request a portable copy of your data in a standard machine-readable format</li>
+    <li><strong>Opt Out of Analytics</strong> — Opt out of non-essential analytics and usage tracking</li>
+    <li><strong>Withdraw Consent</strong> — Where processing is based on consent, you may withdraw consent at any time</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <a href="mailto:admin@example.com">admin@example.com</a>. We will respond to requests within 30 days.</p>
+
+  <h2><span class="section-number">8.</span> Cookies</h2>
+  <p>We use cookies in a minimal and privacy-respecting manner:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cookie Type</th>
+        <th>Purpose</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Session Cookies</strong></td>
+        <td>Authentication state via Keycloak SSO</td>
+        <td>Session (cleared on logout)</td>
+      </tr>
+      <tr>
+        <td><strong>Preference Cookies</strong></td>
+        <td>UI preferences (theme, language)</td>
+        <td>1 year</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>We do not use third-party tracking cookies.</strong> We do not embed third-party analytics scripts (e.g., Google Analytics) or advertising trackers. Any analytics we perform use first-party data only.</p>
+
+  <h2><span class="section-number">9.</span> Children</h2>
+  <p>The Service is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we learn that we have collected personal information from a child under 13, we will take steps to delete such information promptly.</p>
+  <p>If you believe a child under 13 has provided us with personal information, please contact us at <a href="mailto:admin@example.com">admin@example.com</a>.</p>
+
+  <h2><span class="section-number">10.</span> International Data Processing</h2>
+  <p>The Service is operated from and data is primarily processed in the <strong>United States</strong>. If you access the Service from outside the United States, you understand and consent to the transfer, processing, and storage of your data in the United States.</p>
+  <p>We may process data in other jurisdictions through our federated compute network. Regardless of where your data is processed, we apply the same security standards and protections described in this policy.</p>
+
+  <h2><span class="section-number">11.</span> Changes to This Privacy Policy</h2>
+  <p>We may update this Privacy Policy from time to time. For material changes that affect how we collect, use, or share your personal data, we will provide at least <strong>30 days' notice</strong> via email or a prominent notice on the platform.</p>
+  <p>The "Last Updated" date at the top of this document will always reflect the most recent revision. We encourage you to review this policy periodically.</p>
+
+  <h2><span class="section-number">12.</span> Contact</h2>
+  <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:admin@example.com">admin@example.com</a></li>
+    <li><strong>Website:</strong> <a href="https://unicorncommander.ai">unicorncommander.ai</a></li>
+    <li><strong>Company:</strong> Magic Unicorn Unconventional Technology &amp; Stuff Inc.</li>
+  </ul>
+  <p><strong>Data Protection Officer:</strong> [DPO Name — To Be Appointed]<br>
+  <strong>DPO Contact:</strong> [dpo@magicunicorn.tech — Placeholder]</p>
+
+  <footer>
+    <p>&copy; 2026 Magic Unicorn Unconventional Technology &amp; Stuff Inc. All rights reserved.</p>
+    <p style="margin-top: 8px;"><a href="terms-of-service.html">Terms of Service</a></p>
+  </footer>
+</div>
+
+</body>
+</html>

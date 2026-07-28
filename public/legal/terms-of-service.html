@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Unicorn Commander</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #555;
+      --heading: #0f0f23;
+      --accent: #6c5ce7;
+      --border: #e0e0e0;
+      --banner-bg: #fff3cd;
+      --banner-text: #856404;
+      --banner-border: #ffc107;
+      --section-bg: #f8f9fa;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f23;
+        --text: #d4d4e8;
+        --text-secondary: #9a9ab8;
+        --heading: #ffffff;
+        --accent: #a29bfe;
+        --border: #2a2a4a;
+        --banner-bg: #3d3200;
+        --banner-text: #ffc107;
+        --banner-border: #ffc107;
+        --section-bg: #16162e;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .draft-banner {
+      background: var(--banner-bg);
+      color: var(--banner-text);
+      border-bottom: 3px solid var(--banner-border);
+      text-align: center;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 32px;
+      color: var(--heading);
+      margin-bottom: 8px;
+    }
+
+    header .subtitle {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    header .meta {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    header .meta strong {
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 22px;
+      color: var(--heading);
+      margin-top: 40px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 .section-number {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+    }
+
+    ul, ol {
+      margin: 12px 0 16px 24px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    .highlight {
+      background: var(--section-bg);
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 2px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="draft-banner">Draft — Pending Legal Review</div>
+
+<div class="container">
+  <header>
+    <h1>Terms of Service</h1>
+    <div class="subtitle">Unicorn Commander</div>
+    <div class="meta">
+      <strong>Company:</strong> Magic Unicorn Unconventional Technology &amp; Stuff Inc.<br>
+      <strong>Website:</strong> <a href="https://unicorncommander.ai">unicorncommander.ai</a><br>
+      <strong>Effective Date:</strong> March 21, 2026<br>
+      <strong>Last Updated:</strong> March 21, 2026
+    </div>
+  </header>
+
+  <h2><span class="section-number">1.</span> Acceptance of Terms</h2>
+  <p>By accessing or using the Unicorn Commander platform ("Service"), operated by Magic Unicorn Unconventional Technology &amp; Stuff Inc. ("Company," "we," "us," or "our"), you ("User" or "you") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you must not use the Service.</p>
+  <p>Your continued use of the Service after any modifications to these Terms constitutes acceptance of the updated Terms.</p>
+
+  <h2><span class="section-number">2.</span> Description of Service</h2>
+  <p>Unicorn Commander is an AI inference and creative services platform that provides:</p>
+  <ul>
+    <li><strong>Music Generation</strong> — AI-powered music creation from text prompts, lyrics, and style parameters</li>
+    <li><strong>Image Generation</strong> — AI image synthesis and manipulation</li>
+    <li><strong>Text Generation (LLM Inference)</strong> — Large language model inference for chat, completion, and other text tasks</li>
+    <li><strong>Speech &amp; Audio Processing</strong> — Text-to-speech, speech-to-text, and audio analysis</li>
+    <li><strong>Federated Compute</strong> — Distributed AI processing across federated server nodes</li>
+    <li><strong>Cloud GPU On-Demand</strong> — Access to GPU compute resources for AI workloads</li>
+  </ul>
+  <p>The specific features, capabilities, and AI models available may change over time as we improve and expand the platform.</p>
+
+  <h2><span class="section-number">3.</span> Account Registration</h2>
+  <p>To access the Service, you must create an account through our single sign-on (SSO) system powered by Keycloak. You agree to:</p>
+  <ul>
+    <li>Provide accurate, current, and complete information during registration</li>
+    <li>Maintain the accuracy of your account information</li>
+    <li>Keep your login credentials secure and confidential</li>
+    <li>Notify us immediately of any unauthorized use of your account</li>
+    <li>Accept responsibility for all activity that occurs under your account</li>
+  </ul>
+  <p>We reserve the right to refuse registration or terminate accounts at our discretion.</p>
+
+  <h2><span class="section-number">4.</span> Subscription &amp; Billing</h2>
+  <p>The Service operates on a credit-based billing system. Credits are consumed when you use AI services, and credit costs vary by service type and resource intensity.</p>
+  <p><strong>Subscription Tiers:</strong></p>
+  <ul>
+    <li><strong>Trial</strong> — Limited free credits for evaluation purposes</li>
+    <li><strong>Starter</strong> — Entry-level subscription with a monthly credit allocation</li>
+    <li><strong>Professional</strong> — Expanded credit allocation with priority access</li>
+    <li><strong>Enterprise</strong> — Custom credit packages with dedicated support and SLA options</li>
+  </ul>
+  <p><strong>Auto-Renewal:</strong> Subscriptions automatically renew at the end of each billing period unless cancelled before the renewal date. You will be charged the then-current subscription rate at renewal.</p>
+  <p><strong>Refund Policy:</strong> Contact support at <a href="mailto:admin@example.com">admin@example.com</a> for refund requests within 30 days of purchase. Refunds are evaluated on a case-by-case basis. Consumed credits are non-refundable.</p>
+  <p><strong>Payment Processing:</strong> Payments are processed through Stripe. We do not store your credit card information on our servers.</p>
+
+  <h2><span class="section-number">5.</span> Acceptable Use</h2>
+  <p>You agree not to use the Service to:</p>
+  <ul>
+    <li>Generate, distribute, or store content that is illegal, harmful, threatening, abusive, defamatory, or otherwise objectionable</li>
+    <li>Generate child sexual abuse material (CSAM) or any content that exploits minors</li>
+    <li>Create deepfakes or impersonation content intended to deceive or harm</li>
+    <li>Abuse, overload, or interfere with GPU resources or infrastructure</li>
+    <li>Circumvent rate limits, quotas, or usage restrictions</li>
+    <li>Resell, sublicense, or redistribute access to the Service without our prior written permission</li>
+    <li>Attempt to reverse-engineer, extract, or steal AI models served through the platform</li>
+    <li>Use the Service for any purpose that violates applicable laws or regulations</li>
+    <li>Transmit malware, viruses, or other harmful code</li>
+    <li>Engage in cryptocurrency mining using platform resources</li>
+  </ul>
+  <p>Violation of this Acceptable Use policy may result in immediate suspension or termination of your account.</p>
+
+  <h2><span class="section-number">6.</span> AI-Generated Content Ownership</h2>
+  <div class="highlight">
+    <p><strong>Content generated using our AI services is owned by you, the user.</strong> We claim no ownership over outputs generated through your use of the platform.</p>
+  </div>
+  <p>However, please note the following:</p>
+  <ul>
+    <li>We retain the right to use anonymized, aggregated data to improve our services</li>
+    <li>AI-generated content may be subject to the license terms of the underlying AI models used to produce it — we will make reasonable efforts to communicate any such restrictions</li>
+    <li>You are solely responsible for how you use, publish, or distribute content generated through the Service</li>
+    <li>You represent that your input content (prompts, lyrics, source images, etc.) does not infringe on third-party intellectual property rights</li>
+  </ul>
+
+  <h2><span class="section-number">7.</span> Data &amp; Privacy</h2>
+  <p>Your privacy is important to us. Please review our <a href="privacy-policy.html">Privacy Policy</a> for detailed information about how we collect, use, store, and protect your data.</p>
+  <p>By using the Service, you consent to the data practices described in the Privacy Policy.</p>
+
+  <h2><span class="section-number">8.</span> Service Availability</h2>
+  <p>We strive to maintain high availability of the Service, but we provide it on a <strong>best-effort basis</strong>. We do not guarantee any specific uptime percentage or service level agreement (SLA) at this time, except as may be separately agreed upon for Enterprise tier customers.</p>
+  <p>We may perform maintenance that temporarily interrupts service availability. We will make reasonable efforts to notify users in advance of planned maintenance windows. Unplanned downtime may occur due to hardware failures, software issues, or other unforeseen circumstances.</p>
+
+  <h2><span class="section-number">9.</span> Federation</h2>
+  <p>Unicorn Commander operates a federated compute network. When you use the Service, your requests may be processed by:</p>
+  <ul>
+    <li><strong>Our own servers</strong> — directly operated and maintained by Magic Unicorn Unconventional Technology &amp; Stuff Inc.</li>
+    <li><strong>Federated partner nodes</strong> — third-party servers that participate in the Unicorn Commander federation</li>
+    <li><strong>Cloud GPU providers</strong> — on-demand cloud infrastructure (e.g., Lambda Labs) used to handle peak demand</li>
+  </ul>
+  <p>When your requests are routed to third-party servers, your data handling remains governed by these Terms and our <a href="privacy-policy.html">Privacy Policy</a>. We require all federation partners to meet our security and data handling standards.</p>
+
+  <h2><span class="section-number">10.</span> Intellectual Property</h2>
+  <p>The Unicorn Commander platform software is released under the <strong>MIT License</strong>. The source code is available under the terms of that license.</p>
+  <p>AI models served through the platform are subject to their own respective licenses (e.g., Apache 2.0, Llama Community License, model-specific research licenses). We will make reasonable efforts to communicate applicable model licenses where relevant.</p>
+  <p>The Unicorn Commander name, logo, and branding are trademarks of Magic Unicorn Unconventional Technology &amp; Stuff Inc. and may not be used without our written permission.</p>
+
+  <h2><span class="section-number">11.</span> Limitation of Liability</h2>
+  <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, MAGIC UNICORN UNCONVENTIONAL TECHNOLOGY &amp; STUFF INC. SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, OR USE, ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICE.</p>
+  <p>Our total aggregate liability for any claims arising from or related to the Service shall not exceed the amount you paid to us in the twelve (12) months preceding the claim.</p>
+  <p><strong>AI Output Disclaimer:</strong> AI-generated outputs are not guaranteed to be accurate, complete, original, or free of errors. You are responsible for reviewing and validating any AI-generated content before relying on it. We make no warranties regarding the fitness of AI outputs for any particular purpose.</p>
+
+  <h2><span class="section-number">12.</span> Termination</h2>
+  <p><strong>By Us:</strong> We reserve the right to suspend or terminate your account and access to the Service at any time, with or without cause, including but not limited to violations of these Terms or the Acceptable Use policy. In cases of serious violations, termination may be immediate and without prior notice.</p>
+  <p><strong>By You:</strong> You may cancel your account at any time through your account settings or by contacting support. Upon cancellation:</p>
+  <ul>
+    <li>Your subscription will remain active until the end of the current billing period</li>
+    <li>Unused credits will expire at the end of the billing period and are non-refundable</li>
+    <li>Your generated content will be available for download for 30 days following cancellation</li>
+    <li>Your account data will be deleted in accordance with our Privacy Policy</li>
+  </ul>
+
+  <h2><span class="section-number">13.</span> Changes to Terms</h2>
+  <p>We may update these Terms from time to time. For material changes, we will provide at least <strong>30 days' notice</strong> via email or a prominent notice on the platform before the changes take effect.</p>
+  <p>Non-material changes (e.g., formatting, clarifications that do not alter your rights) may be made without advance notice. The "Last Updated" date at the top of this document will always reflect the most recent revision.</p>
+
+  <h2><span class="section-number">14.</span> Governing Law</h2>
+  <p>These Terms shall be governed by and construed in accordance with the laws of the State of [YOUR STATE], United States of America, without regard to its conflict of law provisions.</p>
+  <p>Any disputes arising from or relating to these Terms or the Service shall be resolved in the state or federal courts located in [YOUR STATE], and you consent to the personal jurisdiction of such courts.</p>
+
+  <h2><span class="section-number">15.</span> Contact</h2>
+  <p>If you have questions about these Terms of Service, please contact us:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:admin@example.com">admin@example.com</a></li>
+    <li><strong>Website:</strong> <a href="https://unicorncommander.ai">unicorncommander.ai</a></li>
+    <li><strong>Company:</strong> Magic Unicorn Unconventional Technology &amp; Stuff Inc.</li>
+  </ul>
+
+  <footer>
+    <p>&copy; 2026 Magic Unicorn Unconventional Technology &amp; Stuff Inc. All rights reserved.</p>
+    <p style="margin-top: 8px;"><a href="privacy-policy.html">Privacy Policy</a></p>
+  </footer>
+</div>
+
+</body>
+</html>

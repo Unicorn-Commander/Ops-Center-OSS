@@ -1,0 +1,116 @@
+site_name: UC-1 Pro Admin Dashboard Documentation
+site_description: Complete guide to managing your UC-1 Pro AI infrastructure
+site_author: Magic Unicorn Unconventional Technology & Stuff Inc
+site_url: http://localhost:8086
+
+# Repository
+repo_name: UC-1-Pro/admin-dashboard
+repo_url: https://github.com/unicorncommander/UC-1-Pro
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: purple
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: purple
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+  logo: assets/images/the-colonel-logo.png
+  favicon: assets/images/favicon.png
+
+# Plugins
+plugins:
+  - search
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+# Navigation
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Quick Start: getting-started/quick-start.md
+    - Login & Authentication: getting-started/authentication.md
+    - User Interface Overview: getting-started/ui-overview.md
+  - Dashboard Features:
+    - Overview Dashboard: features/dashboard.md
+    - AI Model Management: features/ai-models.md
+    - Service Management: features/services.md
+    - System Monitoring: features/system-monitoring.md
+    - Network & WiFi: features/network.md
+    - Storage & Backup: features/storage.md
+    - Extensions Marketplace: features/extensions.md
+    - Logs & Diagnostics: features/logs.md
+    - Security & Access: features/security.md
+    - Settings: features/settings.md
+  - Administration:
+    - User Management: admin/user-management.md
+    - API Keys: admin/api-keys.md
+    - System Configuration: admin/system-config.md
+    - Backup & Restore: admin/backup-restore.md
+  - Troubleshooting:
+    - Common Issues: troubleshooting/common-issues.md
+    - Error Codes: troubleshooting/error-codes.md
+    - Log Analysis: troubleshooting/log-analysis.md
+    - Performance Issues: troubleshooting/performance.md
+  - API Reference:
+    - Authentication API: api/auth.md
+    - System API: api/system.md
+    - Models API: api/models.md
+    - Services API: api/services.md
+    - Storage API: api/storage.md
+    - Extensions API: api/extensions.md
+    - Logs API: api/logs.md
+  - FAQ: faq.md
+
+# Custom CSS
+extra_css:
+  - assets/css/custom.css
+
+# Custom JavaScript
+extra_javascript:
+  - assets/js/custom.js
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/unicorncommander/UC-1-Pro
+    - icon: fontawesome/solid/globe
+      link: https://unicorncommander.com
+  version:
+    provider: mike

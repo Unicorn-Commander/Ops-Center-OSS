@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ops-Center Test (No Service Worker)</title>
+    <script type="module" crossorigin src="/assets/index-dJD_95--.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vendor-emotion-onbfut3i.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-lodash-Bax037W4.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-utils-D75ZsEO7.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-chartjs-CzOWy0kl.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-mobx-CTVdnlWh.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-Bvyq89Kc.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-mui-material-uV7JUjZg.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-mui-icons-DXrXLKV4.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-framer-DOp0GmqP.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DQWr6ovw.css">
+  </head>
+  <body>
+    <!-- Loading indicator (hidden by main.jsx) -->
+    <div id="loading-splash" style="position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); z-index: 9999;">
+      <div style="text-align: center;">
+        <div style="width: 64px; height: 64px; border: 4px solid rgba(124, 58, 237, 0.2); border-top-color: #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+        <p style="color: #94a3b8; font-family: system-ui, -apple-system, sans-serif;">Loading Ops-Center (Test Mode)...</p>
+      </div>
+    </div>
+    <style>
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+
+    <div id="root"></div>
+
+    <!-- NO SERVICE WORKER REGISTRATION -->
+    <script>
+      console.log('✅ Test page loaded - NO service worker');
+      console.log('Window location:', window.location.href);
+      console.log('Loading main bundle from:', document.querySelector('script[type="module"]').src);
+    </script>
+  </body>
+</html>

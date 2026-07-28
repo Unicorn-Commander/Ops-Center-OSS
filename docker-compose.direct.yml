@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  # Direct routing to ops-center backend
+  ops-center-direct:
+    image: uc-1-pro-ops-center
+    container_name: ops-center-direct
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./backend:/app
+      - ./public:/app/public
+      # Mount host user/group files as read-only for Local Users feature
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      # Avatar storage (November 2025 - CORS fix)
+      - ./avatars:/app/avatars
+    env_file:
+      - .env.auth
+    environment:
+      - EXTERNAL_HOST=${EXTERNAL_HOST:-magicunicorn.dev}
+      - EXTERNAL_PROTOCOL=https
+      - OAUTH_CLIENT_ID=ops-center
+      - OPS_CENTER_OAUTH_CLIENT_SECRET=REDACTED_KEYCLOAK_CLIENT_SECRET
+      - KEYCLOAK_URL=${KEYCLOAK_URL:-http://unicorn-keycloak:8080}
+      - KEYCLOAK_REALM=uchub
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASSWORD=CmonWidja2626
+      - SESSION_SECRET_KEY=UC1ProSessionSecretKey2025MagicUnicorn
+      # Stripe Configuration
+      - STRIPE_PUBLISHABLE_KEY=pk_test_51QwxFKDzk9HqAZnHg2c2LyPPgM51YBqRwqMmj1TrKlDQ5LSARByhYFia59QJvDoirITyu1W6q6GoE1jiSCAuSysk00HemfldTN
+      - STRIPE_SECRET_KEY=sk_test_51QwxFKDzk9HqAZnH2oOwogCrpoqBHQwornGDJrqRejlWG9XbZYbhWOHpAKQVKrFJytdbKDLqe5w7QWTFc0SgffyJ00j900ZOYX
+      - STRIPE_API_KEY=sk_test_51QwxFKDzk9HqAZnH2oOwogCrpoqBHQwornGDJrqRejlWG9XbZYbhWOHpAKQVKrFJytdbKDLqe5w7QWTFc0SgffyJ00j900ZOYX
+      - STRIPE_WEBHOOK_SECRET=whsec_REDACTED_STRIPE_WEBHOOK_SECRET
+      - STRIPE_SUCCESS_URL=https://${EXTERNAL_HOST:-magicunicorn.dev}/signup-flow.html?success=true
+      - STRIPE_CANCEL_URL=https://${EXTERNAL_HOST:-magicunicorn.dev}/signup-flow.html?canceled=true
+      # Lago Configuration
+      - LAGO_API_URL=http://unicorn-lago-api:3000
+      - LAGO_PUBLIC_URL=${LAGO_PUBLIC_URL:-https://billing-api.magicunicorn.dev}
+      - LAGO_API_KEY=${LAGO_API_KEY:-2cf90633-b407-4be4-bf8d-a26424c7f2bb}
+      # Redis for sessions
+      - REDIS_HOST=${REDIS_HOST:-unicorn-redis}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@${REDIS_HOST:-unicorn-redis}:6379/0
+      # PostgreSQL Database
+      - POSTGRES_HOST=${POSTGRES_HOST:-unicorn-postgresql}
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=unicorn
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-d6c02c24ea0231ce8f5a8d3f37aea809}
+      - POSTGRES_DB=unicorn_db
+      # Credential Encryption Key (Fernet)
+      - ENCRYPTION_KEY=REDACTED_ENCRYPTION_KEY=
+      # Branding (override) — point at The Colonel for unicorncommander.ai
+      - BRANDING_LOGO_URL=/logos/The_Colonel.webp
+      - BRANDING_COMPANY_NAME=Unicorn Commander
+      - BRANDING_PAGE_TITLE=Unicorn Commander - Admin Dashboard
+      - BRANDING_TAGLINE=Your services. Your infrastructure. One dashboard.
+      - BRANDING_SUBTITLE=Operations Console
+      - BRANDING_PRIMARY_COLOR=#7c3aed
+      - BRANDING_THEME=unicorn
+      # BYOK Encryption Key (for user API keys)
+      - BYOK_ENCRYPTION_KEY=REDACTED_BYOK_ENCRYPTION_KEY=
+      # Federation Node Agent
+      - FEDERATION_NODE_ID=${FEDERATION_NODE_ID:-uc-magicunicorn}
+      - FEDERATION_NODE_NAME=${FEDERATION_NODE_NAME:-Magic Unicorn Home Server}
+      - FEDERATION_ENDPOINT_URL=${FEDERATION_ENDPOINT_URL:-https://magicunicorn.dev}
+      - FEDERATION_KEY=${FEDERATION_KEY:-cb58830785ef77c824fece73e6076bfdaab56dc7ff64ce6631acf65ff6bba64b}
+      - FEDERATION_PEERS=${FEDERATION_PEERS:-https://unicorncommander.ai}
+      - FEDERATION_ROLES=${FEDERATION_ROLES:-inference,billing}
+      - FEDERATION_REGION=${FEDERATION_REGION:-home-lan}
+      - FEDERATION_HEARTBEAT_INTERVAL=${FEDERATION_HEARTBEAT_INTERVAL:-30}
+      - FEDERATION_SERVICE_PROFILE=${FEDERATION_SERVICE_PROFILE:-home}
+    networks:
+      - web
+      - unicorn-network
+      - uchub-network
+    labels:
+      - "traefik.enable=true"
+      # Service definition (all routers use this)
+      - "traefik.http.services.ops-center-svc.loadbalancer.server.port=8084"
+      # Force immediate response forwarding (fix for Traefik 3.x chunked encoding bug)
+      - "traefik.http.services.ops-center-svc.loadbalancer.responseforwarding.flushinterval=-1"
+
+      # Admin routes (highest priority for authenticated routes)
+      - "traefik.http.routers.ops-center-admin.rule=Host(`${EXTERNAL_HOST:-magicunicorn.dev}`) && PathPrefix(`/admin`)"
+      - "traefik.http.routers.ops-center-admin.priority=100"
+      - "traefik.http.routers.ops-center-admin.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web},${TRAEFIK_ENTRYPOINT_HTTPS:-websecure}"
+      - "traefik.http.routers.ops-center-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-admin.service=ops-center-svc"
+
+      # API routes
+      - "traefik.http.routers.ops-center-api-path.rule=Host(`${EXTERNAL_HOST:-magicunicorn.dev}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.ops-center-api-path.priority=90"
+      - "traefik.http.routers.ops-center-api-path.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web},${TRAEFIK_ENTRYPOINT_HTTPS:-websecure}"
+      - "traefik.http.routers.ops-center-api-path.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-api-path.service=ops-center-svc"
+
+      # Auth routes
+      - "traefik.http.routers.ops-center-auth.rule=Host(`${EXTERNAL_HOST:-magicunicorn.dev}`) && PathPrefix(`/auth`)"
+      - "traefik.http.routers.ops-center-auth.priority=80"
+      - "traefik.http.routers.ops-center-auth.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web},${TRAEFIK_ENTRYPOINT_HTTPS:-websecure}"
+      - "traefik.http.routers.ops-center-auth.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-auth.service=ops-center-svc"
+
+      # Root route (lowest priority, catches landing page)
+      - "traefik.http.routers.ops-center-root.rule=Host(`${EXTERNAL_HOST:-magicunicorn.dev}`)"
+      - "traefik.http.routers.ops-center-root.priority=1"
+      - "traefik.http.routers.ops-center-root.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web},${TRAEFIK_ENTRYPOINT_HTTPS:-websecure}"
+      - "traefik.http.routers.ops-center-root.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-root.service=ops-center-svc"
+
+      # API subdomain HTTPS route
+      - "traefik.http.routers.ops-center-api-subdomain.rule=Host(`api.${EXTERNAL_HOST:-magicunicorn.dev}`)"
+      - "traefik.http.routers.ops-center-api-subdomain.entrypoints=${TRAEFIK_ENTRYPOINT_HTTPS:-websecure}"
+      - "traefik.http.routers.ops-center-api-subdomain.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-api-subdomain.service=ops-center-svc"
+
+      # API subdomain HTTP route
+      - "traefik.http.routers.ops-center-api-http.rule=Host(`api.${EXTERNAL_HOST:-magicunicorn.dev}`)"
+      - "traefik.http.routers.ops-center-api-http.entrypoints=${TRAEFIK_ENTRYPOINT_HTTP:-web}"
+      - "traefik.http.routers.ops-center-api-http.service=ops-center-svc"
+      # Note: No redirect middleware - Cloudflare handles HTTP→HTTPS redirect
+
+networks:
+  web:
+    external: true
+  unicorn-network:
+    external: true
+  uchub-network:
+    external: true

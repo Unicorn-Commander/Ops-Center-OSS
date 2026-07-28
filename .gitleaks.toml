@@ -1,0 +1,39 @@
+# gitleaks config — Ops-Center (fully open source)
+# Allowlists ONLY specific fake/example/test-fixture values vetted 2026-07-13.
+# trufflehog --only-verified = 0. Any NEW secret still trips the scan.
+title = "ops-center"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Vetted test fixtures and placeholder values (no live secrets)"
+regexes = [
+  '''5432/keycloak''',
+  '''a1b2c3d4e5f6789012345678901234567890abcd''',
+  '''cf_abcd1234\.\.\.xyz9''',
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.eyJleHAiOjE2MDAwMDAwMDB9\.invalid''',
+  '''my_secret_api_key_12345''',
+  '''nc_test_api_key_1234567890abcdef''',
+  '''pk_test_51QwxFKDzk9HqAZnHg2c2LyPPgM51YBqRwqMmj1TrKlDQ5LSARByhYFia59QJvDoirITyu1W6q6GoE1jiSCAuSysk00HemfldTN''',
+  '''REDACTED_[A-Z_]+''',
+  '''self\.ESTIMATED_COST_PER_1K''',
+  '''sk-centerdeep-service-key-REDACTED''',
+  '''sk-loopnet-service-key-REDACTED''',
+  '''sk-or-v1-1234567890123456789012345678901234567890123456789012345678901234''',
+  '''sk-or-v1-abc123\.\.\.''',
+  '''sk-uc-abc123\.\.\.''',
+  '''sk\-test123456789''',
+  '''sk\-test\-123456789''',
+  '''sk\-test\-1234567890''',
+  '''sk\-test\-1234567890abcdef''',
+  '''sk\-test\-abcdef123456''',
+  '''sk\-test\-secret\-1234567890''',
+  '''sk_test_1234567890abcdefghijklmnop''',
+  '''sk_test_51QwxFKDzk9HqAZnH1234567890''',
+  '''sk_test_51QwxFKDzk9HqAZnH2oOwogCrpoqBHQwornGDJrqRejlWG9XbZYbhWOHpAKQVKrFJytdbKDLqe5w7QWTFc0SgffyJ00j900ZOYX''',
+  '''sk_test_abc123\.\.\.xyz789''',
+  '''YOUR_API_KEY''',
+  '''YOUR_TOKEN''',
+  '''YOUR_UC_API_KEY''',
+]

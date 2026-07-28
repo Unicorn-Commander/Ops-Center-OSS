@@ -1,0 +1,46 @@
+Alembic Migration Scripts for Ops-Center
+=========================================
+
+This directory contains Alembic migration scripts for the Ops-Center PostgreSQL database.
+
+Directory Structure:
+  alembic/
+    ├── env.py              # Environment configuration (DO NOT MODIFY)
+    ├── script.py.mako      # Template for new migrations (DO NOT MODIFY)
+    ├── README              # This file
+    └── versions/           # Migration files (auto-generated)
+        ├── 001_initial_schema.py
+        ├── 002_add_feature_x.py
+        └── ...
+
+How to Create a New Migration:
+  1. Use the script: ./scripts/create_migration.sh "description of changes"
+  2. Or manually: alembic revision --autogenerate -m "description"
+  3. Review the generated file in alembic/versions/
+  4. Edit if needed (Alembic doesn't catch everything)
+  5. Test in development environment first!
+
+How to Apply Migrations:
+  1. Use the script: ./scripts/run_migrations.sh
+  2. Or manually: alembic upgrade head
+  3. Automatic backup will be created before applying
+
+How to Rollback:
+  1. Use the script: ./scripts/rollback_migration.sh
+  2. Or manually: alembic downgrade -1
+  3. Backup will be created before rollback
+
+Check Migration Status:
+  ./scripts/migration_status.sh
+  Or: alembic current
+
+Important Notes:
+  - ALWAYS create a backup before running migrations (automatic in scripts)
+  - Test migrations in development before production
+  - Review auto-generated migrations carefully
+  - Some changes may not be auto-detected (indexes, constraints, etc.)
+  - Alembic can't detect: renames, table moves, complex changes
+  - For complex changes, write migrations manually
+
+Documentation:
+  See: docs/DATABASE_MIGRATIONS.md

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - UC-1 Pro</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, rgba(239, 68, 68, 0) 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ef4444;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #fbbf24;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 30px 0;
+        }
+        p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+        .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .error-box .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        .error-box .reason {
+            color: #f87171;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .warning {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #a855f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">⚠️</div>
+        </div>
+
+        <div class="card">
+            <h1>Payment Failed</h1>
+            <p class="subtitle">Action Required</p>
+
+            <p>We were unable to process your payment for UC-1 Pro. Please update your payment method to continue your subscription.</p>
+
+            <div class="error-box">
+                <p style="margin: 0; color: #e0e0e0;"><strong>Payment Amount:</strong></p>
+                <div class="amount">{{ amount }}</div>
+                <div class="reason">Reason: {{ reason }}</div>
+            </div>
+
+            <div class="warning">
+                <p style="margin: 0;"><strong>⏰ Please act soon!</strong></p>
+                <p style="margin: 10px 0 0 0; font-size: 13px;">We'll retry the payment on {{ retry_date }}. If payment continues to fail, your subscription may be suspended.</p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ update_payment_url }}" class="button">Update Payment Method</a>
+            </div>
+
+            <p><strong>Common reasons for payment failures:</strong></p>
+            <ul style="color: #9ca3af; font-size: 14px;">
+                <li>Insufficient funds in your account</li>
+                <li>Expired or invalid credit card</li>
+                <li>Card security restrictions</li>
+                <li>Billing address mismatch</li>
+            </ul>
+
+            <p>If you believe this is an error or need assistance, please contact our support team.</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ year }} UC-1 Pro Operations Center. All rights reserved.</p>
+            <p>
+                <a href="{{ update_payment_url }}">Update Payment</a> |
+                <a href="{{ update_payment_url }}/support">Contact Support</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

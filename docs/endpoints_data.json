@@ -1,0 +1,3502 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/chat/completions",
+    "function": "chat_completions",
+    "summary": "OpenAI-compatible chat completions endpoint with credit system",
+    "description": "OpenAI-compatible chat completions endpoint with credit system\n\n    Request Headers:\n        Authorization: Bearer <user-api-key>\n        X-Power-Level: eco | balanced | precision (optional)\n\n    Returns:\n        OpenAI-compatible chat completion response\n        + X-Provider-Used: Provider that handled request\n        + X-Cost-Incurred: Credits deducted\n        + X-Credits-Remaining: Updated balance",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/credits",
+    "function": "get_credits",
+    "summary": "Get current credit balance",
+    "description": "Get current credit balance",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/credits/purchase",
+    "function": "purchase_credits",
+    "summary": "Purchase credits via Stripe",
+    "description": "Purchase credits via Stripe\n\n    Credit packages:\n    - $10 = 10,000 credits\n    - $50 = 55,000 credits (10% bonus)\n    - $100 = 120,000 credits (20% bonus)",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/credits/history",
+    "function": "get_credit_history",
+    "summary": "Get credit transaction history",
+    "description": "Get credit transaction history",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/models",
+    "function": "list_models",
+    "summary": "List available models based on user tier",
+    "description": "List available models based on user tier\n\n    Returns OpenAI-compatible model list",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/usage",
+    "function": "get_usage_stats",
+    "summary": "Get usage statistics",
+    "description": "Get usage statistics",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/byok/keys",
+    "function": "add_byok_key",
+    "summary": "Add/update user's own API key for a provider",
+    "description": "Add/update user's own API key for a provider",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/byok/keys",
+    "function": "list_byok_keys",
+    "summary": "List user's stored provider keys (masked)",
+    "description": "List user's stored provider keys (masked)",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/llm/byok/keys/{provider}",
+    "function": "delete_byok_key",
+    "summary": "Delete user's API key for a provider",
+    "description": "Delete user's API key for a provider",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/health",
+    "function": "health_check",
+    "summary": "Health check endpoint",
+    "description": "Health check endpoint",
+    "tags": [
+      "LLM"
+    ],
+    "file": "litellm_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/invoices",
+    "function": "get_invoices_list",
+    "summary": "Get invoice history from Lago.",
+    "description": "Get invoice history from Lago.\n\n    Args:\n        limit: Maximum number of invoices to return (default: 50)\n\n    Returns:\n        List of invoices with status, amount, and dates",
+    "tags": [
+      "billing-lago"
+    ],
+    "file": "billing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/cycle",
+    "function": "get_billing_cycle",
+    "summary": "Get current billing cycle information.",
+    "description": "Get current billing cycle information.\n\n    Returns:\n        Billing cycle dates and status",
+    "tags": [
+      "billing-lago"
+    ],
+    "file": "billing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/payment-methods",
+    "function": "get_payment_methods",
+    "summary": "Get stored payment methods (Stripe).",
+    "description": "Get stored payment methods (Stripe).\n\n    Returns:\n        List of payment methods",
+    "tags": [
+      "billing-lago"
+    ],
+    "file": "billing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/download-invoice/{invoice_id}",
+    "function": "download_invoice",
+    "summary": "Generate download URL for invoice PDF.",
+    "description": "Generate download URL for invoice PDF.\n\n    Args:\n        invoice_id: Lago invoice ID\n\n    Returns:\n        PDF download URL",
+    "tags": [
+      "billing-lago"
+    ],
+    "file": "billing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/summary",
+    "function": "get_billing_summary",
+    "summary": "Get billing summary with total spend, upcoming charges, etc.",
+    "description": "Get billing summary with total spend, upcoming charges, etc.\n\n    Returns:\n        Billing summary statistics",
+    "tags": [
+      "billing-lago"
+    ],
+    "file": "billing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/low-balance",
+    "function": "send_low_balance_alert",
+    "summary": "Manually send low balance alert email (for testing)",
+    "description": "Manually send low balance alert email (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/monthly-reset",
+    "function": "send_monthly_reset",
+    "summary": "Manually send monthly credit reset notification (for testing)",
+    "description": "Manually send monthly credit reset notification (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/coupon-redeemed",
+    "function": "send_coupon_redeemed",
+    "summary": "Manually send coupon redemption confirmation (for testing)",
+    "description": "Manually send coupon redemption confirmation (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/welcome",
+    "function": "send_welcome_email",
+    "summary": "Manually send welcome email (for testing)",
+    "description": "Manually send welcome email (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/tier-upgrade",
+    "function": "send_tier_upgrade",
+    "summary": "Manually send tier upgrade notification (for testing)",
+    "description": "Manually send tier upgrade notification (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notifications/send/payment-failure",
+    "function": "send_payment_failure",
+    "summary": "Manually send payment failure alert (for testing)",
+    "description": "Manually send payment failure alert (for testing)\n\n    Requires admin role.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/notifications/preferences/{user_id}",
+    "function": "get_notification_preferences",
+    "summary": "Get email notification preferences for a user",
+    "description": "Get email notification preferences for a user",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/notifications/preferences/{user_id}",
+    "function": "update_notification_preferences",
+    "summary": "Update email notification preferences for a user",
+    "description": "Update email notification preferences for a user",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/notifications/unsubscribe/{user_id}",
+    "function": "unsubscribe_from_notifications",
+    "summary": "Unsubscribe user from email notifications (public endpoint)",
+    "description": "Unsubscribe user from email notifications (public endpoint)\n\n    This endpoint is linked in email footers.",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/notifications/health",
+    "function": "notification_health",
+    "summary": "Health check for email notification service",
+    "description": "Health check for email notification service",
+    "tags": [
+      "Email Notifications"
+    ],
+    "file": "email_notification_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/execution-servers/{server_id}",
+    "function": "update_server",
+    "summary": "Update execution server",
+    "description": "Update execution server",
+    "tags": [
+      "execution-servers"
+    ],
+    "file": "execution_servers_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/execution-servers/{server_id}",
+    "function": "delete_server",
+    "summary": "Delete execution server",
+    "description": "Delete execution server",
+    "tags": [
+      "execution-servers"
+    ],
+    "file": "execution_servers_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/execution-servers/{server_id}/test",
+    "function": "test_server",
+    "summary": "Test execution server connection",
+    "description": "Test execution server connection",
+    "tags": [
+      "execution-servers"
+    ],
+    "file": "execution_servers_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/execution-servers/default",
+    "function": "get_default_server",
+    "summary": "Get user's default execution server",
+    "description": "Get user's default execution server",
+    "tags": [
+      "execution-servers"
+    ],
+    "file": "execution_servers_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/subscriptions/list",
+    "function": "list_all_subscriptions",
+    "summary": "List all user subscriptions with usage stats",
+    "description": "List all user subscriptions with usage stats",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/subscriptions/{email}",
+    "function": "get_user_subscription",
+    "summary": "Get detailed subscription info for a specific user",
+    "description": "Get detailed subscription info for a specific user",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/admin/subscriptions/{email}",
+    "function": "update_user_subscription",
+    "summary": "Manually update a user's subscription (for support cases)",
+    "description": "Manually update a user's subscription (for support cases)",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/subscriptions/{email}/reset-usage",
+    "function": "reset_user_usage",
+    "summary": "Reset a user's API usage counters",
+    "description": "Reset a user's API usage counters",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/subscriptions/analytics/overview",
+    "function": "get_subscription_analytics",
+    "summary": "Get subscription analytics and revenue metrics",
+    "description": "Get subscription analytics and revenue metrics",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/subscriptions/analytics/revenue-by-tier",
+    "function": "get_revenue_by_tier",
+    "summary": "Get revenue breakdown by subscription tier",
+    "description": "Get revenue breakdown by subscription tier",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/subscriptions/analytics/usage-stats",
+    "function": "get_usage_statistics",
+    "summary": "Get detailed usage statistics",
+    "description": "Get detailed usage statistics",
+    "tags": [
+      "admin"
+    ],
+    "file": "admin_subscriptions_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/routes/{route_id}",
+    "function": "get_route",
+    "summary": "Get specific route details.",
+    "description": "Get specific route details.\n\n    Args:\n        route_id: Route name\n\n    Returns:\n        Route information",
+    "tags": [
+      "Traefik Routes"
+    ],
+    "file": "traefik_routes_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/traefik/routes/{route_id}",
+    "function": "update_route",
+    "summary": "Update an existing Traefik route.",
+    "description": "Update an existing Traefik route.\n\n    Args:\n        route_id: Route name\n        route: Updated route configuration\n\n    Returns:\n        Updated route information",
+    "tags": [
+      "Traefik Routes"
+    ],
+    "file": "traefik_routes_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/routes/{route_id}",
+    "function": "delete_route",
+    "summary": "Delete a Traefik route.",
+    "description": "Delete a Traefik route.\n\n    Args:\n        route_id: Route name\n\n    Returns:\n        Success message",
+    "tags": [
+      "Traefik Routes"
+    ],
+    "file": "traefik_routes_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/routes/{route_id}/test",
+    "function": "test_route",
+    "summary": "Test a Traefik route configuration.",
+    "description": "Test a Traefik route configuration.\n\n    Args:\n        route_id: Route name\n\n    Returns:\n        Test result",
+    "tags": [
+      "Traefik Routes"
+    ],
+    "file": "traefik_routes_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/servers",
+    "function": "list_ai_servers",
+    "summary": "List all AI servers",
+    "description": "List all AI servers\n\n    Query Parameters:\n    - enabled_only: Only return enabled servers",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/servers/{server_id}",
+    "function": "get_ai_server",
+    "summary": "Get specific AI server by ID",
+    "description": "Get specific AI server by ID",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm-config/servers",
+    "function": "create_ai_server",
+    "summary": "Create new AI server configuration",
+    "description": "Create new AI server configuration\n\n    Request Body:\n    - name: Friendly name\n    - server_type: vllm, ollama, llamacpp, openai-compatible\n    - base_url: Server URL (e.g., http://localhost:8000)\n    - api_key: Optional API key for protected endpoints\n    - model_path: Optional model path (for vLLM/llama.cpp)\n    - enabled: Enable immediately (default: true)\n    - use_for_chat/embeddings/reranking: Purpose flags\n    - metadata: Additional config (JSON)",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/llm-config/servers/{server_id}",
+    "function": "update_ai_server",
+    "summary": "Update AI server configuration",
+    "description": "Update AI server configuration\n\n    Path Parameters:\n    - server_id: Server ID to update\n\n    Request Body: (all fields optional)\n    - name, server_type, base_url, api_key, model_path\n    - enabled, use_for_chat, use_for_embeddings, use_for_reranking\n    - metadata",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/llm-config/servers/{server_id}",
+    "function": "delete_ai_server",
+    "summary": "Delete AI server configuration",
+    "description": "Delete AI server configuration\n\n    Returns 400 if server is currently in use as active provider",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm-config/servers/{server_id}/test",
+    "function": "test_ai_server",
+    "summary": "Test connection to AI server",
+    "description": "Test connection to AI server\n\n    Attempts to connect to the server and verify it's working.\n    Updates health_status and last_health_check in database.\n\n    Returns:\n    - status: healthy, degraded, down, unknown\n    - message: Details about the health check",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/servers/{server_id}/models",
+    "function": "get_ai_server_models",
+    "summary": "Get list of available models from AI server",
+    "description": "Get list of available models from AI server\n\n    Queries the server's /v1/models endpoint (or /api/tags for Ollama)\n    and returns available model names.",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/api-keys",
+    "function": "list_api_keys",
+    "summary": "List all API keys (MASKED - never returns plaintext keys)",
+    "description": "List all API keys (MASKED - never returns plaintext keys)\n\n    Query Parameters:\n    - enabled_only: Only return enabled keys",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/api-keys/{key_id}",
+    "function": "get_api_key",
+    "summary": "Get specific API key by ID (MASKED)",
+    "description": "Get specific API key by ID (MASKED)",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm-config/api-keys",
+    "function": "create_api_key",
+    "summary": "Create new API key (encrypted storage)",
+    "description": "Create new API key (encrypted storage)\n\n    Request Body:\n    - provider: openrouter, openai, anthropic, google, cohere, together, fireworks\n    - key_name: Friendly name for UI\n    - api_key: Plaintext API key (will be encrypted)\n    - use_for_ops_center: Use for ops-center services\n    - metadata: Optional metadata (rate limits, etc.)\n\n    Security: API key is encrypted with Fernet before storage",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/llm-config/api-keys/{key_id}",
+    "function": "update_api_key",
+    "summary": "Update API key",
+    "description": "Update API key\n\n    Path Parameters:\n    - key_id: Key ID to update\n\n    Request Body: (all fields optional)\n    - key_name: Update friendly name\n    - api_key: New API key to re-encrypt\n    - enabled: Enable/disable key\n    - use_for_ops_center: Toggle ops-center usage\n    - metadata: Update metadata",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/llm-config/api-keys/{key_id}",
+    "function": "delete_api_key",
+    "summary": "Delete API key",
+    "description": "Delete API key\n\n    Returns 400 if key is currently in use as active provider",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm-config/api-keys/{key_id}/test",
+    "function": "test_api_key",
+    "summary": "Test API key validity",
+    "description": "Test API key validity\n\n    Makes a minimal request to the provider's API to verify the key works.\n    Does NOT update usage statistics (tokens_used, requests_count, etc.)\n\n    Returns:\n    - success: True if key is valid\n    - message: Details about the test result",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/active",
+    "function": "get_all_active_providers",
+    "summary": "Get all active providers for all purposes",
+    "description": "Get all active providers for all purposes\n\n    Returns a dictionary:\n    {\n        \"chat\": {...},\n        \"embeddings\": {...},\n        \"reranking\": {...}\n    }",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/active/{purpose}",
+    "function": "get_active_provider",
+    "summary": "Get active provider for specific purpose",
+    "description": "Get active provider for specific purpose\n\n    Path Parameters:\n    - purpose: chat, embeddings, or reranking",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm-config/active",
+    "function": "set_active_provider",
+    "summary": "Set active provider for a purpose",
+    "description": "Set active provider for a purpose\n\n    Request Body:\n    - purpose: chat, embeddings, or reranking\n    - provider_type: ai_server or api_key\n    - provider_id: ID of the provider\n    - fallback_provider_type: Optional fallback type\n    - fallback_provider_id: Optional fallback ID\n\n    Example:\n    {\n        \"purpose\": \"chat\",\n        \"provider_type\": \"ai_server\",\n        \"provider_id\": 1,\n        \"fallback_provider_type\": \"api_key\",\n        \"fallback_provider_id\": 2\n    }",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm-config/health",
+    "function": "health_check",
+    "summary": "Health check endpoint",
+    "description": "Health check endpoint",
+    "tags": [
+      "LLM Configuration"
+    ],
+    "file": "llm_config_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/network/firewall/rules",
+    "function": "list_firewall_rules",
+    "summary": "Get all firewall rules with optional filtering",
+    "description": "Get all firewall rules with optional filtering\n\n    **Rate Limit**: 20 requests per 60 seconds\n\n    **Filters**:\n    - status: Filter by rule status (active/inactive)\n    - protocol: Filter by protocol (tcp/udp/both)\n    - action: Filter by action (allow/deny/reject)\n\n    **Returns**: List of firewall rules with metadata",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/rules",
+    "function": "add_firewall_rule",
+    "summary": "Add new firewall rule",
+    "description": "Add new firewall rule\n\n    **Rate Limit**: 5 requests per 60 seconds\n\n    **Required Fields**:\n    - port: Port number (1-65535) or None for all ports\n    - protocol: tcp, udp, both, or any\n    - action: allow, deny, reject, or limit\n\n    **Optional Fields**:\n    - description: Human-readable description\n    - from_ip: Source IP or CIDR (e.g., 192.168.1.0/24)\n    - to_ip: Destination IP\n    - interface: Network interface name\n\n    **Returns**: Success message with rule details",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/network/firewall/rules/{rule_num}",
+    "function": "delete_firewall_rule",
+    "summary": "Delete firewall rule by number",
+    "description": "Delete firewall rule by number\n\n    **Rate Limit**: 5 requests per 60 seconds\n\n    **Parameters**:\n    - rule_num: Rule number from list_rules output\n    - override_ssh: Set to true to delete SSH rules (DANGEROUS!)\n\n    **Warning**: Deleting SSH rules on remote systems can lock you out!\n\n    **Returns**: Success message",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/rules/bulk-delete",
+    "function": "bulk_delete_firewall_rules",
+    "summary": "Delete multiple firewall rules at once",
+    "description": "Delete multiple firewall rules at once\n\n    **Rate Limit**: 3 requests per 60 seconds\n\n    **Request Body**:\n    - rule_numbers: Array of rule numbers to delete\n    - override_ssh: Override SSH protection for all rules\n\n    **Returns**: Summary of deleted rules",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/network/firewall/status",
+    "function": "get_firewall_status",
+    "summary": "Get current firewall status and configuration",
+    "description": "Get current firewall status and configuration\n\n    **Rate Limit**: 30 requests per 60 seconds\n\n    **Returns**:\n    - enabled: Whether UFW is active\n    - status: Firewall status (active/inactive)\n    - default_policy: Default policies for incoming/outgoing/routed traffic\n    - total_rules: Total number of configured rules\n    - active_rules: Number of active rules\n    - ipv6_enabled: Whether IPv6 is enabled\n    - logging: Logging level",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/enable",
+    "function": "enable_firewall",
+    "summary": "Enable UFW firewall",
+    "description": "Enable UFW firewall\n\n    **Rate Limit**: 3 requests per 60 seconds\n\n    **Warning**: This will activate all configured firewall rules immediately!\n    Ensure SSH access is allowed before enabling on remote systems.\n\n    **Returns**: Success message",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/disable",
+    "function": "disable_firewall",
+    "summary": "Disable UFW firewall",
+    "description": "Disable UFW firewall\n\n    **Rate Limit**: 3 requests per 60 seconds\n\n    **Warning**: This will disable all firewall protection!\n    System will be exposed to network traffic.\n\n    **Returns**: Success message",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/reset",
+    "function": "reset_firewall",
+    "summary": "Reset firewall to default configuration",
+    "description": "Reset firewall to default configuration\n\n    **Rate Limit**: 2 requests per 60 seconds\n\n    **DANGER**: This will delete ALL firewall rules and reset to defaults!\n    SSH access rule will be preserved for safety.\n\n    **Parameters**:\n    - confirm: Must be true to proceed (safety check)\n\n    **Returns**: Success message",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/network/firewall/templates/{template_name}",
+    "function": "apply_firewall_template",
+    "summary": "Apply predefined firewall rule template",
+    "description": "Apply predefined firewall rule template\n\n    **Rate Limit**: 5 requests per 60 seconds\n\n    **Available Templates**:\n    - web-server: HTTP (80), HTTPS (443)\n    - database: MySQL (3306), PostgreSQL (5432), MongoDB (27017)\n    - docker: Docker daemon (2375, 2376)\n    - development: Common dev ports (3000, 8000, 8080, 5000)\n    - mail-server: SMTP (25, 587), IMAP (143, 993), POP3 (110, 995)\n\n    **Parameters**:\n    - template_name: Name of template to apply\n    - override_existing: Replace existing rules (default: false)\n\n    **Returns**: Success message with list of added rules",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/network/firewall/templates",
+    "function": "list_firewall_templates",
+    "summary": "List all available firewall rule templates",
+    "description": "List all available firewall rule templates\n\n    **Rate Limit**: 20 requests per 60 seconds\n\n    **Returns**: List of available templates with descriptions",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/network/firewall/logs",
+    "function": "get_firewall_logs",
+    "summary": "Get recent firewall logs (blocked/allowed traffic)",
+    "description": "Get recent firewall logs (blocked/allowed traffic)\n\n    **Rate Limit**: 10 requests per 60 seconds\n\n    **Parameters**:\n    - limit: Maximum number of log entries (default: 100, max: 1000)\n    - filter_action: Filter by action (BLOCK/ALLOW)\n\n    **Returns**: List of recent firewall log entries",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/network/firewall/health",
+    "function": "firewall_health_check",
+    "summary": "Health check endpoint for firewall API",
+    "description": "Health check endpoint for firewall API\n\n    No authentication required for monitoring systems\n\n    **Returns**: Health status",
+    "tags": [
+      "network",
+      "firewall"
+    ],
+    "file": "firewall_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/services/{service_id}",
+    "function": "get_service",
+    "summary": "Get specific service details.",
+    "description": "Get specific service details.\n\n    Args:\n        service_id: Service name\n\n    Returns:\n        Service information",
+    "tags": [
+      "Traefik Services"
+    ],
+    "file": "traefik_services_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/traefik/services/{service_id}",
+    "function": "update_service",
+    "summary": "Update an existing backend service.",
+    "description": "Update an existing backend service.\n\n    Args:\n        service_id: Service name\n        service: Updated service configuration\n\n    Returns:\n        Updated service information",
+    "tags": [
+      "Traefik Services"
+    ],
+    "file": "traefik_services_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/services/{service_id}",
+    "function": "delete_service",
+    "summary": "Delete a backend service.",
+    "description": "Delete a backend service.\n\n    Args:\n        service_id: Service name\n\n    Returns:\n        Success message",
+    "tags": [
+      "Traefik Services"
+    ],
+    "file": "traefik_services_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/services/discover/containers",
+    "function": "discover_containers",
+    "summary": "Discover running Docker containers for service creation.",
+    "description": "Discover running Docker containers for service creation.\n\n    Returns:\n        List of discovered containers",
+    "tags": [
+      "Traefik Services"
+    ],
+    "file": "traefik_services_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/byok/providers",
+    "function": "list_providers",
+    "summary": "Get list of supported providers",
+    "description": "Get list of supported providers",
+    "tags": [
+      "byok"
+    ],
+    "file": "byok_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/byok/keys",
+    "function": "list_keys",
+    "summary": "List user's configured API keys (masked)",
+    "description": "List user's configured API keys (masked)",
+    "tags": [
+      "byok"
+    ],
+    "file": "byok_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/byok/keys/{provider}",
+    "function": "delete_key",
+    "summary": "Remove an API key",
+    "description": "Remove an API key",
+    "tags": [
+      "byok"
+    ],
+    "file": "byok_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/byok/keys/test/{provider}",
+    "function": "test_key",
+    "summary": "Test if an API key is valid",
+    "description": "Test if an API key is valid",
+    "tags": [
+      "byok"
+    ],
+    "file": "byok_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/byok/stats",
+    "function": "get_byok_stats",
+    "summary": "Get statistics about user's BYOK configuration",
+    "description": "Get statistics about user's BYOK configuration",
+    "tags": [
+      "byok"
+    ],
+    "file": "byok_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/middlewares/templates",
+    "function": "list_middleware_templates",
+    "summary": "List available middleware templates.",
+    "description": "List available middleware templates.\n\n    Returns:\n        List of middleware templates",
+    "tags": [
+      "Traefik Middlewares"
+    ],
+    "file": "traefik_middlewares_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/middlewares/{middleware_id}",
+    "function": "get_middleware",
+    "summary": "Get specific middleware details.",
+    "description": "Get specific middleware details.\n\n    Args:\n        middleware_id: Middleware name\n\n    Returns:\n        Middleware information",
+    "tags": [
+      "Traefik Middlewares"
+    ],
+    "file": "traefik_middlewares_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/traefik/middlewares/{middleware_id}",
+    "function": "update_middleware",
+    "summary": "Update an existing middleware.",
+    "description": "Update an existing middleware.\n\n    Args:\n        middleware_id: Middleware name\n        middleware: Updated middleware configuration\n\n    Returns:\n        Updated middleware information",
+    "tags": [
+      "Traefik Middlewares"
+    ],
+    "file": "traefik_middlewares_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/middlewares/{middleware_id}",
+    "function": "delete_middleware",
+    "summary": "Delete a middleware.",
+    "description": "Delete a middleware.\n\n    Args:\n        middleware_id: Middleware name\n\n    Returns:\n        Success message",
+    "tags": [
+      "Traefik Middlewares"
+    ],
+    "file": "traefik_middlewares_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/plans",
+    "function": "get_plans",
+    "summary": "Get all active subscription plans",
+    "description": "Get all active subscription plans",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/plans/{plan_id}",
+    "function": "get_plan",
+    "summary": "Get specific plan details",
+    "description": "Get specific plan details",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/my-access",
+    "function": "get_my_access",
+    "summary": "Get services accessible to current user",
+    "description": "Get services accessible to current user",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/check-access/{service}",
+    "function": "check_service_access",
+    "summary": "Check if user has access to specific service",
+    "description": "Check if user has access to specific service",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/plans",
+    "function": "create_plan",
+    "summary": "Create new subscription plan (admin only)",
+    "description": "Create new subscription plan (admin only)",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/subscriptions/plans/{plan_id}",
+    "function": "update_plan",
+    "summary": "Update subscription plan (admin only)",
+    "description": "Update subscription plan (admin only)",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/subscriptions/plans/{plan_id}",
+    "function": "delete_plan",
+    "summary": "Delete (deactivate) subscription plan (admin only)",
+    "description": "Delete (deactivate) subscription plan (admin only)",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/services",
+    "function": "get_all_services",
+    "summary": "Get all available services (for admin reference)",
+    "description": "Get all available services (for admin reference)",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/admin/user-access/{user_id}",
+    "function": "get_user_access_admin",
+    "summary": "Get service access for specific user (admin only)",
+    "description": "Get service access for specific user (admin only)",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/current",
+    "function": "get_current_subscription",
+    "summary": "Get current subscription details from Lago.",
+    "description": "Get current subscription details from Lago.\n    Returns subscription status, plan details, and next billing date.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/upgrade",
+    "function": "upgrade_subscription",
+    "summary": "Upgrade subscription to a higher tier.",
+    "description": "Upgrade subscription to a higher tier.\n    Creates Stripe checkout session and redirects user to payment.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/change",
+    "function": "change_subscription",
+    "summary": "Change subscription to a different tier (usually downgrade).",
+    "description": "Change subscription to a different tier (usually downgrade).\n    Takes effect at end of current billing period.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/cancel",
+    "function": "cancel_subscription",
+    "summary": "Cancel current subscription.",
+    "description": "Cancel current subscription.\n    Access continues until end of billing period.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/upgrade",
+    "function": "initiate_upgrade",
+    "summary": "Initiate subscription upgrade flow with Stripe Checkout.",
+    "description": "Initiate subscription upgrade flow with Stripe Checkout.\n    Upgrades apply immediately with proration.\n\n    Returns Stripe Checkout session URL for payment.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/downgrade",
+    "function": "initiate_downgrade",
+    "summary": "Schedule subscription downgrade at end of current billing period.",
+    "description": "Schedule subscription downgrade at end of current billing period.\n    No immediate payment required.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/subscriptions/preview-change",
+    "function": "preview_subscription_change",
+    "summary": "Preview subscription change with proration calculation.",
+    "description": "Preview subscription change with proration calculation.\n    Shows amount to charge (upgrade) or credit (downgrade).",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/subscriptions/confirm-upgrade",
+    "function": "confirm_upgrade",
+    "summary": "Confirm upgrade after successful Stripe payment.",
+    "description": "Confirm upgrade after successful Stripe payment.\n    Called by webhook or redirect after checkout.",
+    "tags": [
+      "subscriptions"
+    ],
+    "file": "subscription_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones",
+    "function": "list_zones",
+    "summary": "Get all Cloudflare zones with optional filtering",
+    "description": "Get all Cloudflare zones with optional filtering\n\n    **Rate Limit**: 30 requests per minute\n\n    **Filters**:\n    - status: Filter by zone status (pending, active, deactivated)\n    - search: Search by domain name\n    - limit: Maximum results per page (1-100)\n    - offset: Pagination offset\n\n    **Returns**: List of zones with metadata",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}",
+    "function": "get_zone",
+    "summary": "Get detailed information about a specific zone",
+    "description": "Get detailed information about a specific zone\n\n    **Rate Limit**: 30 requests per minute\n\n    **Returns**: Zone details including DNS record count and status",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/cloudflare/zones",
+    "function": "create_zone",
+    "summary": "Create a new Cloudflare zone",
+    "description": "Create a new Cloudflare zone\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Cloudflare Free Plan Limit**: Maximum 3 pending zones at once\n\n    **Behavior**:\n    - If under 3 pending zones: Zone created immediately\n    - If at 3 pending zones: Zone added to queue\n\n    **Returns**: Zone details or queue status",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/cloudflare/zones/{zone_id}",
+    "function": "delete_zone",
+    "summary": "Delete a Cloudflare zone",
+    "description": "Delete a Cloudflare zone\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Warning**: This permanently deletes the zone and all DNS records!\n\n    **Returns**: Success message",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/activate",
+    "function": "activate_zone",
+    "summary": "Check and activate a pending zone",
+    "description": "Check and activate a pending zone\n\n    **Rate Limit**: 10 requests per minute\n\n    **Purpose**: Manually trigger activation check after nameservers are updated\n\n    **Returns**: Updated zone status",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/status",
+    "function": "get_zone_status",
+    "summary": "Get current status of a zone (pending, active, deactivated)",
+    "description": "Get current status of a zone (pending, active, deactivated)\n\n    **Rate Limit**: 30 requests per minute\n\n    **Returns**: Zone status with activation details",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/dns",
+    "function": "list_dns_records",
+    "summary": "List DNS records for a zone",
+    "description": "List DNS records for a zone\n\n    **Rate Limit**: 30 requests per minute\n\n    **Filters**:\n    - type: Filter by record type (A, AAAA, CNAME, MX, TXT, SRV, CAA)\n    - search: Search by name or content\n\n    **Returns**: List of DNS records",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/dns",
+    "function": "create_dns_record",
+    "summary": "Create a new DNS record",
+    "description": "Create a new DNS record\n\n    **Rate Limit**: 10 requests per minute (write operation)\n\n    **Record Types Supported**:\n    - A: IPv4 address\n    - AAAA: IPv6 address\n    - CNAME: Canonical name (alias)\n    - MX: Mail server (requires priority)\n    - TXT: Text record (SPF, DKIM, DMARC, verification)\n    - SRV: Service record (requires priority)\n    - CAA: Certificate authority authorization\n\n    **Returns**: Created DNS record details",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/dns/{record_id}",
+    "function": "update_dns_record",
+    "summary": "Update an existing DNS record",
+    "description": "Update an existing DNS record\n\n    **Rate Limit**: 10 requests per minute (write operation)\n\n    **Updatable Fields**:\n    - content: Record content (IP, hostname, text)\n    - ttl: Time to live\n    - proxied: Proxy through Cloudflare\n    - priority: Priority (for MX and SRV records)\n\n    **Returns**: Updated DNS record details",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/dns/{record_id}",
+    "function": "delete_dns_record",
+    "summary": "Delete a DNS record",
+    "description": "Delete a DNS record\n\n    **Rate Limit**: 10 requests per minute (write operation)\n\n    **Warning**: Email-related records (MX, SPF, DKIM, DMARC) will show a warning\n\n    **Returns**: Success message",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/nameservers",
+    "function": "get_nameservers",
+    "summary": "Get assigned Cloudflare nameservers for a zone",
+    "description": "Get assigned Cloudflare nameservers for a zone\n\n    **Rate Limit**: 30 requests per minute\n\n    **Returns**: Nameserver list with copy-to-clipboard support",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/nameservers",
+    "function": "update_nameservers",
+    "summary": "Update nameservers for a zone (advanced operation)",
+    "description": "Update nameservers for a zone (advanced operation)\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Warning**: This is rarely needed. Usually nameservers are assigned by Cloudflare.\n\n    **Returns**: Updated nameserver list",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/propagation/{zone_id}",
+    "function": "check_propagation",
+    "summary": "Check DNS propagation status for a zone",
+    "description": "Check DNS propagation status for a zone\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - Google DNS (8.8.8.8)\n    - Cloudflare DNS (1.1.1.1)\n    - Quad9 DNS (9.9.9.9)\n    - OpenDNS (208.67.222.222)\n\n    **Returns**: Propagation status across multiple DNS resolvers",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/ssl",
+    "function": "get_ssl_status",
+    "summary": "Get SSL/TLS status for a zone",
+    "description": "Get SSL/TLS status for a zone\n\n    **Rate Limit**: 20 requests per minute\n\n    **Returns**: SSL certificate status and configuration",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/zones/{zone_id}/analytics",
+    "function": "get_zone_analytics",
+    "summary": "Get analytics data for a zone",
+    "description": "Get analytics data for a zone\n\n    **Rate Limit**: 20 requests per minute\n\n    **Metrics**:\n    - Total requests\n    - Bandwidth usage\n    - Threat mitigation\n    - Cache hit rate\n\n    **Returns**: Analytics data for specified time period",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/cloudflare/health",
+    "function": "cloudflare_health_check",
+    "summary": "Health check endpoint for Cloudflare API",
+    "description": "Health check endpoint for Cloudflare API\n\n    No authentication required for monitoring systems\n\n    **Returns**: Health status and API connectivity",
+    "tags": [
+      "cloudflare",
+      "dns",
+      "infrastructure"
+    ],
+    "file": "cloudflare_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/local-users/",
+    "function": "list_local_users",
+    "summary": "List local Linux users with pagination and filtering.",
+    "description": "List local Linux users with pagination and filtering.\n\n    **Requires**: Admin role\n\n    **NEW FEATURES**:\n    - Pagination support (skip/limit)\n    - Search by username\n    - Filter by sudo status\n    - Filter by UID range\n\n    **Parameters**:\n    - `include_system`: Include system users (UID < 1000)\n    - `skip`: Number of users to skip (pagination offset) [default: 0]\n    - `limit`: Maximum number of users to return [default: 50, max: 100]\n    - `search`: Search username pattern (partial match)\n    - `has_sudo`: Filter by sudo status (true/false)\n    - `uid_min`: Minimum UID to include\n    - `uid_max`: Maximum UID to include\n\n    **Returns**: List of user information objects (paginated)",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/local-users/",
+    "function": "create_local_user",
+    "summary": "Create a new local Linux user.",
+    "description": "Create a new local Linux user.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username for new user (lowercase, alphanumeric + underscore/hyphen)\n    - `full_name`: Full name (GECOS field)\n    - `shell`: Login shell (default: /bin/bash)\n    - `create_home`: Create home directory (default: true)\n    - `groups`: Additional groups to add user to\n    - `password`: Initial password (optional, min 12 characters with complexity)\n\n    **Returns**: Created user information",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/local-users/statistics",
+    "function": "get_user_statistics",
+    "summary": "Get statistics about local users.",
+    "description": "Get statistics about local users.\n\n    **NEW FEATURE**: System-wide user statistics endpoint.\n\n    **Requires**: Admin role\n\n    **Returns**: Statistics object with:\n    - `total_users`: Total number of non-system users\n    - `sudo_users`: Number of users with sudo privileges\n    - `system_users`: Number of system users (UID < 1000)\n    - `users_by_shell`: Count by shell type\n    - `total_home_size_bytes`: Total size of all home directories\n    - `total_home_size_gb`: Total size in GB\n    - `uid_range`: Min and max UID values",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/local-users/{username}",
+    "function": "get_local_user",
+    "summary": "Get detailed information about a local user.",
+    "description": "Get detailed information about a local user.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username to query\n\n    **Returns**: User information object",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/local-users/{username}",
+    "function": "delete_local_user",
+    "summary": "Delete a local Linux user.",
+    "description": "Delete a local Linux user.\n\n    **Requires**: Admin role\n\n    **WARNING**: This operation cannot be undone!\n\n    **SECURITY**: Prevents admins from deleting their own account.\n\n    **Parameters**:\n    - `username`: Username to delete\n    - `remove_home`: Also remove home directory (default: false)\n\n    **Returns**: Success message",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/local-users/{username}/password",
+    "function": "set_user_password",
+    "summary": "Set password for a local user.",
+    "description": "Set password for a local user.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username\n    - `password`: New password (min 12 characters with uppercase, lowercase, digit, special character)\n\n    **Returns**: Success message",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/local-users/{username}/ssh-keys",
+    "function": "get_ssh_keys",
+    "summary": "List SSH public keys for a user.",
+    "description": "List SSH public keys for a user.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username\n\n    **Returns**: List of SSH key objects",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/local-users/{username}/ssh-keys",
+    "function": "add_user_ssh_key",
+    "summary": "Add SSH public key to user's authorized_keys.",
+    "description": "Add SSH public key to user's authorized_keys.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username\n    - `ssh_key`: SSH public key (must be valid format)\n    - `key_title`: Optional title/comment for the key\n\n    **Returns**: Key information with fingerprint",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/local-users/{username}/ssh-keys/{key_fingerprint}",
+    "function": "remove_user_ssh_key",
+    "summary": "Remove SSH public key from user's authorized_keys.",
+    "description": "Remove SSH public key from user's authorized_keys.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username\n    - `key_fingerprint`: Fingerprint of key to remove\n\n    **Returns**: Success message",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/local-users/{username}/sudo",
+    "function": "grant_sudo",
+    "summary": "Grant sudo permissions to a user.",
+    "description": "Grant sudo permissions to a user.\n\n    **Requires**: Admin role\n\n    **WARNING**: This gives the user full system access via sudo!\n\n    **Parameters**:\n    - `username`: Username\n\n    **Returns**: Success message",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/local-users/{username}/sudo",
+    "function": "revoke_sudo",
+    "summary": "Revoke sudo permissions from a user.",
+    "description": "Revoke sudo permissions from a user.\n\n    **Requires**: Admin role\n\n    **Parameters**:\n    - `username`: Username\n\n    **Returns**: Success message",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_user_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/balance",
+    "function": "get_credit_balance",
+    "summary": "Get user's current credit balance.",
+    "description": "Get user's current credit balance.\n\n    Returns:\n        CreditBalance: Current balance and allocation details",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/allocate",
+    "function": "allocate_credits",
+    "summary": "Allocate credits to a user (admin only).",
+    "description": "Allocate credits to a user (admin only).\n\n    Args:\n        request: Credit allocation details\n\n    Returns:\n        CreditBalance: Updated balance information",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/transactions",
+    "function": "get_transactions",
+    "summary": "Get credit transaction history.",
+    "description": "Get credit transaction history.\n\n    Args:\n        limit: Maximum number of transactions (1-500)\n        offset: Pagination offset\n        transaction_type: Filter by type (optional)\n\n    Returns:\n        List[CreditTransaction]: Transaction history",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/deduct",
+    "function": "deduct_credits",
+    "summary": "Deduct credits from user (internal/admin only).",
+    "description": "Deduct credits from user (internal/admin only).\n\n    Args:\n        request: Credit deduction details\n\n    Returns:\n        CreditBalance: Updated balance information\n\n    Raises:\n        HTTPException 400: Insufficient credits",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/refund",
+    "function": "refund_credits",
+    "summary": "Refund credits to user (admin only).",
+    "description": "Refund credits to user (admin only).\n\n    Args:\n        request: Refund details\n\n    Returns:\n        CreditBalance: Updated balance information",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/openrouter/create-account",
+    "function": "create_openrouter_account",
+    "summary": "Create OpenRouter BYOK account for user.",
+    "description": "Create OpenRouter BYOK account for user.\n\n    Args:\n        request: OpenRouter API key and email\n\n    Returns:\n        OpenRouterAccount: Account information",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/openrouter/account",
+    "function": "get_openrouter_account",
+    "summary": "Get OpenRouter account details.",
+    "description": "Get OpenRouter account details.\n\n    Returns:\n        OpenRouterAccount | None: Account information or None if not configured",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/openrouter/sync-balance",
+    "function": "sync_openrouter_balance",
+    "summary": "Sync free credits from OpenRouter API.",
+    "description": "Sync free credits from OpenRouter API.\n\n    Returns:\n        Dict: {\"free_credits\": Decimal}",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/credits/openrouter/account",
+    "function": "delete_openrouter_account",
+    "summary": "Delete OpenRouter BYOK account.",
+    "description": "Delete OpenRouter BYOK account.\n\n    Returns:\n        Dict: Success message",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/usage/track",
+    "function": "track_usage",
+    "summary": "Track API usage event.",
+    "description": "Track API usage event.\n\n    Args:\n        request: Usage event details\n\n    Returns:\n        UsageEvent: Created usage event",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/usage/summary",
+    "function": "get_usage_summary",
+    "summary": "Get usage summary for user.",
+    "description": "Get usage summary for user.\n\n    Args:\n        start_date: Start date (optional, defaults to 30 days ago)\n        end_date: End date (optional, defaults to now)\n\n    Returns:\n        UsageSummary: Aggregated usage statistics",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/usage/by-model",
+    "function": "get_usage_by_model",
+    "summary": "Get usage breakdown by model.",
+    "description": "Get usage breakdown by model.\n\n    Returns:\n        List[UsageByModel]: Per-model usage statistics",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/usage/by-service",
+    "function": "get_usage_by_service",
+    "summary": "Get usage breakdown by service.",
+    "description": "Get usage breakdown by service.\n\n    Returns:\n        List[UsageByService]: Per-service usage statistics",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/usage/free-tier",
+    "function": "get_free_tier_usage",
+    "summary": "Get free tier usage statistics.",
+    "description": "Get free tier usage statistics.\n\n    Returns:\n        Dict: Free tier usage summary",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/coupons/redeem",
+    "function": "redeem_coupon",
+    "summary": "Redeem coupon code.",
+    "description": "Redeem coupon code.\n\n    Args:\n        request: Coupon code to redeem\n\n    Returns:\n        CouponRedemption: Redemption details with credits awarded",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/coupons/create",
+    "function": "create_coupon",
+    "summary": "Create coupon code (admin only).",
+    "description": "Create coupon code (admin only).\n\n    Args:\n        request: Coupon details\n\n    Returns:\n        CouponCode: Created coupon information",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/coupons/validate/{code}",
+    "function": "validate_coupon",
+    "summary": "Validate coupon code.",
+    "description": "Validate coupon code.\n\n    Args:\n        code: Coupon code to validate\n\n    Returns:\n        CouponValidation: Validation result",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/coupons",
+    "function": "list_coupons",
+    "summary": "List all coupons (admin only).",
+    "description": "List all coupons (admin only).\n\n    Args:\n        active_only: Only return active coupons\n        limit: Maximum number of coupons\n        offset: Pagination offset\n\n    Returns:\n        List[CouponCode]: List of coupons",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/credits/coupons/{code}",
+    "function": "delete_coupon",
+    "summary": "Deactivate coupon (admin only).",
+    "description": "Deactivate coupon (admin only).\n\n    Args:\n        code: Coupon code to deactivate\n\n    Returns:\n        Dict: Success message",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credits/tiers/compare",
+    "function": "compare_tiers",
+    "summary": "Compare subscription tiers.",
+    "description": "Compare subscription tiers.\n\n    Returns:\n        List[TierInfo]: Available subscription tiers",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credits/tiers/switch",
+    "function": "switch_tier",
+    "summary": "Switch subscription tier (triggers monthly credit reset).",
+    "description": "Switch subscription tier (triggers monthly credit reset).\n\n    Args:\n        request: New tier selection\n\n    Returns:\n        CreditBalance: Updated balance with new allocation",
+    "tags": [
+      "credits"
+    ],
+    "file": "credit_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/check-tier",
+    "function": "check_tier_access",
+    "summary": "Check if user has access to a service based on their subscription tier.",
+    "description": "Check if user has access to a service based on their subscription tier.\n\n    Used by Traefik ForwardAuth middleware.\n\n    Returns:\n        200: Access granted\n        401: Authentication required\n        403: Upgrade required (tier too low)",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/user/tier",
+    "function": "get_user_tier_info",
+    "summary": "Get user's subscription tier information.",
+    "description": "Get user's subscription tier information.",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/services/access-matrix",
+    "function": "get_access_matrix",
+    "summary": "Get complete service access matrix for a given tier.",
+    "description": "Get complete service access matrix for a given tier.\n\n    Useful for frontend to display available services.",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tiers/info",
+    "function": "get_tiers_info",
+    "summary": "Get information about all subscription tiers.",
+    "description": "Get information about all subscription tiers.",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/usage/track",
+    "function": "track_usage",
+    "summary": "Track service usage for billing and rate limiting.",
+    "description": "Track service usage for billing and rate limiting.\n\n    This endpoint is called by services to log usage events.",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/rate-limit/check",
+    "function": "check_rate_limit",
+    "summary": "Check current rate limit status for user.",
+    "description": "Check current rate limit status for user.",
+    "tags": [
+      "tier-check"
+    ],
+    "file": "tier_check_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/org/roles",
+    "function": "list_available_roles",
+    "summary": "Get list of available organization roles",
+    "description": "Get list of available organization roles\n\n    Returns:\n        List of roles with descriptions and permissions\n\n    Example:\n        GET /api/v1/org/roles\n        Response: {\n            \"roles\": [\n                {\n                    \"id\": \"owner\",\n                    \"name\": \"Owner\",\n                    \"description\": \"Full organization control\",\n                    \"permissions\": [\"manage_members\", \"manage_billing\", \"manage_settings\", \"delete_org\"]\n                },\n                ...\n            ]\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/org/{org_id}/members",
+    "function": "list_organization_members",
+    "summary": "Get list of all members in an organization",
+    "description": "Get list of all members in an organization\n\n    Args:\n        org_id: Organization ID\n\n    Returns:\n        List of organization members with roles and join dates\n\n    Example:\n        GET /api/v1/org/org_12345/members\n        Response: {\n            \"members\": [\n                {\n                    \"user_id\": \"user@example.com\",\n                    \"role\": \"owner\",\n                    \"joined_at\": \"2025-01-15T10:30:00Z\"\n                },\n                ...\n            ],\n            \"total\": 5\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/org/{org_id}/members",
+    "function": "add_organization_member",
+    "summary": "Add a new member to the organization",
+    "description": "Add a new member to the organization\n\n    Args:\n        org_id: Organization ID\n        member_data: User ID and role to assign\n\n    Returns:\n        Success confirmation\n\n    Example:\n        POST /api/v1/org/org_12345/members\n        Body: {\"user_id\": \"newuser@example.com\", \"role\": \"member\"}\n        Response: {\n            \"success\": true,\n            \"message\": \"User added to organization\",\n            \"user_id\": \"newuser@example.com\",\n            \"role\": \"member\"\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/org/{org_id}/members/{user_id}/role",
+    "function": "update_member_role",
+    "summary": "Update a member's role in the organization",
+    "description": "Update a member's role in the organization\n\n    Args:\n        org_id: Organization ID\n        user_id: User ID to update\n        role_data: New role to assign\n\n    Returns:\n        Success confirmation\n\n    Example:\n        PUT /api/v1/org/org_12345/members/user@example.com/role\n        Body: {\"role\": \"billing_admin\"}\n        Response: {\n            \"success\": true,\n            \"message\": \"User role updated\",\n            \"user_id\": \"user@example.com\",\n            \"new_role\": \"billing_admin\"\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/org/{org_id}/members/{user_id}",
+    "function": "remove_organization_member",
+    "summary": "Remove a member from the organization",
+    "description": "Remove a member from the organization\n\n    Args:\n        org_id: Organization ID\n        user_id: User ID to remove\n\n    Returns:\n        Success confirmation\n\n    Example:\n        DELETE /api/v1/org/org_12345/members/user@example.com\n        Response: {\n            \"success\": true,\n            \"message\": \"User removed from organization\",\n            \"user_id\": \"user@example.com\"\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/org/{org_id}/stats",
+    "function": "get_organization_stats",
+    "summary": "Get organization statistics and metrics",
+    "description": "Get organization statistics and metrics\n\n    Args:\n        org_id: Organization ID\n\n    Returns:\n        Organization statistics including member counts, activity, etc.\n\n    Example:\n        GET /api/v1/org/org_12345/stats\n        Response: {\n            \"total_members\": 5,\n            \"members_by_role\": {\"owner\": 1, \"billing_admin\": 1, \"member\": 3},\n            \"created_at\": \"2025-01-01T00:00:00Z\",\n            \"plan_tier\": \"professional\",\n            \"status\": \"active\"\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/org/{org_id}/billing",
+    "function": "get_organization_billing",
+    "summary": "Get organization billing information",
+    "description": "Get organization billing information\n\n    Args:\n        org_id: Organization ID\n\n    Returns:\n        Billing information including Lago and Stripe customer IDs\n\n    Example:\n        GET /api/v1/org/org_12345/billing\n        Response: {\n            \"plan_tier\": \"professional\",\n            \"lago_customer_id\": \"lago_cust_abc123\",\n            \"stripe_customer_id\": \"cus_xyz789\",\n            \"status\": \"active\"\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/org/{org_id}/settings",
+    "function": "get_organization_settings",
+    "summary": "Get organization settings",
+    "description": "Get organization settings\n\n    Args:\n        org_id: Organization ID\n\n    Returns:\n        Organization settings and configuration\n\n    Example:\n        GET /api/v1/org/org_12345/settings\n        Response: {\n            \"id\": \"org_12345\",\n            \"name\": \"Acme Corp\",\n            \"plan_tier\": \"professional\",\n            \"status\": \"active\",\n            \"created_at\": \"2025-01-01T00:00:00Z\",\n            \"settings\": {}\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/org/{org_id}/settings",
+    "function": "update_organization_settings",
+    "summary": "Update organization settings",
+    "description": "Update organization settings\n\n    Args:\n        org_id: Organization ID\n        settings_data: Settings to update\n\n    Returns:\n        Updated settings\n\n    Example:\n        PUT /api/v1/org/org_12345/settings\n        Body: {\"settings\": {\"notification_email\": \"admin@acme.com\"}}\n        Response: {\n            \"success\": true,\n            \"message\": \"Settings updated\",\n            \"settings\": {\"notification_email\": \"admin@acme.com\"}\n        }",
+    "tags": [
+      "organizations"
+    ],
+    "file": "org_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/providers",
+    "function": "list_providers",
+    "summary": "List all configured LLM providers",
+    "description": "List all configured LLM providers\n\n    Query Parameters:\n        enabled_only: Only return enabled providers\n\n    Returns:\n        List of providers with statistics",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/providers",
+    "function": "create_provider",
+    "summary": "Add new LLM provider with encrypted API key",
+    "description": "Add new LLM provider with encrypted API key\n\n    Body:\n        ProviderCreate schema\n\n    Returns:\n        Created provider with ID",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/llm/providers/{provider_id}",
+    "function": "update_provider",
+    "summary": "Update provider configuration",
+    "description": "Update provider configuration\n\n    Path Parameters:\n        provider_id: Provider UUID\n\n    Body:\n        ProviderUpdate schema\n\n    Returns:\n        Updated provider info",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/llm/providers/{provider_id}",
+    "function": "delete_provider",
+    "summary": "Remove provider (will cascade delete associated models)",
+    "description": "Remove provider (will cascade delete associated models)\n\n    Path Parameters:\n        provider_id: Provider UUID\n\n    Returns:\n        Deletion confirmation",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/models",
+    "function": "list_models",
+    "summary": "List all available LLM models across providers",
+    "description": "List all available LLM models across providers\n\n    Query Parameters:\n        provider_id: Filter by provider UUID\n        enabled_only: Only return enabled models\n        sort_by: Sort by cost, latency, or name\n\n    Returns:\n        List of models with pricing and performance data",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/models",
+    "function": "create_model",
+    "summary": "Add new model to provider",
+    "description": "Add new model to provider\n\n    Body:\n        ModelCreate schema\n\n    Returns:\n        Created model with ID",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/routing/rules",
+    "function": "get_routing_rules",
+    "summary": "Get current routing configuration",
+    "description": "Get current routing configuration\n\n    Returns:\n        Routing strategy, fallback rules, model aliases",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/llm/routing/rules",
+    "function": "update_routing_rules",
+    "summary": "Update routing configuration",
+    "description": "Update routing configuration\n\n    Body:\n        RoutingRulesUpdate schema\n\n    Returns:\n        Updated routing rules",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/usage",
+    "function": "get_usage_analytics",
+    "summary": "Get LLM usage analytics",
+    "description": "Get LLM usage analytics\n\n    Query Parameters:\n        user_id: Filter by user (admin only without user_id)\n        days: Number of days to analyze (default 7)\n        provider_id: Filter by provider\n\n    Returns:\n        Usage statistics with cost breakdown",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/users/{user_id}/byok",
+    "function": "set_user_byok",
+    "summary": "Set user's Bring Your Own Key configuration",
+    "description": "Set user's Bring Your Own Key configuration\n\n    Path Parameters:\n        user_id: User identifier\n\n    Body:\n        UserBYOKUpdate schema\n\n    Returns:\n        Updated BYOK configuration",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/users/{user_id}/byok",
+    "function": "get_user_byok",
+    "summary": "Get user's BYOK configuration (API keys masked)",
+    "description": "Get user's BYOK configuration (API keys masked)\n\n    Path Parameters:\n        user_id: User identifier\n\n    Returns:\n        BYOK configuration with masked keys",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/llm/credits",
+    "function": "get_credit_status",
+    "summary": "Get user's credit balance and usage",
+    "description": "Get user's credit balance and usage\n\n    Query Parameters:\n        user_id: User identifier\n\n    Returns:\n        Credit balance, tier, usage limits",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/llm/test",
+    "function": "test_provider_connection",
+    "summary": "Test provider connection with sample request",
+    "description": "Test provider connection with sample request\n\n    Body:\n        ProviderTestRequest schema\n\n    Returns:\n        Test results with latency and status",
+    "tags": [
+      "LLM Management"
+    ],
+    "file": "litellm_routing_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/system/local-users/{username}",
+    "function": "get_local_user",
+    "summary": "Get details for a specific local user",
+    "description": "Get details for a specific local user\n\n    Admin only.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/system/local-users/{username}",
+    "function": "update_local_user",
+    "summary": "Update an existing local user",
+    "description": "Update an existing local user\n\n    Can update: password, shell, groups, sudo permissions.\n    Admin only. All changes are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/admin/system/local-users/{username}",
+    "function": "delete_local_user",
+    "summary": "Delete a local user",
+    "description": "Delete a local user\n\n    Uses userdel command. Optionally removes home directory.\n    Admin only. All deletions are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/system/local-users/{username}/password",
+    "function": "reset_user_password",
+    "summary": "Reset user password",
+    "description": "Reset user password\n\n    If password not provided, generates a secure random password.\n    Admin only. All password resets are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/system/local-users/{username}/ssh-keys",
+    "function": "list_ssh_keys",
+    "summary": "List SSH public keys for a user",
+    "description": "List SSH public keys for a user\n\n    Reads from ~/.ssh/authorized_keys.\n    Admin only.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/system/local-users/{username}/ssh-keys",
+    "function": "add_ssh_key",
+    "summary": "Add SSH public key for a user",
+    "description": "Add SSH public key for a user\n\n    Appends to ~/.ssh/authorized_keys.\n    Admin only. All key additions are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/admin/system/local-users/{username}/ssh-keys/{key_id}",
+    "function": "remove_ssh_key",
+    "summary": "Remove SSH public key for a user",
+    "description": "Remove SSH public key for a user\n\n    Removes line from ~/.ssh/authorized_keys by line number.\n    Admin only. All key removals are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/system/local-users/{username}/sudo",
+    "function": "set_sudo_access",
+    "summary": "Manage sudo access for a user",
+    "description": "Manage sudo access for a user\n\n    Adds/removes user from sudo/wheel group.\n    Admin only. All sudo changes are audited.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/system/local-users/groups",
+    "function": "list_groups",
+    "summary": "List all available system groups",
+    "description": "List all available system groups\n\n    Admin only.",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/system/local-users/health",
+    "function": "health_check",
+    "summary": "Health check endpoint",
+    "description": "Health check endpoint",
+    "tags": [
+      "Local Users"
+    ],
+    "file": "local_users_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credentials/{service}/{credential_type}",
+    "function": "get_credential",
+    "summary": "Get single credential info (MASKED value only)",
+    "description": "Get single credential info (MASKED value only)\n\n    **Authentication**: Requires admin role\n\n    **Path Parameters**:\n    - `service`: Service name\n    - `credential_type`: Credential type\n\n    **Returns**:\n    - Credential info with MASKED value\n\n    **Security**:\n    - NEVER returns plaintext credential\n    - Use `get_credential_for_api()` internally for API calls",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/credentials/{service}/{credential_type}",
+    "function": "update_credential",
+    "summary": "Update existing credential",
+    "description": "Update existing credential\n\n    **Authentication**: Requires admin role\n\n    **Path Parameters**:\n    - `service`: Service name\n    - `credential_type`: Credential type\n\n    **Request Body**:\n    - `value`: New plaintext credential value\n    - `metadata`: Optional updated metadata\n\n    **Returns**:\n    - Updated credential info with MASKED value\n\n    **Security**:\n    - Credential re-encrypted with new value\n    - Audit log created for update\n    - Test status reset (requires re-test)",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/credentials/{service}/{credential_type}",
+    "function": "delete_credential",
+    "summary": "Delete credential (soft delete)",
+    "description": "Delete credential (soft delete)\n\n    **Authentication**: Requires admin role\n\n    **Path Parameters**:\n    - `service`: Service name\n    - `credential_type`: Credential type\n\n    **Returns**:\n    - 204 No Content on success\n    - 404 Not Found if credential doesn't exist\n\n    **Security**:\n    - Soft delete (sets is_active = false)\n    - Credential remains in database for audit trail\n    - Audit log created for deletion",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/credentials/{service}/test",
+    "function": "test_credential",
+    "summary": "Test credential by calling service API",
+    "description": "Test credential by calling service API\n\n    **Authentication**: Requires admin role\n\n    **Path Parameters**:\n    - `service`: Service name\n\n    **Request Body**:\n    - `value`: Optional credential value to test (if not stored in DB)\n\n    **Returns**:\n    - Test result with success/failure status and message\n\n    **Supported Services**:\n    - **Cloudflare**: Calls `/user/tokens/verify` endpoint\n    - **GitHub**: Calls `/user` endpoint\n    - **Stripe**: Calls `/v1/balance` endpoint\n    - **NameCheap**: Format validation only (API requires IP whitelist)\n\n    **Security**:\n    - Rate limited to prevent abuse\n    - Test result stored in database\n    - Audit log created for test",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credentials/services",
+    "function": "list_supported_services",
+    "summary": "List all supported services and their credential types",
+    "description": "List all supported services and their credential types\n\n    **Authentication**: Requires admin role\n\n    **Returns**:\n    - List of supported services with:\n      - Service name and display name\n      - Supported credential types\n      - Whether test endpoint is available\n      - Whether user has configured credentials\n\n    **Example Response**:\n    ```json\n    [\n      {\n        \"service\": \"cloudflare\",\n        \"name\": \"Cloudflare\",\n        \"credential_types\": [\"api_token\"],\n        \"has_test\": true,\n        \"configured\": false\n      },\n      ...\n    ]\n    ```",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/credentials/health",
+    "function": "health_check",
+    "summary": "Health check endpoint for credential management API",
+    "description": "Health check endpoint for credential management API",
+    "tags": [
+      "credentials",
+      "security"
+    ],
+    "file": "credential_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/usage/current",
+    "function": "get_current_usage_endpoint",
+    "summary": "Get current usage statistics for the authenticated user.",
+    "description": "Get current usage statistics for the authenticated user.\n    Integrates data from both Keycloak (tier) and Lago (metered usage).\n\n    Returns tier info, usage counts, limits, and service breakdown.",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/usage/history",
+    "function": "get_usage_history",
+    "summary": "Get historical usage data.",
+    "description": "Get historical usage data.\n\n    Args:\n        days: Number of days of history to return (default: 30)\n\n    Note: This endpoint is a placeholder. Full implementation requires\n    storing historical usage data in a time-series database.",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/usage/limits",
+    "function": "get_tier_limits",
+    "summary": "Get tier limits and pricing information.",
+    "description": "Get tier limits and pricing information.\n\n    Returns limits for all tiers for comparison.",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/usage/features",
+    "function": "get_tier_features",
+    "summary": "Get feature access information for current tier.",
+    "description": "Get feature access information for current tier.\n\n    Returns which features are available and which require upgrade.",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/usage/reset-demo",
+    "function": "reset_usage_demo",
+    "summary": "DEMO/TESTING ONLY: Reset usage counter for current user.",
+    "description": "DEMO/TESTING ONLY: Reset usage counter for current user.\n\n    This endpoint should be disabled in production or protected with admin auth.",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/usage/export",
+    "function": "export_usage_data",
+    "summary": "Export usage data as CSV file.",
+    "description": "Export usage data as CSV file.\n\n    Args:\n        period: Time period for export (week, month, year)\n\n    Returns:\n        CSV file with usage statistics",
+    "tags": [
+      "usage"
+    ],
+    "file": "usage_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/settings/categories",
+    "function": "list_categories",
+    "summary": "List all available setting categories",
+    "description": "List all available setting categories\n\n    Returns list of categories with descriptions.\n    Public endpoint (no auth required).",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/settings/{key}",
+    "function": "get_setting",
+    "summary": "Get specific setting by key",
+    "description": "Get specific setting by key\n\n    Query params:\n    - show_value: Whether to show decrypted value (default: false, masked)\n\n    Admin only. Sensitive values are masked by default.",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/system/settings/{key}",
+    "function": "update_setting",
+    "summary": "Update existing setting",
+    "description": "Update existing setting\n\n    Updates only the provided fields. Key must already exist.\n    Admin only. All changes are audited.",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/system/settings/{key}",
+    "function": "delete_setting",
+    "summary": "Delete a system setting",
+    "description": "Delete a system setting\n\n    Deletes setting if it exists and is editable/not required.\n    Admin only. All deletions are audited.",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/settings/audit/log",
+    "function": "get_audit_log",
+    "summary": "Get audit log for system settings changes",
+    "description": "Get audit log for system settings changes\n\n    Query params:\n    - key: Filter by setting key (optional)\n    - limit: Maximum number of entries (default: 100, max: 1000)\n    - offset: Offset for pagination (default: 0)\n\n    Admin only. Returns all changes with user, timestamp, and IP address.",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/system/settings/bulk",
+    "function": "bulk_update_settings",
+    "summary": "Bulk update multiple settings",
+    "description": "Bulk update multiple settings\n\n    Updates multiple settings in a single transaction.\n    Settings that don't exist will be skipped.\n\n    Request body:\n    ```json\n    {\n        \"settings\": [\n            {\"key\": \"SMTP_HOST\", \"value\": \"smtp.office365.com\"},\n            {\"key\": \"SMTP_PORT\", \"value\": \"587\"},\n            {\"key\": \"LOG_LEVEL\", \"value\": \"DEBUG\"}\n        ]\n    }\n    ```\n\n    Admin only. All changes are audited individually.",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/settings/health",
+    "function": "health_check",
+    "summary": "Health check endpoint",
+    "description": "Health check endpoint",
+    "tags": [
+      "System Settings"
+    ],
+    "file": "system_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/health",
+    "function": "health_check",
+    "summary": "Health check endpoint for Traefik management API",
+    "description": "Health check endpoint for Traefik management API",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/status",
+    "function": "get_traefik_status",
+    "summary": "Get overall Traefik status",
+    "description": "Get overall Traefik status",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/routes",
+    "function": "list_routes",
+    "summary": "List all Traefik routes",
+    "description": "List all Traefik routes",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/routes",
+    "function": "create_route",
+    "summary": "Create a new Traefik route",
+    "description": "Create a new Traefik route",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/routes/{route_name}",
+    "function": "get_route",
+    "summary": "Get details of a specific route",
+    "description": "Get details of a specific route",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/traefik/routes/{route_name}",
+    "function": "update_route",
+    "summary": "Update an existing route",
+    "description": "Update an existing route",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/routes/{route_name}",
+    "function": "delete_route",
+    "summary": "Delete a Traefik route",
+    "description": "Delete a Traefik route",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/certificates",
+    "function": "list_certificates",
+    "summary": "List all SSL certificates",
+    "description": "List all SSL certificates",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/certificates/{domain}",
+    "function": "get_certificate",
+    "summary": "Get SSL certificate information for a domain",
+    "description": "Get SSL certificate information for a domain",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/acme/status",
+    "function": "get_acme_status",
+    "summary": "Get ACME (Let's Encrypt) status",
+    "description": "Get ACME (Let's Encrypt) status",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/services",
+    "function": "list_services",
+    "summary": "List all Traefik services",
+    "description": "List all Traefik services",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/services",
+    "function": "create_service",
+    "summary": "Create a new Traefik service",
+    "description": "Create a new Traefik service",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/services/{service_name}",
+    "function": "get_service",
+    "summary": "Get details of a specific service",
+    "description": "Get details of a specific service",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/services/{service_name}",
+    "function": "delete_service",
+    "summary": "Delete a Traefik service",
+    "description": "Delete a Traefik service",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/middlewares",
+    "function": "list_middlewares",
+    "summary": "List all Traefik middlewares",
+    "description": "List all Traefik middlewares",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/middlewares",
+    "function": "create_middleware",
+    "summary": "Create a new Traefik middleware",
+    "description": "Create a new Traefik middleware",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/middlewares/{middleware_name}",
+    "function": "get_middleware",
+    "summary": "Get details of a specific middleware",
+    "description": "Get details of a specific middleware",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/traefik/middlewares/{middleware_name}",
+    "function": "update_middleware",
+    "summary": "Update an existing middleware",
+    "description": "Update an existing middleware",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/traefik/middlewares/{middleware_name}",
+    "function": "delete_middleware",
+    "summary": "Delete a Traefik middleware",
+    "description": "Delete a Traefik middleware",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/config/summary",
+    "function": "get_config_summary",
+    "summary": "Get Traefik configuration summary",
+    "description": "Get Traefik configuration summary",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/config/reload",
+    "function": "reload_config",
+    "summary": "Reload Traefik configuration",
+    "description": "Reload Traefik configuration",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/traefik/config/validate",
+    "function": "validate_config",
+    "summary": "Validate Traefik configuration",
+    "description": "Validate Traefik configuration",
+    "tags": [
+      "traefik"
+    ],
+    "file": "traefik_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/platform/settings",
+    "function": "get_platform_settings",
+    "summary": "Get all platform settings with masked secrets",
+    "description": "Get all platform settings with masked secrets\n\n    **Permissions**: Admin only",
+    "tags": [
+      "Platform Settings"
+    ],
+    "file": "platform_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/platform/settings/{key}",
+    "function": "get_setting",
+    "summary": "Get specific platform setting",
+    "description": "Get specific platform setting",
+    "tags": [
+      "Platform Settings"
+    ],
+    "file": "platform_settings_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/platform/settings",
+    "function": "update_platform_settings",
+    "summary": "Update platform settings",
+    "description": "Update platform settings\n\n    **Process**:\n    1. Validate all provided settings exist\n    2. Update docker-compose.direct.yml file\n    3. Optionally restart container to apply changes\n\n    **Permissions**: Admin only",
+    "tags": [
+      "Platform Settings"
+    ],
+    "file": "platform_settings_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/platform/settings/test",
+    "function": "test_connection",
+    "summary": "Test connection with provided credentials",
+    "description": "Test connection with provided credentials\n\n    **Supported Categories**:\n    - stripe: Tests Stripe API connectivity\n    - lago: Tests Lago API connectivity\n    - keycloak: Tests Keycloak admin API\n    - cloudflare: Tests Cloudflare API\n    - namecheap: Tests NameCheap API",
+    "tags": [
+      "Platform Settings"
+    ],
+    "file": "platform_settings_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/platform/settings/restart",
+    "function": "restart_container",
+    "summary": "Restart ops-center container to apply new settings",
+    "description": "Restart ops-center container to apply new settings\n\n    **Warning**: This will cause brief downtime (5-10 seconds)\n    **Permissions**: Admin only",
+    "tags": [
+      "Platform Settings"
+    ],
+    "file": "platform_settings_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/namecheap/domains",
+    "function": "list_namecheap_domains",
+    "summary": "Get all domains from NameCheap account",
+    "description": "Get all domains from NameCheap account\n\n    **Rate Limit**: 10 requests per minute\n\n    **Filters**:\n    - status: Filter by domain status (active, expired, locked)\n    - search: Search by domain name\n\n    **Returns**: List of NameCheap domains with migration status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/namecheap/domains/{domain}",
+    "function": "get_namecheap_domain",
+    "summary": "Get detailed information about a specific domain from NameCheap",
+    "description": "Get detailed information about a specific domain from NameCheap\n\n    **Rate Limit**: 10 requests per minute\n\n    **Returns**: Domain details including DNS, nameservers, and status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/namecheap/domains/bulk-check",
+    "function": "bulk_check_domains",
+    "summary": "Check availability and status of multiple domains",
+    "description": "Check availability and status of multiple domains\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Returns**: Status and migration readiness for each domain",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/namecheap/domains/{domain}/dns",
+    "function": "export_dns_records",
+    "summary": "Export DNS records from NameCheap for a domain",
+    "description": "Export DNS records from NameCheap for a domain\n\n    **Rate Limit**: 10 requests per minute\n\n    **Formats**:\n    - json: JSON format (default)\n    - csv: CSV format\n    - bind: BIND zone file format\n\n    **Returns**: DNS records in requested format",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/namecheap/domains/{domain}/email",
+    "function": "detect_email_service",
+    "summary": "Detect email service provider for a domain",
+    "description": "Detect email service provider for a domain\n\n    **Rate Limit**: 10 requests per minute\n\n    **Detects**:\n    - Microsoft 365\n    - NameCheap Private Email\n    - Google Workspace\n    - Email forwarding\n\n    **Returns**: Email service details and critical records to preserve",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/namecheap/domains/bulk-export",
+    "function": "bulk_export_dns",
+    "summary": "Export DNS records for multiple domains",
+    "description": "Export DNS records for multiple domains\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Returns**: DNS records for all requested domains",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/preview",
+    "function": "preview_migration",
+    "summary": "Preview migration plan before execution",
+    "description": "Preview migration plan before execution\n\n    **Rate Limit**: 5 requests per minute (write operation)\n\n    **Creates**:\n    - Migration job record\n    - DNS record preview\n    - Email service validation\n    - Nameserver update plan\n\n    **Returns**: Migration preview ID and detailed plan",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/migration/preview/{migration_id}",
+    "function": "get_migration_preview",
+    "summary": "Get details of a migration preview",
+    "description": "Get details of a migration preview\n\n    **Rate Limit**: 20 requests per minute\n\n    **Returns**: Full migration plan with DNS records and warnings",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/validate",
+    "function": "validate_migration",
+    "summary": "Validate DNS records before migration",
+    "description": "Validate DNS records before migration\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - Valid IP addresses\n    - Valid hostnames\n    - MX record priorities\n    - Email service records\n\n    **Returns**: Validation results with warnings and errors",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/execute",
+    "function": "execute_migration",
+    "summary": "Execute a migration job",
+    "description": "Execute a migration job\n\n    **Rate Limit**: 3 requests per minute (critical operation)\n\n    **Process**:\n    1. Add domains to Cloudflare (with queue handling)\n    2. Import DNS records\n    3. Update nameservers at NameCheap\n    4. Monitor propagation\n\n    **Returns**: Migration job ID and initial status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/migration/{migration_id}/status",
+    "function": "get_migration_status",
+    "summary": "Get current status of a migration job",
+    "description": "Get current status of a migration job\n\n    **Rate Limit**: 30 requests per minute\n\n    **Returns**: Real-time migration progress and status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/pause",
+    "function": "pause_migration",
+    "summary": "Pause a running migration job",
+    "description": "Pause a running migration job\n\n    **Rate Limit**: 5 requests per minute\n\n    **Returns**: Updated migration status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/resume",
+    "function": "resume_migration",
+    "summary": "Resume a paused migration job",
+    "description": "Resume a paused migration job\n\n    **Rate Limit**: 5 requests per minute\n\n    **Returns**: Updated migration status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/rollback",
+    "function": "rollback_migration",
+    "summary": "Rollback a migration (revert nameservers to original values)",
+    "description": "Rollback a migration (revert nameservers to original values)\n\n    **Rate Limit**: 3 requests per minute (critical operation)\n\n    **Warning**: This reverts nameservers at NameCheap but keeps Cloudflare zone\n\n    **Returns**: Rollback status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/verify/dns",
+    "function": "verify_dns_propagation",
+    "summary": "Check DNS propagation status across multiple resolvers",
+    "description": "Check DNS propagation status across multiple resolvers\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - Google DNS (8.8.8.8)\n    - Cloudflare DNS (1.1.1.1)\n    - Quad9 DNS (9.9.9.9)\n    - OpenDNS (208.67.222.222)\n\n    **Returns**: Propagation status per resolver and overall percentage",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/verify/ssl",
+    "function": "verify_ssl_certificates",
+    "summary": "Verify SSL certificates for migrated domains",
+    "description": "Verify SSL certificates for migrated domains\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - SSL certificate issued\n    - Certificate valid\n    - Certificate matches domain\n    - Certificate issuer (Cloudflare)\n\n    **Returns**: SSL status per domain",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/verify/email",
+    "function": "verify_email_functionality",
+    "summary": "Test email delivery for migrated domains",
+    "description": "Test email delivery for migrated domains\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - MX records present\n    - SPF record configured\n    - DMARC record configured\n    - DKIM records present\n\n    **Returns**: Email service health status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/migration/migration/{migration_id}/verify/website",
+    "function": "verify_website_accessibility",
+    "summary": "Check website accessibility for migrated domains",
+    "description": "Check website accessibility for migrated domains\n\n    **Rate Limit**: 10 requests per minute\n\n    **Checks**:\n    - HTTP accessible (with redirect to HTTPS)\n    - HTTPS accessible\n    - Valid response codes\n    - Cloudflare proxy active\n\n    **Returns**: Website accessibility status",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/migration/{migration_id}/health",
+    "function": "get_migration_health",
+    "summary": "Get overall health check for a migration",
+    "description": "Get overall health check for a migration\n\n    **Rate Limit**: 20 requests per minute\n\n    **Combines**:\n    - DNS propagation status\n    - SSL certificate status\n    - Email functionality\n    - Website accessibility\n\n    **Returns**: Comprehensive health check results",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/migration/health",
+    "function": "migration_health_check",
+    "summary": "Health check endpoint for migration API",
+    "description": "Health check endpoint for migration API\n\n    No authentication required for monitoring systems\n\n    **Returns**: Health status and service connectivity",
+    "tags": [
+      "migration",
+      "namecheap",
+      "dns"
+    ],
+    "file": "migration_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/storage/info",
+    "function": "get_storage_info",
+    "summary": "Get comprehensive storage information",
+    "description": "Get comprehensive storage information\n\n    - **total_space**: Total disk space in bytes\n    - **used_space**: Used disk space in bytes\n    - **free_space**: Free disk space in bytes\n    - **volumes**: List of all volumes with details",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/storage/volumes",
+    "function": "list_volumes",
+    "summary": "List all Docker volumes with details",
+    "description": "List all Docker volumes with details\n\n    Returns detailed information about each volume:\n    - Name and path\n    - Size and type\n    - Health status\n    - Last accessed time",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/storage/volumes/{volume_name}",
+    "function": "get_volume_details",
+    "summary": "Get detailed information about a specific volume",
+    "description": "Get detailed information about a specific volume\n\n    - **volume_name**: Name of the volume to inspect\n\n    Returns:\n    - Volume metadata\n    - File count and largest files\n    - Health status and recommendations",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/storage/cleanup",
+    "function": "cleanup_storage",
+    "summary": "Clean up unused volumes, images, logs, and cache",
+    "description": "Clean up unused volumes, images, logs, and cache\n\n    **Admin only** - Performs storage cleanup operations\n\n    - **cleanup_docker**: Remove unused Docker volumes and images\n    - **cleanup_logs**: Compress and remove old log files\n    - **cleanup_cache**: Clear Redis and temporary caches\n    - **cleanup_backups**: Remove backups beyond retention period",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/storage/optimize",
+    "function": "optimize_storage",
+    "summary": "Optimize storage (compress logs, verify integrity)",
+    "description": "Optimize storage (compress logs, verify integrity)\n\n    **Admin only** - Performs storage optimization operations\n\n    - **compress_logs**: Compress log files to save space\n    - **defragment**: Defragment volumes (if filesystem supports it)\n    - **verify_integrity**: Verify file integrity checksums",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/storage/health",
+    "function": "check_storage_health",
+    "summary": "Check storage health and get recommendations",
+    "description": "Check storage health and get recommendations\n\n    Returns:\n    - Overall health status\n    - Disk usage percentage\n    - Volume health summary\n    - Recommendations for improvements",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups",
+    "function": "list_backups",
+    "summary": "List all backups with status",
+    "description": "List all backups with status\n\n    Returns:\n    - Backup configuration\n    - Last and next backup times\n    - List of all backups with metadata",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/create",
+    "function": "create_backup",
+    "summary": "Create a new backup",
+    "description": "Create a new backup\n\n    **Admin only** - Triggers backup creation\n\n    - **backup_type**: Type of backup (manual, scheduled, incremental)\n    - **include_volumes**: Specific volumes to backup (None = all)\n    - **description**: Optional description for the backup",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/{backup_id}/restore",
+    "function": "restore_backup",
+    "summary": "Restore from a backup",
+    "description": "Restore from a backup\n\n    **Admin only** - Restores system from backup\n\n    - **backup_id**: ID of backup to restore\n    - **restore_path**: Custom restore path (None = temp location)\n    - **verify_before_restore**: Verify backup integrity before restoring",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/backups/{backup_id}",
+    "function": "delete_backup",
+    "summary": "Delete a backup",
+    "description": "Delete a backup\n\n    **Admin only** - Permanently deletes a backup\n\n    - **backup_id**: ID of backup to delete",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/verify/{backup_id}",
+    "function": "verify_backup",
+    "summary": "Verify backup integrity",
+    "description": "Verify backup integrity\n\n    Checks:\n    - File existence and accessibility\n    - Checksum validation\n    - Archive integrity\n    - Metadata consistency",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/config",
+    "function": "get_backup_config",
+    "summary": "Get backup configuration",
+    "description": "Get backup configuration\n\n    Returns:\n    - Backup schedule (cron format)\n    - Retention policy\n    - Backup location\n    - Include/exclude patterns",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/backups/config",
+    "function": "update_backup_config",
+    "summary": "Update backup configuration",
+    "description": "Update backup configuration\n\n    **Admin only** - Updates backup settings\n\n    Configurable settings:\n    - **backup_enabled**: Enable/disable automatic backups\n    - **schedule**: Cron expression for backup schedule\n    - **retention_days**: How many days to keep backups\n    - **backup_location**: Where to store backups\n    - **include_paths**: Paths to include in backups\n    - **exclude_patterns**: File patterns to exclude",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/{backup_id}/download",
+    "function": "download_backup",
+    "summary": "Download a backup file",
+    "description": "Download a backup file\n\n    **Admin only** - Downloads backup archive\n\n    - **backup_id**: ID of backup to download",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/configure",
+    "function": "configure_rclone_remote",
+    "summary": "Configure a new rclone remote",
+    "description": "Configure a new rclone remote\n\n    **Admin only** - Configures cloud provider connection\n\n    - **remote_name**: Name for the remote\n    - **provider**: Provider type (s3, drive, dropbox, onedrive, etc.)\n    - **config**: Provider-specific configuration parameters\n    - **encrypt**: Whether to create encrypted remote wrapper\n\n    Example for S3:\n    ```json\n    {\n      \"remote_name\": \"my-s3\",\n      \"provider\": \"s3\",\n      \"config\": {\n        \"access_key_id\": \"...\",\n        \"secret_access_key\": \"...\",\n        \"region\": \"us-east-1\",\n        \"endpoint\": \"s3.amazonaws.com\"\n      },\n      \"encrypt\": false\n    }\n    ```",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/rclone/remotes",
+    "function": "list_rclone_remotes",
+    "summary": "List all configured rclone remotes",
+    "description": "List all configured rclone remotes\n\n    Returns:\n    - List of configured remotes with type and encryption status",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/sync",
+    "function": "rclone_sync",
+    "summary": "Sync directories via rclone (makes destination identical to source)",
+    "description": "Sync directories via rclone (makes destination identical to source)\n\n    **Admin only** - Synchronizes files between local and cloud storage\n\n    - **source**: Source path (local path or remote:path)\n    - **destination**: Destination path (local path or remote:path)\n    - **dry_run**: Preview changes without executing\n    - **checksum**: Use checksums for verification\n    - **bwlimit**: Bandwidth limit (e.g., \"10M\" for 10 MB/s)\n    - **exclude**: List of file patterns to exclude\n    - **delete_excluded**: Delete excluded files on destination\n\n    Examples:\n    - Local to cloud: `source=\"/data/backups\", destination=\"my-s3:backups\"`\n    - Cloud to local: `source=\"my-s3:backups\", destination=\"/data/restore\"`\n    - Cloud to cloud: `source=\"my-s3:data\", destination=\"my-drive:data\"`",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/copy",
+    "function": "rclone_copy",
+    "summary": "Copy files via rclone (doesn't delete from destination)",
+    "description": "Copy files via rclone (doesn't delete from destination)\n\n    **Admin only** - Copies files without removing extra files at destination\n\n    - **source**: Source path\n    - **destination**: Destination path\n    - **dry_run**: Preview changes\n    - **checksum**: Use checksums\n    - **bwlimit**: Bandwidth limit\n    - **exclude**: Exclude patterns",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/move",
+    "function": "rclone_move",
+    "summary": "Move files via rclone (deletes from source after copying)",
+    "description": "Move files via rclone (deletes from source after copying)\n\n    **Admin only** - Moves files and removes from source\n\n    - **source**: Source path\n    - **destination**: Destination path\n    - **dry_run**: Preview changes\n    - **delete_empty_src_dirs**: Delete empty source directories",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/delete",
+    "function": "rclone_delete",
+    "summary": "Delete files at remote path",
+    "description": "Delete files at remote path\n\n    **Admin only** - Permanently deletes files\n\n    - **remote_path**: Path to delete (remote:path)\n    - **dry_run**: Preview deletions without executing\n\n    \u26a0\ufe0f WARNING: This permanently deletes files!",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/rclone/list",
+    "function": "rclone_list",
+    "summary": "List files at remote path",
+    "description": "List files at remote path\n\n    **Admin only** - Lists files and directories\n\n    Query Parameters:\n    - **remote_path**: Path to list (e.g., \"my-s3:backups/\")\n    - **recursive**: List subdirectories recursively\n    - **max_depth**: Maximum directory depth (None = unlimited)",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/rclone/size",
+    "function": "rclone_size",
+    "summary": "Get total size of remote path",
+    "description": "Get total size of remote path\n\n    **Admin only** - Calculates total size in bytes\n\n    Query Parameters:\n    - **remote_path**: Path to measure (e.g., \"my-s3:backups/\")",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/backups/rclone/providers",
+    "function": "list_rclone_providers",
+    "summary": "List all supported cloud providers",
+    "description": "List all supported cloud providers\n\n    Returns:\n    - List of 40+ supported cloud storage providers",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/mount",
+    "function": "mount_rclone_remote",
+    "summary": "Mount remote as local filesystem",
+    "description": "Mount remote as local filesystem\n\n    **Admin only** - Requires FUSE support\n\n    - **remote_path**: Remote path to mount (remote:path)\n    - **mount_point**: Local mount point directory\n    - **read_only**: Mount as read-only\n    - **allow_other**: Allow other users to access\n\n    \u26a0\ufe0f Note: Requires FUSE to be installed on the system",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/backups/rclone/check",
+    "function": "check_rclone_connection",
+    "summary": "Test connection to remote",
+    "description": "Test connection to remote\n\n    **Admin only** - Verifies remote is accessible\n\n    Query Parameters:\n    - **remote_name**: Name of configured remote to test",
+    "tags": [
+      "Storage & Backup"
+    ],
+    "file": "storage_backup_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/keycloak/status",
+    "function": "get_keycloak_status",
+    "summary": "Get Keycloak service status and configuration",
+    "description": "Get Keycloak service status and configuration\n\n    Returns:\n        - Service status (running/stopped)\n        - Realm information\n        - User count\n        - Active sessions\n        - Configured identity providers",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/keycloak/clients",
+    "function": "get_clients",
+    "summary": "List OAuth clients configured in Keycloak",
+    "description": "List OAuth clients configured in Keycloak\n\n    Returns:\n        List of OAuth clients with their configuration",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/keycloak/api-credentials",
+    "function": "get_api_credentials",
+    "summary": "Get service account credentials for Ops-Center API",
+    "description": "Get service account credentials for Ops-Center API\n\n    NOTE: This endpoint should be admin-only!\n    Returns sensitive credential information.",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/keycloak/session-config",
+    "function": "get_session_config",
+    "summary": "Get session configuration from Keycloak realm settings",
+    "description": "Get session configuration from Keycloak realm settings",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/keycloak/ssl-status",
+    "function": "get_ssl_status",
+    "summary": "Get SSL/TLS certificate status for Keycloak",
+    "description": "Get SSL/TLS certificate status for Keycloak",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/system/keycloak/test-connection",
+    "function": "test_keycloak_connection",
+    "summary": "Test connection to Keycloak and verify admin credentials",
+    "description": "Test connection to Keycloak and verify admin credentials",
+    "tags": [
+      "keycloak-status"
+    ],
+    "file": "keycloak_status_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/overview",
+    "function": "get_traefik_stats",
+    "summary": "Get overall Traefik statistics.",
+    "description": "Get overall Traefik statistics.\n\n    Returns:\n        Traefik stats",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/routes",
+    "function": "get_route_metrics",
+    "summary": "Get metrics for all routes.",
+    "description": "Get metrics for all routes.\n\n    Returns:\n        List of route metrics",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/routes/{route_name}",
+    "function": "get_route_metric",
+    "summary": "Get metrics for a specific route.",
+    "description": "Get metrics for a specific route.\n\n    Args:\n        route_name: Route name\n\n    Returns:\n        Route metrics",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/errors",
+    "function": "get_error_summary",
+    "summary": "Get error summary across all routes.",
+    "description": "Get error summary across all routes.\n\n    Returns:\n        Error summary",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/performance",
+    "function": "get_performance_summary",
+    "summary": "Get performance summary across all routes.",
+    "description": "Get performance summary across all routes.\n\n    Returns:\n        Performance summary",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/traefik/metrics/raw",
+    "function": "get_raw_metrics",
+    "summary": "Get raw Prometheus metrics from Traefik.",
+    "description": "Get raw Prometheus metrics from Traefik.\n\n    Returns:\n        Raw metrics text",
+    "tags": [
+      "Traefik Metrics"
+    ],
+    "file": "traefik_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/llm/providers/{provider_id}",
+    "function": "get_provider",
+    "summary": "Get provider by ID",
+    "description": "Get provider by ID\n\n    Returns provider details with model count.",
+    "tags": [
+      "LLM Providers"
+    ],
+    "file": "llm_provider_management_api.py"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/admin/llm/providers/{provider_id}",
+    "function": "update_provider",
+    "summary": "Update LLM provider",
+    "description": "Update LLM provider\n\n    Admin only. Updates provider configuration.",
+    "tags": [
+      "LLM Providers"
+    ],
+    "file": "llm_provider_management_api.py"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/admin/llm/providers/{provider_id}",
+    "function": "delete_provider",
+    "summary": "Delete LLM provider",
+    "description": "Delete LLM provider\n\n    Admin only. Deletes provider and all associated models.\n    System providers cannot be deleted.",
+    "tags": [
+      "LLM Providers"
+    ],
+    "file": "llm_provider_management_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/admin/llm/providers/{provider_id}/health",
+    "function": "check_provider_health",
+    "summary": "Check provider health status",
+    "description": "Check provider health status\n\n    Tests provider API endpoint and updates health status.",
+    "tags": [
+      "LLM Providers"
+    ],
+    "file": "llm_provider_management_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/admin/llm/providers/{provider_id}/test",
+    "function": "test_provider_connection",
+    "summary": "Test provider API connection with API key",
+    "description": "Test provider API connection with API key\n\n    Admin only. Tests if provided API key works with provider.\n    Does NOT store the key.",
+    "tags": [
+      "LLM Providers"
+    ],
+    "file": "llm_provider_management_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/subscriptions/checkout",
+    "function": "create_checkout_session",
+    "summary": "Create a Stripe Checkout session for subscription purchase",
+    "description": "Create a Stripe Checkout session for subscription purchase\n\n    Args:\n        request: Checkout session request with tier and billing cycle\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        Checkout session URL",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/portal/create",
+    "function": "create_portal_session",
+    "summary": "Create a Stripe Customer Portal session for subscription management",
+    "description": "Create a Stripe Customer Portal session for subscription management\n\n    Args:\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        Customer portal URL",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/payment-methods",
+    "function": "get_payment_methods",
+    "summary": "Get user's saved payment methods",
+    "description": "Get user's saved payment methods\n\n    Args:\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        List of payment methods",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/billing/subscription-status",
+    "function": "get_subscription_status",
+    "summary": "Get user's current subscription status",
+    "description": "Get user's current subscription status\n\n    Args:\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        Subscription status information",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/subscription/cancel",
+    "function": "cancel_subscription",
+    "summary": "Cancel a subscription",
+    "description": "Cancel a subscription\n\n    Args:\n        request: Cancellation request\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        Success message",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/subscription/upgrade",
+    "function": "upgrade_subscription",
+    "summary": "Upgrade or downgrade subscription tier",
+    "description": "Upgrade or downgrade subscription tier\n\n    Args:\n        request: Upgrade request with new tier\n        user_email: Current user's email (from auth dependency)\n\n    Returns:\n        Success message",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/webhooks/stripe",
+    "function": "stripe_webhook",
+    "summary": "Handle Stripe webhook events",
+    "description": "Handle Stripe webhook events\n\n    This endpoint is called by Stripe to notify about subscription events.\n    It's exempt from CSRF protection.\n\n    Args:\n        request: FastAPI request with webhook payload\n        stripe_signature: Stripe signature header for verification\n\n    Returns:\n        Webhook processing result",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/billing/webhooks/stripe/checkout",
+    "function": "stripe_checkout_webhook",
+    "summary": "Handle Stripe checkout.session.completed webhook",
+    "description": "Handle Stripe checkout.session.completed webhook\n\n    This is called by Stripe when a payment is successful.\n    We need to:\n    1. Verify webhook signature\n    2. Extract checkout session data\n    3. Create Lago customer (if doesn't exist)\n    4. Create Lago subscription\n    5. Update Keycloak user tier\n\n    This endpoint is exempt from authentication - Stripe calls it directly.",
+    "tags": [
+      "billing"
+    ],
+    "file": "stripe_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/metrics",
+    "function": "get_system_metrics",
+    "summary": "Get comprehensive system metrics with historical data.",
+    "description": "Get comprehensive system metrics with historical data.\n\n    Returns real-time CPU, memory, disk, network, and GPU metrics\n    along with historical trend data for the specified timeframe.",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/services/status",
+    "function": "get_services_status",
+    "summary": "Get status of all Docker services.",
+    "description": "Get status of all Docker services.\n\n    Returns detailed information about each Docker container including\n    resource usage, health status, and uptime.",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/processes",
+    "function": "get_top_processes",
+    "summary": "Get top processes by CPU and memory usage.",
+    "description": "Get top processes by CPU and memory usage.\n\n    Args:\n        limit: Number of processes to return (1-50)\n\n    Returns:\n        Top processes sorted by resource usage",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/temperature",
+    "function": "get_system_temperature",
+    "summary": "Get system temperature sensors.",
+    "description": "Get system temperature sensors.\n\n    Returns temperature readings from all available sensors.",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/health-score",
+    "function": "get_health_score",
+    "summary": "Calculate overall system health score (0-100).",
+    "description": "Calculate overall system health score (0-100).\n\n    The health score is calculated using weighted components:\n    - CPU health: 30%\n    - Memory health: 25%\n    - Disk health: 20%\n    - Services health: 15%\n    - Network health: 10%\n\n    Returns:\n        Overall health score with component breakdown and recommendations",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/alerts",
+    "function": "get_system_alerts",
+    "summary": "Get active system alerts and warnings.",
+    "description": "Get active system alerts and warnings.\n\n    Alert types:\n    - high_cpu: CPU usage above threshold\n    - low_memory: Low available memory\n    - low_disk: Low disk space\n    - service_down: Docker container stopped\n    - service_unhealthy: Container health check failed\n    - high_temperature: Temperature above safe levels\n    - network_errors: Network error rate elevated\n    - swap_usage_high: High swap usage\n    - disk_io_high: High disk I/O activity\n    - backup_failed: Backup operation failed\n    - security_warning: Security-related alert\n\n    Returns:\n        List of active alerts with severity, message, and details",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/system/alerts/{alert_id}/dismiss",
+    "function": "dismiss_alert",
+    "summary": "Dismiss a system alert.",
+    "description": "Dismiss a system alert.\n\n    Args:\n        alert_id: Alert ID to dismiss\n\n    Returns:\n        Success status",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/alerts/history",
+    "function": "get_alert_history",
+    "summary": "Get alert history.",
+    "description": "Get alert history.\n\n    Args:\n        limit: Maximum number of alerts to return (1-500)\n        severity: Filter by severity level (optional)\n\n    Returns:\n        List of historical alerts",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/system/alerts/summary",
+    "function": "get_alert_summary",
+    "summary": "Get summary of current alerts by severity.",
+    "description": "Get summary of current alerts by severity.\n\n    Returns:\n        Alert counts broken down by severity level",
+    "tags": [
+      "system-metrics"
+    ],
+    "file": "system_metrics_api.py"
+  }
+]

@@ -1,0 +1,34 @@
+PAYMENT FAILED - ACTION REQUIRED
+=================================
+
+Hello {{ username }},
+
+We were unable to process your payment for the {{ tier }} subscription.
+
+PAYMENT DETAILS:
+- Amount: ${{ amount }}
+- Date: {{ failed_at }}
+- Reason: {{ failure_reason }}
+
+WHAT HAPPENS NEXT?
+- Your subscription remains active for {{ grace_period }} days
+- Please update your payment method to avoid service interruption
+- We'll automatically retry the payment in {{ retry_in }} days
+
+COMMON REASONS FOR PAYMENT FAILURES:
+- Insufficient funds
+- Expired credit card
+- Card declined by bank
+- Incorrect billing information
+
+Update your payment method: {{ dashboard_url }}/admin/subscription/payment
+
+Need help? Contact our support team at {{ support_email }}
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Billing History: {{ dashboard_url }}/admin/subscription/billing
+Support: {{ dashboard_url }}/support
+Unsubscribe from notifications: {{ unsubscribe_url }}

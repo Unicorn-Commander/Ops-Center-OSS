@@ -1,0 +1,29 @@
+MONTHLY CREDITS REFRESHED!
+==========================
+
+Hello {{ username }},
+
+Good news! Your monthly credit allocation has been refreshed for your {{ tier }} tier.
+
+NEW CREDIT BALANCE: ${{ new_balance }}
+
+ALLOCATION DETAILS:
+- Credits Added: ${{ allocated }}
+- Previous Balance: ${{ previous_balance }}
+
+LAST MONTH'S USAGE SUMMARY:
+- Total spent: ${{ last_month_spent }}
+- API calls made: {{ last_month_calls }}
+- Most used service: {{ top_service }}
+
+View your usage dashboard: {{ dashboard_url }}/admin/credits
+
+Your next credit reset is scheduled for {{ next_reset_date }}.
+
+---
+
+© {{ year }} UC-1 Pro Operations Center. All rights reserved.
+
+Usage Analytics: {{ dashboard_url }}/admin/subscription/usage
+Support: {{ dashboard_url }}/support
+Unsubscribe from notifications: {{ unsubscribe_url }}

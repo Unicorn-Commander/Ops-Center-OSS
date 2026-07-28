@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to UC-1 Pro</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(168, 85, 247, 0) 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #a855f7;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #fbbf24;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 30px 0;
+        }
+        p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+        .username {
+            color: #a855f7;
+            font-weight: 600;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+        }
+        .features {
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            color: #e0e0e0;
+        }
+        .features li:last-child {
+            border-bottom: none;
+        }
+        .features li:before {
+            content: "✓";
+            color: #fbbf24;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #a855f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🦄</div>
+        </div>
+
+        <div class="card">
+            <h1>Welcome to UC-1 Pro</h1>
+            <p class="subtitle">Operations Center</p>
+
+            <p>Hello <span class="username">{{ username }}</span>,</p>
+
+            <p>Welcome to the UC-1 Pro Operations Center! We're thrilled to have you join our elite command platform.</p>
+
+            <p>Your account has been successfully created and you now have access to:</p>
+
+            <ul class="features">
+                <li>Advanced AI-powered chat interface</li>
+                <li>Deep search capabilities</li>
+                <li>Secure authentication and SSO</li>
+                <li>Real-time monitoring dashboard</li>
+                <li>Enterprise-grade security</li>
+            </ul>
+
+            <div style="text-align: center;">
+                <a href="{{ login_url }}" class="button">Access Your Dashboard</a>
+            </div>
+
+            <p>If you have any questions or need assistance, our support team is here to help.</p>
+
+            <p>Welcome aboard, Commander! 🚀</p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ year }} UC-1 Pro Operations Center. All rights reserved.</p>
+            <p>
+                <a href="{{ login_url }}">Dashboard</a> |
+                <a href="{{ login_url }}/support">Support</a> |
+                <a href="{{ login_url }}/privacy">Privacy Policy</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

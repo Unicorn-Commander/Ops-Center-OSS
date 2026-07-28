@@ -1,0 +1,87 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Purple to Pink Gradient -->
+    <linearGradient id="magicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9333EA;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A855F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Sparkle gradient -->
+    <radialGradient id="sparkleGradient">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:0.8" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background circle with gradient -->
+  <circle cx="512" cy="512" r="480" fill="url(#magicGradient)" opacity="0.1"/>
+
+  <!-- Main magic wand -->
+  <g filter="url(#glow)">
+    <!-- Wand stick -->
+    <line x1="320" y1="680" x2="480" y2="520" stroke="url(#magicGradient)" stroke-width="24" stroke-linecap="round"/>
+
+    <!-- Wand star -->
+    <path d="M 480 480 L 500 520 L 540 520 L 510 545 L 525 585 L 480 555 L 435 585 L 450 545 L 420 520 L 460 520 Z"
+          fill="url(#magicGradient)" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+
+  <!-- Code brackets -->
+  <g filter="url(#glow)">
+    <!-- Left bracket -->
+    <path d="M 380 300 L 320 350 L 320 470 L 380 520"
+          fill="none" stroke="url(#magicGradient)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Right bracket -->
+    <path d="M 644 300 L 704 350 L 704 470 L 644 520"
+          fill="none" stroke="url(#magicGradient)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Forward slash -->
+    <line x1="460" y1="520" x2="564" y2="300" stroke="url(#magicGradient)" stroke-width="28" stroke-linecap="round"/>
+  </g>
+
+  <!-- Magic sparkles -->
+  <g opacity="0.9">
+    <!-- Top right sparkle -->
+    <circle cx="680" cy="260" r="12" fill="url(#sparkleGradient)"/>
+    <line x1="680" y1="240" x2="680" y2="280" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <line x1="660" y1="260" x2="700" y2="260" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Top left sparkle -->
+    <circle cx="280" cy="320" r="10" fill="url(#sparkleGradient)"/>
+    <line x1="280" y1="305" x2="280" y2="335" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="265" y1="320" x2="295" y2="320" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Right side sparkle -->
+    <circle cx="750" cy="450" r="8" fill="url(#sparkleGradient)"/>
+    <line x1="750" y1="437" x2="750" y2="463" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    <line x1="737" y1="450" x2="763" y2="450" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Bottom sparkle -->
+    <circle cx="580" cy="680" r="10" fill="url(#sparkleGradient)"/>
+    <line x1="580" y1="665" x2="580" y2="695" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="565" y1="680" x2="595" y2="680" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Text: MagiCode -->
+  <text x="512" y="820" font-family="Arial, Helvetica, sans-serif" font-size="120" font-weight="bold"
+        text-anchor="middle" fill="url(#magicGradient)" filter="url(#glow)">
+    MagiCode
+  </text>
+
+  <!-- Small tagline -->
+  <text x="512" y="880" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="300"
+        text-anchor="middle" fill="#9333EA" opacity="0.8">
+    AI-Powered Code Generation
+  </text>
+</svg>

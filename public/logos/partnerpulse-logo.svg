@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c44569;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c44569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#1a1a2e" stroke="#ff6b9d" stroke-width="2"/>
+
+  <!-- Heart shape -->
+  <path d="M50 75 C30 55 20 45 20 35 C20 25 30 20 40 20 C45 20 50 25 50 30 C50 25 55 20 60 20 C70 20 80 25 80 35 C80 45 70 55 50 75 Z"
+        fill="url(#heartGrad)"
+        opacity="0.9"/>
+
+  <!-- Pulse line across the heart -->
+  <path d="M15 50 L35 50 L40 35 L45 60 L50 45 L55 55 L60 40 L65 50 L85 50"
+        fill="none"
+        stroke="url(#pulseGrad)"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Two small connected hearts representing partners -->
+  <circle cx="35" cy="70" r="5" fill="#ff6b9d" opacity="0.6"/>
+  <circle cx="65" cy="70" r="5" fill="#c44569" opacity="0.6"/>
+  <path d="M40 70 Q50 65 60 70" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+</svg>

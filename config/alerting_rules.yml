@@ -1,0 +1,275 @@
+groups:
+- name: ops_center_api
+  interval: 30s
+  rules:
+  - alert: HighAPIErrorRate
+    expr: rate(ops_center_http_errors_total[5m]) > 0.01
+    for: 5m
+    labels:
+      severity: warning
+      category: api
+    annotations:
+      summary: High API error rate detected
+      description: API error rate is above 1% for the last 5 minutes. Current rate {{ $value | humanize }}%
+
+  - alert: CriticalAPIErrorRate
+    expr: rate(ops_center_http_errors_total[5m]) > 0.05
+    for: 2m
+    labels:
+      severity: critical
+      category: api
+    annotations:
+      summary: Critical API error rate
+      description: API error rate is above 5% for the last 2 minutes. Immediate attention required. Current rate {{ $value | humanize }}%
+
+  - alert: SlowAPIResponse
+    expr: histogram_quantile(0.95, rate(ops_center_http_request_duration_seconds_bucket[5m])) > 0.5
+    for: 10m
+    labels:
+      severity: warning
+      category: api
+    annotations:
+      summary: Slow API response times
+      description: 95th percentile API response time is above 500ms for endpoint {{ $labels.endpoint }}. Current {{ $value | humanizeDuration }}
+
+  - alert: VerySlowAPIResponse
+    expr: histogram_quantile(0.95, rate(ops_center_http_request_duration_seconds_bucket[5m])) > 2.0
+    for: 5m
+    labels:
+      severity: critical
+      category: api
+    annotations:
+      summary: Very slow API response times
+      description: 95th percentile API response time is above 2 seconds for endpoint {{ $labels.endpoint }}. Current {{ $value | humanizeDuration }}
+
+  - alert: HighAPIRequestRate
+    expr: rate(ops_center_http_requests_total[1m]) > 1000
+    for: 5m
+    labels:
+      severity: info
+      category: api
+    annotations:
+      summary: High API request rate
+      description: API is receiving more than 1000 requests per second. Current {{ $value | humanize }} req/s
+
+- name: ops_center_billing
+  interval: 30s
+  rules:
+  - alert: LowCreditBalance
+    expr: ops_center_credit_balance < 100
+    for: 5m
+    labels:
+      severity: warning
+      category: billing
+    annotations:
+      summary: Low credit balance for user
+      description: User {{ $labels.user_id }} has low credit balance ({{ $value }} credits). Tier {{ $labels.tier }}
+
+  - alert: CriticalCreditBalance
+    expr: ops_center_credit_balance < 10
+    for: 1m
+    labels:
+      severity: critical
+      category: billing
+    annotations:
+      summary: Critical credit balance
+      description: User {{ $labels.user_id }} has critically low credit balance ({{ $value }} credits). Service interruption imminent.
+
+  - alert: HighCreditUsage
+    expr: rate(ops_center_credit_usage_total[1h]) > 1000
+    for: 30m
+    labels:
+      severity: info
+      category: billing
+    annotations:
+      summary: High credit usage detected
+      description: Organization {{ $labels.organization_id }} is using credits at a high rate ({{ $value }} credits/hour)
+
+  - alert: PaymentFailed
+    expr: increase(ops_center_payment_transactions_total{status="failed"}[5m]) > 3
+    for: 0m
+    labels:
+      severity: critical
+      category: billing
+    annotations:
+      summary: Multiple payment failures detected
+      description: "{{ $value }} payment failures in the last 5 minutes. Payment method {{ $labels.payment_method }}"
+
+  - alert: SubscriptionChurn
+    expr: increase(ops_center_subscription_changes_total{change_type="cancelled"}[24h]) > 10
+    for: 0m
+    labels:
+      severity: warning
+      category: billing
+    annotations:
+      summary: High subscription churn
+      description: "{{ $value }} subscriptions cancelled in the last 24 hours. Investigate reasons."
+
+  - alert: LLMCostSpike
+    expr: rate(ops_center_llm_cost_total[1h]) > (rate(ops_center_llm_cost_total[24h]) * 3)
+    for: 15m
+    labels:
+      severity: warning
+      category: billing
+    annotations:
+      summary: LLM cost spike detected
+      description: LLM costs are 3x higher than 24-hour average for organization {{ $labels.organization_id }}
+
+- name: ops_center_security
+  interval: 30s
+  rules:
+  - alert: HighAuthFailureRate
+    expr: rate(ops_center_auth_failures_total[5m]) > 10
+    for: 5m
+    labels:
+      severity: warning
+      category: security
+    annotations:
+      summary: High authentication failure rate
+      description: More than 10 authentication failures per second. Possible brute force attack. Method {{ $labels.method }}
+
+  - alert: RateLimitExceeded
+    expr: increase(ops_center_rate_limit_exceeded_total[1m]) > 100
+    for: 2m
+    labels:
+      severity: warning
+      category: security
+    annotations:
+      summary: Rate limit frequently exceeded
+      description: User {{ $labels.user_id }} has exceeded rate limit {{ $value }} times in the last minute
+
+  - alert: SuspiciousAPIKeyUsage
+    expr: increase(ops_center_api_key_usage_total[5m]) > 1000
+    for: 5m
+    labels:
+      severity: warning
+      category: security
+    annotations:
+      summary: Suspicious API key usage
+      description: API key {{ $labels.key_id }} has made {{ $value }} requests in 5 minutes. Possible abuse.
+
+  - alert: UnauthorizedAccessAttempts
+    expr: increase(ops_center_http_errors_total{status="403"}[5m]) > 50
+    for: 5m
+    labels:
+      severity: warning
+      category: security
+    annotations:
+      summary: High unauthorized access attempts
+      description: "{{ $value }} forbidden (403) errors in the last 5 minutes on endpoint {{ $labels.endpoint }}"
+
+- name: ops_center_infrastructure
+  interval: 30s
+  rules:
+  - alert: DatabaseConnectionPoolExhausted
+    expr: ops_center_db_connections_idle{database="unicorn_db"} < 2
+    for: 5m
+    labels:
+      severity: critical
+      category: infrastructure
+    annotations:
+      summary: Database connection pool exhausted
+      description: Less than 2 idle database connections available. Performance will degrade.
+
+  - alert: SlowDatabaseQueries
+    expr: histogram_quantile(0.95, rate(ops_center_db_query_duration_seconds_bucket[5m])) > 1.0
+    for: 10m
+    labels:
+      severity: warning
+      category: infrastructure
+    annotations:
+      summary: Slow database queries detected
+      description: 95th percentile query time is above 1 second for {{ $labels.query_type }} on {{ $labels.table }}
+
+  - alert: HighMemoryUsage
+    expr: process_resident_memory_bytes > 2e9
+    for: 10m
+    labels:
+      severity: warning
+      category: infrastructure
+    annotations:
+      summary: High memory usage
+      description: Ops-Center is using {{ $value | humanize }}B of memory. Consider scaling.
+
+  - alert: KeycloakDown
+    expr: up{job="keycloak"} == 0
+    for: 2m
+    labels:
+      severity: critical
+      category: infrastructure
+    annotations:
+      summary: Keycloak authentication service is down
+      description: Users cannot authenticate. Immediate attention required.
+
+  - alert: RedisDown
+    expr: up{job="redis"} == 0
+    for: 2m
+    labels:
+      severity: critical
+      category: infrastructure
+    annotations:
+      summary: Redis cache is down
+      description: Session management and caching unavailable. Performance will degrade.
+
+  - alert: PostgreSQLDown
+    expr: up{job="postgresql"} == 0
+    for: 1m
+    labels:
+      severity: critical
+      category: infrastructure
+    annotations:
+      summary: PostgreSQL database is down
+      description: Critical Database is unreachable. Service is unavailable.
+
+  - alert: LiteLLMProxyDown
+    expr: up{job="litellm"} == 0
+    for: 5m
+    labels:
+      severity: warning
+      category: infrastructure
+    annotations:
+      summary: LiteLLM proxy is down
+      description: LLM services unavailable. Users cannot make AI requests.
+
+- name: ops_center_business
+  interval: 30s
+  rules:
+  - alert: LowUserRegistrations
+    expr: increase(ops_center_user_registrations_total[24h]) < 5
+    for: 0m
+    labels:
+      severity: info
+      category: business
+    annotations:
+      summary: Low user registrations
+      description: Only {{ $value }} new registrations in the last 24 hours. Below expected threshold.
+
+  - alert: LowActiveUsers
+    expr: increase(ops_center_user_logins_total[1h]) < 10
+    for: 1h
+    labels:
+      severity: info
+      category: business
+    annotations:
+      summary: Low user activity
+      description: Only {{ $value }} user logins in the last hour. Check for service issues.
+
+  - alert: HighFeatureAccessDenials
+    expr: rate(ops_center_feature_access_total{allowed="false"}[1h]) > 100
+    for: 30m
+    labels:
+      severity: info
+      category: business
+    annotations:
+      summary: High feature access denials
+      description: Feature {{ $labels.feature }} is being denied {{ $value }} times per hour. Consider tier adjustments.
+
+  - alert: WebhookDeliveryFailures
+    expr: increase(ops_center_webhook_deliveries_total{status="failed"}[1h]) > 10
+    for: 30m
+    labels:
+      severity: warning
+      category: business
+    annotations:
+      summary: Webhook delivery failures
+      description: "{{ $value }} webhook deliveries failed in the last hour for {{ $labels.event_type }}"

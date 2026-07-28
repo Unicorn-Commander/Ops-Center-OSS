@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }} - System Critical Alert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            padding: 20px;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #dc2626;
+        }
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            padding: 30px;
+            text-align: center;
+        }
+        .logo {
+            font-size: 64px;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .alert-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: #dc2626;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #fca5a5;
+            font-weight: 700;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e0d4f7;
+            margin-bottom: 30px;
+        }
+        .details-box {
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .details-box h3 {
+            color: #fca5a5;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .details-box p {
+            color: #e0d4f7;
+            margin: 8px 0;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .metric:last-child {
+            border-bottom: none;
+        }
+        .metric-label {
+            font-weight: 600;
+            color: #fca5a5;
+        }
+        .metric-value {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #a78bfa;
+        }
+        .footer a {
+            color: #ec4899;
+            text-decoration: none;
+        }
+        .timestamp {
+            font-size: 12px;
+            color: #a78bfa;
+            margin-top: 20px;
+        }
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .message {
+                font-size: 15px;
+            }
+            .logo {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚨</div>
+            <div class="brand">SYSTEM CRITICAL ALERT</div>
+        </div>
+
+        <div class="content">
+            <span class="alert-badge">⚠️ CRITICAL</span>
+            <h1>{{ subject }}</h1>
+            <div class="message">
+                {{ message }}
+            </div>
+
+            {% if server_name or cpu_usage or memory_usage or disk_usage %}
+            <div class="details-box">
+                <h3>System Status</h3>
+                {% if server_name %}
+                <div class="metric">
+                    <span class="metric-label">Server:</span>
+                    <span class="metric-value">{{ server_name }}</span>
+                </div>
+                {% endif %}
+                {% if cpu_usage %}
+                <div class="metric">
+                    <span class="metric-label">CPU Usage:</span>
+                    <span class="metric-value">{{ cpu_usage }}%</span>
+                </div>
+                {% endif %}
+                {% if memory_usage %}
+                <div class="metric">
+                    <span class="metric-label">Memory Usage:</span>
+                    <span class="metric-value">{{ memory_usage }}%</span>
+                </div>
+                {% endif %}
+                {% if disk_usage %}
+                <div class="metric">
+                    <span class="metric-label">Disk Usage:</span>
+                    <span class="metric-value">{{ disk_usage }}%</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if error_message %}
+            <div class="details-box">
+                <h3>Error Details</h3>
+                <p><code style="color: #fca5a5; font-family: monospace;">{{ error_message }}</code></p>
+            </div>
+            {% endif %}
+
+            <a href="{{ dashboard_url }}/admin/system/monitoring" class="cta-button">View System Status</a>
+
+            <div class="timestamp">Alert triggered at {{ timestamp }}</div>
+        </div>
+
+        <div class="footer">
+            <strong>IMMEDIATE ACTION REQUIRED</strong>
+            <br><br>
+            Contact support immediately at <a href="mailto:{{ support_email }}">{{ support_email }}</a>
+            <br><br>
+            <small>This is an automated critical alert from Unicorn Commander Ops Center</small>
+        </div>
+    </div>
+</body>
+</html>

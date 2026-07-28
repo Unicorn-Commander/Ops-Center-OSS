@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  ops-center-proxy:
+    image: nginx:alpine
+    container_name: ops-center-proxy
+    restart: unless-stopped
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - web
+      - unicorn-network
+    labels:
+      - "traefik.enable=true"
+
+      # Main router for magicunicorn.dev (authentication temporarily disabled for testing)
+      - "traefik.http.routers.ops-center-main.rule=Host(`magicunicorn.dev`)"
+      - "traefik.http.routers.ops-center-main.entrypoints=https"
+      - "traefik.http.routers.ops-center-main.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ops-center-main.priority=100"
+      - "traefik.http.services.ops-center-main.loadbalancer.server.port=80"
+
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.ops-center-main-http.rule=Host(`magicunicorn.dev`)"
+      - "traefik.http.routers.ops-center-main-http.entrypoints=http"
+      - "traefik.http.routers.ops-center-main-http.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+
+networks:
+  web:
+    external: true
+  unicorn-network:
+    external: true

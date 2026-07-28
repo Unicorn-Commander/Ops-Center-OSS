@@ -1,0 +1,666 @@
+{
+  "_comment": "Canonical core-table schema contract for ops-center drift-check. class = coarse type-class. signoff = PK/identity type change requiring Aaron sign-off (Phase B). optional = allowed but not required.",
+  "tables": {
+    "organizations": {
+      "id": {
+        "class": "uuid"
+      },
+      "name": {
+        "class": "string"
+      },
+      "display_name": {
+        "class": "string"
+      },
+      "logo_url": {
+        "class": "string"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "plan_tier": {
+        "class": "string"
+      },
+      "max_seats": {
+        "class": "int"
+      },
+      "lago_customer_id": {
+        "class": "string"
+      },
+      "stripe_customer_id": {
+        "class": "string"
+      },
+      "status": {
+        "class": "string"
+      },
+      "litellm_gateway_key_id": {
+        "class": "string"
+      },
+      "litellm_gateway_key_encrypted": {
+        "class": "string"
+      },
+      "is_default": {
+        "class": "bool"
+      },
+      "is_service_account": {
+        "class": "bool"
+      },
+      "subscription_tier": {
+        "class": "string"
+      },
+      "tier_id": {
+        "class": "int"
+      },
+      "slug": {
+        "class": "string"
+      }
+    },
+    "organization_members": {
+      "id": {
+        "class": "uuid"
+      },
+      "org_id": {
+        "class": "uuid"
+      },
+      "user_id": {
+        "class": "string"
+      },
+      "role": {
+        "class": "string"
+      },
+      "joined_at": {
+        "class": "ts"
+      },
+      "is_default": {
+        "class": "bool"
+      }
+    },
+    "subscription_tiers": {
+      "id": {
+        "class": "int"
+      },
+      "tier_code": {
+        "class": "string"
+      },
+      "tier_name": {
+        "class": "string"
+      },
+      "description": {
+        "class": "string"
+      },
+      "price_monthly": {
+        "class": "numeric"
+      },
+      "price_yearly": {
+        "class": "numeric"
+      },
+      "is_active": {
+        "class": "bool"
+      },
+      "is_invite_only": {
+        "class": "bool"
+      },
+      "sort_order": {
+        "class": "int"
+      },
+      "api_calls_limit": {
+        "class": "int"
+      },
+      "team_seats": {
+        "class": "int"
+      },
+      "byok_enabled": {
+        "class": "bool"
+      },
+      "priority_support": {
+        "class": "bool"
+      },
+      "lago_plan_code": {
+        "class": "string"
+      },
+      "stripe_price_monthly": {
+        "class": "string"
+      },
+      "stripe_price_yearly": {
+        "class": "string"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "created_by": {
+        "class": "string"
+      },
+      "updated_by": {
+        "class": "string"
+      },
+      "llm_markup_percentage": {
+        "class": "numeric"
+      },
+      "max_monthly_llm_budget": {
+        "class": "numeric"
+      }
+    },
+    "tier_features": {
+      "id": {
+        "class": "int"
+      },
+      "tier_id": {
+        "class": "int"
+      },
+      "feature_key": {
+        "class": "string"
+      },
+      "feature_value": {
+        "class": "string"
+      },
+      "enabled": {
+        "class": "bool"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      }
+    },
+    "org_features": {
+      "id": {
+        "class": "uuid"
+      },
+      "org_id": {
+        "class": "uuid"
+      },
+      "feature_key": {
+        "class": "string"
+      },
+      "enabled": {
+        "class": "bool"
+      },
+      "granted_by": {
+        "class": "string"
+      },
+      "granted_at": {
+        "class": "ts"
+      },
+      "notes": {
+        "class": "string"
+      }
+    },
+    "add_ons": {
+      "id": {
+        "class": "int"
+      },
+      "name": {
+        "class": "string"
+      },
+      "slug": {
+        "class": "string"
+      },
+      "description": {
+        "class": "string"
+      },
+      "long_description": {
+        "class": "string"
+      },
+      "category": {
+        "class": "string"
+      },
+      "base_price": {
+        "class": "numeric"
+      },
+      "billing_type": {
+        "class": "string"
+      },
+      "features": {
+        "class": "json"
+      },
+      "icon_url": {
+        "class": "string"
+      },
+      "launch_url": {
+        "class": "string"
+      },
+      "is_featured": {
+        "class": "bool"
+      },
+      "is_active": {
+        "class": "bool"
+      },
+      "is_public": {
+        "class": "bool"
+      },
+      "install_count": {
+        "class": "int"
+      },
+      "rating_avg": {
+        "class": "numeric"
+      },
+      "rating_count": {
+        "class": "int"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "feature_key": {
+        "class": "string"
+      },
+      "access_type": {
+        "class": "string"
+      },
+      "min_org_role": {
+        "class": "string"
+      },
+      "sort_order": {
+        "class": "int"
+      },
+      "version": {
+        "class": "string"
+      },
+      "currency": {
+        "class": "string"
+      },
+      "stripe_product_id": {
+        "class": "string"
+      },
+      "stripe_price_id": {
+        "class": "string"
+      },
+      "author": {
+        "class": "string"
+      },
+      "screenshot_urls": {
+        "class": "json"
+      },
+      "requirements": {
+        "class": "json"
+      },
+      "compatibility": {
+        "class": "json"
+      },
+      "download_url": {
+        "class": "string"
+      },
+      "documentation_url": {
+        "class": "string"
+      },
+      "rating": {
+        "class": "numeric"
+      },
+      "review_count": {
+        "class": "int"
+      }
+    },
+    "credit_packages": {
+      "id": {
+        "class": "uuid"
+      },
+      "package_code": {
+        "class": "string"
+      },
+      "package_name": {
+        "class": "string"
+      },
+      "description": {
+        "class": "string"
+      },
+      "credits": {
+        "class": "int"
+      },
+      "price_usd": {
+        "class": "numeric"
+      },
+      "discount_percentage": {
+        "class": "int"
+      },
+      "stripe_price_id": {
+        "class": "string"
+      },
+      "stripe_product_id": {
+        "class": "string"
+      },
+      "is_active": {
+        "class": "bool"
+      },
+      "display_order": {
+        "class": "int"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "name": {
+        "class": "string",
+        "optional": true
+      },
+      "price_cents": {
+        "class": "int",
+        "optional": true
+      },
+      "is_featured": {
+        "class": "bool"
+      },
+      "badge_text": {
+        "class": "string"
+      },
+      "available_to_tiers": {
+        "class": "string"
+      }
+    },
+    "credit_transactions": {
+      "id": {
+        "class": "uuid"
+      },
+      "user_id": {
+        "class": "string"
+      },
+      "amount": {
+        "class": "numeric"
+      },
+      "transaction_type": {
+        "class": "string"
+      },
+      "provider": {
+        "class": "string"
+      },
+      "model": {
+        "class": "string"
+      },
+      "tokens_used": {
+        "class": "int"
+      },
+      "cost": {
+        "class": "numeric"
+      },
+      "metadata": {
+        "class": "json"
+      },
+      "credits_consumed": {
+        "class": "numeric"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "balance_after": {
+        "class": "numeric"
+      }
+    },
+    "user_credits": {
+      "id": {
+        "class": "uuid"
+      },
+      "user_id": {
+        "class": "string"
+      },
+      "credits_remaining": {
+        "class": "numeric"
+      },
+      "tier": {
+        "class": "string"
+      },
+      "lifetime_credits": {
+        "class": "numeric"
+      },
+      "monthly_cap": {
+        "class": "numeric"
+      },
+      "monthly_usage": {
+        "class": "numeric"
+      },
+      "monthly_reset_at": {
+        "class": "ts"
+      },
+      "last_updated": {
+        "class": "ts"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "credits_allocated": {
+        "class": "numeric"
+      },
+      "last_reset": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "email_notifications_enabled": {
+        "class": "bool"
+      }
+    },
+    "user_provider_keys": {
+      "id": {
+        "class": "uuid"
+      },
+      "user_id": {
+        "class": "string"
+      },
+      "provider": {
+        "class": "string"
+      },
+      "api_key_encrypted": {
+        "class": "string"
+      },
+      "enabled": {
+        "class": "bool"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "metadata": {
+        "class": "json"
+      }
+    },
+    "usage_events": {
+      "id": {
+        "class": "uuid"
+      },
+      "user_id": {
+        "class": "string"
+      },
+      "org_id": {
+        "class": "uuid"
+      },
+      "service": {
+        "class": "string"
+      },
+      "model": {
+        "class": "string"
+      },
+      "tokens_used": {
+        "class": "int"
+      },
+      "cost": {
+        "class": "numeric"
+      },
+      "is_free": {
+        "class": "bool"
+      },
+      "metadata": {
+        "class": "json"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "event_type": {
+        "class": "string"
+      },
+      "provider": {
+        "class": "string"
+      },
+      "power_level": {
+        "class": "string"
+      },
+      "success": {
+        "class": "bool"
+      },
+      "total_cost": {
+        "class": "numeric"
+      },
+      "provider_cost": {
+        "class": "numeric"
+      },
+      "platform_markup": {
+        "class": "numeric"
+      },
+      "is_free_tier": {
+        "class": "bool"
+      }
+    },
+    "platform_settings": {
+      "key": {
+        "class": "string"
+      },
+      "value": {
+        "class": "string"
+      },
+      "category": {
+        "class": "string"
+      },
+      "is_secret": {
+        "class": "bool"
+      },
+      "updated_at": {
+        "class": "ts"
+      }
+    },
+    "federation_nodes": {
+      "id": {
+        "class": "string"
+      },
+      "node_id": {
+        "class": "string"
+      },
+      "display_name": {
+        "class": "string"
+      },
+      "endpoint_url": {
+        "class": "string"
+      },
+      "auth_method": {
+        "class": "string"
+      },
+      "auth_credential": {
+        "class": "string"
+      },
+      "hardware_profile": {
+        "class": "json"
+      },
+      "roles": {
+        "class": "json"
+      },
+      "status": {
+        "class": "federation_node_status"
+      },
+      "status_message": {
+        "class": "string"
+      },
+      "last_heartbeat": {
+        "class": "ts"
+      },
+      "registered_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      },
+      "region": {
+        "class": "string"
+      },
+      "is_self": {
+        "class": "bool"
+      }
+    },
+    "federation_peers": {
+      "id": {
+        "class": "string"
+      },
+      "local_node_id": {
+        "class": "string"
+      },
+      "remote_node_id": {
+        "class": "string"
+      },
+      "trust_level": {
+        "class": "string"
+      },
+      "established_at": {
+        "class": "ts"
+      },
+      "last_verified": {
+        "class": "ts"
+      },
+      "is_active": {
+        "class": "bool"
+      },
+      "trust_mode": {
+        "class": "string"
+      },
+      "publish": {
+        "class": "json"
+      },
+      "consume": {
+        "class": "json"
+      },
+      "capability_token": {
+        "class": "string"
+      },
+      "authority_for": {
+        "class": "json"
+      },
+      "consumer_of": {
+        "class": "json"
+      }
+    },
+    "app_model_policy": {
+      "id": {
+        "class": "int"
+      },
+      "app": {
+        "class": "string"
+      },
+      "model": {
+        "class": "string"
+      },
+      "policy": {
+        "class": "string"
+      },
+      "note": {
+        "class": "string"
+      },
+      "created_at": {
+        "class": "ts"
+      }
+    },
+    "org_gateway_keys": {
+      "org_id": {
+        "class": "string"
+      },
+      "litellm_key_id": {
+        "class": "string"
+      },
+      "litellm_key_encrypted": {
+        "class": "string"
+      },
+      "created_at": {
+        "class": "ts"
+      },
+      "updated_at": {
+        "class": "ts"
+      }
+    }
+  }
+}

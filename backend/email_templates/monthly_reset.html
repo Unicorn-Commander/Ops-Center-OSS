@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Credits Reset</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, rgba(16, 185, 129, 0) 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #10b981;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #fbbf24;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 30px 0;
+        }
+        p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin: 0 0 20px 0;
+        }
+        .balance-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 700;
+            color: #10b981;
+            margin: 0 0 10px 0;
+        }
+        .balance-label {
+            font-size: 14px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #a855f7;
+            margin: 0 0 5px 0;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        .footer a {
+            color: #a855f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">✨</div>
+        </div>
+
+        <div class="card">
+            <h1>Credits Refreshed!</h1>
+            <p class="subtitle">Monthly Allocation</p>
+
+            <p>Hello <strong>{{ username }}</strong>,</p>
+
+            <p>Good news! Your monthly credit allocation has been refreshed for your <strong>{{ tier }}</strong> tier.</p>
+
+            <div class="balance-box">
+                <div class="balance-amount">${{ new_balance }}</div>
+                <div class="balance-label">New Credit Balance</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">${{ allocated }}</div>
+                    <div class="stat-label">Credits Added</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${{ previous_balance }}</div>
+                    <div class="stat-label">Previous Balance</div>
+                </div>
+            </div>
+
+            <p><strong>Last Month's Usage Summary:</strong></p>
+            <ul style="margin: 10px 0 0 20px; padding: 0; color: #e0e0e0;">
+                <li>Total spent: <strong>${{ last_month_spent }}</strong></li>
+                <li>API calls made: <strong>{{ last_month_calls }}</strong></li>
+                <li>Most used service: <strong>{{ top_service }}</strong></li>
+            </ul>
+
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}/admin/credits" class="button">View Usage Dashboard</a>
+            </div>
+
+            <p style="font-size: 14px; color: #9ca3af;">
+                Your next credit reset is scheduled for <strong>{{ next_reset_date }}</strong>.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ year }} UC-1 Pro Operations Center. All rights reserved.</p>
+            <p>
+                <a href="{{ dashboard_url }}/admin/subscription/usage">Usage Analytics</a> |
+                <a href="{{ dashboard_url }}/support">Support</a> |
+                <a href="{{ unsubscribe_url }}">Unsubscribe from notifications</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure the app takes full height */
+#root {
+  min-height: 100vh;
+}
+
+/* Light mode background */
+body {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+/* Dark mode background */
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* Tour highlight effect */
+.tour-highlight {
+  position: relative;
+  z-index: 103 !important;
+  animation: pulse-highlight 2s infinite;
+}
+
+@keyframes pulse-highlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Animated gradient for Unicorn Commander Pro title */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Fade-in animation for tab transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Sparkle effect for Pro text */
+@keyframes sparkle {
+  0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(147, 51, 234, 0.8), 0 0 40px rgba(147, 51, 234, 0.6); }
+  50% { opacity: 0.8; text-shadow: 0 0 30px rgba(236, 72, 153, 0.8), 0 0 60px rgba(236, 72, 153, 0.6); }
+}
+
+.sparkle-text {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for loading and progress bars */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Special Projects launcher surface */
+.ops-command-bg {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(115deg, rgba(8, 145, 178, 0.10) 0%, transparent 30%),
+    linear-gradient(245deg, rgba(124, 58, 237, 0.10) 0%, transparent 36%),
+    linear-gradient(180deg, #070912 0%, #090b13 48%, #05060a 100%);
+}
+
+.ops-command-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(125, 211, 252, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.026) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.ops-command-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(155deg, transparent 0 18%, rgba(14, 165, 233, 0.07) 18% 34%, transparent 34% 100%),
+    linear-gradient(25deg, transparent 0 58%, rgba(168, 85, 247, 0.08) 58% 69%, transparent 69% 100%),
+    linear-gradient(180deg, transparent 0%, rgba(2, 6, 23, 0.66) 100%);
+}
+
+.ops-app-card {
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ops-app-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 36%, rgba(2,6,23,0.22));
+}

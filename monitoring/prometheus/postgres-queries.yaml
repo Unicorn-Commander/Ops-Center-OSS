@@ -1,0 +1,97 @@
+# Custom PostgreSQL Queries for Prometheus Exporter
+# These queries provide detailed database metrics
+
+pg_database:
+  query: "SELECT pg_database.datname, pg_database_size(pg_database.datname) as size FROM pg_database"
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - size:
+        usage: "GAUGE"
+        description: "Disk space used by the database"
+
+pg_stat_user_tables:
+  query: "SELECT schemaname, relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch, n_tup_ins, n_tup_upd, n_tup_del, n_live_tup, n_dead_tup FROM pg_stat_user_tables"
+  metrics:
+    - schemaname:
+        usage: "LABEL"
+        description: "Name of the schema"
+    - relname:
+        usage: "LABEL"
+        description: "Name of the table"
+    - seq_scan:
+        usage: "COUNTER"
+        description: "Number of sequential scans initiated on this table"
+    - seq_tup_read:
+        usage: "COUNTER"
+        description: "Number of live rows fetched by sequential scans"
+    - idx_scan:
+        usage: "COUNTER"
+        description: "Number of index scans initiated on this table"
+    - idx_tup_fetch:
+        usage: "COUNTER"
+        description: "Number of live rows fetched by index scans"
+    - n_tup_ins:
+        usage: "COUNTER"
+        description: "Number of rows inserted"
+    - n_tup_upd:
+        usage: "COUNTER"
+        description: "Number of rows updated"
+    - n_tup_del:
+        usage: "COUNTER"
+        description: "Number of rows deleted"
+    - n_live_tup:
+        usage: "GAUGE"
+        description: "Estimated number of live rows"
+    - n_dead_tup:
+        usage: "GAUGE"
+        description: "Estimated number of dead rows"
+
+pg_slow_queries:
+  query: "SELECT queryid, calls, total_time/1000 as total_time_seconds, mean_time/1000 as mean_time_seconds, max_time/1000 as max_time_seconds FROM pg_stat_statements WHERE mean_time > 1000 ORDER BY mean_time DESC LIMIT 50"
+  metrics:
+    - queryid:
+        usage: "LABEL"
+        description: "Query ID hash"
+    - calls:
+        usage: "COUNTER"
+        description: "Number of times executed"
+    - total_time_seconds:
+        usage: "COUNTER"
+        description: "Total time spent in the statement in seconds"
+    - mean_time_seconds:
+        usage: "GAUGE"
+        description: "Mean time spent in the statement in seconds"
+    - max_time_seconds:
+        usage: "GAUGE"
+        description: "Maximum time spent in the statement in seconds"
+
+pg_connections:
+  query: "SELECT datname, count(*) as connections, max_conn, max_conn - count(*) as available_connections FROM pg_stat_database, (SELECT setting::int as max_conn FROM pg_settings WHERE name = 'max_connections') mc GROUP BY datname, max_conn"
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - connections:
+        usage: "GAUGE"
+        description: "Number of active connections"
+    - max_conn:
+        usage: "GAUGE"
+        description: "Maximum allowed connections"
+    - available_connections:
+        usage: "GAUGE"
+        description: "Available connections"
+
+pg_locks:
+  query: "SELECT pg_database.datname, mode, count(*) as count FROM pg_locks JOIN pg_database ON pg_locks.database = pg_database.oid GROUP BY pg_database.datname, mode"
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - mode:
+        usage: "LABEL"
+        description: "Lock mode"
+    - count:
+        usage: "GAUGE"
+        description: "Number of locks"

@@ -1,0 +1,137 @@
+[
+  {
+    "id": "tts-premium",
+    "name": "TTS Premium Service",
+    "description": "Advanced text-to-speech with 20+ voices, emotion control, and SSML support",
+    "category": "ai-services",
+    "base_price": 9.99,
+    "billing_type": "monthly",
+    "features": ["tts_enabled", "voice_customization", "emotion_control", "ssml_support"],
+    "icon_url": "/assets/addons/tts-premium.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 0,
+      "enterprise": 20
+    }
+  },
+  {
+    "id": "stt-professional",
+    "name": "STT Professional",
+    "description": "Professional speech-to-text with speaker diarization and 100+ language support",
+    "category": "ai-services",
+    "base_price": 9.99,
+    "billing_type": "monthly",
+    "features": ["stt_enabled", "speaker_diarization", "100_languages", "word_timestamps"],
+    "icon_url": "/assets/addons/stt-professional.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 0,
+      "enterprise": 20
+    }
+  },
+  {
+    "id": "image-gen-plus",
+    "name": "Image Generation Plus",
+    "description": "Advanced AI image generation with high-res output and custom models",
+    "category": "ai-services",
+    "base_price": 14.99,
+    "billing_type": "monthly",
+    "features": ["image_gen_enabled", "advanced_models", "high_res_output", "custom_training"],
+    "icon_url": "/assets/addons/image-gen-plus.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 0,
+      "enterprise": 25
+    }
+  },
+  {
+    "id": "storage-100gb",
+    "name": "Storage Expansion 100GB",
+    "description": "Additional 100GB storage with automatic daily backups",
+    "category": "storage",
+    "base_price": 4.99,
+    "billing_type": "monthly",
+    "features": ["storage_100gb", "automatic_backups", "version_history"],
+    "icon_url": "/assets/addons/storage.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 10,
+      "enterprise": 30
+    }
+  },
+  {
+    "id": "premium-compute",
+    "name": "Premium Compute",
+    "description": "Dedicated GPU access with priority processing for demanding workloads",
+    "category": "compute",
+    "base_price": 29.99,
+    "billing_type": "monthly",
+    "features": ["dedicated_gpu", "priority_processing", "no_rate_limits"],
+    "icon_url": "/assets/addons/compute.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 15,
+      "enterprise": 40
+    }
+  },
+  {
+    "id": "github-integration",
+    "name": "GitHub Integration",
+    "description": "Seamless GitHub integration with CI/CD pipelines and code sync",
+    "category": "integrations",
+    "base_price": 7.99,
+    "billing_type": "monthly",
+    "features": ["github_sync", "ci_cd_integration", "automated_deploys"],
+    "icon_url": "/assets/addons/github.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 0,
+      "enterprise": 25
+    }
+  },
+  {
+    "id": "slack-notifications",
+    "name": "Slack Notifications",
+    "description": "Real-time Slack notifications with custom alerts and webhooks",
+    "category": "integrations",
+    "base_price": 4.99,
+    "billing_type": "monthly",
+    "features": ["slack_webhook", "custom_alerts", "team_channels"],
+    "icon_url": "/assets/addons/slack.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 0,
+      "enterprise": 20
+    }
+  },
+  {
+    "id": "advanced-analytics",
+    "name": "Advanced Analytics",
+    "description": "In-depth analytics dashboard with custom reports and API access",
+    "category": "analytics",
+    "base_price": 19.99,
+    "billing_type": "monthly",
+    "features": ["analytics_dashboard", "export_reports", "api_access", "data_warehouse"],
+    "icon_url": "/assets/addons/analytics.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 10,
+      "enterprise": 35
+    }
+  },
+  {
+    "id": "custom-branding",
+    "name": "Custom Branding",
+    "description": "White-label platform with custom domain and branding removal",
+    "category": "enterprise",
+    "base_price": 49.99,
+    "billing_type": "monthly",
+    "features": ["white_label", "custom_domain", "branding_removal", "custom_theme"],
+    "icon_url": "/assets/addons/branding.png",
+    "is_active": true,
+    "tier_discount": {
+      "professional": 20,
+      "enterprise": 50
+    }
+  }
+]

@@ -1,0 +1,17 @@
+# Unicorn secrets-guard — CI gate. Copy to .github/workflows/gitleaks.yml
+# Fails any PR/push that introduces a secret. Full-history scan on push.
+name: gitleaks
+on:
+  push:
+  pull_request:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0        # full history so a secret in ANY commit is caught
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_CONFIG: .gitleaks.toml

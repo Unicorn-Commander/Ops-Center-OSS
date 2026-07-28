@@ -1,0 +1,31 @@
+{
+  "comment": [
+    "Curated allowlist for backend/migrations_runner.py (Phase 0, T3).",
+    "ONLY files listed under 'migrations' with idempotent:true are auto-applied",
+    "at startup, in the order listed. A file may be listed ONLY if every one of",
+    "its statements is safe to re-run on every boot: CREATE TABLE/INDEX IF NOT",
+    "EXISTS, ALTER TABLE ADD COLUMN IF NOT EXISTS, INSERT ... ON CONFLICT,",
+    "CREATE OR REPLACE FUNCTION/VIEW, DROP-IF-EXISTS-then-CREATE trigger pairs,",
+    "COMMENT ON, GRANT, CREATE EXTENSION IF NOT EXISTS. No DROPs of data, no",
+    "unguarded INSERT/UPDATE/DELETE, no type changes. Files that fail the bar",
+    "stay in 'needs_review' (documentation only — the runner ignores it)."
+  ],
+  "migrations": [
+    {
+      "file": "model_lists_schema.sql",
+      "idempotent": true,
+      "notes": "app_model_lists / app_model_list_items / user_model_preferences / model_access_audit. All DDL is IF NOT EXISTS or OR REPLACE; triggers are DROP IF EXISTS + CREATE pairs; single seed INSERT is ON CONFLICT (slug) DO NOTHING. Ends with the 2026-07-02 convergence ALTER ADD COLUMN IF NOT EXISTS block that model_list_manager.py depends on (is_active/is_featured/tier_*_access/metadata)."
+    },
+    {
+      "file": "org_features_schema.sql",
+      "idempotent": true,
+      "notes": "org_features table + indexes + org_has_feature() helper + v_org_features_with_names view. Fully re-runnable: CREATE EXTENSION/TABLE/INDEX IF NOT EXISTS, CREATE OR REPLACE FUNCTION/VIEW, COMMENT ON, GRANT, DO-block that only RAISEs NOTICEs; the sample INSERT is commented out. FK depends on organizations(id uuid) — created earlier in startup by migrations/core, and a non-benign failure just retries next boot."
+    }
+  ],
+  "needs_review": [
+    {
+      "file": "usage_tracking_schema.sql",
+      "reason": "NOT auto-applied. (1) usage_alerts DDL is invalid PostgreSQL — 'CONSTRAINT unique_user_alert UNIQUE(user_id, alert_type, created_at::DATE)' puts an expression in a table UNIQUE constraint (needs a CREATE UNIQUE INDEX instead), so the CREATE TABLE fails every run and the table can never converge from this file. (2) It installs AFTER INSERT/UPDATE triggers that mutate usage_quotas on the api_usage hot write path plus a 90-day MATERIALIZED VIEW — runtime behavior changes, not just schema convergence. Fix the DDL and decide on the triggers before listing."
+    }
+  ]
+}

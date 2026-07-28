@@ -1,0 +1,512 @@
+# Billing Systems Flowchart
+
+## LLM API Call Flow - Complete System Interaction
+
+```
+┌───────────────────────────────────────────────────────────────────┐
+│                     USER MAKES LLM API CALL                        │
+│                 POST /api/v1/llm/chat/completions                 │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 1: USAGE TRACKING MIDDLEWARE (Pre-Check)                   │
+├───────────────────────────────────────────────────────────────────┤
+│  • Extract user_id from session cookie                            │
+│  • Lookup subscription tier (trial/starter/pro/enterprise)        │
+│  • Check Redis: usage:{user_id}:{YYYY-MM}:calls                  │
+│  • Compare with tier limit (700/1k/10k/unlimited)                │
+│                                                                    │
+│  Decision:                                                         │
+│    ❌ Over limit? → 429 Too Many Requests (BLOCKED)              │
+│    ✅ Within limit? → Continue to handler                         │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 2: LITELLM API HANDLER (Cost Estimation)                   │
+├───────────────────────────────────────────────────────────────────┤
+│  • Detect provider from model name                                │
+│  • Check for BYOK key (OpenRouter/OpenAI/Anthropic)              │
+│  • Estimate tokens: sum(len(msg.content.split()) * 1.5)          │
+│  • Calculate estimated cost:                                      │
+│      cost = (tokens/1000) * base_cost * power_mult * tier_markup │
+│                                                                    │
+│  BYOK Route:                                                      │
+│    💰 Has BYOK? → Skip credit check, use user's API key          │
+│                                                                    │
+│  Managed Route:                                                   │
+│    💳 No BYOK? → Check credits...                                │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 3: ORGANIZATIONAL CREDITS (Pre-Check)                      │
+├───────────────────────────────────────────────────────────────────┤
+│  • Query: SELECT org_id FROM organization_members                │
+│           WHERE user_id = {user_id} AND is_default = true        │
+│  • Query: SELECT allocated_credits, used_credits                 │
+│           FROM user_credit_allocations                            │
+│           WHERE org_id = {org_id} AND user_id = {user_id}       │
+│  • Check: remaining_credits >= estimated_cost                    │
+│                                                                    │
+│  Decision:                                                         │
+│    ✅ Has org + sufficient credits? → Use org billing            │
+│    ❌ Has org + insufficient credits? → 402 Payment Required     │
+│    ⚪ No org? → Fallback to individual credits...                │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 3b: INDIVIDUAL CREDITS (Fallback)                          │
+├───────────────────────────────────────────────────────────────────┤
+│  • Query Redis: credits:balance:{user_id}                        │
+│  • Fallback DB: SELECT credits_remaining FROM user_credits       │
+│  • Check: credits_remaining >= estimated_cost                    │
+│  • Check monthly cap (if configured)                              │
+│                                                                    │
+│  Decision:                                                         │
+│    ✅ Sufficient credits + within cap? → Continue                │
+│    ❌ Insufficient credits? → 402 Payment Required               │
+│    ❌ Monthly cap exceeded? → 429 Too Many Requests              │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 4: PROVIDER API CALL                                       │
+├───────────────────────────────────────────────────────────────────┤
+│  Build request:                                                   │
+│    • messages: [{role, content}, ...]                            │
+│    • model: "gpt-4o" / "claude-3-opus" / etc.                   │
+│    • max_tokens: 2000-16000 (based on power level)              │
+│    • temperature: 0.3-0.8 (based on power level)                │
+│                                                                    │
+│  BYOK Route:                                                      │
+│    POST https://api.openai.com/v1/chat/completions               │
+│    Authorization: Bearer {user's API key}                        │
+│                                                                    │
+│  Managed Route:                                                   │
+│    POST https://openrouter.ai/api/v1/chat/completions           │
+│    Authorization: Bearer {system API key}                        │
+│    HTTP-Referer: https://unicorncommander.ai                     │
+│                                                                    │
+│  Wait for response: ~500-3000ms                                   │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 5: RESPONSE PROCESSING                                     │
+├───────────────────────────────────────────────────────────────────┤
+│  Parse response:                                                  │
+│    {                                                               │
+│      "choices": [{...}],                                          │
+│      "usage": {                                                   │
+│        "prompt_tokens": 1000,                                     │
+│        "completion_tokens": 500,                                  │
+│        "total_tokens": 1500                                       │
+│      }                                                             │
+│    }                                                               │
+│                                                                    │
+│  Calculate actual cost:                                           │
+│    cost = (1500 / 1000) * 0.015 * 0.25 * 1.6                    │
+│         = 0.009 credits                                           │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 6: CREDIT DEDUCTION                                        │
+├───────────────────────────────────────────────────────────────────┤
+│  BYOK Route (No charge):                                          │
+│    cost = 0.0                                                     │
+│    Skip all deductions                                            │
+│                                                                    │
+│  Organizational Billing:                                          │
+│    BEGIN TRANSACTION;                                             │
+│    UPDATE user_credit_allocations                                │
+│      SET used_credits = used_credits + 9000  -- millicredits    │
+│      WHERE org_id = {org_id} AND user_id = {user_id};          │
+│                                                                    │
+│    INSERT INTO credit_usage_attribution (                        │
+│      user_id, org_id, service_type, credits_used, metadata      │
+│    ) VALUES (                                                     │
+│      {user_id}, {org_id}, 'llm_inference', 9000,                │
+│      '{"provider":"openrouter","model":"gpt-4o","tokens":1500}' │
+│    );                                                             │
+│    COMMIT;                                                        │
+│                                                                    │
+│  Individual Billing (Fallback):                                  │
+│    BEGIN TRANSACTION;                                             │
+│    UPDATE user_credits                                           │
+│      SET credits_remaining = credits_remaining - 0.009           │
+│      WHERE user_id = {user_id};                                 │
+│                                                                    │
+│    INSERT INTO credit_transactions (                             │
+│      user_id, amount, transaction_type, provider, model, tokens │
+│    ) VALUES (                                                     │
+│      {user_id}, -0.009, 'usage', 'openrouter', 'gpt-4o', 1500  │
+│    );                                                             │
+│    COMMIT;                                                        │
+│                                                                    │
+│  Invalidate Redis cache: credits:balance:{user_id}              │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 7: LLM USAGE LOGGING                                       │
+├───────────────────────────────────────────────────────────────────┤
+│  INSERT INTO llm_usage_logs (                                    │
+│    user_id, provider_id, model_name,                             │
+│    input_tokens, output_tokens, cost,                            │
+│    latency_ms, power_level                                       │
+│  ) VALUES (                                                       │
+│    {user_id}, {provider_uuid}, 'gpt-4o',                        │
+│    1000, 500, 0.009,                                             │
+│    1250, 'balanced'                                              │
+│  );                                                               │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 8: USAGE TRACKING (Post-Increment)                         │
+├───────────────────────────────────────────────────────────────────┤
+│  Redis (fast counters):                                           │
+│    INCR usage:{user_id}:2025-11:calls  → 9876                   │
+│    EXPIRE usage:{user_id}:2025-11:calls 2592000  # 30 days      │
+│    INCR usage:{user_id}:2025-11-14:calls  → 42                  │
+│    EXPIRE usage:{user_id}:2025-11-14:calls 86400  # 24 hours    │
+│                                                                    │
+│  PostgreSQL (persistent):                                         │
+│    INSERT INTO api_usage (                                       │
+│      user_id, org_id, endpoint, method, response_status,        │
+│      tokens_used, cost_credits, billing_period                  │
+│    ) VALUES (                                                     │
+│      {user_id}, {org_id}, '/api/v1/llm/chat/completions',      │
+│      'POST', 200, 1500, 0.009, '2025-11'                        │
+│    );                                                             │
+│                                                                    │
+│    UPDATE usage_quotas                                           │
+│      SET api_calls_used = api_calls_used + 1                    │
+│      WHERE user_id = {user_id};                                 │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 9: LAGO EVENT RECORDING (Optional)                         │
+├───────────────────────────────────────────────────────────────────┤
+│  POST https://billing-api.unicorncommander.ai/api/v1/events     │
+│  {                                                                 │
+│    "event": {                                                     │
+│      "transaction_id": "req_abc123",                             │
+│      "external_customer_id": {org_id},                           │
+│      "code": "api_call",                                          │
+│      "timestamp": 1731628800,                                     │
+│      "properties": {                                              │
+│        "endpoint": "/api/v1/llm/chat/completions",              │
+│        "tokens": 1500,                                            │
+│        "model": "gpt-4o",                                         │
+│        "user_id": {user_id},                                     │
+│        "org_id": {org_id}                                        │
+│      }                                                             │
+│    }                                                               │
+│  }                                                                 │
+│                                                                    │
+│  Note: This is informational only, not used for enforcement      │
+└───────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌───────────────────────────────────────────────────────────────────┐
+│  STEP 10: RESPONSE TO USER                                       │
+├───────────────────────────────────────────────────────────────────┤
+│  HTTP 200 OK                                                      │
+│                                                                    │
+│  Headers:                                                         │
+│    X-RateLimit-Limit: 10000                                      │
+│    X-RateLimit-Remaining: 9875                                   │
+│    X-RateLimit-Reset: 1731628800                                 │
+│    X-RateLimit-Tier: professional                                │
+│    X-Provider-Used: OpenRouter                                   │
+│    X-Cost-Incurred: 0.009                                        │
+│    X-Credits-Remaining: 9991.0                                   │
+│                                                                    │
+│  Body:                                                            │
+│    {                                                               │
+│      "id": "chatcmpl-abc123",                                    │
+│      "object": "chat.completion",                                │
+│      "created": 1731628800,                                       │
+│      "model": "gpt-4o",                                           │
+│      "choices": [{                                                │
+│        "index": 0,                                                │
+│        "message": {                                               │
+│          "role": "assistant",                                    │
+│          "content": "Hello! How can I help you today?"          │
+│        },                                                         │
+│        "finish_reason": "stop"                                   │
+│      }],                                                          │
+│      "usage": {                                                   │
+│        "prompt_tokens": 1000,                                    │
+│        "completion_tokens": 500,                                 │
+│        "total_tokens": 1500                                      │
+│      }                                                             │
+│    }                                                               │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## System Responsibilities at Each Step
+
+| Step | Usage Tracking | Org Credits | LiteLLM | Lago |
+|------|:--------------:|:-----------:|:-------:|:----:|
+| 1. Pre-check quota | ✅ PRIMARY | | | |
+| 2. Estimate cost | | | ✅ PRIMARY | |
+| 3. Check credits | | ✅ PRIMARY | ⚪ Fallback | |
+| 4. API call | | | ✅ Routes | |
+| 5. Parse response | | | ✅ PRIMARY | |
+| 6. Deduct credits | | ✅ PRIMARY | ⚪ Fallback | |
+| 7. Log usage | | | ✅ PRIMARY | |
+| 8. Increment counters | ✅ PRIMARY | | | |
+| 9. Record event | | | | ⚪ Optional |
+| 10. Return response | ✅ Headers | ✅ Headers | ✅ Body | |
+
+**Legend**:
+- ✅ PRIMARY: Main responsibility
+- ⚪ Fallback/Optional: Secondary or informational
+- (blank): Not involved
+
+---
+
+## Monthly Billing Cycle
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  MONTH START (November 1st)                                     │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  LAGO: Charge Subscription Fee                                  │
+├─────────────────────────────────────────────────────────────────┤
+│  • Generate invoice for Professional Plan ($49)                 │
+│  • Charge Stripe payment method                                 │
+│  • Send invoice email to org admin                              │
+│  • Mark subscription as "active"                                │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  ORG CREDITS: Purchase Credits (Optional)                       │
+├─────────────────────────────────────────────────────────────────┤
+│  • Admin visits /admin/credits                                  │
+│  • Purchases $100 worth of credits (10,000 credits)            │
+│  • Stripe processes payment                                     │
+│  • UPDATE organization_credit_pools                             │
+│     SET total_credits = total_credits + 10000000  -- millicreds │
+│  • Credits available for allocation                             │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  ORG CREDITS: Allocate to Users                                 │
+├─────────────────────────────────────────────────────────────────┤
+│  • Admin allocates credits to team:                             │
+│    - User A: 3,000 credits                                      │
+│    - User B: 3,000 credits                                      │
+│    - User C: 2,000 credits                                      │
+│    - User D: 1,000 credits                                      │
+│    - User E: 1,000 credits                                      │
+│  • INSERT INTO user_credit_allocations (...)                   │
+│  • UPDATE organization_credit_pools                             │
+│     SET allocated_credits = 10000000                            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  USAGE TRACKING: Reset Quotas                                   │
+├─────────────────────────────────────────────────────────────────┤
+│  • DELETE FROM Redis: usage:{user_id}:2025-10:calls            │
+│  • UPDATE usage_quotas                                          │
+│     SET api_calls_used = 0,                                     │
+│         reset_date = '2025-12-01'                               │
+│  • Users now have fresh 10,000 API calls quota                 │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  DURING MONTH: API Calls                                        │
+├─────────────────────────────────────────────────────────────────┤
+│  • Users make LLM API calls                                     │
+│  • Usage Tracking: api_calls_used increments                   │
+│  • Org Credits: used_credits increments                         │
+│  • LiteLLM: llm_usage_logs records inserted                    │
+│  • Lago: events optionally recorded                             │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  MONTH END (November 30th)                                      │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  USAGE TRACKING: Generate Reports                               │
+├─────────────────────────────────────────────────────────────────┤
+│  • Total API calls: 9,750 (within 10,000 limit)                │
+│  • Per-user breakdown available                                 │
+│  • Per-endpoint analytics available                             │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  ORG CREDITS: Usage Summary                                     │
+├─────────────────────────────────────────────────────────────────┤
+│  • Total credits used: 9,500                                    │
+│  • Remaining credits: 500 (roll over to next month)            │
+│  • Cost: ~$95 (9,500 credits × $0.01)                         │
+│  • Per-user breakdown:                                          │
+│    - User A: 2,800 used (200 remaining)                        │
+│    - User B: 2,400 used (600 remaining)                        │
+│    - User C: 1,900 used (100 remaining)                        │
+│    - User D: 950 used (50 remaining)                           │
+│    - User E: 1,450 used (0 remaining, over by 450)            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  LITELLM: Analytics Dashboard                                   │
+├─────────────────────────────────────────────────────────────────┤
+│  • Total tokens processed: 14.2M                                │
+│  • Average cost per request: $0.00095                          │
+│  • Provider breakdown:                                          │
+│    - OpenRouter: 9,500 requests ($95)                          │
+│    - BYOK: 250 requests ($0 - user paid directly)             │
+│  • Model breakdown:                                             │
+│    - gpt-4o: 5,000 requests                                    │
+│    - claude-3-opus: 3,500 requests                             │
+│    - mixtral-8x7b: 1,000 requests                              │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  LAGO: Next Month Invoice                                       │
+├─────────────────────────────────────────────────────────────────┤
+│  • Generate invoice for December                                │
+│  • Subscription: $49                                            │
+│  • (Org credits purchased separately, not on invoice)          │
+│  • Charge on December 1st                                       │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Decision Tree: Which Billing System to Use
+
+```
+User makes LLM API call
+    │
+    ▼
+Does user have BYOK key?
+    │
+    ├─ YES → Use user's API key
+    │         ├─ No credits charged
+    │         ├─ User pays provider directly
+    │         ├─ Still counts toward API quota (Usage Tracking)
+    │         └─ Usage logged (LiteLLM)
+    │
+    └─ NO → Using platform keys
+           │
+           ▼
+       Does user belong to organization?
+           │
+           ├─ YES → Organizational Billing
+           │         ├─ Check org credit pool
+           │         ├─ Deduct from user's allocation
+           │         ├─ Log in credit_usage_attribution
+           │         └─ Track API call (Usage Tracking)
+           │
+           └─ NO → Individual Billing (Fallback)
+                  ├─ Check individual credit balance
+                  ├─ Deduct from user_credits
+                  ├─ Log in credit_transactions
+                  └─ Track API call (Usage Tracking)
+```
+
+---
+
+## Error Scenarios
+
+### Scenario 1: Over API Quota
+```
+User makes request (10,001st call of month)
+    ↓
+Usage Tracking Middleware
+    ├─ Check: usage:{user_id}:2025-11:calls = 10,000
+    ├─ Limit: 10,000 (professional tier)
+    ├─ Decision: 10,000 >= 10,000 → BLOCKED
+    └─ Response: 429 Too Many Requests
+       {
+         "error": "Rate Limit Exceeded",
+         "message": "You have exceeded your professional tier API call limit (10,000 calls per month).",
+         "tier": "professional",
+         "used": 10000,
+         "limit": 10000,
+         "remaining": 0,
+         "reset_date": "2025-12-01",
+         "upgrade_url": "/admin/subscription/plan"
+       }
+```
+
+### Scenario 2: Insufficient Organization Credits
+```
+User makes LLM request
+    ↓
+LiteLLM Handler: Estimate cost = 0.05 credits
+    ↓
+Org Credits Integration
+    ├─ Query: user_credit_allocations
+    ├─ allocated_credits: 1,000,000 (1,000 credits)
+    ├─ used_credits: 999,980 (999.98 credits)
+    ├─ remaining: 20 (0.02 credits)
+    ├─ Decision: 0.02 < 0.05 → INSUFFICIENT
+    └─ Response: 402 Payment Required
+       {
+         "error": "Insufficient Credits",
+         "detail": "Insufficient organization credits. Available: 0.02, needed: 0.05",
+         "org_id": "org_e9c5241a...",
+         "suggestion": "Contact your organization admin to purchase more credits"
+       }
+```
+
+### Scenario 3: Monthly Spending Cap Exceeded
+```
+User makes LLM request
+    ↓
+LiteLLM Handler: Estimate cost = 0.01 credits
+    ↓
+Individual Credits
+    ├─ Check balance: 50.00 credits ✓
+    ├─ Check monthly cap: $100 (100 credits)
+    ├─ Query credit_transactions for current month
+    ├─ Monthly spend so far: 100.5 credits
+    ├─ Decision: 100.5 + 0.01 > 100 → OVER CAP
+    └─ Response: 429 Too Many Requests
+       {
+         "error": "Monthly Spending Cap Exceeded",
+         "detail": "Monthly spending cap exceeded",
+         "monthly_cap": 100,
+         "current_spend": 100.5,
+         "suggestion": "Increase your monthly spending cap in settings"
+       }
+```
+
+---
+
+## Key Takeaway
+
+**All four systems work together**:
+
+1. **Lago** = "You pay $49/month for the service"
+2. **Org Credits** = "Your organization has a pool of usage credits"
+3. **Usage Tracking** = "You can make 10,000 API calls per month"
+4. **LiteLLM** = "Each call costs X credits based on tokens/model/power"
+
+**They are NOT duplicates** - they measure different things and serve different purposes!

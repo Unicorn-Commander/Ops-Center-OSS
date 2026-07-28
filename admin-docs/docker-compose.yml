@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  admin-docs:
+    build: .
+    container_name: uc1-admin-docs
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./docs:/docs/docs:ro
+      - ./mkdocs.yml:/docs/mkdocs.yml:ro
+    restart: unless-stopped
+    environment:
+      - MKDOCS_DEV_ADDR=0.0.0.0:8086
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8086/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

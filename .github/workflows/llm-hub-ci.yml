@@ -1,0 +1,383 @@
+name: LLM Hub CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - feature/llm-hub
+      - staging
+      - main
+  push:
+    branches:
+      - feature/llm-hub
+      - staging
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  # ===================================================================
+  # Backend Tests
+  # ===================================================================
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: unicorn
+          POSTGRES_PASSWORD: unicorn
+          POSTGRES_DB: unicorn_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7.4
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          cd services/ops-center/backend
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-asyncio httpx
+
+      - name: Run database migrations
+        env:
+          DATABASE_URL: postgresql://unicorn:unicorn@localhost:5432/unicorn_test
+        run: |
+          cd services/ops-center/backend
+          # Apply migrations if they exist
+          if [ -f migrations/002_llm_management_tables.sql ]; then
+            PGPASSWORD=unicorn psql -h localhost -U unicorn -d unicorn_test -f migrations/002_llm_management_tables.sql
+          fi
+
+      - name: Run unit tests
+        env:
+          DATABASE_URL: postgresql://unicorn:unicorn@localhost:5432/unicorn_test
+          REDIS_URL: redis://localhost:6379/1
+          TESTING: true
+        run: |
+          cd services/ops-center/backend
+          pytest tests/ -v --cov=. --cov-report=xml --cov-report=term
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./services/ops-center/backend/coverage.xml
+          flags: backend
+          name: backend-coverage
+
+  # ===================================================================
+  # Code Quality
+  # ===================================================================
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install linting tools
+        run: |
+          pip install ruff mypy black bandit safety
+
+      - name: Run Ruff linter
+        run: |
+          cd services/ops-center/backend
+          ruff check . --output-format=github
+
+      - name: Run Black formatter check
+        run: |
+          cd services/ops-center/backend
+          black --check .
+
+      - name: Run MyPy type checking
+        run: |
+          cd services/ops-center/backend
+          mypy . --ignore-missing-imports || true
+
+      - name: Run Bandit security check
+        run: |
+          cd services/ops-center/backend
+          bandit -r . -ll -f json -o bandit-report.json || true
+
+      - name: Upload Bandit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-report
+          path: services/ops-center/backend/bandit-report.json
+
+  # ===================================================================
+  # Frontend Tests (if exists)
+  # ===================================================================
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    if: false  # Enable when frontend tests are ready
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: services/ops-center/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd services/ops-center/frontend
+          npm ci
+
+      - name: Run linting
+        run: |
+          cd services/ops-center/frontend
+          npm run lint
+
+      - name: Run tests
+        run: |
+          cd services/ops-center/frontend
+          npm test -- --coverage
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./services/ops-center/frontend/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+
+  # ===================================================================
+  # Database Migration Test
+  # ===================================================================
+  migration-test:
+    name: Database Migration Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: unicorn
+          POSTGRES_PASSWORD: unicorn
+          POSTGRES_DB: unicorn_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test forward migration
+        run: |
+          cd services/ops-center/backend
+          if [ -f migrations/002_llm_management_tables.sql ]; then
+            echo "Applying forward migration..."
+            PGPASSWORD=unicorn psql -h localhost -U unicorn -d unicorn_test -f migrations/002_llm_management_tables.sql
+
+            echo "Verifying tables created..."
+            PGPASSWORD=unicorn psql -h localhost -U unicorn -d unicorn_test -c "\dt" | grep llm_
+          else
+            echo "No migration file found, skipping"
+          fi
+
+      - name: Test rollback migration
+        run: |
+          cd services/ops-center/backend
+          if [ -f migrations/rollback_llm_management_tables.sql ]; then
+            echo "Testing rollback migration..."
+            PGPASSWORD=unicorn psql -h localhost -U unicorn -d unicorn_test -f migrations/rollback_llm_management_tables.sql
+
+            echo "Verifying tables dropped..."
+            ! PGPASSWORD=unicorn psql -h localhost -U unicorn -d unicorn_test -c "\dt" | grep llm_ || exit 1
+          else
+            echo "No rollback file found, skipping"
+          fi
+
+  # ===================================================================
+  # Feature Flag Tests
+  # ===================================================================
+  feature-flag-test:
+    name: Feature Flag Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Test feature flag system
+        env:
+          FEATURE_UNIFIED_LLM_HUB: "true"
+          FEATURE_LLM_HUB_ROLLOUT: "50"
+          FEATURE_LLM_HUB_WHITELIST: "admin@example.com,test@example.com"
+        run: |
+          cd services/ops-center/backend
+          python -c "
+          from config.feature_flags import FeatureFlags
+
+          # Test global enable
+          assert FeatureFlags.is_enabled('unified_llm_hub') == True, 'Global enable failed'
+
+          # Test whitelist
+          assert FeatureFlags.is_enabled('unified_llm_hub', 'admin@example.com') == True, 'Whitelist failed'
+
+          # Test rollout percentage
+          result = FeatureFlags.is_enabled('unified_llm_hub', 'random@example.com')
+          print(f'Rollout test result: {result}')
+
+          # Test flag status
+          status = FeatureFlags.get_flag_status('unified_llm_hub')
+          assert status['enabled'] == True, 'Flag status check failed'
+
+          print('✓ All feature flag tests passed')
+          "
+
+  # ===================================================================
+  # Integration Tests
+  # ===================================================================
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'integration-test')
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: unicorn
+          POSTGRES_PASSWORD: unicorn
+          POSTGRES_DB: unicorn_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7.4
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          cd services/ops-center/backend
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio httpx
+
+      - name: Run integration tests
+        env:
+          DATABASE_URL: postgresql://unicorn:unicorn@localhost:5432/unicorn_test
+          REDIS_URL: redis://localhost:6379/1
+          TESTING: true
+        run: |
+          cd services/ops-center/backend
+          pytest tests/integration/ -v --tb=short
+
+  # ===================================================================
+  # Build Validation
+  # ===================================================================
+  build-validation:
+    name: Build Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          cd services/ops-center
+          docker build -t ops-center:test -f Dockerfile .
+
+      - name: Test Docker image
+        run: |
+          docker run --rm ops-center:test python --version
+
+# ===================================================================
+# Status Checks Summary
+# ===================================================================
+# This job is used as a branch protection requirement
+status-check:
+  name: CI Status Check
+  if: always()
+  needs:
+    - backend-tests
+    - code-quality
+    - migration-test
+    - feature-flag-test
+    - build-validation
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Check all jobs status
+      run: |
+        if [ "${{ needs.backend-tests.result }}" != "success" ] || \
+           [ "${{ needs.code-quality.result }}" != "success" ] || \
+           [ "${{ needs.migration-test.result }}" != "success" ] || \
+           [ "${{ needs.feature-flag-test.result }}" != "success" ] || \
+           [ "${{ needs.build-validation.result }}" != "success" ]; then
+          echo "One or more required checks failed"
+          exit 1
+        fi
+        echo "All required checks passed ✓"

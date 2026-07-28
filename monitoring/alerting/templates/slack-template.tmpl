@@ -1,0 +1,62 @@
+{{ define "slack.critical.text" }}
+{{- range .Alerts -}}
+*Alert:* {{ .Annotations.summary }}
+*Description:* {{ .Annotations.description }}
+*Severity:* {{ .Labels.severity | toUpper }}
+*Service:* {{ .Labels.service }}
+*Component:* {{ .Labels.component }}
+*Instance:* {{ .Labels.instance }}
+*Status:* {{ .Status | toUpper }}
+{{ if .Annotations.runbook -}}
+*Runbook:* {{ .Annotations.runbook }}
+{{- end }}
+{{ end }}
+{{- end }}
+
+{{ define "slack.high.text" }}
+{{- range .Alerts -}}
+*Alert:* {{ .Annotations.summary }}
+*Description:* {{ .Annotations.description }}
+*Service:* {{ .Labels.service }}
+*Status:* {{ .Status | toUpper }}
+{{ end }}
+{{- end }}
+
+{{ define "slack.medium.text" }}
+{{- range .Alerts -}}
+*{{ .Annotations.summary }}*
+{{ .Annotations.description }}
+Service: {{ .Labels.service }} | Status: {{ .Status | toUpper }}
+{{ end }}
+{{- end }}
+
+{{ define "slack.security.text" }}
+{{- range .Alerts -}}
+🔒 *SECURITY ALERT*
+
+*Alert:* {{ .Annotations.summary }}
+*Description:* {{ .Annotations.description }}
+*Severity:* {{ .Labels.severity | toUpper }}
+*Service:* {{ .Labels.service }}
+*Component:* {{ .Labels.component }}
+*Instance:* {{ .Labels.instance }}
+*Time:* {{ .StartsAt.Format "2006-01-02 15:04:05 MST" }}
+
+⚠️ *IMMEDIATE ATTENTION REQUIRED* ⚠️
+
+{{ if .Annotations.runbook -}}
+Runbook: {{ .Annotations.runbook }}
+{{- end }}
+{{ end }}
+{{- end }}
+
+{{ define "slack.business.text" }}
+{{- range .Alerts -}}
+📊 *Business Metric Alert*
+
+*Alert:* {{ .Annotations.summary }}
+*Description:* {{ .Annotations.description }}
+*Service:* {{ .Labels.service }}
+*Status:* {{ .Status | toUpper }}
+{{ end }}
+{{- end }}
