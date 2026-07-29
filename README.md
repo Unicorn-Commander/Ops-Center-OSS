@@ -586,6 +586,11 @@ Every service on the node with live CPU/RAM/port, one-click start/restart, and d
 
 ![Service Management](screenshots/service-management.png)
 
+### System Monitoring — real-time host telemetry
+CPU, memory, disk and network sampled on a configurable interval, with rolling history. On GPU nodes the same view adds per-GPU utilization, VRAM, temperature and power draw.
+
+![System Monitoring](screenshots/system-monitoring.png)
+
 ### App Marketplace — entitlement-aware
 The suite catalog, gated by the caller's tier. Apps the org hasn't entitled show the upgrade path instead of a launch button.
 
