@@ -571,28 +571,27 @@ ops-center/
 
 ## 🎨 Screenshots
 
-### Admin Dashboard — infrastructure at a glance
-GPU status, service health, hosted sites, billing, and the federation mesh in one view.
+### User Dashboard — every service behind one door
+The single pane of glass. Entitled apps, self-hosted and federated alike, launched from one place.
 
-![Admin Dashboard](public/logos/Admin-Dashboard.png)
+![User Dashboard](screenshots/user-dashboard.png)
 
-### AI Model Management — the whole catalog + gateway
-Curate models, route providers, and manage the inference gateway.
+### LLM Model Catalog — the whole catalog + gateway
+367 models across federation-local and cloud providers, with per-model context windows and input/output cost surfaced before you enable them. Rates refresh from live provider pricing.
 
-![AI Model Management](public/logos/AI-Model-Management.png)
+![LLM Model Catalog](screenshots/model-catalog.png)
 
-### Service Management & System Monitoring
+### Service Management — start, stop, inspect
+Every service on the node with live CPU/RAM/port, one-click start/restart, and direct access to logs.
 
-| Services | Monitoring |
-|---|---|
-| ![Service Management](public/logos/Service%20Management.png) | ![System Monitoring](public/logos/System%20Monitoring.png) |
+![Service Management](screenshots/service-management.png)
 
-### User Dashboard — credits, usage, plan
-Per-user view of allowance, spend, models used, and quick actions.
+### App Marketplace — entitlement-aware
+The suite catalog, gated by the caller's tier. Apps the org hasn't entitled show the upgrade path instead of a launch button.
 
-![User Dashboard](public/logos/User%20Dashboard-Homepage.png)
+![App Marketplace](screenshots/app-marketplace.png)
 
-> _Screenshots reflect recent builds; the daylight theme + gateway/billing surfaces are continually refreshed._
+> _Captured from a live v3.12.0 deployment._
 
 ---
 
