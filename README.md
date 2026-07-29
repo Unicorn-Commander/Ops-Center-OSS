@@ -571,10 +571,10 @@ ops-center/
 
 ## 🎨 Screenshots
 
+_Product UI from a signed-in deployment — not the public SSO login wall._
+
 ### User Dashboard — every service behind one door
 The single pane of glass. Entitled apps, self-hosted and federated alike, launched from one place.
-
-<p align="center"><img src="docs/screenshots/product.png" alt="Ops-Center" width="900" /></p>
 
 ![User Dashboard](screenshots/user-dashboard.png)
 
